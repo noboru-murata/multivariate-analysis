@@ -1,0 +1,17 @@
+{{ if .IsNamedParams }}
+<iframe src="/{{ .Get "base" }}/slides/{{ .Get "name" }}.html"
+        width="800" height="500" frameborder="0"
+        allowfullscreen>
+</iframe>
+<ul>
+<li><a href="/{{ .Get "base" }}/slides/{{ .Get "name" }}.html">full size</a></li>
+</ul>
+{{ else }}
+<iframe src="{{ .Get 0 }}"
+        width="800" height="500" frameborder="0"
+        allowfullscreen>
+</iframe>
+<ul>
+<li><a href="{{ .Get 0 }}">full size</a></li>
+</ul>
+{{ end }}
