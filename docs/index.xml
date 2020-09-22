@@ -6,18 +6,14 @@
     <description>Recent content in 概要 on 多変量解析</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 18 Mar 2020 00:00:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://noboru-murata.github.io/multivariate-analysis/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 18 Mar 2020 00:00:00 +0900</lastBuildDate><atom:link href="https://noboru-murata.github.io/multivariate-analysis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>講義1</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture01/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture01/</guid>
-      <description>準備中</description>
+      <description>スライド    full size  ハンドアウト  PDF file  </description>
     </item>
     
     <item>
@@ -102,21 +98,14 @@
     </item>
     
     <item>
-      <title>講義13</title>
-      <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture13/</link>
-      <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
+      <title>スライドの使い方</title>
+      <link>https://noboru-murata.github.io/multivariate-analysis/post/post1/</link>
+      <pubDate>Mon, 21 Sep 2020 00:00:00 +0900</pubDate>
       
-      <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture13/</guid>
-      <description>準備中</description>
-    </item>
-    
-    <item>
-      <title>講義14</title>
-      <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture14/</link>
-      <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
-      
-      <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture14/</guid>
-      <description>準備中</description>
+      <guid>https://noboru-murata.github.io/multivariate-analysis/post/post1/</guid>
+      <description>スライドは reveal.js を使って作っています．
+スライドを click して &amp;ldquo;?&amp;rdquo; を入力すると shortcut key が表示されますが，これ以外にも以下の key などが使えます．
+フルスクリーン  f フルスクリーン表示 esc 元に戻る  黒板  w スライドと黒板の切り替え (toggle) x/y チョークの色の切り替え (巡回) c 消去  メモ書き  e 編集モードの切り替え (toggle) x/y ペンの色の切り替え (巡回) c 消去  </description>
     </item>
     
   </channel>

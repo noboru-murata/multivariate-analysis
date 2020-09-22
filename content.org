@@ -33,10 +33,9 @@
   :EXPORT_FILE_NAME: lecture01
   :EXPORT_DATE: <2020-08-26 Wed>
   :END:
-  準備中
-** COMMENT スライド
+** スライド
    #+html: {{< myslide base="multivariate-analysis" name="slide01" >}}
-** COMMENT ハンドアウト
+** ハンドアウト
    - [[github:pdfs/slide01.pdf][PDF file]]
    
 * 講義2
@@ -138,37 +137,61 @@
 ** COMMENT ハンドアウト
    - [[github:pdfs/slide12.pdf][PDF file]]
 
-* 講義13
+# * 講義13
+#   :PROPERTIES:
+#   :EXPORT_FILE_NAME: lecture13
+#   :EXPORT_DATE: <2020-08-26 Wed>
+#   :END:
+#   準備中
+# ** COMMENT スライド
+#    #+html: {{< myslide base="multivariate-analysis" name="slide13" >}}
+# ** COMMENT ハンドアウト
+#    - [[github:pdfs/slide13.pdf][PDF file]]
+
+# * 講義14
+#   :PROPERTIES:
+#   :EXPORT_FILE_NAME: lecture14
+#   :EXPORT_DATE: <2020-08-26 Wed>
+#   :END:
+#   準備中
+# ** COMMENT スライド
+#    #+html: {{< myslide base="multivariate-analysis" name="slide14" >}}
+# ** COMMENT ハンドアウト
+#    - [[github:pdfs/slide14.pdf][PDF file]]
+
+* COMMENT お知らせの雛形
   :PROPERTIES:
-  :EXPORT_FILE_NAME: lecture13
+  :EXPORT_HUGO_SECTION: ./post
+  :EXPORT_FILE_NAME: post0
   :EXPORT_DATE: <2020-08-26 Wed>
   :END:
-  準備中
-** COMMENT スライド
-   #+html: {{< myslide base="multivariate-analysis" name="slide13" >}}
-** COMMENT ハンドアウト
-   - [[github:pdfs/slide13.pdf][PDF file]]
 
-* 講義14
-  :PROPERTIES:
-  :EXPORT_FILE_NAME: lecture14
-  :EXPORT_DATE: <2020-08-26 Wed>
-  :END:
-  準備中
-** COMMENT スライド
-   #+html: {{< myslide base="multivariate-analysis" name="slide14" >}}
-** COMMENT ハンドアウト
-   - [[github:pdfs/slide14.pdf][PDF file]]
-
-* COMMENT お知らせ
-  おしらせは以下を利用     
-
-* COMMENT 講義の進め方
+* スライドの使い方
   :PROPERTIES:
   :EXPORT_HUGO_SECTION: ./post
   :EXPORT_FILE_NAME: post1
-  :EXPORT_DATE: <2020-08-26 Wed>
+  :EXPORT_DATE: <2020-09-21 Mon>
   :END:
+  スライドは
+  [[https://revealjs.com][reveal.js]]
+  を使って作っています．
+  
+  スライドを click して "?" を入力すると
+  shortcut key が表示されますが，
+  これ以外にも以下の key などが使えます．
+
+** フルスクリーン
+   - f フルスクリーン表示
+   - esc 元に戻る
+** 黒板
+   - w スライドと黒板の切り替え (toggle)
+   - x/y チョークの色の切り替え (巡回)
+   - c 消去
+** メモ書き
+   - e 編集モードの切り替え (toggle)
+   - x/y ペンの色の切り替え (巡回)
+   - c 消去
+     
 
 * COMMENT ローカル変数
 # Local Variables:
