@@ -95,7 +95,7 @@
 
 * 講義7
   :PROPERTIES:
-  :EXPORT_FILE_NAME: lecture06
+  :EXPORT_FILE_NAME: lecture07
   :EXPORT_DATE: <2020-08-26 Wed>
   :END:
   準備中
@@ -137,9 +137,9 @@
 ** COMMENT ハンドアウト
    - [[github:pdfs/slide10.pdf][PDF file]]
 
-* 講義10
+* 講義11
   :PROPERTIES:
-  :EXPORT_FILE_NAME: lecture10
+  :EXPORT_FILE_NAME: lecture11
   :EXPORT_DATE: <2020-08-26 Wed>
   :END:
   準備中
