@@ -12,7 +12,7 @@ publishDir = "docs"
   # subtitle = ""
 
   author = "Noboru Murata"
-  author_url= "https://github.com/noboru-murata"
+  author_url= "https://noboru-murata.github.io"
 
   # Point readers to your repo and invite them to edit pages 
   repo_host = "GitHub"
