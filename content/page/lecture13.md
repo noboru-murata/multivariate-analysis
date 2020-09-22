@@ -1,9 +1,9 @@
 +++
-title = "講義8"
+title = "講義13"
 author = ["Noboru Murata"]
 date = 2020-08-26T00:00:00+09:00
 draft = false
-weight = 1009
+weight = 1014
 +++
 
 準備中

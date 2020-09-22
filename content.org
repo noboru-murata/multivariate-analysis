@@ -93,6 +93,17 @@
 ** COMMENT ハンドアウト
    - [[github:pdfs/slide06.pdf][PDF file]]
 
+* 講義7
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: lecture06
+  :EXPORT_DATE: <2020-08-26 Wed>
+  :END:
+  準備中
+** COMMENT スライド
+   #+html: {{< myslide base="multivariate-analysis" name="slide07" >}}
+** COMMENT ハンドアウト
+   - [[github:pdfs/slide07.pdf][PDF file]]
+
 * 講義8
   :PROPERTIES:
   :EXPORT_FILE_NAME: lecture08
@@ -126,6 +137,17 @@
 ** COMMENT ハンドアウト
    - [[github:pdfs/slide10.pdf][PDF file]]
 
+* 講義10
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: lecture10
+  :EXPORT_DATE: <2020-08-26 Wed>
+  :END:
+  準備中
+** COMMENT スライド
+   #+html: {{< myslide base="multivariate-analysis" name="slide11" >}}
+** COMMENT ハンドアウト
+   - [[github:pdfs/slide11.pdf][PDF file]]
+
 * 講義12
   :PROPERTIES:
   :EXPORT_FILE_NAME: lecture12
@@ -137,16 +159,16 @@
 ** COMMENT ハンドアウト
    - [[github:pdfs/slide12.pdf][PDF file]]
 
-# * 講義13
-#   :PROPERTIES:
-#   :EXPORT_FILE_NAME: lecture13
-#   :EXPORT_DATE: <2020-08-26 Wed>
-#   :END:
-#   準備中
-# ** COMMENT スライド
-#    #+html: {{< myslide base="multivariate-analysis" name="slide13" >}}
-# ** COMMENT ハンドアウト
-#    - [[github:pdfs/slide13.pdf][PDF file]]
+* 講義13
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: lecture13
+  :EXPORT_DATE: <2020-08-26 Wed>
+  :END:
+  準備中
+** COMMENT スライド
+   #+html: {{< myslide base="multivariate-analysis" name="slide13" >}}
+** COMMENT ハンドアウト
+   - [[github:pdfs/slide13.pdf][PDF file]]
 
 # * 講義14
 #   :PROPERTIES:
