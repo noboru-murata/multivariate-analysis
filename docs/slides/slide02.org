@@ -1,5 +1,5 @@
 #+TITLE: 数学的準備
-#+SUBTITLE: 多変量解析
+#+SUBTITLE: 多変量解析 講義2
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 2020.10.06
