@@ -57,6 +57,8 @@
    #+html: {{< myslide base="multivariate-analysis" name="slide03" >}}
 ** ハンドアウト
    - [[github:pdfs/slide03.pdf][PDF file]]
+** 付録
+   - [[github:data/tokyo_weather_reg.csv][東京の気候データ]]
 
 * 講義4
   :PROPERTIES:

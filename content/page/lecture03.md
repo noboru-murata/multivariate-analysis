@@ -14,3 +14,8 @@ weight = 1004
 ## ハンドアウト {#ハンドアウト}
 
 -   [PDF file](https://noboru-murata.github.io/multivariate-analysis/pdfs/slide03.pdf)
+
+
+## 付録 {#付録}
+
+-   [東京の気候データ](https://noboru-murata.github.io/multivariate-analysis/data/tokyo%5Fweather%5Freg.csv)
