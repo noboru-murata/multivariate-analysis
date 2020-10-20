@@ -336,7 +336,7 @@
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
-   - ハット行列 $H$ について以下の問に答えなさい．
+   - ハット行列 $H$ について以下を示しなさい．
      - $H$ は対称行列である．
      - $H$ は羃等である．
        #+begin_quote
@@ -357,7 +357,7 @@
        #+end_src
        #+end_quote
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -372,7 +372,6 @@
          &=
            (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})
            (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\\
-         
          (I-H)^{2}
          &=
            I-2H+H^{2}\\
@@ -554,11 +553,12 @@
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
-   - 最小二乗推定量 $\boldsymbol{\hat{\beta}}$ について以下の問に答えなさい．
-     - 平均が $\boldsymbol{\beta}$ となることを示せ．
-     - 分散が $\sigma^{2}(X^{\mathsf{T}}X)^{-1}$ となることを示せ．
+   - 誤差が平均0，分散 $\sigma^{2}$ の正規分布に従うとき，
+     最小二乗推定量 $\boldsymbol{\hat{\beta}}$ について以下を示しなさい．
+     - 平均は $\boldsymbol{\beta}$ となる．
+     - 共分散行列は $\sigma^{2}(X^{\mathsf{T}}X)^{-1}$ となる．
  
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -676,7 +676,7 @@
      \end{equation}
      #+end_src
      #+end_quote
-     - 未知パラメタ $\sigma^{2}$ は不偏分散 $\hat{\sigma}^{2}$ で推定
+     - 未知母数 $\sigma^{2}$ は不偏分散 $\hat{\sigma}^{2}$ で推定
      - $\hat{\beta}_j$ の精度の評価指標
        
 ** COMMENT 演習: 標準誤差
@@ -769,11 +769,11 @@
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
-   - 以下の問に答えなさい．
+   - 以下を示しなさい．
      - 不偏分散 $\hat{\sigma}^{2}$ が
-       母数 $\sigma^{2}$ の不偏な推定量となることを示しなさい．
+       母数 $\sigma^{2}$ の不偏な推定量となる．
        #+begin_quote
-       以下を示せばよい
+       以下が成り立つことを示せばよい
        #+begin_src latex
          \begin{equation}
            \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
@@ -782,7 +782,7 @@
        #+end_src
        #+end_quote
  
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
