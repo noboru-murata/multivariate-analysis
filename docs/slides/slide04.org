@@ -583,7 +583,7 @@
      #+begin_quote
      #+begin_src latex
        \begin{align}
-         \mathrm{Var}(\boldsymbol{\hat{\beta}})
+         \mathrm{Cov}(\boldsymbol{\hat{\beta}})
          &=
            \mathbb{E}[
            (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})

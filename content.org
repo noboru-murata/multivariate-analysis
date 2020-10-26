@@ -75,10 +75,9 @@
   :EXPORT_FILE_NAME: lecture05
   :EXPORT_DATE: <2020-08-26 Wed>
   :END:
-  準備中
-** COMMENT スライド
+** スライド
    #+html: {{< myslide base="multivariate-analysis" name="slide05" >}}
-** COMMENT ハンドアウト
+** ハンドアウト
    - [[github:pdfs/slide05.pdf][PDF file]]
 
 * 講義6
