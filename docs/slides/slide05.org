@@ -11,6 +11,7 @@
 # C-c '
 :end:
 
+#+OPTIONS: reveal_mousewheel:nil
 #+begin_src R :eval no :exports none :tangle yes
   ### 第05回 資料
 #+end_src
@@ -228,51 +229,6 @@
                  signif(summary(TW.est4)$adj.r.squared,digits=3)
                  ))
      #+end_src
-** \(t\)-統計量による検定
-	- 回帰係数 $\beta_j$ が回帰式に寄与するか否かを検定する
-	  - 帰無仮説: $\beta_j=0$
-	  - 対立仮説: $\beta_j\neq0$ ($\beta_j$ は役に立つ)
-	- \(t\)-統計量: 各係数ごと，$\xi$ は $(X^{\mathsf{T}} X)^{-1}$ の対角成分
-	  #+begin_quote
-	  #+begin_src latex
-	    \begin{equation}
-	      t=\frac{\hat{\beta}_j}{\hat{\sigma}\sqrt{\xi_j}}
-	    \end{equation}
-	  #+end_src
-	  #+end_quote
-	- $p$ -値: 自由度 $n{-}p{-}1$ の $t$ 分布を用いて計算
-	  # #+begin_src latex
-	  # \begin{equation}
-	  #   \text{($p$-値)}
-	  #   =
-	  #   2\int_{|t|}^\infty f(x)dx
-	  # \end{equation}
-	  # #+end_src
-
-** モデルの評価
-   - 回帰係数の推定量と\(t\)-統計量
-     - モデル1
-     #+begin_src R :exports results :tangle yes
-       ## モデル1
-       signif(summary(TW.est1)$coef,digits=3)
-     #+end_src
-     - モデル2
-     #+begin_src R :exports results :tangle yes
-       ## モデル2
-       signif(summary(TW.est2)$coef,digits=3)
-     #+end_src
-   #+reveal: split     
-   - 回帰係数の推定量と\(t\)-統計量 (つづき)
-     - モデル3
-     #+begin_src R :exports results :tangle yes
-       ## モデル3
-       signif(summary(TW.est3)$coef,digits=3)
-     #+end_src
-     - モデル4 (雲量の回帰係数は有用でないことを示唆)
-     #+begin_src R :exports results :tangle yes
-       ## モデル4
-       signif(summary(TW.est4)$coef,digits=3)
-     #+end_src
 ** \(F\)-統計量による検定
 	- 説明変数のうち1つでも役に立つか否かを検定する
 	  - 帰無仮説: $\beta_1=\dotsb=\beta_p=0$
@@ -294,7 +250,6 @@
 	  #     \int_{F}^\infty f(x)dx,
 	  #   \end{equation}
 	  # #+end_src
-
 ** モデルの評価
    - 決定係数と\(F\)-統計量
      - モデル1
@@ -368,6 +323,51 @@
                  "; p-val:",
                  signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
                  ))
+     #+end_src
+** \(t\)-統計量による検定
+	- 回帰係数 $\beta_j$ が回帰式に寄与するか否かを検定する
+	  - 帰無仮説: $\beta_j=0$
+	  - 対立仮説: $\beta_j\neq0$ ($\beta_j$ は役に立つ)
+	- \(t\)-統計量: 各係数ごと，$\xi$ は $(X^{\mathsf{T}} X)^{-1}$ の対角成分
+	  #+begin_quote
+	  #+begin_src latex
+	    \begin{equation}
+	      t=\frac{\hat{\beta}_j}{\hat{\sigma}\sqrt{\xi_j}}
+	    \end{equation}
+	  #+end_src
+	  #+end_quote
+	- $p$ -値: 自由度 $n{-}p{-}1$ の $t$ 分布を用いて計算
+	  # #+begin_src latex
+	  # \begin{equation}
+	  #   \text{($p$-値)}
+	  #   =
+	  #   2\int_{|t|}^\infty f(x)dx
+	  # \end{equation}
+	  # #+end_src
+
+** モデルの評価
+   - 回帰係数の推定量と\(t\)-統計量
+     - モデル1
+     #+begin_src R :exports results :tangle yes
+       ## モデル1
+       signif(summary(TW.est1)$coef,digits=3)
+     #+end_src
+     - モデル2
+     #+begin_src R :exports results :tangle yes
+       ## モデル2
+       signif(summary(TW.est2)$coef,digits=3)
+     #+end_src
+   #+reveal: split     
+   - 回帰係数の推定量と\(t\)-統計量 (つづき)
+     - モデル3
+     #+begin_src R :exports results :tangle yes
+       ## モデル3
+       signif(summary(TW.est3)$coef,digits=3)
+     #+end_src
+     - モデル4 (雲量の回帰係数は有用でないことを示唆)
+     #+begin_src R :exports results :tangle yes
+       ## モデル4
+       signif(summary(TW.est4)$coef,digits=3)
      #+end_src
 ** COMMENT 演習: 回帰分析とその評価
    :PROPERTIES:
@@ -454,7 +454,7 @@
      以下の問について答えなさい．
      - 予測値 $\hat{y}$ の平均を求めなさい．
      - 予測値 $\hat{y}$ の分散を求めなさい．
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -593,7 +593,7 @@
 	      #+end_quote
 	    - 観測値と予測値の差 $y-\hat{y}$ の平均と分散を求めなさい．
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:

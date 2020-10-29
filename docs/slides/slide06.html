@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>主成分分析</title>
+<meta name="author" content="村田 昇"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-state="no-toc-progress">
+<!-- This is an HTML template for the title slide. -->
+<!-- Embed logos as necessary. -->
+<!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
+<div class="talk-title">
+    <h1 class="no-toc-progress">主成分分析</h1>
+</div>
+<div class="talk-subtitle">
+    <p>基本的な考え方</p>
+</div>
+<div class="keyboard-usage">
+    <p>(Press <code>?</code> for help, <code>n</code> and <code>p</code> for next and previous slide)</p>
+</div>
+<div class="talk-author">
+  <p>村田 昇<br />
+  2020.11.03</p>
+</div>
+
+</section>
+
+<section>
+<section id="slide-org8af1413">
+<h2 id="org8af1413">講義の予定</h2>
+<ul>
+<li><b>第1日: 主成分分析の考え方</b></li>
+<li>第2日: 分析の評価と視覚化</li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgf580059">
+<h2 id="orgf580059">主成分分析の考え方</h2>
+<div class="outline-text-2" id="text-orgf580059">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org1443b08">
+<h3 id="org1443b08">主成分分析</h3>
+<ul>
+<li><b>PCA</b> (Principal Component Analysis)</li>
+<li>多数の変量のもつ情報の分析・視覚化:
+<ul>
+<li>変量を効率的に縮約して少数の特徴量を構成する</li>
+<li>特徴量に関与する変量間の関係を明らかにする</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgb93b549">
+<h3 id="orgb93b549">分析の枠組み</h3>
+<ul>
+<li>\(X_1,\dotsc,X_p\): <b>変数</b></li>
+<li>\(Z_1,\dotsc,Z_d\): <b>特徴量</b> ( \(d\leq p\) )</li>
+<li><p>
+変数と特徴量の関係: (線形結合)
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  Z_k=a_{1k}X_1+\cdots+a_{pk}X_p\quad(k=1,\dotsc,d)
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+特徴量は定数倍の任意性があるので以下を仮定:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \|\boldsymbol{a}_k\|^2=\sum_{j=1}^pa_{jk}^2=1
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org854b744">
+<h3 id="org854b744">主成分分析の用語</h3>
+<ul>
+<li>特徴量 \(Z_k\): <br />
+第 \(k\) <b>主成分得点</b> (principal component score) <br />
+または <br />
+第 \(k\) <b>主成分</b></li>
+<li>係数ベクトル \(\boldsymbol{a}_k\): <br />
+第 \(k\) <b>主成分負荷量</b> (principal component loading)<br />
+または <br />
+第 \(k\) <b>主成分方向</b> (principal component direction)</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org2feedf9">
+<h3 id="org2feedf9">分析の目的</h3>
+<ul>
+<li><p>
+目的:
+</p>
+<blockquote>
+<p>
+主成分得点
+\(Z_1,\dots,Z_d\)
+が変数
+\(X_1,\dotsc,X_p\)
+の情報を効率よく反映するように主成分負荷量
+\(\boldsymbol{a}_1,\dotsc,\boldsymbol{a}_d\)
+を観測データから <b>うまく</b> 決定する
+</p>
+</blockquote></li>
+<li>分析の方針: (以下は同値)
+<ul>
+<li>データの情報を最も保持する変量の <b>線形結合を構成</b></li>
+<li>データの情報を最も反映する <b>座標軸を探索</b></li>
+
+</ul></li>
+<li><b>教師なし学習</b> の代表的手法の1つ: 
+<ul>
+<li>次元縮約: 入力をできるだけ少ない変数で表現</li>
+<li>特徴抽出: 情報処理に重要な特性を変数に凝集</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org26420df">
+<h2 id="org26420df">第1主成分の計算</h2>
+<div class="outline-text-2" id="text-org26420df">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org7196c5e">
+<h3 id="org7196c5e">記号の準備</h3>
+<ul>
+<li>変数: \(x_1,\dotsc,x_p\) (p次元)</li>
+<li><p>
+観測データ: \(n\) 個の \((x_1,\dotsc,x_p)\) の組
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \{(x_{i1},\dots,x_{ip})\}_{i=1}^n
+\end{equation}
+
+</div>
+</blockquote></li>
+<li>\(\boldsymbol{x}_i=(x_{i1},\dots,x_{ip})^{\mathsf{T}}\) : <br />
+\(i\) 番目の観測データ (\(p\) 次元空間内の1点)</li>
+<li>\(\boldsymbol{a}=(a_1,\dots,a_p)^{\mathsf{T}}\) : <br />
+長さ1の \(p\) 次元ベクトル</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org3998046">
+<h3 id="org3998046">係数ベクトルによる射影</h3>
+<ul>
+<li><p>
+データ \(\boldsymbol{x}_i\) の \(\boldsymbol{a}\) 方向成分の長さ:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+  \quad\text{(スカラー)}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+方向ベクトル \(\boldsymbol{a}\)
+をもつ直線上への点 \(\boldsymbol{x}_i\)
+の直交射影
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  (\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i)\,\boldsymbol{a}
+  \quad\text{(スカラー $\times$ ベクトル)}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org06753f5">
+<h3 id="org06753f5">幾何学的描像</h3>
+
+<div id="org3afe328" class="figure">
+<p><img src="./figs/pca-figure.png" alt="pca-figure.png" width="100%" />
+</p>
+<p><span class="figure-number">Figure 1: </span>観測データの直交射影 (\(p=2,n=2\) の場合)</p>
+</div>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgb80d784">
+<h3 id="orgb80d784">ベクトル \(\boldsymbol{a}\) の選択の指針</h3>
+<ul>
+<li><p>
+線形結合での見方
+</p>
+<blockquote>
+<p>
+ベクトル \(\boldsymbol{a}\) を <b>うまく</b> 選んで
+観測データ \(\boldsymbol{x}_1,\dots,\boldsymbol{x}_n\)
+の情報を最も保持する1変量データを構成:
+</p>
+<div>
+\begin{equation}
+  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,
+  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_2,
+  \dotsc,
+  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+座標軸での見方
+</p>
+<blockquote>
+<p>
+観測データの <b>ばらつき</b>
+を最も反映するベクトル \(\boldsymbol{a}\) を選択:
+</p>
+<div>
+\begin{equation}
+  \arg\max_{\boldsymbol{a}}
+  \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+  -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2,
+  \quad
+  \bar{\boldsymbol{x}}
+  =
+  \frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i,
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgd57c428">
+<h3 id="orgd57c428">ベクトル \(\boldsymbol{a}\) の最適化</h3>
+<ul>
+<li><p>
+最適化問題
+</p>
+<blockquote>
+<p>
+制約条件 \(\|\boldsymbol{a}\|=1\) の下で
+以下の関数を最大化せよ:
+</p>
+<div>
+\begin{equation}
+  f(\boldsymbol{a})
+  =
+  \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+  -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2
+\end{equation}
+
+</div>
+</blockquote></li>
+<li>この最大化問題は必ず解をもつ:
+<ul>
+<li>\(f(\boldsymbol{a})\) は連続関数</li>
+<li>集合 \(\{\boldsymbol{a}\in\mathbb{R}^p:\|\boldsymbol{a}\|=1\}\) はコンパクト(有界閉集合)</li>
+
+</ul></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org0f5dc61">
+<h2 id="org0f5dc61">第1主成分の解</h2>
+<div class="outline-text-2" id="text-org0f5dc61">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org69c65cc">
+<h3 id="org69c65cc">ベクトル \(\boldsymbol{a}\) の解</h3>
+<ul>
+<li><p>
+最適化問題
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{maximize}\quad
+  f(\boldsymbol{a})
+  =
+  \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+  \quad\text{s.t.}\quad
+  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{a}=1
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+固有値問題
+</p>
+<blockquote>
+<p>
+\(f(\boldsymbol{a})\) の極大値を与える \(\boldsymbol{a}\) は
+\(X^{\mathsf{T}}X\) の固有ベクトルとなる
+</p>
+<div>
+\begin{equation}
+  X^{\mathsf{T}}X\boldsymbol{a}
+  =
+  \lambda\boldsymbol{a}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgd17409f">
+<h3 id="orgd17409f">第1主成分</h3>
+<ul>
+<li>求める \(\boldsymbol{a}\)
+は行列 \(X^{\mathsf{T}}X\) の最大固有ベクトル (長さ1)</li>
+<li><p>
+このとき \(f(\boldsymbol{a})\)
+は行列 \(X^{\mathsf{T}}X\) の最大固有値
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  f(\boldsymbol{a})
+  =\boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+  =\boldsymbol{a}^{\mathsf{T}}\lambda\boldsymbol{a}
+  =\lambda
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><b>第1主成分負荷量</b>: ベクトル \(\boldsymbol{a}\)</li>
+<li><p>
+<b>第1主成分得点</b>:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  z_{i1}=a_1x_{i1}+\cdots+a_px_{ip}\quad(i=1,\dots,n)
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgdd1c654">
+<h2 id="orgdd1c654">Gram 行列の性質</h2>
+<div class="outline-text-2" id="text-orgdd1c654">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga1e8e22">
+<h3 id="orga1e8e22">Gram 行列の固有値</h3>
+<ul>
+<li>\(X^{\mathsf{T}}X\) は非負定値対称行列</li>
+<li>\(X^{\mathsf{T}}X\) の固有値は0以上の実数
+<ul>
+<li><p>
+固有値を重複を許して降順に並べる
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \lambda_1\geq\dotsb\geq\lambda_p\quad(\geq0)
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+固有値 \(\lambda_j\) に対する固有ベクトルを \(\boldsymbol{a}_j\)(長さ1)とする
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \|\boldsymbol{a}_j\|=1\quad
+  (j=1,\dotsc,p)
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org271428d">
+<h3 id="org271428d">Gram 行列のスペクトル分解</h3>
+<ul>
+<li><p>
+\(\boldsymbol{a}_1,\dotsc,\boldsymbol{a}_p\) は <b>互いに直交</b> するようとることができる
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  j\neq k
+  \quad\Rightarrow\quad
+  \boldsymbol{a}_j^{\mathsf{T}}\boldsymbol{a}_k=0
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+行列 \(X^{\mathsf{T}}X\) (非負値正定対称行列) のスペクトル分解:
+</p>
+<blockquote>
+<div>
+\begin{align}
+  X^{\mathsf{T}}X
+  &=\lambda_{1}\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}+
+    \lambda_{2}\boldsymbol{a}_{2}\boldsymbol{a}_{2}^{\mathsf{T}}+
+    \dotsb+\lambda_{p}\boldsymbol{a}_{p}\boldsymbol{a}_{p}^{\mathsf{T}}\\
+  &=\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
+\end{align}
+
+</div>
+
+<p>
+固有値と固有ベクトルによる行列の表現
+</p>
+</blockquote></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org7169c76">
+<h2 id="org7169c76">第2主成分以降の計算</h2>
+<div class="outline-text-2" id="text-org7169c76">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5556f6a">
+<h3 id="org5556f6a">第2主成分の考え方</h3>
+<ul>
+<li>第1主成分:
+<ul>
+<li>主成分負荷量: ベクトル \(\boldsymbol{a}_1\)</li>
+<li>主成分得点: \(\boldsymbol{a}_1^{\mathsf{T}}\boldsymbol{x}_i\) (\(i=1,\dotsc,n\))</li>
+
+</ul></li>
+<li><p>
+第1主成分負荷量に関してデータが有する情報:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  (\boldsymbol{a}_1^{\mathsf{T}}\boldsymbol{x}_i)\,\boldsymbol{a}_1
+  \quad(i=1,\dotsc,n)
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+第1主成分を取り除いた観測データ: (分析対象)
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \tilde{\boldsymbol{x}}_i
+  =
+  \boldsymbol{x}_i
+  -(\boldsymbol{a}_1^{\mathsf{T}}\boldsymbol{x}_i)\,\boldsymbol{a}_1
+  \quad(i=1,\dotsc,n)
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga343bb2">
+<h3 id="orga343bb2">第2主成分の最適化</h3>
+<ul>
+<li><p>
+最適化問題
+</p>
+<blockquote>
+<p>
+制約条件 \(\|\boldsymbol{a}\|=1\) の下で
+以下の関数を最大化せよ:
+</p>
+<div>
+\begin{equation}
+  \tilde{f}(\boldsymbol{a})
+  =
+  \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\tilde{\boldsymbol{x}}_i
+  -\boldsymbol{a}^{\mathsf{T}}\bar{\tilde{\boldsymbol{x}}})^2
+  \quad\text{ただし}\quad
+  \bar{\tilde{\boldsymbol{x}}}
+  =
+  \frac{1}{n}\sum_{i=1}^n\tilde{\boldsymbol{x}}_i
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org44deb76">
+<h2 id="org44deb76">第2主成分の解</h2>
+<div class="outline-text-2" id="text-org44deb76">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgf6d820f">
+<h3 id="orgf6d820f">第2主成分</h3>
+<ul>
+<li>Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
+の固有ベクトル \(\boldsymbol{a}_{1}\) の固有値は 0</li>
+<li>Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
+の最大固有値は
+\(\lambda_2\)</li>
+<li>解は第2固有値 \(\lambda_2\) に対応する固有ベクトル \(\boldsymbol{a}_2\)</li>
+<li>以下同様に
+第 \(k\) 主成分負荷量は 
+\(X^{\mathsf{T}}X\) の第 \(k\) 固有値 \(\lambda_k\)
+に対応する固有ベクトル \(\boldsymbol{a}_k\)</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/notes/notes.js"></script>
+<script src="./reveal.js/plugin/search/search.js"></script>
+<script src="./reveal.js/plugin/zoom/zoom.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+
+transition: 'fade',
+transitionSpeed: 'default',
+chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }},
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+{ src: './reveal.js/plugin/menu/menu.js'},
+{ src: './reveal.js/plugin/chalkboard/chalkboard.js'}]
+
+});
+</script>
+</body>
+</html>
