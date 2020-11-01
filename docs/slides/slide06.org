@@ -269,7 +269,7 @@
      - 集合 $\{\boldsymbol{a}\in\mathbb{R}^p:\|\boldsymbol{a}\|=1\}$ はコンパクト(有界閉集合)
 
 
-* COMMENT 演習
+* 演習
   :PROPERTIES:
   :reveal_background: #fef4f4
   :END:
@@ -311,7 +311,7 @@
        #+end_src
        #+end_quote
 
-** 解答例
+** COMMENT 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -544,7 +544,7 @@
      #+end_quote
 
 
-* COMMENT 演習
+* 演習
   :PROPERTIES:
   :reveal_background: #fef4f4
   :END:
@@ -588,7 +588,7 @@
        #+end_src
        #+end_quote
 
-** 解答例
+** COMMENT 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -665,7 +665,7 @@
      #+end_quote
 
 
-* COMMENT 演習
+* 演習
   :PROPERTIES:
   :reveal_background: #fef4f4
   :END:
@@ -703,7 +703,7 @@
        #+end_src
        #+end_quote
 
-** 解答例
+** COMMENT 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -867,3 +867,10 @@
        abline(0, ahat[2]/ahat[1], col="orange", lty="dotted", lwd=2)
        points(pc1 %o% ahat, pch=18, col="purple") 
      #+end_src
+
+
+* COMMENT ローカル変数
+# Local Variables:
+# org-latex-listings: minted
+# End:
+     
