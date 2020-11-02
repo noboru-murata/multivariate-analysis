@@ -89,6 +89,9 @@
    #+html: {{< myslide base="multivariate-analysis" name="slide06" >}}
 ** ハンドアウト
    - [[github:pdfs/slide06.pdf][PDF file]]
+** 付録
+   - [[github:data/japan_social.csv][都道府県別の社会生活統計指標データ]]
+
 
 * 講義7
   :PROPERTIES:

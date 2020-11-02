@@ -869,6 +869,77 @@
      #+end_src
 
 
+* 解析の事例
+** データセットについて
+   - 総務省統計局より取得した都道府県別の社会生活統計指標の一部
+     - 総務省 [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
+     - データ https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv
+       #+begin_quote
+       - Pref: 都道府県名
+       - Forest: 森林面積割合 (%) 2014年
+       - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+       - Ratio: 全国総人口に占める人口割合 (%) 2015年
+       - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+       - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+       #+end_quote
+
+** 社会生活統計指標の分析
+   - データ(の一部)の内容
+     #+begin_src R :exports results :tangle yes
+       ## データの読み込み
+       JS.data <- read.csv("data/japan_social.csv", row.names=1)
+       head(JS.data, 18)
+     #+end_src
+   #+reveal: split
+   - データの散布図
+     #+begin_src R :file figs/06_pairs.png :exports results :results graphics :tangle yes
+       ## データの視覚化
+       plot(JS.data, col="blue") # いくつかの変数は相関強い
+     #+end_src
+   #+CAPTION: 散布図
+   #+NAME: fig:06_pairs
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/06_pairs.png]]
+   #+reveal: split
+   - データの箱ひげ図
+     #+begin_src R :file figs/06_boxplot.png :exports results :results graphics :tangle yes
+       boxplot(JS.data, col="green") # 箱ひげ図．変数のばらつきに大きな違いがある
+     #+end_src
+   #+CAPTION: 箱ひげ図
+   #+NAME: fig:06_boxplot
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/06_boxplot.png]]
+   #+reveal: split
+   - 主成分負荷量を計算 (正規化後)
+     #+begin_src R :exports results :tangle yes
+       JS.pca <- prcomp(JS.data, scale=TRUE)
+       JS.pca$rot
+     #+end_src
+   - 主成分方向から読み取れること:
+     - 第1: 人の多さに関する成分(正の向きほど人が多い)
+     - 第2: 農業生産力に関する成分(正の向きほど高い)
+   #+reveal: split
+   - 主成分得点の表示
+     #+begin_src R :file figs/06_pcaplot.png :exports results :results graphics :tangle yes
+       plot(PC2 ~ PC1, data=predict(JS.pca),
+            type="n")
+       text(PC2 ~ PC1, data=predict(JS.pca),
+            labels=row.names(JS.data),
+            col="blue", cex=1.0)
+     #+end_src
+   #+CAPTION: 主成分得点による散布図
+   #+NAME: fig:06_pcaplot
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/06_pcaplot.png]]
+
+* 次週の予定
+  - 第1日: 主成分分析の考え方
+  - *第2日: 分析の評価と視覚化*
+
+   
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted
