@@ -311,7 +311,7 @@
        #+end_src
        #+end_quote
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -529,7 +529,7 @@
        \end{equation}
      #+end_src
      #+end_quote
-   - 行列 $X^{\mathsf{T}}X$ (非負値正定対称行列) のスペクトル分解:
+   - 行列 $X^{\mathsf{T}}X$ (非負定値対称行列) のスペクトル分解:
      #+begin_quote
      #+begin_src latex
        \begin{align}
@@ -588,7 +588,7 @@
        #+end_src
        #+end_quote
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -703,7 +703,7 @@
        #+end_src
        #+end_quote
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
