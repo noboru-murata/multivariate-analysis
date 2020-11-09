@@ -935,6 +935,7 @@
    #+ATTR_LATEX: :width 0.6\linewidth
    [[file:figs/06_pcaplot.png]]
 
+
 * 次週の予定
   - 第1日: 主成分分析の考え方
   - *第2日: 分析の評価と視覚化*
