@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>主成分分析</title>
+<meta name="author" content="村田 昇"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-state="no-toc-progress">
+<!-- This is an HTML template for the title slide. -->
+<!-- Embed logos as necessary. -->
+<!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
+<div class="talk-title">
+    <h1 class="no-toc-progress">主成分分析</h1>
+</div>
+<div class="talk-subtitle">
+    <p>評価と視覚化</p>
+</div>
+<div class="keyboard-usage">
+    <p>(Press <code>?</code> for help, <code>n</code> and <code>p</code> for next and previous slide)</p>
+</div>
+<div class="talk-author">
+  <p>村田 昇<br />
+  2019.11.06</p>
+</div>
+
+</section>
+
+<section>
+<section id="slide-org4db9545">
+<h2 id="org4db9545">講義の予定</h2>
+<ul>
+<li>第1日: 主成分分析の考え方</li>
+<li><b>第2日: 分析の評価と視覚化</b></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgd0e3657">
+<h2 id="orgd0e3657">主成分分析の復習</h2>
+<div class="outline-text-2" id="text-orgd0e3657">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org230c51a">
+<h3 id="org230c51a">主成分分析</h3>
+<ul>
+<li>多数の変量のもつ情報の分析・視覚化
+<ul>
+<li>変量を効率的に縮約して少数の特徴量を構成する</li>
+<li>変量の間の関係を明らかにする</li>
+
+</ul></li>
+<li>分析の方針:
+<ul>
+<li>データの情報を最大限保持する変量の線形結合を構成</li>
+<li>データの情報を最大限反映する座標(方向)を探索</li>
+<li>(データの情報を保持する=データを区別できる)</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org2a37833">
+<h3 id="org2a37833">分析の考え方</h3>
+<ul>
+<li>1変量データ
+\(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n\)
+を構成
+<ul>
+<li>観測データ \(\boldsymbol{x}_1,\dots,\boldsymbol{x}_n\)
+のもつ情報を最大限保持するベクトル
+\(\boldsymbol{a}\) を <b>うまく</b> 選択</li>
+<li>\(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n\)
+の変動(ばらつき)が最も大きい方向を選択</li>
+
+</ul></li>
+<li><p>
+<b>最適化問題</b>:
+制約条件 \(\|\boldsymbol{a}\|=1\)
+の下で以下の関数を最大化せよ
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  f(\boldsymbol{a})
+  =
+  \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+  -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2,
+  \quad
+  \bar{\boldsymbol{x}}
+  =
+  \frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgec02e6e">
+<h3 id="orgec02e6e">行列による表現</h3>
+<ul>
+<li><p>
+中心化したデータ行列
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  X
+  =
+  \begin{pmatrix}
+    \boldsymbol{x}_{1}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}} \\
+    \vdots \\
+    \boldsymbol{x}_{n}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}}
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    x_{11}-\bar{x}_1 & \cdots & x_{1p}-\bar{x}_p\\
+    \vdots & & \vdots \\
+    x_{n1}-\bar{x}_1 & \cdots & x_{np}-\bar{x}_p
+  \end{pmatrix}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+評価関数 \(f(\boldsymbol{a})\) は行列 \(X^{\mathsf{T}}X\) 
+の二次形式
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  f(\boldsymbol{a})
+  =
+  \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org6157c05">
+<h3 id="org6157c05">固有値問題</h3>
+<ul>
+<li><p>
+最適化問題
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{maximize}\quad
+  f(\boldsymbol{a})
+  =
+  \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+  \quad\text{s.t.}\quad
+  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{a}=1
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+\(f(\boldsymbol{a})\) の極大値を与える \(\boldsymbol{a}\) は
+\(X^{\mathsf{T}}X\) の固有ベクトル
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  X^{\mathsf{T}}X\boldsymbol{a}
+  =
+  \lambda\boldsymbol{a}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org77f1f6f">
+<h3 id="org77f1f6f">主成分負荷量と主成分得点</h3>
+<ul>
+<li><b>主成分負荷量</b> (principal component loading): 
+\(\boldsymbol{a}\)</li>
+<li><b>主成分得点</b> (principal component score):
+\(\boldsymbol{x}_i^{\mathsf{T}}\boldsymbol{a}\)</li>
+<li>第1主成分負荷量は 
+\(X^{\mathsf{T}}X\) の第1(最大)固有値 \(\lambda_1\)
+に対応する固有ベクトル \(\boldsymbol{a}_1\)</li>
+<li>同様に
+第 \(k\) 主成分負荷量は 
+\(X^{\mathsf{T}}X\) の第 \(k\) 固有値 \(\lambda_k\)
+に対応する固有ベクトル \(\boldsymbol{a}_k\)</li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org083a191">
+<h2 id="org083a191">寄与率</h2>
+<div class="outline-text-2" id="text-org083a191">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgc01d5a9">
+<h3 id="orgc01d5a9">寄与率の考え方</h3>
+<ul>
+<li><p>
+回帰分析で考察した <b>寄与率</b> の一般形
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(寄与率)}=
+  \frac{\text{(その方法で説明できる変動)}}{\text{(データ全体の変動)}}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+主成分分析での定義 (proportion of variance)
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(寄与率)}=
+  \frac{\text{(主成分の変動)}}{\text{(全体の変動)}}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgd9be9ac">
+<h3 id="orgd9be9ac">Gram行列のスペクトル分解</h3>
+<ul>
+<li><p>
+行列 \(X^{\mathsf{T}}X\) (非負値正定対称行列) のスペクトル分解
+</p>
+<blockquote>
+<div>
+\begin{align}
+  X^{\mathsf{T}}X
+  &=\lambda_{1}\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}+
+    \lambda_{2}\boldsymbol{a}_{2}\boldsymbol{a}_{2}^{\mathsf{T}}+
+    \dotsb+\lambda_{p}\boldsymbol{a}_{p}\boldsymbol{a}_{p}^{\mathsf{T}}\\
+  &=\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
+\end{align}
+
+</div>
+
+<p>
+固有値と固有ベクトルによる行列の表現
+</p>
+</blockquote></li>
+<li><p>
+主成分の変動の評価
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  f(\boldsymbol{a}_{k})
+  =
+  \boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
+  =\lambda_{k}
+\end{equation}
+
+</div>
+
+<p>
+固有ベクトル(単位ベクトル)の直交性を利用
+</p>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgdefdddd">
+<h3 id="orgdefdddd">寄与率の計算</h3>
+<ul>
+<li><p>
+主成分と全体の変動
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \text{(主成分)}
+  &=
+    \sum_{i=1}^{n}(\boldsymbol{a}_k^{\mathsf{T}}\boldsymbol{x}_i
+    -\boldsymbol{a}_k^{\mathsf{T}}\bar{\boldsymbol{x}})^2
+    =\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
+    =\lambda_k\\
+  \text{(全体)}
+  &=
+    \sum_{i=1}^{n}\|\boldsymbol{x}_i-\bar{\boldsymbol{x}}\|^2
+    =\sum_{l=1}^p\boldsymbol{a}_{l}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{l}
+    =\sum_{l=1}^p\lambda_l
+\end{align}
+
+</div>
+</blockquote></li>
+<li><p>
+寄与率の固有値による表現:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(寄与率)}
+  =
+  \frac{\lambda_k}{\sum_{l=1}^p\lambda_l}  
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org42a3edc">
+<h3 id="org42a3edc">累積寄与率</h3>
+<ul>
+<li><p>
+<b>累積寄与率</b> (cumulative proportion) :
+第 \(k\) 主成分までの変動の累計
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(累積寄与率)}
+  =
+  \frac{\sum_{l=1}^k\lambda_l}{\sum_{l=1}^p\lambda_l}
+\end{equation}
+
+</div>
+
+<p>
+第1から第 \(k\) までの寄与率の総和
+</p>
+</blockquote>
+<ul>
+<li>累積寄与率はいくつの主成分を用いるべきかの基準</li>
+<li>一般に累積寄与率が80%程度までの主成分を用いる</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgd0de908">
+<h2 id="orgd0de908">主成分負荷量再考</h2>
+<div class="outline-text-2" id="text-orgd0de908">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgeab4e32">
+<h3 id="orgeab4e32">主成分負荷量と主成分得点</h3>
+<ul>
+<li>負荷量(得点係数)の大きさ: 変数の貢献度</li>
+<li><b>問題点</b>:
+<ul>
+<li>変数のスケールによって係数の大きさは変化する</li>
+<li>変数の正規化(標本平均0，不偏分散1)がいつも妥当とは限らない</li>
+
+</ul></li>
+<li>スケールによらない変数と主成分の関係: <b>相関係数</b></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgce14a4a">
+<h3 id="orgce14a4a">相関係数</h3>
+<ul>
+<li>\(\boldsymbol{e}_{l}\): 第 \(l\) 成分は1，それ以外は0のベクトル</li>
+<li>\(X\boldsymbol{e}_{l}\): 第 \(l\) 変数ベクトル</li>
+<li>\(X\boldsymbol{a}_{k}\): 第 \(k\) 主成分得点ベクトル</li>
+<li><p>
+主成分と変数の相関係数:
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathrm{Cor}(X\boldsymbol{a}_{k},X\boldsymbol{e}_{l})
+  % &=\frac{(X\boldsymbol{a}_{k})^{\mathsf{T}}X\boldsymbol{e}_{l}}
+  % {\sqrt{(X\boldsymbol{a}_{k})^{\mathsf{T}}X\boldsymbol{a}_{k}}
+  % \sqrt{(X\boldsymbol{e}_{l})^{\mathsf{T}}X\boldsymbol{e}_{l}}}\\
+    &=\frac{\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{e}_{l}}
+      {\sqrt{\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}}
+      \sqrt{\boldsymbol{e}_{l}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{e}_{l}}}\\
+    &=\frac{\lambda_{k}\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{e}_{l}}
+      {\sqrt{\lambda_{k}}\sqrt{(X^{\mathsf{T}}X)_{ll}}}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgbc6613f">
+<h3 id="orgbc6613f">正規化データの場合</h3>
+<ul>
+<li>\(X^{\mathsf{T}}X\) の対角成分は全て\(n-1\)
+(\((X^{\mathsf{T}}X)_{ll}=n-1\))</li>
+<li><p>
+第 \(k\) 主成分に対する第 \(l\) 変数の相関係数:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  (\boldsymbol{r}_{k})_{l}
+  =\sqrt{\lambda_{k}/(n-1)}\cdot(\boldsymbol{a}_{k})_{l}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+第 \(k\) 主成分に対する相関係数ベクトル:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{r}_{k}
+  =\sqrt{\lambda_{k}/(n-1)}\cdot\boldsymbol{a}_{k}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><b>主成分負荷量</b>
+<ul>
+<li>同じ主成分への各変数の影響は固有ベクトルの成分比</li>
+<li>同じ変数の各主成分への影響は固有値の平方根で重みづけ</li>
+
+</ul></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org7ecc36e">
+<h2 id="org7ecc36e">バイプロット</h2>
+<div class="outline-text-2" id="text-org7ecc36e">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org236e8cc">
+<h3 id="org236e8cc">特異値分解</h3>
+<ul>
+<li><p>
+階数 \(r\) の \(n\times p\) 型行列 \(X\) の分解:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  X=U\Sigma V^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote>
+<ul>
+<li>\(U\) は \(n\times n\) 型直交行列, \(V\) は \(p\times p\) 型直交行列</li>
+<li><p>
+\(\Sigma\) は \(n\times p\) 型行列
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \Sigma
+  =
+  \begin{pmatrix}
+    D & O_{r,p-r}\\
+    O_{n-r,r} & O_{n-r,m-r}
+  \end{pmatrix}
+\end{equation}
+
+</div>
+</blockquote>
+<ul>
+<li>\(O_{s,t}\) は \(s\times t\) 型零行列</li>
+<li>\(D\) は \(\sigma_{1}\geq\sigma_{2}\geq\sigma_{r}>0\) 
+を対角成分とする \(r\times r\) 型対角行列</li>
+
+</ul></li>
+
+</ul></li>
+<li>\(D\) の対角成分: \(X\) の <b>特異値</b> (singular value)</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgbaf1e6e">
+<h3 id="orgbaf1e6e">特異値分解によるGram行列の表現</h3>
+<ul>
+<li><p>
+Gram行列の展開:
+</p>
+<blockquote>
+<div>
+\begin{align*}
+  X^{\mathsf{T}}X
+  &=(U\Sigma V^{\mathsf{T}})^{\mathsf{T}}(U\Sigma V^{\mathsf{T}})\\
+  &=V\Sigma^{\mathsf{T}}U^{\mathsf{T}}U\Sigma V^{\mathsf{T}}\\
+  &=V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}
+\end{align*}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+行列 \(\Sigma^{\mathsf{T}}\Sigma\) は対角行列
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \Sigma^{\mathsf{T}}\Sigma
+  =
+  \begin{pmatrix}
+    \sigma_{1}^{2}&&&&&\\
+    &\ddots&&&&\\
+    &&\sigma_{r}^{2}&&&\\
+    &&&0&&\\
+    &&&&\ddots&\\
+    &&&&&0
+  \end{pmatrix}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org8fd88e1">
+<h3 id="org8fd88e1">特異値と固有値の関係</h3>
+<ul>
+<li>行列 \(V\) の第 \(k\) 列ベクトル \(\boldsymbol{v}_{k}\)</li>
+<li><p>
+特異値の平方
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \lambda_{k}
+  =
+  \begin{cases}
+    \sigma_{k}^{2},&k\leq r\\
+    0,&k>r
+  \end{cases}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+Gram行列の固有値問題
+</p>
+<blockquote>
+<div>
+\begin{align}
+  X^{\mathsf{T}}X\boldsymbol{v}_{k}
+  &=V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}\boldsymbol{v}_{k}
+    =\lambda_{k}\boldsymbol{v}_{k}
+\end{align}
+
+</div>
+</blockquote>
+<ul>
+<li>\(X^{\mathsf{T}}X\) の固有値は行列 \(X\) の特異値の平方</li>
+<li>固有ベクトルは行列 \(V\) の列ベクトル \(\boldsymbol{a}_{k}=\boldsymbol{v}_{k}\)</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org7a3875d">
+<h3 id="org7a3875d">データ行列の近似表現</h3>
+<ul>
+<li>行列 \(U\) の第 \(k\) 列ベクトル \(\boldsymbol{u}_{k}\)</li>
+<li><p>
+データ行列の特異値分解: (<b>注意</b> \(\Sigma\) は対角行列)
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  X
+  =
+  U\Sigma V^{\mathsf{T}}
+  =
+  \sum_{k=1}^{r}\boldsymbol{u}_{k}\sigma_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+第 \(k\) 主成分と第 \(l\) 主成分を用いた行列 \(X\) の近似 \(X'\)
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  X\simeq X'
+  =\boldsymbol{u}_{k}\sigma_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
+  +\boldsymbol{u}_{l}\sigma_{l}\boldsymbol{v}_{l}^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><b>バイプロット</b>: 上記の分解を利用した散布図</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org4785785">
+<h3 id="org4785785">バイプロット</h3>
+<ul>
+<li>\(X\) の変動を最大限保持する近似は \(k=1,l=2\)</li>
+<li><p>
+\(0\leq s\leq1\) として
+</p>
+<blockquote>
+<div>
+\begin{multline}
+  X'=GH^{\mathsf{T}},\\
+  G=
+  \begin{pmatrix}
+    \sigma_{k}^{1-s}\boldsymbol{u}_{k}&
+    \sigma_{l}^{1-s}\boldsymbol{u}_{l}
+  \end{pmatrix}
+  ,\quad
+  H=
+  \begin{pmatrix}
+    \sigma_{k}^{s}\boldsymbol{v}_{k}&
+    \sigma_{l}^{s}\boldsymbol{v}_{l}
+  \end{pmatrix}
+\end{multline}
+
+</div>
+</blockquote>
+<ul>
+<li>行列 \(G\) の各行は各データの2次元座標</li>
+<li>行列 \(H\) の各行は各変量の2次元座標</li>
+
+</ul></li>
+<li>関連がある2枚の散布図を1つの画面に表示する散布図を一般に
+<b>バイプロット</b> (biplot) と呼ぶ</li>
+<li>パラメタ \(s\) は \(0\), \(1\) または \(1/2\) が主に用いられる</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/notes/notes.js"></script>
+<script src="./reveal.js/plugin/search/search.js"></script>
+<script src="./reveal.js/plugin/zoom/zoom.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+
+transition: 'fade',
+transitionSpeed: 'default',
+spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+{ src: './reveal.js/plugin/menu/menu.js'},
+{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
+{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+
+});
+</script>
+</body>
+</html>

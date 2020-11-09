@@ -6,4 +6,11 @@ draft = false
 weight = 1008
 +++
 
-準備中
+## スライド {#スライド}
+
+{{< myslide base="multivariate-analysis" name="slide07" >}}
+
+
+## ハンドアウト {#ハンドアウト}
+
+-   [PDF file](https://noboru-murata.github.io/multivariate-analysis/pdfs/slide07.pdf)

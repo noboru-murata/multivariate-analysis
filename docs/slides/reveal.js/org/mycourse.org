@@ -45,8 +45,14 @@
 #+OPTIONS: reveal_toc_footer:t
 
 # Use menu/chalkboard plugins
-#+REVEAL_EXTERNAL_PLUGINS: (( menu . "{ src: '%splugin/menu/menu.js'}") (chalkboard . "{ src: '%splugin/chalkboard/chalkboard.js'}"))
-#+REVEAL_EXTRA_OPTIONS: chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }}
+# chalkboard keybind
+# e(dit): notes; w(rite): chalkboard;
+# c(lear): notes/chalkboard; r(eset): notes/chalkbord
+# x/y: next/previous color; d(ownload): draw data; 
+# spotlight keybind
+# t(oggle): spotlight; q(uark)/q(uit): presentation
+#+REVEAL_EXTERNAL_PLUGINS: (( menu . "{ src: '%splugin/menu/menu.js'}") (chalkboard . "{ src: '%splugin/chalkboard/chalkboard.js'}") (spotlight . "{ src: '%splugin/spotlight/spotlight.js'}"))
+#+REVEAL_EXTRA_OPTIONS: spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}}
 # Use custom title slide.
 #+REVEAL_TITLE_SLIDE: ./reveal.js/title-slide/mycourse-title.html
 # Use my css 
