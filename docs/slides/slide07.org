@@ -172,7 +172,7 @@
        #+end_quote
        を
        \(X\)と\(\boldsymbol{a}_{k}\)で表せ．
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -208,13 +208,12 @@
            (X\boldsymbol{a}_{k})_{i}^{2}\\
          &=
            \sum_{i=1}^{n}
-           (X\boldsymbol{a}_{k})^{\mathsf{T}}_{i}
            (X\boldsymbol{a}_{k})_{i}
-           =
-           \sum_{i=1}^{n}
-           (\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}})_{i}
            (X\boldsymbol{a}_{k})_{i}\\
          &=
+           (\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}})
+           (X\boldsymbol{a}_{k})
+           =
            \boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
        \end{align}
      #+end_src
@@ -552,7 +551,7 @@
        #+end_quote
        と書くとき，\(X'^{\mathsf{T}}X'\)の対角成分を求めよ．
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -789,7 +788,7 @@
      - 行列\(X\)の主成分負荷量を求めなさい．
      - それぞれの負荷量に対応する主成分得点を求めなさい．
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -1125,6 +1124,7 @@
    #+ATTR_HTML: height 100%
    #+ATTR_LATEX: :width 0.6\linewidth
    [[file:figs/07_biplot32e.png]]
+
 
 * 次週の予定
   - *第1日: 判別分析の考え方*
