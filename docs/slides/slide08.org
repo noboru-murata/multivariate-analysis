@@ -113,7 +113,7 @@
      - \(X,Y\)を離散確率変数とする．
        \(P(X=x|Y=k)\)から
        \(P(Y=k|X=x)\)を計算する式を導け．
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -366,7 +366,7 @@
        #+end_quote
        を示しなさい．
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -608,7 +608,7 @@
        #+end_quote
        を示しなさい．
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -709,7 +709,7 @@
 ** 多値判別の考え方
    - 判別関数の比較
      - 判別関数 $\delta_k$ を比較
-     - 正規分布を仮定する場合は2次判別
+     - 正規分布を仮定する場合は一般には2次判別
    - 2値判別の統合
      - クラスでの比較: 最大の組合せ数 \({}_qC_2\) 
      - グループでの比較: 最大の組合せ数 \(2^{q}-2\)
@@ -763,7 +763,7 @@
        #+end_quote
        このとき\(Z\)の群内変動と群間変動を求めなさい．
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
