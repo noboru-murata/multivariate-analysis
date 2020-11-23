@@ -230,7 +230,7 @@
      #+begin_src latex
        \begin{align}
          F_{1}&=\frac{2}{{1}/{\text{(再現率)}}+{1}/{\text{(適合率)}}}\\
-         F_{\beta}&=\frac{\beta^{2}+1}{{\beta^{2}}/{\text{(真陽性率)}}+{1}/{\text{(適合率)}}}
+         F_{\beta}&=\frac{\beta^{2}+1}{{\beta^{2}}/{\text{((再現率)}}+{1}/{\text{(適合率)}}}
        \end{align}
      #+end_src
      再現率(真陽性率)と適合率の(重み付き)調和平均
@@ -259,13 +259,319 @@
      #+end_quote
 
 
-* COMMENT 実習          
-** 演習: さまざまな評価値
+* 解析の事例
+** データについて
+   - 気象庁より取得した東京の気候データ \\
+     - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
+     - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather_reg.csv
+** 気温と湿度による月の判別
+   - 温度と湿度による9/10月の線形判別
+     #+begin_src R :file figs/09_lda.png :exports results :results graphics :tangle yes
+       ### 東京の気象データによる判別分析v
+       library(MASS)
+       library(caret)
+       myCol <- rainbow(12)[c(2,5,8)]
+       ## データの整理
+       target <- c(9,10)
+       TW.data <- transform(read.csv("data/tokyo_weather.csv"),
+			    month=as.numeric(substr(as.Date(date),6,7))) 
+       TW.subset  <- subset(TW.data,
+                                      subset= month %in% target,
+                                      select=c(temp,humid,month))
+       ## 線形判別関数を作成
+       TW.lda <- lda(month ~ temp + humid, data=TW.subset)
+       TW.lest <- predict(TW.lda)
+       TW.lerr <- which(TW.lest$class!=TW.subset$month)
+       ## 判別結果の図示
+       myLine <- function(z) { # 判別境界を引くための関数
+	   a0<-as.vector(colMeans(z$means) %*% z$scaling)
+	   a<-c(a0/z$scaling[2],-z$scaling[1]/z$scaling[2])
+	   return(a)
+       }
+       with(TW.subset, 
+	    plot(temp, humid, # 試験データの散布図
+		 pch=month+6, col=myCol[month-8],
+		 xlab="temperature",ylab="humidity",
+		 main="linear discriminant"))
+       with(TW.subset[TW.lerr,], 
+	    points(temp, humid, # 訓練データの散布図
+		   pch=1, col="orchid", cex=2, lwd=2))
+       abline(myLine(TW.lda), col="orange", lwd=2)
+     #+end_src
+   #+CAPTION: 線形判別
+   #+NAME: fig:09_lda
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/09_lda.png]]
+   #+reveal: split
+   - 温度と湿度による9/10月の2次判別
+     #+begin_src R :file figs/09_qda.png :exports results :results graphics :tangle yes
+       ## 2次判別関数を作成
+       TW.qda <- qda(month ~ temp + humid, data=TW.subset)
+       TW.qest <- predict(TW.qda) # 判別関数によるクラス分類結果の取得
+       TW.qerr <- which(TW.qest$class!=TW.subset$month)
+       ## 判別結果の図示
+       ## 判別境界を描くのは複雑なので，色と形で代用する
+       with(TW.subset, 
+	    plot(temp, humid, # 試験データの散布図
+		 pch=month+6, col=myCol[month-8],
+		 xlab="temperature",ylab="humidity",
+		 main="quadratic discriminant"))
+       with(TW.subset[TW.qerr,], 
+	    points(temp, humid, # 訓練データの散布図
+		   pch=1, col="orchid", cex=2, lwd=2))
+     #+end_src
+   #+CAPTION: 2次判別
+   #+NAME: fig:09_qda
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/09_qda.png]]
+
+** 判別結果の比較
+   - 線形判別の混同行列
+     #+begin_src R :exports results :tangle yes
+       confusionMatrix(TW.lest$class, factor(TW.subset$month))$table
+     #+end_src
+   - 2次判別の混同行列
+     #+begin_src R :exports results :tangle yes
+       confusionMatrix(TW.qest$class, factor(TW.subset$month))$table
+     #+end_src
+   #+reveal: split
+   - 線形判別の評価指標
+     #+begin_src R :exports results :tangle yes
+       confusionMatrix(TW.lest$class, factor(TW.subset$month))$overall[1:2]
+       confusionMatrix(TW.lest$class, factor(TW.subset$month))$byClass[c(1,2,5,6,7)]
+     #+end_src
+   - 2次判別の評価指標
+     #+begin_src R :exports results :tangle yes
+       confusionMatrix(TW.qest$class, factor(TW.subset$month))$overall[1:2]
+       confusionMatrix(TW.qest$class, factor(TW.subset$month))$byClass[c(1,2,5,6,7)]
+     #+end_src
+   
+   
+* 演習
+  :PROPERTIES:
+  :reveal_background: #fef4f4
+  :END:
+** 問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下の問に答えなさい．
+     - F-値，再現率，適合率の大小関係はどのようになるか論ぜよ．
+     - 2値判別(\(P=1,N=0\)とする)において
+       正解ラベル\(Y\)と予測ラベル\(\hat{Y}\)の相関係数を
+       \(TP,FP,TN,FN\)およびデータ数\(N\)
+       を用いて表せ．
+
+** COMMENT 解答例
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 最大最小と平均の関係から以下が成り立つ
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \min(\text{再現率},\text{適合率})
+         \le F_{1}
+         \le\max(\text{再現率},\text{適合率})
+       \end{equation}
+     #+end_src
+     さらに相加・相乗平均の関係から
+     #+begin_src latex
+       \begin{equation}
+         F_{1}
+         \le\text{(相乗平均)}
+         \le\text{(相加平均)}
+       \end{equation}
+     #+end_src
+     も成り立つ
+     #+end_quote
+   #+reveal: split
+   - 相関係数の定義に従って計算すればよい
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \rho
+         =
+         \frac{\mathrm{Cov}(Y,\hat{Y})}
+         {\sqrt{\mathrm{Var}(Y)\mathrm{Var}(\hat{Y})}}
+       \end{equation}
+     #+end_src
+     #+end_quote
+   #+reveal: split
+   - 例えば分子の共分散は以下のように計算される
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \mathrm{Cov}(Y,\hat{Y})
+         &=
+           \mathbb{E}[(Y-\mathbb{E}[Y])(\hat{Y}-\mathbb{E}[\hat{Y}])]\\
+         &=
+           \mathbb{E}[Y\hat{Y}]-\mathbb{E}[Y]\mathbb{E}[\hat{Y}]\\
+         &=
+           \frac{TP}{N}-\frac{TP+FN}{N}\frac{TP+FP}{N}\\
+         &=
+           \frac{TP(TP+FN+FP+TN)}{N^{2}}\\
+         &\qquad-
+           \frac{(TP+FN)(TP+FP)}{N^{2}}\\
+         &=
+           \frac{TP\cdot TN - FP\cdot FN}{N^{2}}
+       \end{align}
+     #+end_src
+     平均は標本平均で置き換えた
+     #+end_quote
+   #+reveal: split
+   - 同様に分母の分散は以下のようになる
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \mathrm{Var}(Y)
+         &=
+           \mathbb{E}[Y^{2}]-\mathbb{E}[Y]^{2}\\
+         &=
+           \frac{(TP+FN)(TN+FP)}{N^{2}}\\
+         \mathrm{Var}(\hat{Y})
+         &=
+           \mathbb{E}[\hat{Y}^{2}]-\mathbb{E}[\hat{Y}]^{2}\\
+         &=
+           \frac{(TP+FP)(TN+FN)}{N^{2}}
+       \end{align}
+     #+end_src
+     #+end_quote
+   #+reveal: split
+   - したがって以下のようにまとめられる
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \rho=
+         \frac{TP\cdot TN-FP\cdot FN}
+         {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
+       \end{equation}
+     #+end_src
+     これは
+     Matthews correlation coefficient (MCC)
+     と呼ばれる評価指標の一つである
+     #+end_quote
+     
+
+* COMMENT 実習
+** データセットの準備
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下のデータセットを使用します
+     - ~winequality-red.csv~
+       #+begin_quote
+       UC Irvine Machine Learning Repository で公開されている
+       Wine Quality Data Set の一部
+       #+end_quote
+       [[https://archive.ics.uci.edu/ml/datasets/Wine+Quality]]
+     - 以下に download せずに読み込む方法を紹介します
+       #+begin_src R :eval no
+	 WQ.org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
+			    sep=";") # データの区切りが ";" となっている
+	 WQ.data <- transform(WQ.org,
+			      quality=as.factor( # qualityを再分類
+				ifelse(quality %in% 7:10, "A",
+				ifelse(quality %in% 5:6, "B" ,"C"))))
+       #+end_src
+
+** R: 混同行列 ~caret::confusionMatrix()~
+   - ~caret~: 評価のためのパッケージ
+   - 判別結果の評価
+     #+begin_src R :eval no
+       install.packages("caret") # 右下ペインの package タブから install
+       library(caret) # または require(caret) 
+       confusionMatrix(data, reference)
+       ## data: 判別関数による予測ラベル (factor)
+       ## referenc: 真のラベル (上と同じfactorである必要がある)
+     #+end_src
+   
+** 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 前回と同様に東京の機構データの線形判別を行い，
+     以下を確認しなさい
+     - 10月と11月の気温と湿度のデータを抽出する
+       #+begin_src R :eval no
+	 TW.data <- transform(read.csv("data/tokyo_weather_reg.csv"),
+			      month=substr(as.Date(date),6,7)) # 月を切り出し
+	 TW.subset  <- transform(subset(TW.data,
+					subset= month %in% c("10","11"),
+					select=c(temp,humid,month)),
+				 month=as.factor(month)) # 因子にする
+       #+end_src
+     - 全てデータを用いて線形判別関数を構成する
+     - 構成した判別関数の評価を行う
+** 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - Wine Quality Data Set を用いて
+     以下を確認しなさい
+     - 全てデータを用いて線形判別関数を構成し，評価を行う
+     - 全てデータを用いて2次判別関数を構成し，評価を行う
+     #+begin_src R :eval no :exports none :tangle yes
+       ### 練習1
+       ### 判別結果の評価
+
+       ### 東京の気象データによる線形判別分析
+       library(MASS)
+       library(caret)
+
+       ## 10月と11月の判別の例
+       ## データの整理
+       TW.data <- transform(read.csv("data/tokyo_weather_reg.csv"),
+			    month=substr(as.Date(date),6,7)) # 月を切り出し
+       TW.subset  <- transform(subset(TW.data,
+				      subset= month %in% c("10","11"),
+				      select=c(temp,humid,month)),
+			       month=as.factor(month)) # 因子にする
+       ## 判別関数を作成
+       TW.lda <- lda(month ~ temp + humid, data=TW.subset)
+       ## 判別結果の評価
+       TW.est <- predict(TW.lda)
+       confusionMatrix(TW.est$class, TW.subset$month)
+
+       ## 12ヶ月分のデータを用いた例 (説明変数は適宜選択せよ)
+       TW.subset  <- transform(subset(TW.data,
+				      select=c(temp,solar,wind,humid,month)),
+			       month=as.factor(month)) 
+       ## 判別関数を作成
+       TW.lda <- lda(month ~ ., # 右辺の . は month 以外の全てを説明変数として指定
+		     data=TW.subset)
+       ## 判別結果の評価
+       TW.est <- predict(TW.lda)
+       confusionMatrix(TW.est$class, TW.subset$month)
+       confusionMatrix(TW.est$class, TW.subset$month)$table
+       confusionMatrix(TW.est$class, TW.subset$month)$overall
+       confusionMatrix(TW.est$class, TW.subset$month)$byClass
+
+       ## Wine Quality Data Set を用いた判別分析
+       WQ.org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
+			  sep=";")
+       table(WQ.org$quality) 
+       WQ.data <- transform(WQ.org,
+			    quality=as.factor(
+				ifelse(quality %in% 7:10, "A",
+				ifelse(quality %in% 5:6, "B" ,"C"))))
+       ## 判別関数を作成
+       WQ.lda <- lda(quality ~ ., data=WQ.data)
+       WQ.qda <- qda(quality ~ ., data=WQ.data)
+       ## 判別結果の評価
+       confusionMatrix(predict(WQ.lda)$class, WQ.data$quality)
+       confusionMatrix(predict(WQ.qda)$class, WQ.data$quality)
+     #+end_src
+
+** COMMENT 演習: さまざまな評価値
    :PROPERTIES:
    :reveal_background: #EEEEFF
    :END:
    - 前回用いたデータについて，
      さまざまな評価値を計算してみよう
+
 
 
 * 予測誤差
@@ -301,7 +607,89 @@
      - $k=n$ として上記を実行
 
 
-* COMMENT 実習          
+* COMMENT 実習
+** R: LOO交叉検証法
+   - 関数 ~lda()~ と ~qda()~ はオプションで LOO交叉検証を行うことができる
+   - オプションの指定方法
+     #+begin_src R :eval no
+       est <- lda(formula, data, CV=TRUE)
+       est$class # LOO CV による予測結果
+       ## 特定のデータを除いて判別関数を構成し，そのデータの予測を行っている
+       est <- qda(formula, data, CV=TRUE)
+       est$class # LOO CV による予測結果
+       ## 2次判別についても同様
+     #+end_src
+** R: k-重交叉検証法 ~caret::train()~
+   - ~caret~ パッケージの関数 ~train()~ で実行可能
+     #+begin_src R :eval no
+       train(formula, data,
+             method,
+             trControl=trainControl(method="cv", number))
+       ## formula: Rの式 
+       ## data: データフレーム
+       ## method: 推定を行う関数 method="lda"/"qda" などを指定
+       ## trControl: 学習方法の指定
+       ## trainControl のオプション
+       ##  method: 評価方法など指定 method="cv"/"LOOCV"
+       ##  number: k-重交叉検証のブロック数 (k)
+     #+end_src
+
+** 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - Wine Quality Data Set を用いた
+     線形判別と2次判別に関して，以下を行いなさい
+     - LOO交叉検証法を用いて予測誤差の評価を行いなさい
+     - k-重交叉検証法を用いて予測誤差の評価を行いなさい
+     #+begin_src R :eval no :exports none :tangle yes
+       ### 練習2
+       ### 予測誤差の評価
+
+       ### Wine Quality Data Set による誤差の評価
+       library(MASS)  # 既に読み込んでいれば不要
+       library(caret) # 既に読み込んでいれば不要
+
+       ## データの整理 (既に整理してあれば不要)
+       WQ.org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
+			  sep=";")
+       WQ.data <- transform(WQ.org,
+			    quality=as.factor(
+				ifelse(quality %in% 7:10, "A",
+				ifelse(quality %in% 5:6, "B" ,"C"))))
+
+       ## LOO CV の例 (lda/qdaは標準で装備している)
+       ## 線形判別
+       WQ.lda <- lda(quality ~ ., data=WQ.data) 
+       WQ.ldloo <- lda(quality ~ ., data=WQ.data, CV=TRUE)
+       confusionMatrix(predict(WQ.lda)$class, WQ.data$quality)$table
+       confusionMatrix(WQ.ldloo$class, WQ.data$quality)$table
+       ## 線形判別の過学習は微小
+
+       ## 2次判別
+       WQ.qda <- qda(quality ~ ., data=WQ.data) 
+       WQ.qdloo <- qda(quality ~ ., data=WQ.data, CV=TRUE)
+       confusionMatrix(predict(WQ.qda)$class, WQ.data$quality)$table
+       confusionMatrix(WQ.qdloo$class, WQ.data$quality)$table
+       ## 2次判別は若干過学習している
+
+       ## 予測誤差の比較
+       confusionMatrix(WQ.ldloo$class, WQ.data$quality)$overall
+       confusionMatrix(WQ.qdloo$class, WQ.data$quality)$overall
+       ## 予測誤差の観点からは線形判別の方が良さそう
+
+       ## k-重交叉検証は caret package の機能を利用して求めることができる
+       (train(quality ~., data=WQ.data, method="lda",
+		    trControl=trainControl(method="cv", number=10)))
+       (train(quality ~., data=WQ.data, method="qda",
+		    trControl=trainControl(method="cv", number=10)))
+       ## LOO CV も利用することができるが，計算は遅い
+       (train(quality ~., data=WQ.data, method="lda",
+		    trControl=trainControl(method="LOOCV")))
+       (train(quality ~., data=WQ.data, method="qda",
+		    trControl=trainControl(method="LOOCV")))
+     #+end_src
+  
 ** COMMENT 演習: 予測誤差の評価
    :PROPERTIES:
    :reveal_background: #EEEEFF
@@ -320,6 +708,99 @@
    :END:
    - 前回用いたデータについて線形・2次どちらの判別方法が望ましいか検証してみよう
 
+
+* 解析の事例
+** データについて
+   - UC Irvine Machine Learning Repository の公開データ
+     - [[https://archive.ics.uci.edu/ml/datasets/Wine+Quality]]
+       #+begin_quote
+       Wine Quality Data Set
+
+       P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis. 
+       Modeling wine preferences by data mining from physicochemical properties.
+       In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
+       #+end_quote
+       以下では ~winequality-red.csv~ を利用
+   #+reveal: split
+   - データ概要
+     - データ数 1599
+     - 説明変数 (based on physicochemical tests)
+       #+begin_quote
+       1 - fixed acidity \\
+       2 - volatile acidity \\
+       3 - citric acid \\
+       4 - residual sugar \\
+       5 - chlorides \\
+       6 - free sulfur dioxide \\
+       7 - total sulfur dioxide \\
+       8 - density \\
+       9 - pH \\
+       10 - sulphates \\
+       11 - alcohol \\
+       #+end_quote
+     - 目的変数  (based on sensory data)
+       #+begin_quote
+       12 - quality (score between 0 and 10) \\
+       (ただし解析では A,B,C の3値に集計)
+       #+end_quote
+   #+reveal: split
+   - 実際のデータの一部
+     #+begin_src R :exports results :tangle yes
+       ## データの整理 (既に整理してあれば不要)
+       WQ.org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
+                          sep=";")
+       WQ.data <- transform(WQ.org,
+                            quality=as.factor(
+                                ifelse(quality %in% 7:10, "A",
+                                ifelse(quality %in% 5:6, "B" ,"C"))))
+       head(WQ.data[,1:4], 16)
+     #+end_src
+   #+reveal: split
+   - 実際のデータの一部 (続き)
+     #+begin_src R :exports results :tangle yes
+       head(WQ.data[,5:8], 16)
+     #+end_src
+   #+reveal: split
+   - 実際のデータの一部 (続き) 
+     #+begin_src R :exports results :tangle yes
+       head(WQ.data[,9:ncol(WQ.data)], 16)
+     #+end_src
+** LOO交叉検証による予測誤差の評価
+   - 線形判別 (訓練誤差/予測誤差)
+     #+begin_src R :exports results :tangle yes
+       WQ.lda <- lda(quality ~ ., data=WQ.data) 
+       WQ.ldloo <- lda(quality ~ ., data=WQ.data, CV=TRUE)
+       confusionMatrix(predict(WQ.lda)$class, WQ.data$quality)$table
+       confusionMatrix(WQ.ldloo$class, WQ.data$quality)$table
+     #+end_src
+     #+begin_quote
+     線形判別の過学習は微小
+     #+end_quote
+   #+reveal: split
+   - 2次判別 (訓練誤差/予測誤差)
+     #+begin_src R :exports results :tangle yes
+       WQ.qda <- qda(quality ~ ., data=WQ.data) 
+       WQ.qdloo <- qda(quality ~ ., data=WQ.data, CV=TRUE)
+       confusionMatrix(predict(WQ.qda)$class, WQ.data$quality)$table
+       confusionMatrix(WQ.qdloo$class, WQ.data$quality)$table
+     #+end_src
+     #+begin_quote
+     2次判別は若干過学習している
+     #+end_quote
+   #+reveal: split
+   - 予測誤差の比較 (線形/2次)
+     #+begin_src R :exports results :tangle yes
+       confusionMatrix(WQ.ldloo$class, WQ.data$quality)$overall[1:2]
+       confusionMatrix(WQ.ldloo$class, WQ.data$quality)$byClass[,c(1,2,5,6,7)]
+     #+end_src
+     #+begin_src R :exports results :tangle yes
+       confusionMatrix(WQ.qdloo$class, WQ.data$quality)$overall[1:2]
+       confusionMatrix(WQ.qdloo$class, WQ.data$quality)$byClass[,c(1,2,5,6,7)]
+     #+end_src
+     #+begin_quote
+     予測誤差の観点からは線形判別の方が良さそう
+     #+end_quote
+     
 
 * 次週の予定
   - *第1日: クラスター分析と階層的クラスタリング*
