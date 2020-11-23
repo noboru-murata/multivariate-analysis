@@ -2,7 +2,7 @@
 #+SUBTITLE: 評価
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
-#+DATE: 2020.11.27
+#+DATE: 2020.11.24
 :reveal:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content
