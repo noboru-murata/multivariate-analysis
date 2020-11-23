@@ -1,0 +1,334 @@
+#+TITLE: 判別分析 
+#+SUBTITLE: 評価
+#+AUTHOR: 村田 昇
+#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+DATE: 2020.11.27
+:reveal:
+#+INCLUDE: "./reveal.js/org/mycourse.org"
+#+STARTUP: hidestars content
+# C-c C-x C-v でinlineを切り替え
+# <m C-i でlatex block (math env用)
+# C-c '
+:end:
+
+* 講義の予定
+  #+begin_src R :eval no :exports none :tangle yes
+    ### 第09回 資料
+  #+end_src
+  #+begin_src R :exports none
+    setwd("~/Desktop/lectures/mva/slide")
+  #+end_src
+  - 第1日: 判別分析の考え方
+  - *第2日: 判別分析の評価*
+
+
+* 判別分析の復習
+** 判別分析
+   - 個体の特徴量から
+     その個体の属するクラスを予測する関係式を構成
+   - *事前確率*: $\pi_k=P(Y=k)$ (prior probability)
+     - $X=\boldsymbol{x}$ が与えられる前に予測されるクラス
+   - *事後確率*: $p_k(\boldsymbol{x})$ (posterior probability)
+     - $X=\boldsymbol{x}$ が与えられた後に予測されるクラス
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           p_k(\boldsymbol{x}):=P(Y=k|X=\boldsymbol{x})
+         \end{equation}
+       #+end_src
+       #+end_quote
+     - 所属する確率が最も高いクラスに個体を分類
+** 判別関数
+   - 判別の手続き
+     - 説明変数 $X=\boldsymbol{x}$ の取得
+     - 事後確率 $p_k(\boldsymbol{x})$ の計算
+     - 事後確率最大のクラスにデータを分類
+   - *判別関数*: $\delta_k(\boldsymbol{x})$ ($k=1,\dots,K$)
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         p_k(\boldsymbol{x}) 
+         < 
+         p_l(\boldsymbol{x})
+         \Leftrightarrow
+         \delta_k(\boldsymbol{x})
+         <
+         \delta_l(\boldsymbol{x})
+       \end{equation}
+     #+end_src
+     #+end_quote
+     事後確率の順序を保存する計算しやすい関数
+   - 判別関数 $\delta_k(\boldsymbol{x})$ を最大化するようなクラス $k$ に分類
+** 線形判別
+   - $f_k(\boldsymbol{x})$ の仮定:
+     - $q$ 変量正規分布の密度関数
+     - 平均ベクトル $\boldsymbol{\mu}_k$: クラスごとに異なる
+     - 共分散行列 $\Sigma$: *すべてのクラスで共通*
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           f_k(\boldsymbol{x})
+           =
+           \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma}}
+           \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+             \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
+         \end{equation}
+       #+end_src
+       #+end_quote
+   - 線形判別関数: $\boldsymbol{x}$ の1次式
+     # (linear discriminant function)
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \delta_k(\boldsymbol{x})
+         =
+         \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
+         -\frac{1}{2}\boldsymbol{\mu}_k^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
+         +\log\pi_k
+       \end{equation}
+     #+end_src
+     #+end_quote
+     
+** 2次判別
+   - $f_k(\boldsymbol{x})$ の仮定:
+     - $q$ 変量正規分布の密度関数
+     - 平均ベクトル $\boldsymbol{\mu}_k$: クラスごとに異なる
+     - 共分散行列 $\Sigma_k$: *クラスごとに異なる*
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           f_k(\boldsymbol{x})
+           =
+           \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_k}}
+           \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+             \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
+         \end{equation}
+       #+end_src
+       #+end_quote
+   - 2次判別関数: $\boldsymbol{x}$ の2次式
+     #+begin_quote
+     #+begin_src latex
+     \begin{equation}
+       \delta_k(\boldsymbol{x})
+       =
+       -\frac{1}{2}\det\Sigma_k
+       -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+       \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)
+       +\log\pi_k
+     \end{equation}
+     #+end_src
+     #+end_quote
+     
+** Fisherの線形判別
+   - 新しい特徴量 $Z=\boldsymbol{\alpha}^{\mathsf{T}} X$ を考える
+   - 良い $Z$ の基準:
+     - クラス内では集まっているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}\)は小)
+     - クラス間では離れているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}\)は大)
+   - Fisherの基準:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \text{maximize}\quad \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
+         \quad\text{s.t.}\quad \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}=\text{const.}
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - $\boldsymbol{\alpha}$ は $W^{-1}B$ の第1から第 $K-1$ 固有ベクトル
+   - 判別方法: 特徴量の距離を用いる
+     - $d_{k}=\sum_{l=1}^{K-1}(\alpha_l^{\mathsf{T}}\boldsymbol{x}-\alpha_l^{\mathsf{T}}\mu_k)^2$ 
+       が最小のとなるクラス $k$ に判別
+
+
+* 2値判別分析の評価
+** 誤り率
+   - 単純な誤り:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \text{(誤り率)}
+         =\frac{\text{(誤って判別されたデータ数)}}
+         {\text{(全データ数)}}
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 判別したいラベル: 陽性 (positive)
+     - *真陽性*: 正しく陽性と判定 (true positive; TP)
+     - *偽陽性*: 誤って陽性と判定 (false positive; FP) (*第I種過誤*)
+     - *偽陰性*: 誤って陰性と判定 (false negative; FN) (*第II種過誤*)
+     - *真陰性*: 正しく陰性と判定 (true negative; TN) 
+
+** 混同行列
+   |------------+-------------------------+-------------------------|
+   |            | 真値は陽性              | 真値は陰性              |
+   |------------+-------------------------+-------------------------|
+   | 判別は陽性 | 真陽性 (True Positive)  | 偽陽性 (False Positive) |
+   | 判別は陰性 | 偽陰性 (False Negative) | 真陰性 (True Negative)  |
+   |------------+-------------------------+-------------------------|
+   - *confusion matrix*
+   - 転置で書く流儀もあるので注意
+
+** 混同行列 
+   |------------+-------------------------+-------------------------|
+   |            | 判別は陽性              | 判別は陰性              |
+   |------------+-------------------------+-------------------------|
+   | 真値は陽性 | 真陽性 (True Positive)  | 偽陰性 (False Negative) |
+   | 真値は陰性 | 偽陽性 (False Positive) | 真陰性 (True Negative)  |
+   |------------+-------------------------+-------------------------|
+   - パターン認識や機械学習で多く見られた書き方
+   - 誤差行列 (error matrix) とも呼ばれる
+
+** 基本的な評価基準
+   - 定義
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \text{(真陽性率)}
+         &=\frac{TP}{TP+FN} \qquad\text{(true positive rate)}\\
+         \text{(真陰性率)}
+         &=\frac{TN}{FP+TN} \qquad\text{(true negative rate)}\\
+         \text{(適合率)}
+         &=\frac{TP}{TP+FP} \qquad\text{(precision)}\\
+         \text{(正答率)}
+         &=\frac{TP+TN}{TP+FP+TN+FN} \qquad\text{(accuracy)}
+       \end{align}
+     #+end_src
+     #+end_quote
+   #+reveal: split
+   - 別名 (分野で異なるので注意)
+     - 感度 (sensitivity) あるいは 再現率 (recall):
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \text{(真陽性率)}
+           =\frac{TP}{TP+FN}
+         \end{equation}
+       #+end_src
+       #+end_quote
+     - 特異度 (specificity):
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \text{(真陰性率)}
+           =\frac{TN}{FP+TN}
+         \end{equation}
+       #+end_src
+       #+end_quote
+     - 精度:
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \text{(正答率)}
+           =\frac{TP+TN}{TP+FP+TN+FN}
+         \end{equation}
+       #+end_src
+       #+end_quote
+
+** F-値
+   - *F-measure, F-score*
+   - 定義
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         F_{1}&=\frac{2}{{1}/{\text{(再現率)}}+{1}/{\text{(適合率)}}}\\
+         F_{\beta}&=\frac{\beta^{2}+1}{{\beta^{2}}/{\text{(真陽性率)}}+{1}/{\text{(適合率)}}}
+       \end{align}
+     #+end_src
+     再現率(真陽性率)と適合率の(重み付き)調和平均
+     #+end_quote
+
+** Cohen の kappa 値
+   - Cohen's *kappa measure*
+   - 定義
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         p_{o}
+         &=\frac{TP+TN}{TP+FP+TN+FN} \qquad\text{(accuracy)}\\
+         p_{e}
+         &=\frac{TP+FP}{TP+FP+TN+FN}\cdot\frac{TP+FN}{TP+FP+TN+FN}\\
+         &\quad
+           +\frac{FN+TN}{TP+FP+TN+FN}\cdot\frac{FP+TN}{TP+FP+TN+FN}\\
+         \kappa
+         &=
+           \frac{p_{o}-p_{e}}{1-p_{e}}
+           =
+           1-\frac{1-p_{o}}{1-p_{e}}
+       \end{align}
+     #+end_src
+     観測された精度と偶然の精度の比較
+     #+end_quote
+
+
+* COMMENT 実習          
+** 演習: さまざまな評価値
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - 前回用いたデータについて，
+     さまざまな評価値を計算してみよう
+
+
+* 予測誤差
+** 訓練誤差と予測誤差
+  - *訓練誤差*:
+    既知データに対する誤り (training error)
+  - *予測誤差*:
+    未知データに対する誤り (predictive error)
+  - 訓練誤差は予測誤差より良くなることが多い 
+  - 既知データの判別に特化している可能性がある
+    - 過適応 (over-fitting)
+    - 過学習 (over-training)
+
+** 交叉検証
+   - データを訓練データと試験データに分割して用いる
+     - *訓練データ*:
+       判別関数を構成する (training data)
+     - *試験データ*:
+       予測精度を評価する (test data)
+   - データの分割に依存して予測誤差の評価が偏る
+   - 偏りを避けるために複数回分割を行ない評価する
+   - "交差"と書く場合もある
+# データ分割の偏りによる精度評価の
+
+** 交叉検証法
+   - *cross-validation (CV)* 
+   - \(k\)-重交叉検証法 (\(k\)-fold cross-validation; \(k\)-fold CV)
+     - $n$ 個のデータを $k$ ブロックにランダムに分割
+     - 第 $i$ ブロックを除いた $k-1$ ブロックで判別関数を推定
+     - 除いておいた第 $i$ ブロックで予測誤差を評価
+     - $i=1,\dotsc,k$ で繰り返し $k$ 個の予測誤差で評価 (平均や分散)
+   - leave-one-out法 (leave-one-out CV; LOO-CV)
+     - $k=n$ として上記を実行
+
+
+* COMMENT 実習          
+** COMMENT 演習: 予測誤差の評価
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/10-valid.r][10-valid.r]] を確認してみよう
+
+** COMMENT 演習: 交叉検証による評価
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/10-cv.r][10-cv.r]] を確認してみよう
+
+** COMMENT 演習
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - 前回用いたデータについて線形・2次どちらの判別方法が望ましいか検証してみよう
+
+
+* 次週の予定
+  - *第1日: クラスター分析と階層的クラスタリング*
+  - 第2日: 非階層的クラスタリング
+
+* COMMENT ローカル変数
+# Local Variables:
+# org-latex-listings: minted
+# End:
+  
+   
+   

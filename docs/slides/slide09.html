@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>判別分析</title>
+<meta name="author" content="村田 昇"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-state="no-toc-progress">
+<!-- This is an HTML template for the title slide. -->
+<!-- Embed logos as necessary. -->
+<!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
+<div class="talk-title">
+    <h1 class="no-toc-progress">判別分析</h1>
+</div>
+<div class="talk-subtitle">
+    <p>評価</p>
+</div>
+<div class="keyboard-usage">
+    <p>(Press <code>?</code> for help, <code>n</code> and <code>p</code> for next and previous slide)</p>
+</div>
+<div class="talk-author">
+  <p>村田 昇<br />
+  2020.11.27</p>
+</div>
+
+</section>
+
+<section>
+<section id="slide-org388605d">
+<h2 id="org388605d">講義の予定</h2>
+<ul>
+<li>第1日: 判別分析の考え方</li>
+<li><b>第2日: 判別分析の評価</b></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org319ab9d">
+<h2 id="org319ab9d">判別分析の復習</h2>
+<div class="outline-text-2" id="text-org319ab9d">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgb96e8c6">
+<h3 id="orgb96e8c6">判別分析</h3>
+<ul>
+<li>個体の特徴量から
+その個体の属するクラスを予測する関係式を構成</li>
+<li><b>事前確率</b>: \(\pi_k=P(Y=k)\) (prior probability)
+<ul>
+<li>\(X=\boldsymbol{x}\) が与えられる前に予測されるクラス</li>
+
+</ul></li>
+<li><b>事後確率</b>: \(p_k(\boldsymbol{x})\) (posterior probability)
+<ul>
+<li><p>
+\(X=\boldsymbol{x}\) が与えられた後に予測されるクラス
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  p_k(\boldsymbol{x}):=P(Y=k|X=\boldsymbol{x})
+\end{equation}
+
+</div>
+</blockquote></li>
+<li>所属する確率が最も高いクラスに個体を分類</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgcaabf4a">
+<h3 id="orgcaabf4a">判別関数</h3>
+<ul>
+<li>判別の手続き
+<ul>
+<li>説明変数 \(X=\boldsymbol{x}\) の取得</li>
+<li>事後確率 \(p_k(\boldsymbol{x})\) の計算</li>
+<li>事後確率最大のクラスにデータを分類</li>
+
+</ul></li>
+<li><p>
+<b>判別関数</b>: \(\delta_k(\boldsymbol{x})\) (\(k=1,\dots,K\))
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  p_k(\boldsymbol{x}) 
+  < 
+  p_l(\boldsymbol{x})
+  \Leftrightarrow
+  \delta_k(\boldsymbol{x})
+  <
+  \delta_l(\boldsymbol{x})
+\end{equation}
+
+</div>
+</blockquote>
+<p>
+事後確率の順序を保存する計算しやすい関数
+</p></li>
+<li>判別関数 \(\delta_k(\boldsymbol{x})\) を最大化するようなクラス \(k\) に分類</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5c9b54e">
+<h3 id="org5c9b54e">線形判別</h3>
+<ul>
+<li>\(f_k(\boldsymbol{x})\) の仮定:
+<ul>
+<li>\(q\) 変量正規分布の密度関数</li>
+<li>平均ベクトル \(\boldsymbol{\mu}_k\): クラスごとに異なる</li>
+<li><p>
+共分散行列 \(\Sigma\): <b>すべてのクラスで共通</b>
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  f_k(\boldsymbol{x})
+  =
+  \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma}}
+  \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+    \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul></li>
+<li><p>
+線形判別関数: \(\boldsymbol{x}\) の1次式
+</p>
+
+<blockquote>
+<div>
+\begin{equation}
+  \delta_k(\boldsymbol{x})
+  =
+  \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
+  -\frac{1}{2}\boldsymbol{\mu}_k^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
+  +\log\pi_k
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5beb315">
+<h3 id="org5beb315">2次判別</h3>
+<ul>
+<li>\(f_k(\boldsymbol{x})\) の仮定:
+<ul>
+<li>\(q\) 変量正規分布の密度関数</li>
+<li>平均ベクトル \(\boldsymbol{\mu}_k\): クラスごとに異なる</li>
+<li><p>
+共分散行列 \(\Sigma_k\): <b>クラスごとに異なる</b>
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  f_k(\boldsymbol{x})
+  =
+  \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_k}}
+  \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+    \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul></li>
+<li><p>
+2次判別関数: \(\boldsymbol{x}\) の2次式
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \delta_k(\boldsymbol{x})
+  =
+  -\frac{1}{2}\det\Sigma_k
+  -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+  \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)
+  +\log\pi_k
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgafb3a52">
+<h3 id="orgafb3a52">Fisherの線形判別</h3>
+<ul>
+<li>新しい特徴量 \(Z=\boldsymbol{\alpha}^{\mathsf{T}} X\) を考える</li>
+<li>良い \(Z\) の基準:
+<ul>
+<li>クラス内では集まっているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}\)は小)</li>
+<li>クラス間では離れているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}\)は大)</li>
+
+</ul></li>
+<li><p>
+Fisherの基準:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{maximize}\quad \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
+  \quad\text{s.t.}\quad \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}=\text{const.}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li>\(\boldsymbol{\alpha}\) は \(W^{-1}B\) の第1から第 \(K-1\) 固有ベクトル</li>
+<li>判別方法: 特徴量の距離を用いる
+<ul>
+<li>\(d_{k}=\sum_{l=1}^{K-1}(\alpha_l^{\mathsf{T}}\boldsymbol{x}-\alpha_l^{\mathsf{T}}\mu_k)^2\) 
+が最小のとなるクラス \(k\) に判別</li>
+
+</ul></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org6d2c7cd">
+<h2 id="org6d2c7cd">2値判別分析の評価</h2>
+<div class="outline-text-2" id="text-org6d2c7cd">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org19856bc">
+<h3 id="org19856bc">誤り率</h3>
+<ul>
+<li><p>
+単純な誤り:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(誤り率)}
+  =\frac{\text{(誤って判別されたデータ数)}}
+  {\text{(全データ数)}}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li>判別したいラベル: 陽性 (positive)
+<ul>
+<li><b>真陽性</b>: 正しく陽性と判定 (true positive; TP)</li>
+<li><b>偽陽性</b>: 誤って陽性と判定 (false positive; FP) (<b>第I種過誤</b>)</li>
+<li><b>偽陰性</b>: 誤って陰性と判定 (false negative; FN) (<b>第II種過誤</b>)</li>
+<li><b>真陰性</b>: 正しく陰性と判定 (true negative; TN)</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org46ed455">
+<h3 id="org46ed455">混同行列</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">真値は陽性</th>
+<th scope="col" class="org-left">真値は陰性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">判別は陽性</td>
+<td class="org-left">真陽性 (True Positive)</td>
+<td class="org-left">偽陽性 (False Positive)</td>
+</tr>
+
+<tr>
+<td class="org-left">判別は陰性</td>
+<td class="org-left">偽陰性 (False Negative)</td>
+<td class="org-left">真陰性 (True Negative)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><b>confusion matrix</b></li>
+<li>転置で書く流儀もあるので注意</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org937627f">
+<h3 id="org937627f">混同行列</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">判別は陽性</th>
+<th scope="col" class="org-left">判別は陰性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">真値は陽性</td>
+<td class="org-left">真陽性 (True Positive)</td>
+<td class="org-left">偽陰性 (False Negative)</td>
+</tr>
+
+<tr>
+<td class="org-left">真値は陰性</td>
+<td class="org-left">偽陽性 (False Positive)</td>
+<td class="org-left">真陰性 (True Negative)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>パターン認識や機械学習で多く見られた書き方</li>
+<li>誤差行列 (error matrix) とも呼ばれる</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgdcb48eb">
+<h3 id="orgdcb48eb">基本的な評価基準</h3>
+<ul>
+<li><p>
+定義
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \text{(真陽性率)}
+  &=\frac{TP}{TP+FN} \qquad\text{(true positive rate)}\\
+  \text{(真陰性率)}
+  &=\frac{TN}{FP+TN} \qquad\text{(true negative rate)}\\
+  \text{(適合率)}
+  &=\frac{TP}{TP+FP} \qquad\text{(precision)}\\
+  \text{(正答率)}
+  &=\frac{TP+TN}{TP+FP+TN+FN} \qquad\text{(accuracy)}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li>別名 (分野で異なるので注意)
+<ul>
+<li><p>
+感度 (sensitivity) あるいは 再現率 (recall):
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(真陽性率)}
+  =\frac{TP}{TP+FN}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+特異度 (specificity):
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(真陰性率)}
+  =\frac{TN}{FP+TN}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+精度:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(正答率)}
+  =\frac{TP+TN}{TP+FP+TN+FN}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org11e232f">
+<h3 id="org11e232f">F-値</h3>
+<ul>
+<li><b>F-measure, F-score</b></li>
+<li><p>
+定義
+</p>
+<blockquote>
+<div>
+\begin{align}
+  F_{1}&=\frac{2}{{1}/{\text{(再現率)}}+{1}/{\text{(適合率)}}}\\
+  F_{\beta}&=\frac{\beta^{2}+1}{{\beta^{2}}/{\text{(真陽性率)}}+{1}/{\text{(適合率)}}}
+\end{align}
+
+</div>
+
+<p>
+再現率(真陽性率)と適合率の(重み付き)調和平均
+</p>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org21dd65b">
+<h3 id="org21dd65b">Cohen の kappa 値</h3>
+<ul>
+<li>Cohen&rsquo;s <b>kappa measure</b></li>
+<li><p>
+定義
+</p>
+<blockquote>
+<div>
+\begin{align}
+  p_{o}
+  &=\frac{TP+TN}{TP+FP+TN+FN} \qquad\text{(accuracy)}\\
+  p_{e}
+  &=\frac{TP+FP}{TP+FP+TN+FN}\cdot\frac{TP+FN}{TP+FP+TN+FN}\\
+  &\quad
+    +\frac{FN+TN}{TP+FP+TN+FN}\cdot\frac{FP+TN}{TP+FP+TN+FN}\\
+  \kappa
+  &=
+    \frac{p_{o}-p_{e}}{1-p_{e}}
+    =
+    1-\frac{1-p_{o}}{1-p_{e}}
+\end{align}
+
+</div>
+
+<p>
+観測された精度と偶然の精度の比較
+</p>
+</blockquote></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org0455a38">
+<h2 id="org0455a38">予測誤差</h2>
+<div class="outline-text-2" id="text-org0455a38">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org41d647c">
+<h3 id="org41d647c">訓練誤差と予測誤差</h3>
+<ul>
+<li><b>訓練誤差</b>:
+既知データに対する誤り (training error)</li>
+<li><b>予測誤差</b>:
+未知データに対する誤り (predictive error)</li>
+<li>訓練誤差は予測誤差より良くなることが多い</li>
+<li>既知データの判別に特化している可能性がある
+<ul>
+<li>過適応 (over-fitting)</li>
+<li>過学習 (over-training)</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgf55ea3d">
+<h3 id="orgf55ea3d">交叉検証</h3>
+<ul>
+<li>データを訓練データと試験データに分割して用いる
+<ul>
+<li><b>訓練データ</b>:
+判別関数を構成する (training data)</li>
+<li><b>試験データ</b>:
+予測精度を評価する (test data)</li>
+
+</ul></li>
+<li>データの分割に依存して予測誤差の評価が偏る</li>
+<li>偏りを避けるために複数回分割を行ない評価する</li>
+<li>&ldquo;交差&rdquo;と書く場合もある</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org72f428f">
+<h3 id="org72f428f">交叉検証法</h3>
+<ul>
+<li><b>cross-validation (CV)</b></li>
+<li>\(k\)-重交叉検証法 (\(k\)-fold cross-validation; \(k\)-fold CV)
+<ul>
+<li>\(n\) 個のデータを \(k\) ブロックにランダムに分割</li>
+<li>第 \(i\) ブロックを除いた \(k-1\) ブロックで判別関数を推定</li>
+<li>除いておいた第 \(i\) ブロックで予測誤差を評価</li>
+<li>\(i=1,\dotsc,k\) で繰り返し \(k\) 個の予測誤差で評価 (平均や分散)</li>
+
+</ul></li>
+<li>leave-one-out法 (leave-one-out CV; LOO-CV)
+<ul>
+<li>\(k=n\) として上記を実行</li>
+
+</ul></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgc2dcb2c">
+<h2 id="orgc2dcb2c">次週の予定</h2>
+<ul>
+<li><b>第1日: クラスター分析と階層的クラスタリング</b></li>
+<li>第2日: 非階層的クラスタリング</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/notes/notes.js"></script>
+<script src="./reveal.js/plugin/search/search.js"></script>
+<script src="./reveal.js/plugin/zoom/zoom.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+
+transition: 'fade',
+transitionSpeed: 'default',
+spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+{ src: './reveal.js/plugin/menu/menu.js'},
+{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
+{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+
+});
+</script>
+</body>
+</html>
