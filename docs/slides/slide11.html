@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>クラスタ分析</title>
+<meta name="author" content="村田 昇"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-state="no-toc-progress">
+<!-- This is an HTML template for the title slide. -->
+<!-- Embed logos as necessary. -->
+<!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
+<div class="talk-title">
+    <h1 class="no-toc-progress">クラスタ分析</h1>
+</div>
+<div class="talk-subtitle">
+    <p>非階層的方法</p>
+</div>
+<div class="keyboard-usage">
+    <p>(Press <code>?</code> for help, <code>n</code> and <code>p</code> for next and previous slide)</p>
+</div>
+<div class="talk-author">
+  <p>村田 昇<br />
+  2020.12.08</p>
+</div>
+
+</section>
+
+<section>
+<section id="slide-org085ebad">
+<h2 id="org085ebad">今週の内容</h2>
+<ul>
+<li>第1日: クラスタ分析と階層的方法</li>
+<li><b>第2日: 非階層的方法と分析の評価</b></li>
+
+</ul>
+
+
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org00b4dd9">
+<h2 id="org00b4dd9">クラスタ分析の復習</h2>
+<div class="outline-text-2" id="text-org00b4dd9">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgac10536">
+<h3 id="orgac10536">クラスタ分析</h3>
+<ul>
+<li><p>
+<b>cluster analysis</b>
+</p>
+<blockquote>
+<p>
+個体の間に隠れている
+<b>集まり=クラスタ</b>
+を個体間の&ldquo;距離&rdquo;にもとづいて発見する方法
+</p>
+</blockquote></li>
+<li>個体間の類似度・距離(非類似度)を定義:
+<ul>
+<li>同じクラスタに属する個体どうしは似通った性質</li>
+<li>異なるクラスタに属する個体どうしは異なる性質</li>
+
+</ul></li>
+<li>さらなるデータ解析やデータの可視化に利用</li>
+<li>教師なし学習の代表的な手法の一つ</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org014f9f8">
+<h3 id="org014f9f8">クラスタ分析の考え方</h3>
+<ul>
+<li>階層的方法:
+<ul>
+<li>データ点およびクラスタの間に <b>距離</b> を定義</li>
+<li>距離に基づいてグループ化:
+<ul>
+<li>近いものから順にクラスタを <b>凝集</b></li>
+<li>近いものが同じクラスタに残るように <b>分割</b></li>
+
+</ul></li>
+
+</ul></li>
+<li>非階層的方法:
+<ul>
+<li>クラスタの数を事前に指定</li>
+<li>クラスタの <b>集まりの良さ</b> を評価する損失関数を定義</li>
+<li>損失関数を最小化するようにクラスタを形成</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org4eadc94">
+<h3 id="org4eadc94">凝集的方法の手続き</h3>
+<ol>
+<li>データ・クラスタ間の距離を定義する
+<ul>
+<li>データ点とデータ点の距離</li>
+<li>クラスタとクラスタの距離</li>
+
+</ul></li>
+<li>データ点およびクラスタ間の距離を求める</li>
+<li>最も近い2つを統合し新たなクラスタを作成する</li>
+<li>クラスタ数が1つになるまで2-3の手続きを繰り返す</li>
+
+</ol>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgabddb2c">
+<h2 id="orgabddb2c">非階層的クラスタリング</h2>
+<div class="outline-text-2" id="text-orgabddb2c">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgd56d4d9">
+<h3 id="orgd56d4d9">非階層的方法</h3>
+<ul>
+<li>対象とするデータ: \(p\) 次元変数 \(\boldsymbol{X}=(X_1,X_2,\dotsc,X_p)^{\mathsf{T}}\)</li>
+<li>観測データ: \(n\) 個の個体
+\(\boldsymbol{x}_i=(x_{i1},x_{i2},\dotsc,x_{ip})^{\mathsf{T}}\; (i=1,2,\dotsc,n)\)</li>
+<li>推定する関係式: 対応 \(C\) (個体 \(i\) が属するクラスタ番号 \(C(i)\))</li>
+<li>非階層的クラスタリング: 
+<ul>
+<li>対応 \(C\) の <b>全体の良さ</b> を評価する損失関数を設定</li>
+<li>観測データ \(\boldsymbol{x}_1,\boldsymbol{x}_2,\dots,\boldsymbol{x}_n\) 
+の最適な対応関係 \(C(i)\) を決定</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org0cdd9b0">
+<h3 id="org0cdd9b0">\(k\)-平均法の損失関数</h3>
+<ul>
+<li>クラスタの個数 \(k\) を指定</li>
+<li><p>
+2つの個体 \(i,i'\) の <b>近さ=損失</b> を距離の二乗で評価
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \|\boldsymbol{x}_i-\boldsymbol{x}_{i'}\|^2
+  =
+  \sum_{j=1}^p(x_{ij}-x_{i'j})^2
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+損失関数 \(W(C)\): クラスタ内の平均の近さを評価
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  W(C)
+  =
+  \sum_{l=1}^k\frac{1}{n_l}\sum_{i:C(i)=l}\sum_{i':C(i')=l}\|\boldsymbol{x}_i-\boldsymbol{x}_{i'}\|^2
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orge95bb44">
+<h3 id="orge95bb44">\(k\)-平均法の性質</h3>
+<ul>
+<li><p>
+クラスタ \(l\) に属する個体の平均:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \bar{\boldsymbol{x}}_l
+  =
+  \frac{1}{n_l}\sum_{i:C(i)=l}\boldsymbol{x}_i
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+損失関数 \(W(C)\) の等価な表現:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  W(C)
+  =
+  2\sum_{l=1}^k\sum_{i:C(i)=l}\|\boldsymbol{x}_i-\bar{\boldsymbol{x}}_{l}\|^2
+\end{equation}
+
+</div>
+</blockquote></li>
+<li>最適な対応 \(C\): クラスタ内変動の総和が最小</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org1e37648">
+<h3 id="org1e37648">クラスタ対応の最適化</h3>
+<ul>
+<li>最適化: 損失関数 \(W(C)\) を最小とする \(C\) を決定</li>
+<li>貪欲な \(C\) の探索:
+<ul>
+<li>原理的には全ての値を計算すればよい</li>
+<li>可能な \(C\) の数: \(k^n\) 通り (有限個のパターン)</li>
+<li>サンプル数 \(n\) が小さくない限り実時間での実行は不可能</li>
+
+</ul></li>
+<li>近似的な \(C\) の探索:
+<ul>
+<li>いくつかのアルゴリズムが提案されている</li>
+<li><p>
+基本的な考え方: <b>Lloyd-Forgyのアルゴリズム</b>
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \bar{\boldsymbol{x}}_l
+  =\arg\min_{\mu}
+  \sum_{i:C(i)=l}\|\boldsymbol{x}_i-\boldsymbol{\mu}\|^2
+\end{equation}
+
+</div>
+</blockquote>
+<p>
+(標本平均と変動の平方和の性質を利用)
+</p></li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5cdb4d6">
+<h3 id="org5cdb4d6">Lloyd-Forgyのアルゴリズム</h3>
+<ol>
+<li>クラスタ中心の初期値 
+\(\boldsymbol{\mu}_1,\boldsymbol{\mu}_2,\dots,\boldsymbol{\mu}_k\) を与える</li>
+<li><p>
+各データの所属クラスタ番号 \(C(i)\) を求める
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  C(i)
+  =
+  \arg\min_l\|\boldsymbol{x}_i-\boldsymbol{\mu}_l\|
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+各クラスタ中心 \(\boldsymbol{\mu}_l\;(l=1,2,\dotsc,k)\) を更新する
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{\mu}_l
+  =
+  \frac{1}{n_l}\sum_{i:C(i)=l}\boldsymbol{x}_i
+\end{equation}
+
+</div>
+</blockquote>
+<p>
+(\(n_l\) は \(C(i)=l\) となるデータの総数)
+</p></li>
+<li>中心が変化しなくなるまで 2,3 を繰り返す</li>
+
+</ol>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga80baa3">
+<h3 id="orga80baa3">Lloyd-Forgyのアルゴリズムの性質</h3>
+<ul>
+<li>結果は確率的で初期値
+\(\boldsymbol{\mu}_1,\boldsymbol{\mu}_2,\dots,\boldsymbol{\mu}_k\)
+に依存</li>
+<li>アルゴリズムの成否は確率的 <br />
+(最適解が得られない場合もある)</li>
+<li>一般には複数の初期値をランダムに試して損失を最小とする解を採用</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org9b5fd71">
+<h2 id="org9b5fd71">演習</h2>
+<p>
+何を計算させるか?
+</p>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org6bd86ef">
+<h2 id="org6bd86ef">実習</h2>
+<div class="outline-text-2" id="text-org6bd86ef">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org81d9198">
+<h3 id="org81d9198">R: 関数 <code>kmeans( )</code></h3>
+<ul>
+<li>\(k\)-平均法を実行するための標準的な関数
+<ul>
+<li>クラスタの数 \(k\) はオプション <code>centers</code> で指定</li>
+<li>オプション <code>algorithm</code> で最適化アルゴリズムを指定 <br />
+(既定値は Hartigan-Wong アルゴリズム)</li>
+<li>オプション <code>nstart</code> で初期値の候補の数を指定</li>
+
+</ul></li>
+<li>結果は変数のスケールにも依存
+<ul>
+<li>例えば測定値の単位により異なる</li>
+<li>必要ならば主成分分析の場合と同様に実行前にデータを標準化する</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga539c8d" data-background="#fef4f4">
+<h3 id="orga539c8d">練習問題</h3>
+<ul>
+<li>以下を確認しなさい
+<ul>
+<li>データの読み込み</li>
+<li>距離の計算 (距離行列から特定のペアを取り出す)</li>
+<li>shep0ard plotか</li>
+
+</ul></li>
+
+</ul>
+<p>
+距離を比較させる問題を考える
+ユークリッド距離とマンハッタン距離でのデータ間の違い
+shepard plotを考えさせる．
+</p>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgc0b5037">
+<h2 id="orgc0b5037">クラスタ構造の評価指標</h2>
+<div class="outline-text-2" id="text-orgc0b5037">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org0f8db43">
+<h3 id="org0f8db43">凝集係数</h3>
+<ul>
+<li><b>agglomerative coefficient</b></li>
+<li>階層的方法の評価</li>
+<li><p>
+データ \(\boldsymbol{x}_i\) と最初に統合されたクラスタ \(C\) の距離:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  d_i
+  =
+  D({\boldsymbol{x}_i},C)
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+最後に統合された2つのクラスタ \(C',C''\) の距離:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  D
+  =
+  D(C',C'')
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+<b>凝集係数</b> \(AC\):
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  AC
+  =
+  \frac{1}{n}\sum_{i=1}^{n}\left(1-\frac{d_i}{D}\right)
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org5107182">
+<h3 id="org5107182">凝集係数の性質</h3>
+<ul>
+<li>定義より \(0\leq AC\leq1\)</li>
+<li>1に近いほどクラスタ構造が明瞭</li>
+<li>banner plot の面積比 <br />
+(banner plot: \(l_i\) をデータ毎に並べた棒グラフ)</li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org46c1846">
+<h3 id="org46c1846">シルエット係数</h3>
+<ul>
+<li><b>silhouette coefficient</b></li>
+<li>非階層的方法の評価 (階層的方法でも利用可)</li>
+<li>\(C^1,C^2\): \(\boldsymbol{x}_i\) を含む，および一番近いクラスタ</li>
+<li>\(C^1\) と \(\boldsymbol{x}_i\) の距離:
+\(d^1_i=D({\boldsymbol{x}_i},C^1\setminus{\boldsymbol{x}_i})\)</li>
+<li>\(C^2\) と \(\boldsymbol{x}_i\) の距離:
+\(d^2_i=D({\boldsymbol{x}_i},C^2)\)</li>
+<li><p>
+<b>シルエット係数</b> \(S_i\):
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  S_i
+  =
+  \frac{d^2_i-d^1_i}{\max(d^1_i,d^2_i)}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org970ec5b">
+<h3 id="org970ec5b">シルエット係数の性質</h3>
+<ul>
+<li>定義より \(-1\leq S_i\leq1\)</li>
+<li>1に近いほど適切なクラスタリング</li>
+<li>全体の良さを評価するには \(S_i\) の平均を用いる</li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org44b84b4">
+<h2 id="org44b84b4">演習</h2>
+<p>
+何を計算させるか?
+</p>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgd2482f3">
+<h2 id="orgd2482f3">実習</h2>
+<div class="outline-text-2" id="text-orgd2482f3">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgfc33564" data-background="#fef4f4">
+<h3 id="orgfc33564">練習問題</h3>
+<ul>
+<li>以下を確認しなさい
+<ul>
+<li>データの読み込み</li>
+<li>距離の計算 (距離行列から特定のペアを取り出す)</li>
+<li>shep0ard plotか</li>
+
+</ul></li>
+
+</ul>
+<p>
+距離を比較させる問題を考える
+ユークリッド距離とマンハッタン距離でのデータ間の違い
+shepard plotを考えさせる．
+</p>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org4e2e6a3">
+<h2 id="org4e2e6a3">解析事例</h2>
+<p>
+上の実例から持ってくる
+</p>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org2447862">
+<h2 id="org2447862">次週の予定</h2>
+<ul>
+<li><b>第1日: 時系列のモデル</b></li>
+<li>第2日: モデルの推定と予測</li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/notes/notes.js"></script>
+<script src="./reveal.js/plugin/search/search.js"></script>
+<script src="./reveal.js/plugin/zoom/zoom.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+
+transition: 'fade',
+transitionSpeed: 'default',
+spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+{ src: './reveal.js/plugin/menu/menu.js'},
+{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
+{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+
+});
+</script>
+</body>
+</html>

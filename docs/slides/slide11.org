@@ -1,0 +1,344 @@
+#+TITLE: クラスタ分析 
+#+SUBTITLE: 非階層的方法と分析の評価
+#+AUTHOR: 村田 昇
+#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+DATE: 2020.12.08
+:reveal:
+#+INCLUDE: "./reveal.js/org/mycourse.org"
+#+STARTUP: hidestars content
+# C-c C-x C-v でinlineを切り替え
+# <m C-i でlatex block (math env用)
+# C-c '
+:end:
+
+* COMMENT 講義の予定
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第11回 練習問題解答例
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+  - クラスタ分析
+    - 第1日: 基本的な考え方と階層的方法
+    - *第2日: 非階層的方法と分析の評価*
+* 今週の内容
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第11回 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
+  - クラスタ分析
+    - 第1日: 基本的な考え方と階層的方法
+    - *第2日: 非階層的方法と分析の評価*
+
+
+* クラスタ分析の復習
+** クラスタ分析
+   - *cluster analysis*
+     #+begin_quote
+     個体の間に隠れている
+     *集まり=クラスタ*
+     を個体間の"距離"にもとづいて発見する方法
+     #+end_quote
+   - 個体間の類似度・距離(非類似度)を定義:
+     - 同じクラスタに属する個体どうしは似通った性質
+     - 異なるクラスタに属する個体どうしは異なる性質
+   - さらなるデータ解析やデータの可視化に利用
+   - 教師なし学習の代表的な手法の一つ
+
+** クラスタ分析の考え方
+   - 階層的方法:
+     - データ点およびクラスタの間に *距離* を定義
+     - 距離に基づいてグループ化:
+       - 近いものから順にクラスタを *凝集*
+       - 近いものが同じクラスタに残るように *分割*
+   - 非階層的方法:
+     - クラスタの数を事前に指定
+     - クラスタの *集まりの良さ* を評価する損失関数を定義
+     - 損失関数を最小化するようにクラスタを形成
+** 凝集的方法の手続き
+   1. データ・クラスタ間の距離を定義する
+      - データ点とデータ点の距離
+      - クラスタとクラスタの距離
+   2. データ点およびクラスタ間の距離を求める
+   3. 最も近い2つを統合し新たなクラスタを形成する
+   4. クラスタ数が1つになるまで2-3の手続きを繰り返す
+
+
+* 非階層的クラスタリング
+** 非階層的方法
+   - 対象とするデータ: $p$ 次元変数 $\boldsymbol{X}=(X_1,X_2,\dotsc,X_p)^{\mathsf{T}}$
+   - 観測データ: $n$ 個の個体
+     $\boldsymbol{x}_i=(x_{i1},x_{i2},\dotsc,x_{ip})^{\mathsf{T}}\; (i=1,2,\dotsc,n)$
+   - 推定する関係式: 対応 $C$ (個体 $i$ が属するクラスタ番号 $C(i)$)
+   - 非階層的クラスタリング: 
+     - 対応 $C$ の *全体の良さ* を評価する損失関数を設定
+     - 観測データ $\boldsymbol{x}_1,\boldsymbol{x}_2,\dots,\boldsymbol{x}_n$ 
+       の最適な対応関係 $C(i)$ を決定
+
+** \(k\)-平均法の損失関数
+   - クラスタの個数 \(k\) を指定
+   - 2つの個体 $i,i'$ の *近さ=損失* を距離の二乗で評価
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \|\boldsymbol{x}_i-\boldsymbol{x}_{i'}\|^2
+         =
+         \sum_{j=1}^p(x_{ij}-x_{i'j})^2
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 損失関数 $W(C)$: クラスタ内の平均の近さを評価
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         W(C)
+         =
+         \sum_{l=1}^k\frac{1}{n_l}\sum_{i:C(i)=l}\sum_{i':C(i')=l}\|\boldsymbol{x}_i-\boldsymbol{x}_{i'}\|^2
+       \end{equation}
+     #+end_src
+     #+end_quote
+     # ($n_l$ はクラスタ $l$ に属する個体の総数)
+
+** \(k\)-平均法の性質
+   - クラスタ $l$ に属する個体の平均:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \bar{\boldsymbol{x}}_l
+         =
+         \frac{1}{n_l}\sum_{i:C(i)=l}\boldsymbol{x}_i
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 損失関数 $W(C)$ の等価な表現:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         W(C)
+         =
+         2\sum_{l=1}^k\sum_{i:C(i)=l}\|\boldsymbol{x}_i-\bar{\boldsymbol{x}}_{l}\|^2
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 最適な対応 $C$: クラスタ内変動の総和が最小
+
+** クラスタ対応の最適化
+   - 最適化: 損失関数 $W(C)$ を最小とする $C$ を決定
+   - 貪欲な $C$ の探索:
+     - 原理的には全ての値を計算すればよい
+     - 可能な $C$ の数: $k^n$ 通り (有限個のパターン)
+     - サンプル数 $n$ が小さくない限り実時間での実行は不可能
+   - 近似的な $C$ の探索:
+     - いくつかのアルゴリズムが提案されている
+     - 基本的な考え方: *Lloyd-Forgyのアルゴリズム*
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \bar{\boldsymbol{x}}_l
+           =\arg\min_{\mu}
+           \sum_{i:C(i)=l}\|\boldsymbol{x}_i-\boldsymbol{\mu}\|^2
+         \end{equation}
+       #+end_src
+       #+end_quote
+       (標本平均と変動の平方和の性質を利用)
+
+** Lloyd-Forgyのアルゴリズム
+   1. クラスタ中心の初期値 
+      $\boldsymbol{\mu}_1,\boldsymbol{\mu}_2,\dots,\boldsymbol{\mu}_k$ を与える
+   2. 各データの所属クラスタ番号 $C(i)$ を求める
+      #+begin_quote
+      #+begin_src latex
+        \begin{equation}
+          C(i)
+          =
+          \arg\min_l\|\boldsymbol{x}_i-\boldsymbol{\mu}_l\|
+        \end{equation}
+      #+end_src
+      #+end_quote
+   3. 各クラスタ中心 $\boldsymbol{\mu}_l\;(l=1,2,\dotsc,k)$ を更新する
+      #+begin_quote
+      #+begin_src latex
+        \begin{equation}
+          \boldsymbol{\mu}_l
+          =
+          \frac{1}{n_l}\sum_{i:C(i)=l}\boldsymbol{x}_i
+        \end{equation}
+      #+end_src
+      #+end_quote
+      ($n_l$ は $C(i)=l$ となるデータの総数)
+   4. 中心が変化しなくなるまで 2,3 を繰り返す
+
+** Lloyd-Forgyのアルゴリズムの性質
+   - 結果は確率的で初期値
+     $\boldsymbol{\mu}_1,\boldsymbol{\mu}_2,\dots,\boldsymbol{\mu}_k$
+     に依存
+   - アルゴリズムの成否は確率的 \\
+     (最適解が得られない場合もある)
+   - 一般には複数の初期値をランダムに試して損失を最小とする解を採用
+
+* 演習
+  何を計算させるか?
+
+* 実習
+** R: 関数 ~kmeans( )~
+   - \(k\)-平均法を実行するための標準的な関数
+     - クラスタの数 \(k\) はオプション ~centers~ で指定
+     - オプション ~algorithm~ で最適化アルゴリズムを指定 \\
+       (既定値は Hartigan-Wong アルゴリズム)
+     - オプション ~nstart~ で初期値の候補の数を指定
+   - 結果は変数のスケールにも依存
+     - 例えば測定値の単位により異なる
+     - 必要ならば主成分分析の場合と同様に実行前にデータを標準化する
+** COMMENT 演習: 非階層的クラスタリング
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/12-kmeans.r][12-kmeans.r]] を確認してみよう
+** 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下を確認しなさい
+     - データの読み込み
+     - 距離の計算 (距離行列から特定のペアを取り出す)
+     - shep0ard plotか
+   距離を比較させる問題を考える
+   ユークリッド距離とマンハッタン距離でのデータ間の違い
+   shepard plotを考えさせる．
+     #+begin_src R :eval no :exports none :tangle yes
+       ### 練習1
+       ### 距離の計算
+     #+end_src
+
+
+
+* クラスタ構造の評価指標
+** 凝集係数
+   - *agglomerative coefficient*
+   - 階層的方法の評価
+   - データ $\boldsymbol{x}_i$ と最初に統合されたクラスタ $C$ の距離:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         d_i
+         =
+         D({\boldsymbol{x}_i},C)
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 最後に統合された2つのクラスタ $C',C''$ の距離:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         D
+         =
+         D(C',C'')
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - *凝集係数* $AC$:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         AC
+         =
+         \frac{1}{n}\sum_{i=1}^{n}\left(1-\frac{d_i}{D}\right)
+       \end{equation}
+     #+end_src
+     #+end_quote
+
+** 凝集係数の性質
+   - 定義より $0\leq AC\leq1$
+   - 1に近いほどクラスタ構造が明瞭
+   - banner plot の面積比 \\ 
+     (banner plot: $l_i$ をデータ毎に並べた棒グラフ)
+
+** シルエット係数
+   - *silhouette coefficient*
+   - 非階層的方法の評価 (階層的方法でも利用可)
+   - $C^1,C^2$: $\boldsymbol{x}_i$ を含む，および一番近いクラスタ
+   - $C^1$ と $\boldsymbol{x}_i$ の距離:
+     $d^1_i=D({\boldsymbol{x}_i},C^1\setminus{\boldsymbol{x}_i})$
+   - $C^2$ と $\boldsymbol{x}_i$ の距離:
+     $d^2_i=D({\boldsymbol{x}_i},C^2)$
+   - *シルエット係数* $S_i$:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         S_i
+         =
+         \frac{d^2_i-d^1_i}{\max(d^1_i,d^2_i)}
+       \end{equation}
+     #+end_src
+     #+end_quote
+   #   - データ $\boldsymbol{x}_i$ が含まれているクラスタ: $C^1$
+   #   - $C^1$ 以外で $\boldsymbol{x}_i$ に一番近いクラスタ: $C^2$
+   # - $\boldsymbol{x}_i$ を除いたクラスタ $C^1$ とデータ $\boldsymbol{x}_i$ の距離:
+   #   # #+begin_export latex
+   #   \begin{equation}
+   #     d^1_i
+   #     =
+   #     D({\boldsymbol{x}_i},C^1\setminus{\boldsymbol{x}_i})
+   #   \end{equation}
+   #   # #+end_export
+   # - $C^2$ と $\boldsymbol{x}_i$ の距離:
+   #   # #+begin_export latex
+   #   \begin{equation}
+   #     d^2_i
+   #     =
+   #     D({\boldsymbol{x}_i},C^2)
+   #   \end{equation}
+   #   # #+end_export
+
+** シルエット係数の性質
+   - 定義より $-1\leq S_i\leq1$
+   - 1に近いほど適切なクラスタリング
+   - 全体の良さを評価するには $S_i$ の平均を用いる
+
+
+* 演習
+  何を計算させるか?
+
+
+* 実習
+** COMMENT 演習: クラスタ分析の評価
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/12-eval.r][12-eval.r]] を確認してみよう
+
+
+** 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下を確認しなさい
+     - データの読み込み
+     - 距離の計算 (距離行列から特定のペアを取り出す)
+     - shep0ard plotか
+   距離を比較させる問題を考える
+   ユークリッド距離とマンハッタン距離でのデータ間の違い
+   shepard plotを考えさせる．
+     #+begin_src R :eval no :exports none :tangle yes
+       ### 練習1
+       ### 距離の計算
+     #+end_src
+
+
+
+* 解析事例
+  上の実例から持ってくる
+
+
+* 次週の予定
+  - 時系列解析
+    - *第1日: 時系列のモデル*
+    - 第2日: モデルの推定と予測  
+
+
+* COMMENT ローカル変数
+# Local Variables:
+# org-latex-listings: minted
+# End:

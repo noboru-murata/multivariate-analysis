@@ -11,6 +11,25 @@
 # C-c '
 :end:
 
+* COMMENT 講義の予定
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第09回 練習問題解答例
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+  - 第1日: 判別分析の考え方
+  - *第2日: 分析の評価と予測誤差*
+* 今週の内容
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第10回 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
+  - 第1日: 判別分析の考え方
+  - *第2日: 分析の評価と予測誤差*
+
 * 講義の予定
   #+begin_src R :eval no :exports none :tangle yes
     ### 第09回 資料
@@ -18,8 +37,6 @@
   #+begin_src R :exports none
     setwd("~/Desktop/lectures/mva/slide")
   #+end_src
-  - 第1日: 判別分析の考え方
-  - *第2日: 判別分析の評価*
 
 
 * 判別分析の復習
@@ -297,6 +314,15 @@
 	    points(temp, humid, # 訓練データの散布図
 		   pch=1, col="orchid", cex=2, lwd=2))
        abline(myLine(TW.lda), col="orange", lwd=2)
+       rx <- with(TW.subset,range(temp))
+       ry <- with(TW.subset,range(humid))
+       sx <- pretty(rx,100)
+       sy <- pretty(ry,100)
+       myGrid <- expand.grid(temp=sx,humid=sy)
+       ldesc <- predict(TW.lda,newdata=myGrid)
+       image(sx,sy,add=TRUE,
+             matrix(as.numeric(ldesc$class),length(sx),length(sy)),
+             col=c(rgb(1,0,0,0.2),rgb(0,1,0,0.2)))
      #+end_src
    #+CAPTION: 線形判別
    #+NAME: fig:09_lda
@@ -320,6 +346,10 @@
        with(TW.subset[TW.qerr,], 
 	    points(temp, humid, # 訓練データの散布図
 		   pch=1, col="orchid", cex=2, lwd=2))
+       qdesc <- predict(TW.qda,newdata=myGrid)
+       image(sx,sy,add=TRUE,
+             matrix(as.numeric(qdesc$class),length(sx),length(sy)),
+             col=c(rgb(1,0,0,0.2),rgb(0,1,0,0.2)))
      #+end_src
    #+CAPTION: 2次判別
    #+NAME: fig:09_qda
@@ -364,7 +394,7 @@
        \(TP,FP,TN,FN\)およびデータ数\(N\)
        を用いて表せ．
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -803,8 +833,10 @@
      
 
 * 次週の予定
-  - *第1日: クラスター分析と階層的クラスタリング*
-  - 第2日: 非階層的クラスタリング
+  - *第1日: クラスタ分析の考え方と階層的方法*
+  - 第2日: 非階層的方法と分析の評価
+
+
 
 * COMMENT ローカル変数
 # Local Variables:

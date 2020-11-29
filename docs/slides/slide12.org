@@ -1,0 +1,258 @@
+#+TITLE: 時系列解析
+#+SUBTITLE: 基本的なモデル
+#+AUTHOR: 村田 昇
+#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+DATE: 2020.12.18
+:reveal:
+#+INCLUDE: "./reveal.js/org/mycourse.org"
+#+STARTUP: hidestars content
+# C-c C-x C-v でinlineを切り替え
+# <m C-i でlatex block (math env用)
+# C-c '
+:end:
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第12回 練習問題解答例
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+
+* 講義の予定
+  - *第1日: 時系列のモデル*
+  - 第2日: モデルの推定と予測
+
+* 時系列解析の概要
+** 時系列解析とは
+   - 時系列データ
+     - 時間軸に沿って観測されたデータ
+       - 観測の順序に意味がある
+       - 異なる時点間での観測データの従属関係が重要
+   - 時系列解析の目的
+     - 時系列データの特徴を効果的に記述すること
+     - 時系列モデルの推定と評価
+
+** 時系列データ
+   - 統計学・確率論における表現: *確率過程*
+   - 時間を添え字として持つ確率変数列:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t,\;t=0,1,\dotsc,T
+         \quad(\text{あるいは}\;t=1,\dotsc,T)
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 時系列解析で利用される代表的な確率過程
+     - ホワイトノイズ
+     - ランダムウォーク
+     - 自己回帰モデル (ARモデル)
+     - 移動平均モデル (MAモデル)
+     - 自己回帰移動平均モデル (ARMAモデル)
+
+** R: 時系列データの扱い
+   - 時系列のためのクラス: ~ts~, ~zoo~ クラスなど
+     - ベクトル(1次元)データだが，時間に関する情報が付加される
+     - ベクトルからの変換:  関数 ~ts()~ , ~zoo()~ など
+   - 描画関数 ~plot()~ などの挙動は通常のベクトルと異なる
+     - プロットが既定値で折れ線
+     - x軸に時間の情報が表示
+     - 通常は時間情報を利用して適切に処理してくれる
+
+* 代表的な時系列モデル
+** ホワイトノイズ
+   - 平均 $0$ ，分散 $\sigma^2$ で互いに無相関な確率変数列
+   - 記号 $\mathrm{WN}(0,\sigma^2)$ で表記することが多い
+   - ホワイトノイズの典型的な例
+     - 平均 $0$ で分散有限の同一の分布に従う独立な確率変数列
+     - Rでのシミュレーション:
+       - 正規分布 ~rnorm()~ 
+       - t分布 ~rt()~
+       - その他適当な乱数生成器
+** 演習: ホワイトノイズを作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-wn.r][13-wn.r]] を確認してみよう
+
+** トレンドのあるホワイトノイズ
+   - $\mu,\alpha$ を定数，
+     $\epsilon_t$ をホワイトノイズとして
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t=\mu+\alpha t+\epsilon_t  
+       \end{equation}
+     #+end_src
+     #+end_quote
+     で与えられる確率過程 $X_t,\;t=1,\dotsc,T$
+   - *トレンド*: $\mu+\alpha t$ 
+   - 時間とともに平均が変動する時系列モデルの一つ
+   - トレンド項はより一般化されることもある
+     - $t$ の1次式 (上記の基本的な場合)
+     - 高次の多項式
+     - 非線形関数(指数関数, 三角関数など)
+
+** 演習: トレンドのあるホワイトノイズを作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-trend.r][13-trend.r]] を確認してみよう
+
+** ランダムウォーク
+   - $X_1$ を定数もしくは確率変数，
+     $\epsilon_t,\;t= 2,...,T$ を独立かつ同分布に従う独立な確率変数列 (i.i.d.) として
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t=X_{t-1}+\epsilon_t,\quad(t=2,\dotsc,T)
+       \end{equation}
+     #+end_src
+     #+end_quote
+     で帰納的に定義される確率過程 $X_t,\;t=1,\dotsc,T$
+   - 分散が時間とともに増加する時系列モデルの一つ
+   - 最も単純な *記憶* のあるモデル
+
+** 演習: ランダムウォークを作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-rw.r][13-rw.r]] を確認してみよう
+
+** 自己回帰モデル (ARモデル)
+   - 次数 $p$ の自己回帰過程 (AR(p); auto regressive の略)
+   - $\epsilon_t,\;t=p+1,...,T$ を $\mathrm{WN}(0,\sigma^2)$ ，
+     $a_1,\dotsc,a_p$ を定数とし，
+     $X_1,\dotsc,X_p$ が初期値として与えられたとき
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t=a_1X_{t-1}+\cdots+a_pX_{t-p}+\epsilon_t,\quad t=p+1,\dotsc,T
+       \end{equation}
+     #+end_src
+     #+end_quote
+     で帰納的に定まる確率過程
+     - ランダムウォークの一般化
+       - $p=1, a_1=1$ かつ $\epsilon_t$ が独立同分布ならランダムウォーク
+     - *忘却* しながら記憶するモデル ($|a_i|<1$ などの条件が必要)
+
+** 演習: AR過程を作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-ar.r][13-ar.r]] を確認してみよう
+
+** 移動平均モデル (MAモデル)
+   - 次数 $q$ の移動平均過程 (MA(q); moving average の略)
+   - $\epsilon_t,\;t=q+1,\dotsc,T$ を $\mathrm{WN}(0,\sigma^2)$ ，
+     $b_1,\dotsc,b_q$ を定数とし，
+     $X_1,\dotsc,X_q$ が初期値として与えられたとき
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t
+         =
+         b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}+\epsilon_t,
+         \quad t=q+1,\dotsc,T
+       \end{equation}
+     #+end_src
+     #+end_quote
+     で定まる確率過程
+     - 記憶のあるホワイトノイズ (構成する部品を記憶)
+
+** 演習: MA過程を作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-ma.r][13-ma.r]] を確認してみよう
+
+** 自己回帰平均移動モデル (ARMAモデル)
+   - 次数 $(p,q)$ の自己回帰平均移動モデル (ARMA($p,q$))
+   - $\epsilon_t,\;t=\max\{p,q\}+1,...,T$ を $\mathrm{WN}(0,\sigma^2)$ ，
+     $a_1,\dotsc,a_p,b_1,\dotsc,b_q$ を定数とし，
+     $X_1,\dotsc,X_{\max\{p,q\}}$ が初期値として与えられたとき
+     #+begin_quote
+     #+begin_src latex
+       \begin{multline}
+         X_t
+         =
+         a_1X_{t-1}+\cdots+a_pX_{t-p}+b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}+\epsilon_t,\\
+         t=\max\{p,q\}+1,\dotsc,T
+       \end{multline}
+     #+end_src
+     #+end_quote
+     で帰納的に定まる確率過程
+     - AR($p$)モデルはARMA($p,0$)，MA($q$)モデルはARMA($0,q$)
+     - 単純な形ながら異なる時点間の従属構造を柔軟に記述
+     - 基本的な時系列モデルとして広く利用されている
+
+** 演習: ARMA過程を作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-arma.r][13-arma.r]] を確認してみよう
+
+* 定常過程と非定常過程
+** 弱定常性
+   - 確率過程 $X_t,\;t=1,\dotsc,T$ が次の性質をもつ:
+     - $X_t$ の平均は時点 $t$ によらない
+     - $X_t$ と $X_{t+h}$ の共分散は時点 $t$ によらず時差 $h$ のみで定まる
+     - 特に $X_t$ の分散は時点 $t$ によらない ($h=0$ の場合)
+   - 定常でない確率過程は *非定常* であるという
+   - いろいろな確率過程の定常性:
+     - 定常: ホワイトノイズ, MA
+     - 非定常: トレンドのあるホワイトノイズ, ランダムウォーク
+     - 定常にも非定常にもなりうる: AR, ARMA
+
+** 非定常過程
+   - 難点
+     - 平均や分散などの基本的な統計量が時間によって変動する
+   - 定常過程とみなせるように変換したあと分析を実行
+     - 対数変換
+     - 階差をとる変換
+   - 例:
+     - ランダムウォークは階差をとればホワイトノイズ(定常過程)
+
+* 自己共分散・自己相関
+** 自己共分散・自己相関
+   - $X_t,\;t=1,\dotsc,T$ が定常過程の場合
+   - $X_t$ と $X_{t+h}$ の共分散は時点 $t$ によらずラグ $h\geq0$ のみで定まる
+     - この共分散をラグ $h$ での *自己共分散* と呼ぶ
+   - $X_t$ と $X_{t+h}$ の相関も $t$ によらず $h\geq0$ のみで定まる
+     - この相関をラグ $h$ での *自己相関* と呼ぶ
+   - 異なる時点間での観測データの従属関係を要約するための最も基本的な統計量
+
+** 標本自己共分散・標本自己相関
+   - 観測データ $X_1,\dotsc,X_T$ からの推定
+     - ラグ $h$ の自己共分散の推定: 標本自己共分散
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \frac{1}{T}\sum_{t=1}^{T-h}(X_t-\bar{X})(X_{t+h}-\bar{X})
+         \end{equation}
+       #+end_src
+       #+end_quote
+       $\bar{X}=\frac{1}{T}\sum_{t=1}^TX_t$ は標本平均
+     - ラグ $h$ での自己相関の推定: 標本自己相関
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \frac{\sum_{t=1}^{T-h}(X_t-\bar{X})(X_{t+h}-\bar{X})}{\sum_{t=1}^T(X_t-\bar{X})^2}
+         \end{equation}
+       #+end_src
+       #+end_quote
+   - Rでは関数 ~acf()~ で計算
+
+** 演習: 自己共分散・自己相関
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   以下のcodeを確認してみよう
+   - [[./code/13-acf.r][13-acf.r]]
+   - [[./code/13-eustock.r][13-eustock.r]] 
+
+
+* COMMENT ローカル変数
+# Local Variables:
+# org-latex-listings: minted
+# End:

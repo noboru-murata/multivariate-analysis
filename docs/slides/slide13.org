@@ -1,0 +1,226 @@
+#+TITLE: 時系列解析
+#+SUBTITLE: 推定と予測
+#+AUTHOR: 村田 昇
+#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+DATE: 2020.12.25
+:reveal:
+#+INCLUDE: "./reveal.js/org/mycourse.org"
+#+STARTUP: hidestars content
+# C-c C-x C-v でinlineを切り替え
+# <m C-i でlatex block (math env用)
+# C-c '
+:end:
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第13回 練習問題解答例
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+
+* 講義の予定
+  - 第1日: 時系列のモデル
+  - *第2日: モデルの推定と予測*
+
+* 時系列解析の復習
+** 時系列解析とは
+   - 時系列データ
+     - 時間軸に沿って観測されたデータ
+       - 観測の順序に意味がある
+       - 異なる時点間での観測データの従属関係が重要
+   - 時系列解析の目的
+     - 時系列データの特徴を効果的に記述すること
+     - 時系列モデルの推定と評価
+
+** 時系列モデルと定常性
+   - 時間を添え字として持つ確率変数列: 確率過程
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t,\;t=1,\dotsc,T
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - *弱定常過程*: 次の性質をもつ確率過程 $X_t$
+     - $X_t$ の平均は時点 $t$ によらない
+     - $X_t$ と $X_{t+h}$ の共分散は時点 $t$ によらず時差 $h$ のみで定まる
+     - 特に $X_t$ の分散は時点 $t$ によらない ($h=0$ の場合)
+   - 多くの場合弱定常性を考えれば十分なので単に *定常* ということが多い
+   - 定常でない確率過程は *非定常* であるという
+
+** ホワイトノイズ
+   - 平均 $0$ ，分散 $\sigma^2$ の無相関な確率変数列
+     - 記号 $\mathrm{WN}(0,\sigma^2)$ で表記
+     - *定常* な確率過程
+   - *トレンド* のある場合: 
+     $\epsilon_t,\;t=1,\dotsc,T$ を$\mathrm{WN}(0,\sigma^2)$ ，
+     $\mu,\alpha$ を定数として
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t=\mu+\alpha t+\epsilon_t  
+       \end{equation}
+     #+end_src
+     #+end_quote
+     で与えられる確率変数列
+     - *非定常* な確率過程
+     
+** ランダムウォーク
+   - $\epsilon_t,\;t= 2,...,T$ を独立かつ同分布に従う独立な確率変数列 (i.i.d.)， 
+     $X_1$ を定数もしくは確率変数として
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t=X_{t-1}+\epsilon_t,\quad(t=2,\dotsc,T)
+       \end{equation}
+     #+end_src
+     #+end_quote
+     で帰納的に定義される確率変数列
+     - 分散が時間とともに増加・記憶のあるモデル
+     - *非定常* な確率過程
+
+** 自己回帰モデル (ARモデル)
+   - $\epsilon_t,\;t=p+1,...,T$ を $\mathrm{WN}(0,\sigma^2)$ ，
+     $a_1,\dotsc,a_p$ を定数，
+     $X_1,\dotsc,X_p$ が初期値として
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t=a_1X_{t-1}+\cdots+a_pX_{t-p}+\epsilon_t,\quad t=p+1,\dotsc,T
+       \end{equation}
+     #+end_src
+     #+end_quote
+     で帰納的に定まる確率変数列
+     - ランダムウォークの一般化
+     - 無限長の記憶のある(忘却しながら記憶する)モデル
+     - *定常にも非定常にもなる*
+
+** 移動平均モデル (MAモデル)
+   - $\epsilon_t,\;t=q+1,\dotsc,T$ を $\mathrm{WN}(0,\sigma^2)$ ，
+     $b_1,\dotsc,b_q$ を定数，
+     $X_1,\dotsc,X_q$ が初期値として
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_t
+         =
+         b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}+\epsilon_t,
+         \quad t=q+1,\dotsc,T
+       \end{equation}
+     #+end_src
+     #+end_quote
+     で定まる確率変数列
+     - 有限長の記憶のあるモデル
+     - *定常* な確率過程
+
+** 自己回帰平均移動モデル (ARMAモデル)
+   - $\epsilon_t,\;t=\max\{p,q\}+1,...,T$ を $\mathrm{WN}(0,\sigma^2)$ ，
+     $a_1,\dotsc,a_p$,
+     $b_1,\dotsc,b_q$ を定数，
+     $X_1,\dotsc,X_{\max\{p,q\}}$ を初期値として
+     #+begin_quote
+     #+begin_src latex
+       \begin{multline}
+         X_t
+         =
+         a_1X_{t-1}+\cdots+a_pX_{t-p}+b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}+\epsilon_t,\\
+         t=\max\{p,q\}+1,\dotsc,T
+       \end{multline}
+     #+end_src
+     #+end_quote
+     で帰納的に定まる確率変数列
+     - AR・MAモデルの一般化・基本的な時系列モデル
+     - *定常にも非定常にもなる*
+
+* モデルの推定
+** 自己相関と偏自己相関
+   - 弱定常な確率過程: $X_t,\;t=1,\dotsc,T$ (平均は0とする)
+   - 自己共分散と自己相関係数
+     - 自己共分散: $\gamma_{h}=\mathbb{E}[X_{t}X_{t-h}]$
+     - *自己相関係数*: $\rho_{h}=\gamma_{h}/\gamma_{0}$
+   - AR(h)モデル: (雑音なしの場合を考える)
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_{t}=a_{1}X_{t-1}+a_{2}X_{t-2}+\dotsb+a_{h}X_{t-h}
+       \end{equation}
+     #+end_src
+     #+end_quote
+     # 雑音なしのAR(h)モデルを考える
+     - $a_h$ の推定値: ラグ $h$ の *偏自己相関係数*
+     - $a_1=a_2=a_{h-1}=0$ のときのみ *自己相関係数* となる
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \mathbb{E}[X_{t}X_{t-h}]=a_{h}E[X_{t-h}X_{t-h}]
+           \;\Rightarrow\; \gamma_{h}=a_{h}\gamma_{0}
+           \;\Rightarrow\; \rho_{h}=a_{h}
+         \end{equation}
+       #+end_src
+       #+end_quote
+
+** R: ARモデルの推定 ~ar()~ 
+   - 定常ARモデルのあてはめ: ~stats::ar()~
+     - 時系列 ~x~: ~ts~ クラスが望ましい
+     - オプション ~method~: 計算方法 (既定値: ~yule-walker~ )
+     - オプション ~aic~: AICを計算するか (既定値: ~TRUE~)
+     - オプション ~order.max~: 計算すべき最大次数
+   #+BEGIN_SRC R :exports code
+     ## 時系列データからARモデル係数を推定
+     ar(x, aic = TURE, order.max = 10, method = "burg")
+   #+END_SRC
+** 演習: ARモデルの推定
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/14-arest.r][14-arest.r]] を確認してみよう
+
+** R: ARIMAモデルの推定 ~arima()~
+   - 階差系列への定常ARMAモデルのあてはめ: ~stats::arima()~
+     - 時系列 ~x~: ~ts~ クラスが望ましい
+     - オプション ~order~: 次数 ~c(AR,階差,MA)~
+     - オプション ~seasonal~: 次数+期間 ~list(order=(AR,階差,MA),period=期間)~
+   - ~arima()~ には次数の決定機能はない
+     - 試行錯誤による次数の決定
+     - ~forecast::auto.arima()~ の利用
+   #+BEGIN_SRC R :exports code
+     ## 時系列データからARIMAモデル係数推定
+     arima(x, order=c(0,1,1), seasona=list(order=c(0,1,1),period=12))
+     ## ARIMAモデルの次数の自動推定
+     require(forecast)
+     auto.arima(x, d=1, D=1)
+   #+END_SRC
+** 演習: ARIMAモデルの推定
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/14-armaest.r][14-armaest.r]] を確認してみよう
+
+* モデルによる予測
+** R: 時系列の予測 ~predict()~
+   - 推定されたモデルによる予測: ~predict()~
+     - モデル ~fit~: ~ar()~ また ~arima()~ による推定結果
+     - オプション ~n.ahead~: n期先予測 
+   #+BEGIN_SRC R :exports code
+     ## 時系列モデルによる予測
+     fit <- arima(x, order=c(0,1,1), seasona=list(order=c(0,1,1),period=12))
+     prd <- predict(fit, n.ahead=10)
+   #+END_SRC
+
+** 演習: 時系列の予測
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/14-predict.r][14-predict.r]] を確認してみよう
+
+** 演習: 実データの予測
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/14-airpass.r][14-airpass.r]] を確認してみよう
+
+
+* COMMENT ローカル変数
+# Local Variables:
+# org-latex-listings: minted
+# End:

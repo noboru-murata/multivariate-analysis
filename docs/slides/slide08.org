@@ -1,5 +1,5 @@
 #+TITLE: 判別分析 
-#+SUBTITLE: 考え方
+#+SUBTITLE: 基本的な考え方
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 2020.11.17
@@ -25,8 +25,11 @@
 * 判別分析の考え方
 ** 判別分析
    - *discriminant analysis*
-   - 個体の特徴量から
-     その個体の属するクラスを予測する関係式を構成
+     #+begin_quote
+     個体の特徴量からその個体の属する
+     *クラス*
+     を予測する関係式を構成する方法
+     #+end_quote
    - 関係式: *判別関数* (discriminant function)
      - 説明変数: $X=(X_1,\dots,X_q)$ 
      - 目的変数: $Y$ ($K(\geq2)$ 個のクラスラベル)
