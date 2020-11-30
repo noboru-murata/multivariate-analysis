@@ -14,3 +14,8 @@ weight = 1011
 ## ハンドアウト {#ハンドアウト}
 
 -   [PDF file](https://noboru-murata.github.io/multivariate-analysis/pdfs/slide10.pdf)
+
+
+## 付録 {#付録}
+
+-   [おむすびの具アンケート](https://noboru-murata.github.io/multivariate-analysis/data/omusubi.csv)

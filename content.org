@@ -132,6 +132,8 @@
    {{< myslide base="multivariate-analysis" name="slide10" >}}
 ** ハンドアウト
    - [[github:pdfs/slide10.pdf][PDF file]]
+** 付録
+   - [[github:data/omusubi.csv][おむすびの具アンケート]]
 
 * 講義11
   :PROPERTIES:
