@@ -242,7 +242,7 @@
    #+reveal: split
    #+header: :width 720 :height 720 :res 100
    #+begin_src R :file figs/10_dendro.png :exports results :results graphics :tangle yes
-     plot(agnes(JS.data[8:14,]), which.plots=2,
+     plot(agnes(scale(JS.data[8:14,])), which.plots=2,
           main="",sub="",xlab="")
    #+end_src
    #+CAPTION: デンドログラムによるクラスタ構造の表示
@@ -282,7 +282,7 @@
      #+end_quote
 
 ** マンハッタン距離
-   - $q=1$ のミンコフスキー距離
+   - 後述するミンコフスキー距離の $q=1$ の場合
    - 格子状に引かれた路に沿って移動するときの距離
      #+begin_quote
      #+begin_src latex
@@ -320,9 +320,18 @@
    - 以下の問に答えなさい．
      - 距離の定義を述べなさい
      - ミンコフスキー距離において
-       \(p\to\infty\)
+       \(q\to\infty\)
        とするとどのような距離となるか答えなさい
-** COMMENT 解答例
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation*}
+           d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+           =\bigl\{|x_{i1}-x_{j1}|^{q}+\dotsb+|x_{ip}-x_{jp}|^{q}\bigr\}^{1/q}
+         \end{equation*}
+       #+end_src
+       #+end_quote
+       
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -391,7 +400,7 @@
      チェビシェフ距離(最大距離，チェス盤距離)という
      #+end_quote
    #+reveal: split
-   - \(p\to-\infty\) の場合は以下となることを確認せよ
+   - \(q\to-\infty\) の場合は以下となることを確認せよ
      #+begin_quote
      #+begin_src latex
        \begin{equation}
@@ -548,7 +557,7 @@
        #+end_src
        #+end_quote
        を導け
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
