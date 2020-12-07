@@ -92,7 +92,6 @@
 ** 付録
    - [[github:data/japan_social.csv][都道府県別の社会生活統計指標データ]]
 
-
 * 講義7
   :PROPERTIES:
   :EXPORT_FILE_NAME: lecture07
@@ -140,10 +139,9 @@
   :EXPORT_FILE_NAME: lecture11
   :EXPORT_DATE: <2020-08-26 Wed>
   :END:
-  準備中
-** COMMENT スライド
-   #+html: {{< myslide base="multivariate-analysis" name="slide11" >}}
-** COMMENT ハンドアウト
+** スライド
+   {{< myslide base="multivariate-analysis" name="slide11" >}}
+** ハンドアウト
    - [[github:pdfs/slide11.pdf][PDF file]]
 
 * 講義12
