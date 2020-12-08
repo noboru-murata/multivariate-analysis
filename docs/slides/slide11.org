@@ -952,6 +952,9 @@
                       method="average")
      if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
      plot(JS.agn.euc, which.plots=1,
+          nmax.lab=50, 
+          max.strlen=5, 
+          cex.names=0.5,
           main="")
    #+end_src
    #+CAPTION: 凝集係数 (ユークリッド距離)
@@ -982,6 +985,9 @@
                       method="average")
      if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
      plot(JS.agn.man, which.plots=1,
+          nmax.lab=50, 
+          max.strlen=5, 
+          cex.names=0.5,
           main="")
    #+end_src
    #+CAPTION: 凝集係数 (マンハッタン距離)
@@ -1039,6 +1045,9 @@
    #+begin_src R :file figs/11_omsil7.png :exports results :results graphics :tangle yes
      if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
      plot(pam(OM.dsy,k=7), which.plot=2,
+          nmax.lab=50, 
+          max.strlen=5, 
+          cex.names=0.5,
           main="")
    #+end_src
    #+CAPTION: シルエット係数 (k=7)
@@ -1052,6 +1061,9 @@
    #+begin_src R :file figs/11_omsil8.png :exports results :results graphics :tangle yes
      if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
      plot(pam(OM.dsy,k=8), which.plot=2,
+          nmax.lab=50, 
+          max.strlen=5, 
+          cex.names=0.5,
           main="")
    #+end_src
    #+CAPTION: シルエット係数 (k=8)
@@ -1065,6 +1077,9 @@
    #+begin_src R :file figs/11_omsil9.png :exports results :results graphics :tangle yes
      if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
      plot(pam(OM.dsy,k=9), which.plot=2,
+          nmax.lab=50, 
+          max.strlen=5, 
+          cex.names=0.5,
           main="")
    #+end_src
    #+CAPTION: シルエット係数 (k=9)
