@@ -230,7 +230,7 @@
          \end{equation}
        #+end_src
        #+end_quote
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -376,6 +376,16 @@
        (最適解が得られない場合もある)
    - 一般には複数の初期値をランダムに試して損失を最小とする解を採用する
    - 平均の代わりにメドイド (medoid; 中心にある観測値) を用いる方法もある
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \boldsymbol{x}^{medoid}_{l}
+         =\arg\min_{\boldsymbol{x}_{i}}
+         \sum_{i':C(i')=l}
+         \|\boldsymbol{x}_{i}-\boldsymbol{x}_{i'}\|^2
+       \end{equation}
+     #+end_src
+     #+end_quote
 
 ** 事例
    - 都道府県別好きなおむすびの具(一部)での例
@@ -841,7 +851,7 @@
          \end{equation}
        #+end_src
        #+end_quote
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -867,7 +877,7 @@
          &=D(C_{a},C_{b})
        \end{align}
      #+end_src
-     統合した結果，それより短い距離があらわれることはない
+     統合した結果，それより短い距離が現れることはない
      #+end_quote
    #+reveal: split
    - 以上より
@@ -928,7 +938,7 @@
 
 * 解析事例
 ** 都道府県別の社会生活統計指標
-   - 凝集係数を用いて階層的方法のクラスタ数を検討
+   - 凝集係数を用いて階層的方法の距離を検討
    - ユークリッド距離とマンハッタン距離を比較
      - 正規化は共通 (平均0，絶対偏差1)
      - クラスタ距離は群平均法
