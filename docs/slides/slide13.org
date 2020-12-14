@@ -2,7 +2,7 @@
 #+SUBTITLE: 推定と予測
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
-#+DATE: 2020.12.25
+#+DATE: 2021.01.??
 :reveal:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content
@@ -11,14 +11,22 @@
 # C-c '
 :end:
 
+* COMMENT 講義の予定
 #+begin_src R :eval no :exports none :tangle yes
   ### 第13回 練習問題解答例
 #+end_src
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
 #+end_src
-
-* 講義の予定
+  - 第1日: 時系列のモデル
+  - *第2日: モデルの推定と予測*
+* 今週の内容
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第13回 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
   - 第1日: 時系列のモデル
   - *第2日: モデルの推定と予測*
 
@@ -132,6 +140,7 @@
      - AR・MAモデルの一般化・基本的な時系列モデル
      - *定常にも非定常にもなる*
 
+
 * モデルの推定
 ** 自己相関と偏自己相関
    - 弱定常な確率過程: $X_t,\;t=1,\dotsc,T$ (平均は0とする)
@@ -159,6 +168,7 @@
        #+end_src
        #+end_quote
 
+* 実習       
 ** R: ARモデルの推定 ~ar()~ 
    - 定常ARモデルのあてはめ: ~stats::ar()~
      - 時系列 ~x~: ~ts~ クラスが望ましい
@@ -195,6 +205,7 @@
    :reveal_background: #EEEEFF
    :END:
    - [[./code/14-armaest.r][14-armaest.r]] を確認してみよう
+
 
 * モデルによる予測
 ** R: 時系列の予測 ~predict()~
