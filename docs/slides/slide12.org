@@ -31,6 +31,37 @@
   - 第2日: モデルの推定と予測
 
 
+* レポートの講評
+** 基本事項
+   - 目的が明確に書かれている
+   - データが目的にもとづいて集められている
+   - 集められたデータにもとづいて仮説を設定している
+   - 複数の数値にもとづいて分析の評価を行なっている
+   - 合理的な考察を行っている
+   - 課題を整理して議論している
+     
+** 加点事項
+   - 参考資料(データも含む)を適切に記述している
+   - 変数を合理的に取捨選択している
+   - 外れ値の評価を合理的に行っている
+   - 説明変数の多重共線性に注意している
+   - 説明変数の変換・交互作用を合理的に議論している
+   - (データに応じていろいろ)
+     
+** 注意すべき事柄
+   - 線形重回帰モデルの難しさ
+     - 係数は説明変数が1変化したときの影響
+     - 説明変数の合成変数と目的変数の比例関係
+     - 標準化する場合は説明変数の分布を考慮
+   - 変数の選択
+     - t統計量はあくまでそのモデルでの変数の役割の評価
+     - モデルが変わると有意になることもありうる
+   - 検定統計量とp-値の解釈
+     - 帰無仮説が正しいときに意味を持つ
+     - p-値は信頼度とは異なる
+     - 帰無仮説が棄却されたとき，統計量の値に意味を求めてはいけない
+   
+
 * 時系列解析の概要
 ** 時系列解析とは
    - 時系列データ
@@ -228,7 +259,7 @@
        を求めなさい
      - ランダムウォークの平均と分散を求めなさい
 
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -460,7 +491,7 @@
      - AR(1)の平均と分散を求めなさい
      - MA(1)の平均と分散を求めなさい
        
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -502,9 +533,9 @@
          &=
            \mathrm{Var}(b_{1}\epsilon_{t-1}+\epsilon_{t})\\
          &=
-           b_{1}\mathrm{Var}(\epsilon_{t-1})+\mathrm{Var}(\epsilon_{t})\\
+           b_{1}^{2}\mathrm{Var}(\epsilon_{t-1})+\mathrm{Var}(\epsilon_{t})\\
          &=
-           (b_{1}+1)\cdot\sigma^{2}
+           (b_{1}^{2}+1)\cdot\sigma^{2}
        \end{align}
      #+end_src
      #+end_quote
@@ -641,6 +672,8 @@
        #+begin_quote
        #+begin_src latex
          \begin{equation}
+           \hat\gamma(h)
+           =
            \frac{1}{T}\sum_{t=1}^{T-h}(X_{t}-\bar{X})(X_{t+h}-\bar{X})
          \end{equation}
        #+end_src
@@ -650,6 +683,8 @@
        #+begin_quote
        #+begin_src latex
          \begin{equation}
+           \hat\gamma(h)/\hat\gamma(0)
+           =
            \frac{\sum_{t=1}^{T-h}(X_{t}-\bar{X})(X_{t+h}-\bar{X})}{\sum_{t=1}^T(X_{t}-\bar{X})^2}
          \end{equation}
        #+end_src
@@ -733,10 +768,11 @@
    :reveal_background: #fef4f4
    :END:
    - 以下の問に答えなさい．
-     - AR(\(p\))の係数と
-       自己共分散の間に成り立つ関係を考えなさい
+     - 定常なAR(\(p\))過程を考える．
+       \(\mathbb{E}[X_{t}]=0\) であるとき，
+       AR過程の係数と自己共分散の間に成り立つ関係を考えなさい．
        
-** COMMENT 解答例
+** 解答例
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
