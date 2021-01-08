@@ -159,10 +159,9 @@
   :EXPORT_FILE_NAME: lecture13
   :EXPORT_DATE: <2020-08-26 Wed>
   :END:
-  準備中
-** COMMENT スライド
+** スライド
    #+html: {{< myslide base="multivariate-analysis" name="slide13" >}}
-** COMMENT ハンドアウト
+** ハンドアウト
    - [[github:pdfs/slide13.pdf][PDF file]]
 
 # * 講義14
