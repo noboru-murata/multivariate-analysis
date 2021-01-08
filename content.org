@@ -212,8 +212,8 @@
 * 解析事例 (時系列)
   :PROPERTIES:
   :EXPORT_HUGO_SECTION: ./post
-  :EXPORT_FILE_NAME: post0
-  :EXPORT_DATE: <2020-08-26 Wed>
+  :EXPORT_FILE_NAME: post2
+  :EXPORT_DATE: <2021-01-08 Fri>
   :END:
   興味ある人は以下を参照して下さい．
 
