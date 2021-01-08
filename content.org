@@ -209,6 +209,16 @@
    - c 消去
      
 
+* 解析事例 (時系列)
+  :PROPERTIES:
+  :EXPORT_HUGO_SECTION: ./post
+  :EXPORT_FILE_NAME: post0
+  :EXPORT_DATE: <2020-08-26 Wed>
+  :END:
+  興味ある人は以下を参照して下さい．
+
+  https://github.com/noboru-murata/covid-19
+  
 * COMMENT ローカル変数
 # Local Variables:
 # eval: (org-hugo-auto-export-mode)
