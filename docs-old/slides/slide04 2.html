@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>回帰分析</title>
+<meta name="author" content="村田 昇"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-state="no-toc-progress">
+<!-- This is an HTML template for the title slide. -->
+<!-- Embed logos as necessary. -->
+<!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
+<div class="talk-title">
+    <h1 class="no-toc-progress">回帰分析</h1>
+</div>
+<div class="talk-subtitle">
+    <p>モデルの評価</p>
+</div>
+<div class="keyboard-usage">
+    <p>(Press <code>?</code> for help, <code>n</code> and <code>p</code> for next and previous slide)</p>
+</div>
+<div class="talk-author">
+  <p>村田 昇<br />
+  2020.10.20</p>
+</div>
+
+</section>
+
+<section>
+<section id="slide-org17005fb">
+<h2 id="org17005fb">講義の予定</h2>
+<ul>
+<li>第1日: 回帰モデルの考え方と推定</li>
+<li><b>第2日: モデルの評価</b></li>
+<li>第3日: モデルによる予測と発展的なモデル</li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org1d30814">
+<h2 id="org1d30814">回帰分析の復習</h2>
+<div class="outline-text-2" id="text-org1d30814">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org2cd5af8">
+<h3 id="org2cd5af8">線形回帰モデル</h3>
+<ul>
+<li><b>目的変数</b> を <b>説明変数</b> で説明する関係式を構成:
+<ul>
+<li>説明変数: \(x_1,\dotsc,x_p\) (p次元)</li>
+<li>目的変数: \(y\) (1次元)</li>
+
+</ul></li>
+<li><p>
+<b>回帰係数</b> \(\beta_0,\beta_1,\dotsc,\beta_p\) を用いた一次式:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  y=\beta_0+\beta_1x_1+\dotsb+\beta_px_p
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+<b>誤差項</b> を含む確率モデルで観測データを表現:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  y_i=\beta_0+\beta_1 x_{i1}+\cdots+\beta_px_{ip}+\epsilon_i
+  \quad (i=1,\dotsc,n)
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org3238969">
+<h3 id="org3238969">行列・ベクトルによる簡潔な表現</h3>
+<ul>
+<li><p>
+デザイン行列:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  X=
+  \begin{pmatrix}
+    1 & x_{11} & x_{12} & \cdots & x_{1p} \\
+    1 & x_{21} & x_{22} & \cdots & x_{2p} \\
+    \vdots & \vdots & \vdots & & \vdots \\
+    1 & x_{n1} & x_{n2} & \cdots & x_{np}
+  \end{pmatrix}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgbc23420">
+<h3 id="orgbc23420">行列・ベクトルによる簡潔な表現</h3>
+<ul>
+<li><p>
+ベクトル:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{y}=
+  \begin{pmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+  \end{pmatrix},\quad
+  \boldsymbol{\epsilon}=
+   \begin{pmatrix}
+    \epsilon_1 \\
+    \epsilon_2 \\
+    \vdots \\
+    \epsilon_n
+  \end{pmatrix},\quad
+  \boldsymbol{\beta}=
+  \begin{pmatrix}
+    \beta_0 \\
+    \beta_1 \\
+    \vdots \\
+    \beta_p
+  \end{pmatrix}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orga0ae167">
+<h3 id="orga0ae167">問題の記述</h3>
+<ul>
+<li><p>
+確率モデル:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{y}
+  =X\boldsymbol{\beta}+\boldsymbol{\epsilon}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+回帰式の評価: <b>残差平方和</b> の最小化による推定
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  S(\boldsymbol{\beta})
+  =(\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
+  (\boldsymbol{y}-X\boldsymbol{\beta})
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org1b9fd8f">
+<h3 id="org1b9fd8f">解の表現</h3>
+<ul>
+<li><p>
+解の条件: <b>正規方程式</b>
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  X^{\mathsf{T}}X\boldsymbol{\beta}
+  =X^{\mathsf{T}}\boldsymbol{y}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+解の一意性: <b>Gram 行列</b> \(X^{\mathsf{T}}X\) が正則
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{\hat{\beta}}
+  =
+  (X^{\mathsf{T}}X)^{-1}
+  X^{\mathsf{T}}\boldsymbol{y}  
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgb6e6b7c">
+<h3 id="orgb6e6b7c">最小二乗推定量の性質</h3>
+<ul>
+<li><b>あてはめ値</b>
+\(\boldsymbol{\hat{y}}=X\boldsymbol{\hat{\beta}}\)
+は \(X\) の列ベクトルの線形結合</li>
+<li><p>
+<b>残差</b>
+\(\boldsymbol{\hat{\epsilon}}=\boldsymbol{y}-\boldsymbol{\hat{y}}\)
+はあてはめ値 \(\boldsymbol{\hat{y}}\) と直交
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{y}}
+  =0
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+回帰式は説明変数と目的変数の <b>標本平均</b> を通過
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \bar{y}
+  =
+  (1,\bar{\boldsymbol{x}}^{\mathsf{T}})\boldsymbol{\hat{\beta}},
+  \quad
+  \bar{\boldsymbol{x}}
+  =\frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i,
+  \quad
+  \bar{y}
+  =\frac{1}{n}\sum_{i=1}^ny_i,
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org3c9a11c">
+<h3 id="org3c9a11c">寄与率</h3>
+<ul>
+<li><p>
+<b>決定係数</b> (R-squared):
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  R^2
+  =
+  1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+<b>自由度調整済み決定係数</b> (adjusted R-squared):
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \bar{R}^2
+  =
+  1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
+  {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
+\end{equation}
+
+</div>
+
+<p>
+(不偏分散で補正)
+</p>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org8b9a438">
+<h2 id="org8b9a438">残差の性質</h2>
+<div class="outline-text-2" id="text-org8b9a438">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org7ade2ca">
+<h3 id="org7ade2ca">あてはめ値</h3>
+<ul>
+<li><p>
+あてはめ値のさまざまな表現:
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \boldsymbol{\hat{y}}
+  &=X\boldsymbol{\hat{\beta}}\\
+  &\qquad(\boldsymbol{\hat{\beta}}=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}を代入)\\
+  &=X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}
+  && (A) \\
+  &\qquad(\boldsymbol{y}=X\boldsymbol{\beta}+\boldsymbol{\epsilon}を代入)\\
+  &=X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\boldsymbol{\beta}
+    +X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}\\
+  &=X\boldsymbol{\beta}
+    +X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
+  && (B) \\
+\end{align}
+
+</div>
+</blockquote>
+<ul>
+<li>(A)あてはめ値は <b>観測値の重み付けの和</b> で表される</li>
+<li>(B)あてはめ値と観測値は <b>誤差項</b> の寄与のみ異なる</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org88a996b">
+<h3 id="org88a996b">あてはめ値と誤差の関係</h3>
+<ul>
+<li><p>
+残差と誤差の関係:
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \boldsymbol{\hat{\epsilon}}
+  &=\boldsymbol{y}-\boldsymbol{\hat{y}}\\
+  &=\boldsymbol{\epsilon}
+    -X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+    \boldsymbol{\epsilon}\\
+  &=\bigl(I
+    -X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+    \bigr)
+    \boldsymbol{\epsilon}
+  && (A) \\
+\end{align}
+
+</div>
+</blockquote>
+<ul>
+<li>(A)残差は <b>誤差の重み付けの和</b> で表される</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org0355d3f">
+<h3 id="org0355d3f">ハット行列</h3>
+<ul>
+<li><p>
+定義:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  H=
+  X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+ハット行列 \(H\) による表現:
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \boldsymbol{\hat{y}}
+  &=H\boldsymbol{y}\\
+  \boldsymbol{\hat{\epsilon}}
+  &=(I-H)\boldsymbol{\epsilon}
+\end{align}
+
+</div>
+</blockquote>
+<ul>
+<li>あてはめ値や残差は \(H\) を用いて簡潔に表現される</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org27640e3">
+<h3 id="org27640e3">ハット行列の性質</h3>
+<ul>
+<li>観測データ(デザイン行列)のみで計算される</li>
+<li>観測データと説明変数の関係を表す</li>
+<li><p>
+対角成分 (<b>テコ比</b>; leverage)
+は観測データが自身の予測に及ぼす影響の度合を表す
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \hat{y}_{j}
+  =
+  (H)_{jj}y_{j} + \text{(それ以外のデータの寄与)}
+\end{equation}
+
+</div>
+
+<p>
+但し \((A)_{ij}\) は行列 \(A\) の \((i,j)\) 成分
+</p>
+</blockquote>
+<ul>
+<li>テコ比が小さい: 他のデータでも予測が可能</li>
+<li>テコ比が大きい: 他のデータでは予測が困難</li>
+
+</ul></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org1949953" data-background="#fef4f4">
+<h2 id="org1949953">演習</h2>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org4ab0f27" data-background="#fef4f4">
+<h3 id="org4ab0f27">問題</h3>
+<ul>
+<li>ハット行列 \(H\) について以下を示しなさい．
+<ul>
+<li>\(H\) は対称行列である．</li>
+<li><p>
+\(H\) は羃等である．
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  H^{2}=H,\quad
+  (I-H)^{2}=I-H
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+以下の等式が成り立つ．
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  HX=X,\quad
+  X^{\mathsf{T}}H=X^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgeee16f8" data-background="#fef4f4">
+<h3 id="orgeee16f8">解答例</h3>
+<ul>
+<li><p>
+いずれも \(H\) の定義にもとづいて計算すればよい
+</p>
+<blockquote>
+<div>
+\begin{align}
+  H^{\mathsf{T}}
+  &=
+    (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})^{\mathsf{T}}\\
+  H^{2}
+  &=
+    (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})
+    (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\\
+  (I-H)^{2}
+  &=
+    I-2H+H^{2}\\
+  HX
+  &=
+    (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})X\\
+  X^{\mathsf{T}}H
+  &=(HX)^{\mathsf{T}}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org1470b6b">
+<h2 id="org1470b6b">推定量の統計的性質</h2>
+<div class="outline-text-2" id="text-org1470b6b">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org7dd81f9">
+<h3 id="org7dd81f9">最小二乗推定量の性質</h3>
+<ul>
+<li><p>
+推定量と誤差の関係:
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \boldsymbol{\hat{\beta}}
+  &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}\\
+  &\qquad( \boldsymbol{y}=X\boldsymbol{\beta}+\boldsymbol{\epsilon} を代入) \\
+  &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\boldsymbol{\beta}
+    +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}\\
+  &=\boldsymbol{\beta}
+    +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
+\end{align}
+
+</div>
+</blockquote></li>
+<li><p>
+正規分布の重要な性質:
+</p>
+<blockquote>
+<p>
+<b>正規分布に従う独立な確率変数の和は正規分布に従う</b>
+</p>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgcbf584d">
+<h3 id="orgcbf584d">推定量の分布</h3>
+<ul>
+<li>誤差の仮定: 平均0，分散 \(\sigma^{2}\) の正規分布に従う</li>
+<li><p>
+推定量は以下の多変量正規分布に従う
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathbb{E}[\boldsymbol{\hat{\beta}}]
+  &=\boldsymbol{\beta}\\
+  \mathrm{Cov}(\boldsymbol{\hat{\beta}})
+  &=\sigma^{2}(X^{\mathsf{T}}X)^{-1}
+\end{align}
+
+</div>
+<div>
+\begin{equation}
+  \boldsymbol{\hat{\beta}}
+  \sim
+  \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgf28d8b8" data-background="#fef4f4">
+<h2 id="orgf28d8b8">演習</h2>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgb83be40" data-background="#fef4f4">
+<h3 id="orgb83be40">問題</h3>
+<ul>
+<li>誤差が平均0，分散 \(\sigma^{2}\) の正規分布に従うとき，
+最小二乗推定量 \(\boldsymbol{\hat{\beta}}\) について以下を示しなさい．
+<ul>
+<li>平均は \(\boldsymbol{\beta}\) となる．</li>
+<li>共分散行列は \(\sigma^{2}(X^{\mathsf{T}}X)^{-1}\) となる．</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org7ac0e24" data-background="#fef4f4">
+<h3 id="org7ac0e24">解答例</h3>
+<ul>
+<li><p>
+定義にもとづいて計算する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathbb{E}[\boldsymbol{\hat{\beta}}]
+  &=
+    \mathbb{E}[\boldsymbol{\beta}
+    +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}]\\
+  &=
+    \boldsymbol{\beta}
+    +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\mathbb{E}[\boldsymbol{\epsilon}]\\
+  &=
+    \boldsymbol{\beta}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+定義にもとづいて計算する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathrm{Cov}(\boldsymbol{\hat{\beta}})
+  &=
+    \mathbb{E}[
+    (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})
+    (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})^{\mathsf{T}}]\\
+  &=
+    \mathbb{E}[(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
+    \boldsymbol{\epsilon}^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}]\\
+  &=
+    (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+    \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
+    X(X^{\mathsf{T}}X)^{-1}\\
+  &=
+    (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+    (\sigma^{2}I)
+    X(X^{\mathsf{T}}X)^{-1}\\
+  &=
+    \sigma^{2}
+    (X^{\mathsf{T}}X)^{-1}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org9440033">
+<h2 id="org9440033">誤差の評価</h2>
+<div class="outline-text-2" id="text-org9440033">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org9e92ca9">
+<h3 id="org9e92ca9">各係数の推定量の分布</h3>
+<ul>
+<li>推定された回帰係数の精度を評価:
+<ul>
+<li>誤差の分布は平均0, 分散 \(\sigma^2\) の正規分布</li>
+<li><p>
+\(\boldsymbol{\hat{\beta}}\) の分布:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{\hat{\beta}}
+  \sim
+  \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
+\end{equation}
+
+</div>
+
+<p>
+\(p+1\) 変量正規分布
+</p>
+</blockquote></li>
+<li><p>
+\(\hat{\beta}_j\) の分布:
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \hat{\beta}_{j}
+  \sim
+  \mathcal{N}(\beta_{j},\sigma^{2}((X^{\mathsf{T}}X)^{-1})_{jj})
+  =\mathcal{N}(\beta_{j},\sigma^{2}\xi_{j})
+\end{equation}
+
+</div>
+
+<p>
+\((A)_{jj}\) は 
+行列
+\(A\)
+の \((j,j)\) (対角)成分 
+</p>
+</blockquote></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgc6802b2">
+<h3 id="orgc6802b2">標準誤差</h3>
+<ul>
+<li><p>
+<b>標準誤差</b> (standard error):
+\(\hat{\beta}_j\) の標準偏差の推定量
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \hat{\sigma}\sqrt{\xi}_j
+  =
+  \sqrt{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
+  \cdot
+  \sqrt{((X^{\mathsf{T}}X)^{-1})_{jj}}
+\end{equation}
+
+</div>
+</blockquote>
+<ul>
+<li>未知母数 \(\sigma^{2}\) は不偏分散 \(\hat{\sigma}^{2}\) で推定</li>
+<li>\(\hat{\beta}_j\) の精度の評価指標</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgcaf8ddb" data-background="#fef4f4">
+<h2 id="orgcaf8ddb">演習</h2>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgec671fd" data-background="#fef4f4">
+<h3 id="orgec671fd">問題</h3>
+<ul>
+<li>以下を示しなさい．
+<ul>
+<li><p>
+不偏分散 \(\hat{\sigma}^{2}\) が
+母数 \(\sigma^{2}\) の不偏な推定量となる．
+</p>
+<blockquote>
+<p>
+以下が成り立つことを示せばよい
+</p>
+<div>
+\begin{equation}
+  \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
+  =(n-p-1)\sigma^{2}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org57b8ab8" data-background="#fef4f4">
+<h3 id="org57b8ab8">解答例</h3>
+<ul>
+<li><p>
+ハット行列 \(H\) を用いた表現を利用する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \boldsymbol{\hat{\epsilon}}
+  &=
+    (I_{n}-H)\boldsymbol{\epsilon}\\
+  \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
+  &=
+    \mathbb{E}[\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}]\\
+  &=
+    \mathbb{E}[\mathrm{tr}
+    (\boldsymbol{\hat{\epsilon}}
+    \boldsymbol{\hat{\epsilon}}^{\mathsf{T}})]\\
+  &=
+    \mathbb{E}[\mathrm{tr}
+    (I_{n}-H)\boldsymbol{\epsilon}
+    \boldsymbol{\epsilon}^{\mathsf{T}}(I_{n}-H)]\\
+  &=
+    \mathrm{tr}(I_{n}-H)
+    \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
+    (I_{n}-H)\\
+  &=
+    \mathrm{tr}
+    (I_{n}-H)(\sigma^{2}I_{n})(I_{n}-H)\\
+  &=
+    \sigma^{2}\mathrm{tr}(I_{n}-H)
+\end{align}
+
+</div>
+
+<p>
+但し \(I_{n}\) は \(n\times n\) 単位行列
+</p>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+さらに以下が成立する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathrm{tr} H
+  &=
+    \mathrm{tr} X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\\
+  &=
+    \mathrm{tr} (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\\
+  &=
+    \mathrm{tr} I_{p+1}\\
+  &=p+1
+\end{align}
+
+</div>
+
+<p>
+行列のサイズに注意
+</p>
+</blockquote></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-orgb1d8847">
+<h2 id="orgb1d8847">係数の評価</h2>
+<div class="outline-text-2" id="text-orgb1d8847">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgf562056">
+<h3 id="orgf562056">\(t\)-統計量</h3>
+<ul>
+<li><p>
+<b>回帰係数の分布に関する定理</b>: <br />
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(t-統計量)}\quad
+  t=\frac{\hat{\beta}_j-\beta_j}{\hat{\sigma}\sqrt{\xi_j}}
+\end{equation}
+
+</div>
+
+<p>
+<b>\(t\)-統計量</b> は自由度 \(n{-}p{-}1\) の \(t\) 分布に従う
+</p>
+</blockquote></li>
+<li>証明には以下の性質を用いる:
+<ul>
+<li>\(\hat{\sigma}{}^2\) と \(\boldsymbol{\hat{\beta}}\) は独立となる</li>
+<li>\((\hat{\beta}_j-\beta_j)/(\sigma\sqrt{\xi}_j)\) は標準正規分布に従う</li>
+<li>\((n{-}p{-}1)\hat{\sigma}^2/\sigma^2=S/\sigma^2\) 
+は自由度 \(n{-}p{-}1\) の \(\chi^{2}\) 分布に従う</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgc3d1f37">
+<h3 id="orgc3d1f37">\(t\)-統計量による検定</h3>
+<ul>
+<li>回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定:
+<ul>
+<li>帰無仮説: \(\beta_j=0\) (\(t\)-統計量が計算できる)</li>
+<li>対立仮説: \(\beta_j\neq0\)</li>
+
+</ul></li>
+<li><p>
+\(p\)-値: 確率変数の絶対値が \(|t|\) を超える確率
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{($p$-値)}
+  =
+  2\int_{|t|}^\infty f(x)dx
+  \quad\text{(両側検定)}
+\end{equation}
+
+</div>
+
+<p>
+\(f(x)\) は自由度 \(n{-}p{-}1\) の \(t\) 分布の確率密度関数
+</p>
+</blockquote>
+<ul>
+<li>帰無仮説 \(\beta_j=0\) が正しければ \(p\) 値は小さくならない</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org06fccb3">
+<h2 id="org06fccb3">モデルの評価</h2>
+<div class="outline-text-2" id="text-org06fccb3">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org9f50d56">
+<h3 id="org9f50d56">\(F\)-統計量</h3>
+<ul>
+<li><p>
+<b>ばらつきの比に関する定理</b>: 
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{(F-統計量)}\quad
+  F=
+  \frac{\frac{1}{p}S_{r}}{\frac{1}{n{-}p{-}1}S}
+%  =\frac{\frac{1}{p}\sum_{i=1}^n(\hat{y}_i-\bar{y})^2}
+%  {\frac{1}{n{-}p{-}1}\sum_{i=1}^n(y_i-\hat{y}_i)^2}
+  =\frac{n{-}p{-}1}{p}\frac{R^2}{1-R^2}
+\end{equation}
+
+</div>
+
+<p>
+\(\beta_1=\dotsb=\beta_p=0\) ならば，
+<b>\(F\)-統計量</b> は自由度 \(p,n{-}p{-}1\) の \(F\) 分布に従う
+</p>
+</blockquote></li>
+<li>証明には以下の性質を用いる:
+<ul>
+<li>\(S_{r}\) と \(S\) は独立となる</li>
+<li>\(S_{r}/\sigma^2\) は自由度 \(p\) の \(\chi^{2}\) 分布に従う</li>
+<li>\(S/\sigma^2\) は自由度 \(n{-}p{-}1\) の \(\chi^{2}\) 分布に従う</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgc0d5b9a">
+<h3 id="orgc0d5b9a">\(F\)-統計量を用いた検定</h3>
+<ul>
+<li>説明変数のうち1つでも役に立つか否かを検定:
+<ul>
+<li>帰無仮説: \(\beta_1=\dotsb=\beta_p=0\) 
+(\(S_r\) が \(\chi^2\) 分布になる)</li>
+<li>対立仮説: \(\exists j\;\beta_j\neq0\)</li>
+
+</ul></li>
+<li><p>
+\(p\)-値: 確率変数の値が \(F\) を超える確率
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \text{($p$-値)}
+  =
+  \int_{F}^\infty f(x)dx
+  \quad\text{(片側検定)}
+\end{equation}
+
+</div>
+
+<p>
+\(f(x)\) は自由度 \(p,n{-}p{-}1\) の \(F\) 分布の確率密度関数
+</p>
+</blockquote>
+<ul>
+<li>帰無仮説 \(\forall j\;\beta_j=0\) が正しければ \(p\) 値は小さくならない</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org6cdb62d">
+<h2 id="org6cdb62d">解析の事例</h2>
+<div class="outline-text-2" id="text-org6cdb62d">
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgd7c0d18">
+<h3 id="orgd7c0d18">データについて</h3>
+<ul>
+<li>気象庁より取得した東京の気候データ <br />
+<ul>
+<li>気象庁 <a href="https://www.data.jma.go.jp/gmd/risk/obsdl/index.php">https://www.data.jma.go.jp/gmd/risk/obsdl/index.php</a></li>
+<li>データ <a href="https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather_reg.csv">https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather_reg.csv</a></li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org28a173a">
+<h3 id="org28a173a">東京の8月の気候の分析</h3>
+<ul>
+<li><p>
+気候 (気温,降雨,日射,降雪,風速,気圧,湿度,雲量) <br />
+に関するデータ(の一部)
+</p>
+<pre class="example">
+	 date temp rain solar snow wind  press humid cloud
+213  2019/8/1 30.5  0.0 20.55    0  2.5 1008.5    80   1.8
+214  2019/8/2 30.2  0.0 20.24    0  2.7 1008.4    80   2.8
+215  2019/8/3 29.4  0.0 25.03    0  2.9 1008.7    78   1.0
+216  2019/8/4 29.4  0.0 24.62    0  2.8 1009.5    76   3.0
+217  2019/8/5 29.8  0.0 26.72    0  3.0 1009.5    75   2.8
+218  2019/8/6 30.3  0.0 24.18    0  3.8 1008.4    76   7.5
+219  2019/8/7 30.4  0.0 24.10    0  3.1 1007.4    74   6.5
+220  2019/8/8 29.9  0.0 22.46    0  2.8 1006.6    78   4.3
+221  2019/8/9 30.1  0.0 25.10    0  3.3 1005.5    74   6.5
+222 2019/8/10 29.6  0.0 22.69    0  3.2 1005.4    76   4.3
+223 2019/8/11 29.4  0.0 23.77    0  2.8 1005.9    76   6.0
+224 2019/8/12 28.8  0.5 17.16    0  2.6 1005.7    81  10.0
+225 2019/8/13 29.3  0.0 15.57    0  2.6 1003.8    83   6.8
+226 2019/8/14 29.2  8.5 15.38    0  3.8 1003.4    85   9.0
+</pre></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li>作成した線形回帰モデルを検討する
+<ul>
+<li>モデル1: 気温 = F(気圧)</li>
+<li>モデル2: 気温 = F(気圧, 日射)</li>
+<li>モデル3: 気温 = F(気圧, 日射, 湿度)</li>
+<li>モデル4: 気温 = F(気圧, 日射, 雲量)</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+観測値とあてはめ値の比較
+</p></li>
+
+</ul>
+
+
+<div id="org9e3f253" class="figure">
+<p><img src="figs/04_models.png" alt="04_models.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>モデルの比較</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+モデル1: 係数とモデルの評価
+</p>
+<pre class="example">
+
+Call:
+lm(formula = TW.model1, data = TW.subset, y = TRUE)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9372 -1.5395  0.3867  1.4446  2.3344 
+
+Coefficients:
+	     Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) 117.37523   95.88549   1.224    0.231
+press        -0.08846    0.09532  -0.928    0.361
+
+Residual standard error: 1.774 on 29 degrees of freedom
+Multiple R-squared:  0.02884,	Adjusted R-squared:  -0.004651 
+F-statistic: 0.8611 on 1 and 29 DF,  p-value: 0.3611
+</pre></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+モデル2: 係数とモデルの評価
+</p>
+<pre class="example">
+
+Call:
+lm(formula = TW.model2, data = TW.subset, y = TRUE)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.6477 -0.3836  0.0493  0.5511  1.8650 
+
+Coefficients:
+	     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 197.29993   61.11379   3.228  0.00317 ** 
+press        -0.17149    0.06086  -2.818  0.00877 ** 
+solar         0.20863    0.03072   6.792 2.23e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.11 on 28 degrees of freedom
+Multiple R-squared:  0.6332,	Adjusted R-squared:  0.607 
+F-statistic: 24.17 on 2 and 28 DF,  p-value: 7.977e-07
+</pre></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+モデル3: 係数とモデルの評価
+</p>
+<pre class="example">
+
+Call:
+lm(formula = TW.model3, data = TW.subset, y = TRUE)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.6475 -0.3836  0.0494  0.5510  1.8652 
+
+Coefficients:
+	      Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)  1.973e+02  6.259e+01   3.152  0.00394 **
+press       -1.715e-01  6.330e-02  -2.709  0.01158 * 
+solar        2.085e-01  6.012e-02   3.469  0.00177 **
+humid       -1.097e-04  6.796e-02  -0.002  0.99872   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.13 on 27 degrees of freedom
+Multiple R-squared:  0.6332,	Adjusted R-squared:  0.5925 
+F-statistic: 15.54 on 3 and 27 DF,  p-value: 4.553e-06
+</pre></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+モデル4: 係数とモデルの評価
+</p>
+<pre class="example">
+
+Call:
+lm(formula = TW.model4, data = TW.subset, y = TRUE)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.4490 -0.4580 -0.0780  0.7019  1.7003 
+
+Coefficients:
+	     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 198.22420   60.53758   3.274 0.002902 ** 
+press        -0.17082    0.06028  -2.834 0.008602 ** 
+solar         0.16740    0.04505   3.716 0.000934 ***
+cloud        -0.12979    0.10459  -1.241 0.225311    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.099 on 27 degrees of freedom
+Multiple R-squared:  0.653,	Adjusted R-squared:  0.6144 
+F-statistic: 16.94 on 3 and 27 DF,  p-value: 2.183e-06
+</pre></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+決定係数と\(F\)-統計量
+</p>
+<ul>
+<li>モデル1</li>
+
+</ul>
+<pre class="example">
+[1] "R2: 0.0288 ; adj. R2: -0.00465 ; F-statistic: 0.861"
+</pre>
+
+
+<ul>
+<li>モデル2</li>
+
+</ul>
+<pre class="example">
+[1] "R2: 0.633 ; adj. R2: 0.607 ; F-statistic: 24.2"
+</pre>
+
+
+<ul>
+<li>モデル3</li>
+
+</ul>
+<pre class="example">
+[1] "R2: 0.633 ; adj. R2: 0.592 ; F-statistic: 15.5"
+</pre>
+
+
+<ul>
+<li>モデル4</li>
+
+</ul>
+<pre class="example">
+[1] "R2: 0.653 ; adj. R2: 0.614 ; F-statistic: 16.9"
+</pre></li>
+
+</ul>
+
+
+<div class="slide-footer"><br></div>
+</section>
+</section>
+<section>
+<section id="slide-org3617d34">
+<h2 id="org3617d34">次週の予定</h2>
+<ul>
+<li>第1日: 回帰モデルの考え方と推定</li>
+<li>第2日: モデルの評価</li>
+<li><b>第3日: モデルによる予測と発展的なモデル</b></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/notes/notes.js"></script>
+<script src="./reveal.js/plugin/search/search.js"></script>
+<script src="./reveal.js/plugin/zoom/zoom.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: true,
+fragmentInURL: true,
+hashOneBasedIndex: false,
+pdfSeparateFragments: false,
+
+overview: true,
+
+transition: 'fade',
+transitionSpeed: 'default',
+chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }},
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+{ src: './reveal.js/plugin/menu/menu.js'},
+{ src: './reveal.js/plugin/chalkboard/chalkboard.js'}]
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,857 @@
+#+TITLE: クラスタ分析
+#+SUBTITLE: 基本的な考え方と階層的方法
+#+AUTHOR: 村田 昇
+#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+DATE: 2020.12.01
+:reveal:
+#+INCLUDE: "./reveal.js/org/mycourse.org"
+#+STARTUP: hidestars content
+# C-c C-x C-v でinlineを切り替え
+# <m C-i でlatex block (math env用)
+# C-c '
+:end:
+
+* COMMENT 講義の予定
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第10回 練習問題解答例
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+  - *第1日: クラスタ分析の考え方と階層的方法*
+  - 第2日: 非階層的方法と分析の評価
+* 今週の内容
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第10回 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
+  - *第1日: クラスタ分析の考え方と階層的方法*
+  - 第2日: 非階層的方法と分析の評価
+
+      
+* クラスタ分析の考え方
+** クラスタ分析
+   - *cluster analysis*
+     #+begin_quote
+     個体の間に隠れている
+     *集まり=クラスタ*
+     を個体間の"距離"にもとづいて発見する方法
+     #+end_quote
+   - 個体間の類似度・距離(非類似度)を定義:
+     - 同じクラスタに属する個体どうしは似通った性質
+     - 異なるクラスタに属する個体どうしは異なる性質
+   - さらなるデータ解析やデータの可視化に利用
+   - 教師なし学習の代表的な手法の一つ
+
+** クラスタ分析の考え方
+   - 階層的方法:
+     - データ点およびクラスタの間に *距離* を定義
+     - 距離に基づいてグループ化:
+       - 近いものから順にクラスタを *凝集*
+       - 近いものが同じクラスタに残るように *分割*
+   - 非階層的方法:
+     - クラスタの数を事前に指定
+     - クラスタの *集まりの良さ* を評価する損失関数を定義
+     - 損失関数を最小化するようにクラスタを形成
+
+** 事例
+   - 総務省統計局より取得した都道府県別の社会生活統計指標の一部
+     - 総務省 [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
+     - データ https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv
+       #+begin_quote
+       - Pref: 都道府県名
+       - Forest: 森林面積割合 (%) 2014年
+       - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+       - Ratio: 全国総人口に占める人口割合 (%) 2015年
+       - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+       - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+       #+end_quote
+   #+reveal: split
+   - データの内容
+     #+begin_src R :exports results :tangle yes
+       ## データの読み込み
+       JS.data <- read.csv("data/japan_social.csv", row.names=1)
+       print(JS.data)
+     #+end_src
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_pairs.png :exports results :results graphics :tangle yes
+     ## データの視覚化
+     plot(JS.data, col="blue") # いくつかの変数は相関強い
+   #+end_src
+   #+CAPTION: データの散布図
+   #+NAME: fig:10_pairs
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_pairs.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_pcaplot.png :exports results :results graphics :tangle yes
+     ## 主成分分析
+     require(cluster)
+     clusplot(x=JS.data,
+              clus=pam(daisy(JS.data,stand=TRUE),k=7)$clustering,
+              diss=FALSE,
+              stand=TRUE, lines=0, labels=3, 
+              main=NULL, sub=NULL, cex=1,
+              col.p="blue", col.clus="white", shade=FALSE)
+   #+end_src
+   #+CAPTION: 主成分得点の散布図
+   #+NAME: fig:10_pcaplot
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_pcaplot.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_clusplot.png :exports results :results graphics :tangle yes
+     ## クラスタ分析
+     clusplot(x=JS.data,
+              clus=pam(daisy(JS.data,stand=TRUE),k=7)$clustering,
+              diss=FALSE,
+              stand=TRUE, lines=0, labels=3, 
+              main=NULL, sub=NULL, cex=1,
+              col.p="blue", col.clus="orange", shade=TRUE)
+   #+end_src
+   #+CAPTION: 散布図上のクラスタ構造 (クラスタ分析の概念図)
+   #+NAME: fig:10_clusplot
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_clusplot.png]]
+
+
+* 階層的クラスタリング
+** 凝集的方法の手続き
+   1. データ・クラスタ間の距離を定義する
+      - データ点とデータ点の距離
+      - クラスタとクラスタの距離
+   2. データ点およびクラスタ間の距離を求める
+   3. 最も近い2つを統合し新たなクラスタを形成する
+      - データ点とデータ点
+      - データ点とクラスタ
+      - クラスタとクラスタ
+   4. クラスタ数が1つになるまで2-3の手続きを繰り返す
+
+** 事例
+   - 社会生活統計指標の一部(関東)での例
+     #+header: :width 720 :height 720 :res 100
+     #+begin_src R :file figs/10_hclst0.png :exports results :results graphics :tangle yes
+       myPlot <- function(k) {
+	   tmpa <- JS.data[8:14,]
+	   tmpb <- list(c(1,2,3,4,1,6,7),
+			c(1,2,3,1,1,6,7),
+			c(1,2,2,1,1,6,7),
+			c(1,2,2,1,1,6,1),
+			c(1,1,1,1,1,6,1),
+			c(1,1,1,1,1,1,1))
+	   clusplot(x=tmpa,
+		    clus=c(1,2,3,4,5,6,7),
+		    diss=FALSE,
+		    stand=TRUE, lines=0, labels=3, 
+		    main=NULL, sub=NULL, cex=1,
+		    xlim=c(-2.5,1.5), ylim=c(-1.5,2.2),
+		    col.p="blue", col.clus="white", shade=FALSE)
+	   if(k>0) {
+	       for(i in 1:k) {
+		   clusplot(x=tmpa,
+			    clus=tmpb[[i]],
+			    diss=FALSE,
+			    stand=TRUE, add=TRUE, span=FALSE,
+			    lines=0, lwd=2, col.p="blue", col.clus="orange")
+	       }
+	   }
+       }
+       myPlot(0)
+     #+end_src
+   #+CAPTION: 凝集的方法
+   #+NAME: fig:10_hclst0
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_hclst0.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_hclst1.png :exports results :results graphics :tangle yes
+     myPlot(1)
+   #+end_src
+   #+CAPTION: クラスタリングの手続き (その1)
+   #+NAME: fig:10_hclst1
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_hclst1.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_hclst2.png :exports results :results graphics :tangle yes
+     myPlot(2)
+   #+end_src
+   #+CAPTION: クラスタリングの手続き (その2)
+   #+NAME: fig:10_hclst2
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_hclst2.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_hclst3.png :exports results :results graphics :tangle yes
+     myPlot(3)
+   #+end_src
+   #+CAPTION: クラスタリングの手続き (その3)
+   #+NAME: fig:10_hclst3
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_hclst3.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_hclst4.png :exports results :results graphics :tangle yes
+     myPlot(4)
+   #+end_src
+   #+CAPTION: クラスタリングの手続き (その4)
+   #+NAME: fig:10_hclst4
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_hclst4.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_hclst5.png :exports results :results graphics :tangle yes
+     myPlot(5)
+   #+end_src
+   #+CAPTION: クラスタリングの手続き (その5)
+   #+NAME: fig:10_hclst5
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_hclst5.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_hclst6.png :exports results :results graphics :tangle yes
+     myPlot(6)
+   #+end_src
+   #+CAPTION: クラスタリングの手続き (その6)
+   #+NAME: fig:10_hclst6
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_hclst6.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_dendro.png :exports results :results graphics :tangle yes
+     plot(agnes(scale(JS.data[8:14,])), which.plots=2,
+          main="",sub="",xlab="")
+   #+end_src
+   #+CAPTION: デンドログラムによるクラスタ構造の表示
+   #+NAME: fig:10_dendro
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_dendro.png]]
+
+   
+* データ間の距離   
+** データ間の距離
+   - データ: 変数の値を成分としてもつベクトル
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \boldsymbol{x}_{i}=(x_{i1},\dotsc,x_{ip})^{\mathsf{T}},
+         \boldsymbol{x}_{j}=(x_{j1},\dotsc,x_{jp})^{\mathsf{T}}\in\mathbb{R}^p
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 距離: $d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})$
+   - 代表的なデータ間の距離:
+     - ユークリッド距離 (Euclidean distance)
+     - マンハッタン距離 (Manhattan distance)
+     - ミンコフスキー距離 (Minkowski distance)
+
+** ユークリッド距離
+   - 最も一般的な距離
+   - 各成分の差の2乗和の平方根 (2ノルム)
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation*}
+         d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+         =\sqrt{(x_{i1}-x_{j1})^{2}+\dotsb+(x_{ip}-x_{jp})^{2}}
+       \end{equation*}
+     #+end_src
+     #+end_quote
+
+** マンハッタン距離
+   - 後述するミンコフスキー距離の $q=1$ の場合
+   - 格子状に引かれた路に沿って移動するときの距離
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation*}
+         d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+         =|x_{i1}-x_{j1}|+\dotsb+|x_{ip}-x_{jp}|
+       \end{equation*}
+     #+end_src
+     #+end_quote
+
+** ミンコフスキー距離
+   - ユークリッド距離を $q$ 乗に一般化した距離
+   - 各成分の差の $q$ 乗和の $q$ 乗根($q$ ノルム)
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation*}
+         d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+         =\bigl\{|x_{i1}-x_{j1}|^{q}+\dotsb+|x_{ip}-x_{jp}|^{q}\bigr\}^{1/q}
+       \end{equation*}
+     #+end_src
+     #+end_quote
+
+** その他の距離
+   - 類似度や乖離度などデータ間に自然に定義されるものを用いることは可能
+     - 語句の共起 (同一文書に現れる頻度・確率)
+     - 会社間の取引量 (売上高などで正規化が必要)
+   - 擬似的な距離でもアルゴリズムは動く
+
+
+* 演習
+** 問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下の問に答えなさい．
+     - 距離の定義を述べなさい
+     - ミンコフスキー距離において
+       \(q\to\infty\)
+       とするとどのような距離となるか答えなさい
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation*}
+           d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+           =\bigl\{|x_{i1}-x_{j1}|^{q}+\dotsb+|x_{ip}-x_{jp}|^{q}\bigr\}^{1/q}
+         \end{equation*}
+       #+end_src
+       #+end_quote
+       
+** 解答例
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 2変数の実数値関数で以下の3つの条件を満たす
+     #+begin_quote
+     - 非退化性
+       #+begin_src latex
+         \begin{equation}
+           x=y \Leftrightarrow d(x,y)=0
+         \end{equation}
+       #+end_src
+     - 対称性
+       #+begin_src latex
+         \begin{equation}
+           d(x,y)=d(y,x)
+         \end{equation}
+       #+end_src
+     - 劣加法性 (三角不等式の成立)
+       #+begin_src latex
+         \begin{equation}
+           d(x,y)+d(y,z)\ge d(x,z)
+         \end{equation}
+       #+end_src
+     #+end_quote
+   #+reveal: split
+   - 非負性 \(d(x,y)\ge 0\) は3つの条件から自然に導かれる
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         &d(x,y)+d(y,x)\ge d(x,x)&&\text{(劣加法性)}\\
+         &d(x,y)+d(x,y)\ge d(x,x)&&\text{(対称性)}\\
+         &2d(x,y)\ge 0&&\text{(非退化性)}\\
+         &d(x,y)\ge 0
+       \end{align}
+     #+end_src
+     #+end_quote
+   #+reveal: split
+   - 最大の要素に着目して計算すればよい
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \lim_{q\to\infty} d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+         &=
+           \lim_{q\to\infty} 
+           \bigl\{|x_{i1}-x_{j1}|^{q}+\dotsb+|x_{ip}-x_{jp}|^{q}\bigr\}^{1/q}\\
+         &=
+           \lim_{q\to\infty} \max_{r}|x_{ir}-x_{jr}|
+           \left\{
+           \left(\frac{|x_{i1}-x_{j1}|}{\max_{r}|x_{ir}-x_{jr}|}
+           \right)^{q}
+           \right.\\
+         &\qquad
+           +\dotsb
+           \left.
+           \left(\frac{|x_{ip}-x_{jp}|}{\max_{r}|x_{ir}-x_{jr}|}
+           \right)^{q}
+           \right\}^{1/q}\\
+         &=
+           \max_{r}|x_{ir}-x_{jr}|
+           \lim_{q\to\infty} 
+           \text{(1以上の有限値)}^{1/q}\\
+         &=
+           \max_{r}|x_{ir}-x_{jr}|
+       \end{align}
+     #+end_src
+     チェビシェフ距離(最大距離，チェス盤距離)という
+     #+end_quote
+   #+reveal: split
+   - \(q\to-\infty\) の場合は以下となることを確認せよ
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \lim_{q\to-\infty} d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+         =\min_{r}|x_{ir}-x_{jr}|
+       \end{equation}
+     #+end_src
+     #+end_quote
+
+     
+* COMMENT 実習
+** R: 関数 ~dist()~ 
+   - 距離の計算
+     #+begin_src R :eval no
+     #+end_src
+** R: 関数 ~cluster::()~ 
+   - 距離の計算
+     #+begin_src R :eval no
+     #+end_src
+
+** 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下を確認しなさい
+     - データの読み込み
+     - 距離の計算 (距離行列から特定のペアを取り出す)
+     - shep0ard plotか
+   距離を比較させる問題を考える
+   ユークリッド距離とマンハッタン距離でのデータ間の違い
+   shepard plotを考えさせる．
+     #+begin_src R :eval no :exports none :tangle yes
+       ### 練習1
+       ### 距離の計算
+     #+end_src
+
+
+* クラスタ間の距離   
+** クラスタ間の距離
+   - クラスタ: いくつかのデータ点からなる集合
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation*}
+         C_{a}=\left\{\boldsymbol{x}_{i}|i\in\Lambda_{a}\right\},\quad
+         C_{b}=\left\{\boldsymbol{x}_{j}|j\in\Lambda_{b}\right\}
+       \end{equation*}
+     #+end_src
+     #+end_quote
+   - 2つのクラスタ間の距離: $D(C_{a},C_{b})$
+     - データ点の距離から陽に定義する方法
+     - クラスタの統合にもとづき再帰的に定義する方法
+   - 代表的なクラスタ間の距離
+     - 最短距離法 (単連結法; single linkage method)
+     - 最長距離法 (完全連結法; complete linkage method)
+     - 群平均法 (average linkage method)
+
+** 最短距離法
+   - 最も近い対象間の距離を用いる方法:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         D(C_{a},C_{b})
+         =\min_{\boldsymbol{x}_{i}\in C_{a},\;\boldsymbol{x}_{j}\in C_{b}} d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 統合前後のクラスタ間の関係:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         D(C_{a}+ C_{b}, C_{c})
+         =\min\bigl\{D(C_{a},C_{c}), D(C_{b},C_{c})\bigr\}
+         % =\min\left\{D(C_{a},C_{c}), D(C_{b},C_{c})\right\}
+       \end{equation}
+     #+end_src
+     #+end_quote
+
+** 最長距離法
+   - 最も遠い対象間の距離を用いる方法:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         D(C_{a},C_{b})
+         =\max_{\boldsymbol{x}_{i}\in C_{a},\;\boldsymbol{x}_{j}\in C_{b}} d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 統合前後のクラスタ間の関係:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         D(C_{a}+ C_{b}, C_{c})
+         =\max\bigl\{D(C_{a},C_{c}), D(C_{b},C_{c})\bigr\}
+         % =\max\left\{D(C_{a},C_{c}), D(C_{b},C_{c})\right\}
+       \end{equation}
+     #+end_src
+     #+end_quote
+
+** 群平均法
+   - 全ての対象間の平均距離を用いる方法:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         D(C_{a},C_{b})
+         =\frac{1}{|C_{a}||C_{b}|}
+         \sum_{\boldsymbol{x}_{i}\in C_{a},\;\boldsymbol{x}_{j}\in C_{b}} d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+       \end{equation}
+     #+end_src
+     #+end_quote
+     ただし $|C_{a}|$, $|C_{b}|$ はクラスタ内の要素の数を表す
+   - 統合前後のクラスタ間の関係:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         D(C_{a}+ C_{b}, C_{c})
+         =\frac{|C_{a}|D(C_{a},C_{c})+|C_{b}|D(C_{b},C_{c})}{|C_{a}|+|C_{b}|}
+       \end{equation}
+     #+end_src
+     #+end_quote
+
+** 距離計算に関する注意
+   - データの性質に応じて距離は適宜使い分ける
+     - データ間の距離の選択
+     - クラスタ間の距離の選択
+   - 変数の正規化は必要に応じて行う
+     - 物理的な意味合いを積極的に利用する場合はそのまま
+     - 単位の取り方などによる分析の不確定性を避ける場合は平均0，分散1に正規化
+   - データの性質を鑑みて適切に前処理
+
+
+* 演習
+** 問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下の問に答えなさい
+     - 群平均法におけるクラスタの距離の定義
+       #+begin_quote
+       #+begin_src latex
+	 \begin{equation}
+           D(C_{a},C_{b})
+           =\frac{1}{|C_{a}||C_{b}|}
+           \sum_{\boldsymbol{x}_{i}\in C_{a},\;\boldsymbol{x}_{j}\in C_{b}} d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})
+         \end{equation}
+       #+end_src
+       #+end_quote
+       から統合前後のクラスタの距離の関係
+       #+begin_quote
+       #+begin_src latex
+	 \begin{equation}
+           D(C_{a}+ C_{b}, C_{c})
+           =\frac{|C_{a}|D(C_{a},C_{c})+|C_{b}|D(C_{b},C_{c})}{|C_{a}|+|C_{b}|}
+         \end{equation}
+       #+end_src
+       #+end_quote
+       を導け
+** 解答例
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 定義に従って計算する
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         D(C_{a}+C_{b}, C_{c})
+         &=
+           \frac{1}{|C_{a}+C_{b}||C_{c}|}
+           \sum_{\boldsymbol{x}_{i}\in C_{a}+C_{b},\;\boldsymbol{x}_{j}\in C_{c}}
+           d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})\\
+         &=
+           \frac{1}{|C_{a}+C_{b}||C_{c}|}
+           \sum_{\boldsymbol{x}_{i}\in C_{a},\;\boldsymbol{x}_{j}\in C_{c}}
+           d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})\\
+         &\qquad+
+           \frac{1}{|C_{a}+C_{b}||C_{c}|}
+           \sum_{\boldsymbol{x}_{i}\in C_{b},\;\boldsymbol{x}_{j}\in C_{c}}
+           d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})\\
+       \end{align}
+     #+end_src
+     #+end_quote
+   #+reveal: split
+      - (続き)
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         &=
+           \frac{|C_{a}||C_{c}|}{|C_{a}+C_{b}||C_{c}|}
+           \frac{1}{|C_{a}||C_{c}|}
+           \sum_{\boldsymbol{x}_{i}\in C_{a},\;\boldsymbol{x}_{j}\in C_{c}}
+           d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})\\
+         &\qquad+
+           \frac{|C_{b}||C_{c}|}{|C_{a}+C_{b}||C_{c}|}
+           \frac{1}{|C_{b}||C_{c}|}
+           \sum_{\boldsymbol{x}_{i}\in C_{b},\;\boldsymbol{x}_{j}\in C_{c}}
+           d(\boldsymbol{x}_{i},\boldsymbol{x}_{j})\\
+         &=
+           \frac{|C_{a}||C_{c}|}{|C_{a}+C_{b}||C_{c}|}
+           D(C_{a}, C_{c})
+           +
+           \frac{|C_{b}||C_{c}|}{|C_{a}+C_{b}||C_{c}|}
+           D(C_{b}, C_{c})\\
+         &=
+           \frac{|C_{a}|D(C_{a}, C_{c})+|C_{b}|D(C_{b}, C_{c})}
+           {|C_{a}|+|C_{b}|}
+       \end{align}
+     #+end_src
+     #+end_quote
+
+
+* COMMENT 実習
+** COMMENT 演習: 階層的クラスタリング
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/11-hclust.r][11-hclust.r]] を確認してみよう
+
+** 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下を確認しなさい
+     - 課題
+     - 新しいデータでも行う
+     #+begin_src R :eval no :exports none :tangle yes
+       ### 練習2.1
+       ### 階層的クラスタリング
+
+       ### 総務省統計局の統計データによる例
+       ## http://www.stat.go.jp/data/shihyou/naiyou.htm
+       ## 社会生活統計指標－都道府県の指標－2017 社会生活統計指標 2017年2月17日公表
+       ## http://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0
+       ## 1. Ratio of forest area
+       ##    森林面積割合 [2014; %] 
+       ## 2. Gross agricultural product per agricultural worker
+       ##    就業者１人当たり農業産出額(販売農家）[2014; 万円]
+       ## 3. Percentage distribution by prefecture
+       ##    全国総人口に占める人口割合 [2015; %]
+       ## 4. Land productivity
+       ##    土地生産性（耕地面積１ヘクタール当たり）[2014; 万円]
+       ## 5. Annual sales of commercial goods
+       ##    商業年間商品販売額［卸売業＋小売業］（事業所当たり）[2013; 百万円]
+       mydata <- read.csv(file="data/japan_social.csv",
+			  fileEncoding="utf8",
+			  row.names=1,
+			  header=TRUE) 
+       ## 階層的クラスタリングの実行:
+       dst <- dist(scale(mydata)) # 正規化してユークリッド距離を測る
+       est <- hclust(dst, method="average") # 群平均法
+       ## est <- hclust(dst, method="ward.D2") # Ward法
+       plot(est) # デンドログラムの表示
+       ## 結果の確認 (各クラスタ内の県名を表示)
+       k <- 7 # 分割数を指定
+       clust <- cutree(est,k) # デンドログラムを分割
+       perf <- rownames(mydata) # 県名の取得
+       for(i in 1:k){
+	   cat("[ cluster",i,"]\n")
+	   print(perf[clust==i])
+       }
+     #+end_src
+
+** データセットの準備
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下のデータセットを使用します
+     - ~winequality-red.~
+       #+begin_quote
+       UC Irvine Machine Learning Repository で公開されている
+       Wine Quality Data Set の一部
+       #+end_quote
+       [[https://archive.ics.uci.edu/ml/datasets/Wine+Quality]]
+     - 以下に download せずに読み込む方法を紹介します
+       #+begin_src R :eval no
+       #+end_src
+** 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下を確認しなさい
+     - 新しいデータでも同じように行う
+     - 地方との関係を調べる
+     #+begin_src R :eval no :exports none :tangle yes
+       ### 練習2.2
+       ### 階層的クラスタリング
+     #+end_src
+
+
+* 解析事例
+** 都道府県別の社会生活統計指標
+   - 各データを正規化
+     #+begin_quote
+     - Forest: 森林面積割合 (%) 2014年
+     - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+     - Ratio: 全国総人口に占める人口割合 (%) 2015年
+     - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+     - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+     #+end_quote
+   - ユークリッド距離 + 群平均法
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_jsclst.png :exports results :results graphics :tangle yes
+     ## 階層的クラスタリングの実行:
+     JS.dst <- dist(scale(JS.data)) # 正規化してユークリッド距離を測る
+     JS.est <- hclust(JS.dst, method="average") # 群平均法
+     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+     plot(JS.est,
+          sub="", xlab="", cex=0.8,
+          main="ユークリッド距離 + 群平均法") # デンドログラムの表示
+   #+end_src
+   #+CAPTION: 社会生活統計指標のクラスタ分析 (デンドログラム)
+   #+NAME: fig:10_jsclst
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_jsclst.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_jscut.png :exports results :results graphics :tangle yes
+     k <- 5 # 分割数を指定
+     plot(JS.est,
+          hang=-1, cex=0.8,
+          sub="", xlab="", main="")
+     rect.hclust(JS.est, k=k, border="orange") 
+   #+end_src
+   #+CAPTION: クラスタの分割
+   #+NAME: fig:10_jscut
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_jscut.png]]
+
+   #+reveal: split
+   - 5クラスタに分割
+     #+begin_src R :exports results :tangle yes
+       ## 結果の確認 (各クラスタ内の県名を表示)
+       JS.clst <- cutree(JS.est, k=k) # デンドログラムを分割
+       JS.pref <- rownames(JS.data) # 県名の取得
+       for(i in 1:k){
+           cat("<<cluster ",i,">>\n")
+           print(JS.pref[JS.clst==i])
+       }
+     #+end_src
+
+** 都道府県別好きなおむすびの具
+   - Webアンケート
+     - 「ごはんを食べよう国民運動推進協議会」(平成30年解散) \\
+       (閉鎖) http://www.gohan.gr.jp/result/09/anketo09.html
+     - データ https://noboru-murata.github.io/multivariate-analysis/data/omusubi.csv
+   #+reveal: split
+   - アンケート概要
+     : 【応募期間】 2009年1月4日～2009年2月28日
+     : 【応募方法】 インターネット、携帯ウェブ
+     : 
+     : 【内　　容】
+     : Q1. おむすびを最近１週間に、何個食べましたか？
+     :     そのうち市販のおむすびは何個でしたか？
+     : Q2. おむすびの具では何が一番好きですか？
+     :     A.梅 B.鮭 C.昆布 D.かつお E.明太子 F.たらこ Ｇ.ツナ H.その他
+     : Q3. おむすびのことをあなたはなんと呼んでいますか？
+     :     A.おにぎり B.おむすび C.その他
+     : Q4. おむすびといえば、どういう形ですか？
+     :     A.三角形 B.丸形 C.俵形 D.その他
+     : 
+     : 【回答者数】
+     : 男性     9,702人     32.0%
+     : 女性    20,616人     68.0%
+     : 総数    30,318人    100.0%
+     - Q2の結果を利用
+   #+reveal: split
+   - データの内容
+     #+begin_src R :exports results :tangle yes
+       ## パッケージの読み込み
+       require(cluster)
+       require(tidyverse) 
+       require(ggfortify)
+       require(GGally)
+       require(ggdendro)
+       ## データの読み込み("omusubi.csv"を用いる)
+       OM.data <- read.csv(file="data/omusubi.csv", row.names=1)
+       pref <- read.csv(file="data/prefecture.csv", row.names=1)
+       print(OM.data)
+       ## 1つだと処理が難しいので北海道は東北に含める
+       areaname <- c("tohoku","kanto","chubu", 
+                     "kinki","chugoku","chikoku","kyushu")
+       area <- rep(areaname,c(7,7,9,7,5,4,8))
+       rownames(OM.data) <- pref$jp
+     #+end_src
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_ompairs.png :exports results :results graphics :tangle yes
+     ## データの散布図: 
+     ggpairs(data.frame(OM.data,area),
+             columns=1:ncol(OM.data), mapping=aes(colour=area)) +
+         labs(title="おむすびの具 県別人気アンケート (2009)") +
+         theme(text=element_text(family="HiraMaruProN-W4"))
+   #+end_src
+   #+CAPTION: データの散布図
+   #+NAME: fig:10_ompairs
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_ompairs.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_ombar.png :exports results :results graphics :tangle yes
+     ## 県別の人気比率:
+     OM.long <- OM.data %>%
+         tibble::rownames_to_column(var = "prefecture") %>%
+         pivot_longer(-prefecture)
+     ggplot(OM.long,aes(x=prefecture,y=value,fill=name)) +
+         geom_bar(stat="identity",position="fill") +
+         coord_flip() +
+         scale_x_discrete(limits=rev(rownames(OM.data))) +
+         labs(title="おむすびの具 県別人気アンケート (2009)",
+              x="県名",y="人気比率") +
+         theme(legend.position="top",
+               text=element_text(family="HiraMaruProN-W4"))
+   #+end_src
+   #+CAPTION: 県別の人気比率
+   #+NAME: fig:10_ombar
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_ombar.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/10_omclst.png :exports results :results graphics :tangle yes
+     ## 距離計算
+     dst <- daisy(sqrt(OM.data)) # Hellinger距離
+     ## 階層的クラスタリング:
+     hclst <- agnes(dst) # dianaという関数もある
+     ggdendrogram(as.dendrogram(hclst),
+                  rotate=TRUE, theme_dendro=FALSE) +
+         labs(title="おむすびの具人気アンケートによるクラスタ分析",
+              x="県名",y="距離") +
+         theme(text=element_text(family="HiraMaruProN-W4"))
+   #+end_src
+   #+CAPTION: 県別の人気比率
+   #+NAME: fig:10_omclst
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/10_omclst.png]]
+   
+
+* 次週の予定
+  - 第1日: クラスタ分析の考え方と階層的方法
+  - *第2日: 非階層的方法と分析の評価*
+
+
+* COMMENT ローカル変数
+# Local Variables:
+# org-latex-listings: minted
+# End:

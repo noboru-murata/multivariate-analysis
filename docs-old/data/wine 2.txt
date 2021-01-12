@@ -1,0 +1,12 @@
+Bordeaux Wine Vintage Quality and the Weather
+  Data and Results for Wine Regressions 
+    as Reported in Chance Magazine
+                by Ashenfelter, Ashmore and Lalonde
+
+LPRICE2 : Logarithm of Average Vintage Price Relative to 1961
+WRAIN   : Winter (Oct.-March) Rain 
+DEGREES : Average Temperature (April-Sept.)
+HRAIN   : Harvest (August and Sept.) Rain 
+TIME_SV : Time since Vintage (Years) 
+
+URL: http://www.liquidasset.com/winedata.html

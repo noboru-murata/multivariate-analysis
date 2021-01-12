@@ -1,0 +1,858 @@
+#+TITLE: 時系列解析
+#+SUBTITLE: 基本的なモデル
+#+AUTHOR: 村田 昇
+#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+DATE: 2020.12.15
+:reveal:
+#+INCLUDE: "./reveal.js/org/mycourse.org"
+#+STARTUP: hidestars content
+# C-c C-x C-v でinlineを切り替え
+# <m C-i でlatex block (math env用)
+# C-c '
+:end:
+
+* COMMENT 講義の予定
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第13回 練習問題解答例
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+  - *第1日: 時系列のモデル*
+  - 第2日: モデルの推定と予測
+* 今週の内容
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第13回 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
+  - *第1日: 時系列のモデル*
+  - 第2日: モデルの推定と予測
+
+
+* レポートの講評
+** 基本事項
+   - 目的が明確に書かれている
+   - データが目的にもとづいて集められている
+   - 集められたデータにもとづいて仮説を設定している
+   - 複数の数値にもとづいて分析の評価を行なっている
+   - 合理的な考察を行っている
+   - 課題を整理して議論している
+     
+** 加点事項
+   - 参考資料(データも含む)を適切に記述している
+   - 変数を合理的に取捨選択している
+   - 外れ値の評価を合理的に行っている
+   - 説明変数の多重共線性に注意している
+   - 説明変数の変換・交互作用を合理的に議論している
+   - (データに応じていろいろ)
+     
+** 注意すべき事柄
+   - 線形重回帰モデルの難しさ
+     - 係数は説明変数が1変化したときの影響
+     - 説明変数の合成変数と目的変数の比例関係
+     - 標準化する場合は説明変数の分布を考慮
+   - 変数の選択
+     - t統計量はあくまでそのモデルでの変数の役割の評価
+     - モデルが変わると有意になることもありうる
+   - 検定統計量とp-値の解釈
+     - 帰無仮説が正しいときに意味を持つ
+     - p-値は信頼度とは異なる
+     - 帰無仮説が棄却されたとき，統計量の値に意味を求めてはいけない
+   
+
+* 時系列解析の概要
+** 時系列解析とは
+   - 時系列データ
+     - 時間軸に沿って観測されたデータ
+     - 観測の順序に意味がある
+     - 異なる時点間での観測データの従属関係が重要
+     - 独立性にもとづく解析は行えない \\
+       (そのままでは大数の法則や中心極限定理は使えない)
+   - 時系列解析の目的
+     - 時系列データの特徴を効果的に記述すること
+     - 時系列モデルの推定と評価
+
+** 時系列データ
+   - 統計学・確率論における表現: *確率過程*
+   - 時間を添え字として持つ確率変数列:
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_{t},\;t=1,2,\dotsc,T
+         \quad(\text{あるいは}\;t=0,1,\dotsc,T)
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 時系列解析で利用される代表的な確率過程
+     - ホワイトノイズ
+     - ランダムウォーク
+     - 自己回帰モデル (ARモデル)
+     - 移動平均モデル (MAモデル)
+     - 自己回帰移動平均モデル (ARMAモデル)
+
+** COMMENT R: 時系列データの扱い
+   - 時系列のためのクラス: ~ts~, ~zoo~ クラスなど
+     - ベクトル(1次元)データだが，時間に関する情報が付加される
+     - ベクトルからの変換:  関数 ~ts()~ , ~zoo()~ など
+   - 関数 ~plot()~ などの挙動はベクトルと異なる
+     - プロットが既定値で折れ線
+     - x軸に時間の情報が表示
+     - 通常は時間情報を利用して適切に処理してくれる
+
+
+* 基本的なモデル
+** ホワイトノイズ
+   - 定義
+     #+begin_quote
+     \(P\) を
+     平均\(0\)，分散\(\sigma^2\)
+     の確率変数の確率分布とする
+     #+begin_src latex
+       \begin{equation}
+         X_{t}
+         =
+         \epsilon_{t},
+         \quad
+         \epsilon_{t}
+         \overset{i.i.d.}{\sim} P
+       \end{equation}
+     #+end_src
+     #+end_quote
+     # 平均 $0$ ，分散 $\sigma^2$ で互いに無相関な確率変数列
+   - 記号 $\mathrm{WN}(0,\sigma^2)$ で表記することが多い
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         X_{t}
+         \sim
+         \mathrm{WN}(0,\sigma^2)
+       \end{equation}
+     #+end_src
+     #+end_quote
+   - 独立であるため系列としての予測は不可能
+
+** トレンドのあるホワイトノイズ
+   - 定義
+     #+begin_quote
+     $\mu,\alpha$ を定数として
+     #+begin_src latex
+       \begin{equation}
+         X_{t}=\mu+\alpha t+\epsilon_{t},
+         \quad
+         \epsilon_{t}
+         \sim
+         \mathrm{WN}(0,\sigma^2)
+       \end{equation}
+     #+end_src
+     で与えられる確率過程
+     #+end_quote
+     # で与えられる確率過程 $X_{t},\;t=1,\dotsc,T$
+   - $\mu+\alpha t$: *トレンド*
+   - *平均* が時間とともに変動する時系列モデルの1つ
+   - トレンド項はより一般化されることもある
+     - $t$ の1次式 (上記の基本的な場合)
+     - 高次の多項式
+     - 非線形関数(指数関数, 三角関数など)
+
+** ランダムウォーク
+   - 定義
+     #+begin_quote
+     $X_0$ を定数もしくは確率変数として
+     #+begin_src latex
+       \begin{equation}
+         X_{t}=X_{t-1}+\epsilon_{t},
+         \quad
+         \epsilon_{t}
+         \sim
+         \mathrm{WN}(0,\sigma^2)
+       \end{equation}
+     #+end_src
+     で帰納的に定義される確率過程
+     #+end_quote
+   - *分散* が時間とともに増加する時系列モデルの1つ
+   - 最も単純な *記憶* のあるモデル
+
+
+* 人工データによる例
+  - 同じモデルに従うパス(系列)を複数観測してみる
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_wn.png :exports results :results graphics :tangle yes
+     ### ホワイトノイズの生成
+     require(RColorBrewer)
+     k <- 4 # 系列の数
+     myCol <- brewer.pal(k,"Dark2")
+
+     n <- 200 # 時系列の長さ
+
+     ## 正規分布を利用
+     set.seed(123)
+     plot(x=ts(1:n),
+	  ylim=c(-3,3), ylab="value",
+	  main=expression(X[t] == epsilon[t]),
+	  type="n")
+     for(i in 1:k) {
+	 x <- rnorm(n)
+	 ## x <- ts(rt(n, df=4)) # 自由度4のt分布の場合
+	 lines(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: ホワイトノイズ
+   #+NAME: fig:12_wn
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_wn.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_trwn.png :exports results :results graphics :tangle yes
+     ### トレンドのあるホワイトノイズ
+     set.seed(123)
+     plot(x=ts(1:n),
+	  ylim=c(-3,10), ylab="value",
+	  main=expression(X[t] == -1 + 0.05 * t + epsilon[t]),
+	  type="n")
+     for(i in 1:k) {
+	 x <- rnorm(n) -1 + 0.05*(1:n)
+	 lines(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: トレンドのあるホワイトノイズ
+   #+NAME: fig:12_trwn
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_trwn.png]]
+   
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_rw.png :exports results :results graphics :tangle yes
+     ### ランダムウォーク
+     set.seed(123)
+     plot(x=ts(1:n),
+	  ylim=c(-15,15), ylab="value",
+	  main=expression(X[t] == X[t-1] + epsilon[t]),
+	  type="n")
+     for(i in 1:k) {
+	 x <- cumsum(rnorm(n))
+	 lines(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: ランダムウォーク
+   #+NAME: fig:12_rw
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_rw.png]]
+    
+   
+* 演習
+** 問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下の問に答えなさい．
+     - トレンドのあるホワイトノイズ\(X_{t}\)の
+       - 平均 \(\mathbb{E}[X_{t}]\)
+       - 分散 \(\mathrm{Var}(X_{t})\)
+       を求めなさい
+     - ランダムウォークの平均と分散を求めなさい
+
+** 解答例
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 定義に従い計算する
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \mathbb{E}[X_{t}]
+         &=
+           \mathbb{E}[\mu+\alpha t+\epsilon_{t}]\\
+         &=
+           \mathbb{E}[\mu]+\mathbb{E}[\alpha t]+\mathbb{E}[\epsilon_{t}]\\
+         &=
+           \mu+\alpha t\\
+         \mathrm{Var}(X_{t})
+         &=
+           \mathrm{Var}(\mu+\alpha t+\epsilon_{t})\\
+         &=
+           \mathrm{Var}(\mu)+\mathrm{Var}(\alpha t)
+           +\mathrm{Var}(\epsilon_{t})\\
+         &=
+           \sigma^{2}
+       \end{align}
+     #+end_src
+     #+end_quote
+   #+reveal: split
+   - 定義に従い帰納的に計算する
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \mathbb{E}[X_{t}]
+         &=
+           \mathbb{E}[X_{t-1}+\epsilon_{t}]\\
+         &=
+           \mathbb{E}[X_{t-1}]+\mathbb{E}[\epsilon_{t}]\\
+         &=
+           \mathbb{E}[X_{1}]\\
+         \mathrm{Var}(X_{t})
+         &=
+           \mathrm{Var}(X_{t-1}+\epsilon_{t})\\
+         &=
+           \mathrm{Var}(X_{t-1})+\mathrm{Var}(\epsilon_{t})\\
+         &=
+           \mathrm{Var}(X_{1})+(t-1)\cdot\sigma^{2}
+       \end{align}
+     #+end_src
+     #+end_quote
+
+
+* COMMENT 実習
+** 演習: ホワイトノイズを作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-wn.r][13-wn.r]] を確認してみよう
+   - ホワイトノイズの典型的な例
+     - 平均 $0$ で分散有限の同一の分布に従う独立な確率変数列
+     - Rでのシミュレーション:
+       - 正規分布 ~rnorm()~ 
+       - t分布 ~rt()~
+       - その他適当な乱数生成器
+** 演習: トレンドのあるホワイトノイズを作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-trend.r][13-trend.r]] を確認してみよう
+** 演習: ランダムウォークを作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-rw.r][13-rw.r]] を確認してみよう
+
+
+* より一般的なモデル
+** 自己回帰過程
+   - 定義 (次数\(p\); AR(p), auto regressive の略)
+     #+begin_quote
+     \(a_1,\dotsc,a_p\)を定数とし，
+     \(X_1,\dotsc,X_p\)が初期値として与えられたとき，
+     #+begin_src latex
+       \begin{equation}
+         X_{t}=a_1X_{t-1}+\cdots+a_pX_{t-p}+\epsilon_{t},
+         \quad
+         \epsilon_{t}
+         \sim
+         \mathrm{WN}(0,\sigma^2)
+       \end{equation}
+     #+end_src
+     で帰納的に定義される確率過程
+     #+end_quote
+     - ランダムウォークの一般化
+       - $p=1, a_1=1$ かつ $\epsilon_{t}$ が独立同分布ならランダムウォーク
+     - *忘却* しながら記憶するモデル ($|a_i|<1$ などの条件が必要)
+
+** 移動平均過程
+   - 定義 (次数\(q\); MA(q), moving average の略)
+     #+begin_quote
+     \(b_1,\dotsc,b_q\)を定数とし，
+     \(X_1,\dotsc,X_q\)が初期値として与えられたとき
+     #+begin_src latex
+       \begin{equation}
+         X_{t}
+         =
+         b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}+\epsilon_{t},
+         \quad
+         \epsilon_{t}
+         \sim
+         \mathrm{WN}(0,\sigma^2)
+       \end{equation}
+     #+end_src
+     で定義される確率過程
+     #+end_quote
+     - 記憶のあるホワイトノイズ (構成する部品を記憶)
+
+** 自己回帰平均移動過程
+   - 定義 (次数\((p,q)\); ARMA(\(p,q\)))
+     #+begin_quote
+     $a_1,\dotsc,a_p,b_1,\dotsc,b_q$ を定数とし，
+     $X_1,\dotsc,X_{\max\{p,q\}}$ が初期値として与えられたとき
+     #+begin_src latex
+       \begin{align}
+         X_{t}
+         &=
+           a_1X_{t-1}+\cdots+a_pX_{t-p}\\
+         &\quad+
+           b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}
+           +\epsilon_{t},\\
+         &\quad
+           \epsilon_{t}
+           \sim
+           \mathrm{WN}(0,\sigma^2)
+       \end{align}
+     #+end_src
+     で帰納的に定まる確率過程
+     #+end_quote
+     - AR($p$)モデルはARMA($p,0$)，MA($q$)モデルはARMA($0,q$)
+     - 単純な形ながら異なる時点間の従属構造を柔軟に記述
+     - 基本的な時系列モデルとして広く利用されている
+
+
+* 人工データによる例
+  - 同じモデルに従うパス(系列)を複数観測してみる
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_ar.png :exports results :results graphics :tangle yes
+     ### AR(2)モデルのシミュレーション
+     set.seed(123)
+     a <- c(0.669, 0.263) # ARの係数
+     plot(x=ts(1:n),
+	  ylim=c(-5,5), ylab="value",
+	  main="AR(2)",
+	  type="n")
+     for(i in 1:k) {
+	 epsilon <- rnorm(n)
+         x0 <- epsilon[1:2]
+	 x <- ts(double(n))
+	 x[1:2] <- x0
+	 for(j in 3:n) x[j] <- a%*%x[j-1:2] + epsilon[j]
+	 lines(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: AR過程
+   #+NAME: fig:12_ar
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_ar.png]]
+   
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_ma.png :exports results :results graphics :tangle yes
+     ### MA(2)モデルのシミュレーション
+     set.seed(123)
+     b <- c(0.438, 0.078) # MAの係数
+     plot(x=ts(1:n),
+	  ylim=c(-5,5), ylab="value",
+	  main="MA(2)",
+	  type="n")
+     for(i in 1:k) {
+	 epsilon <- rnorm(n)
+	 x0 <- epsilon[1:2]   # 初期値は(epsilon1, epsilon2)
+	 x <- ts(double(n))
+	 x[1:2] <- x0
+	 for(j in 3:n) x[j] <- b %*% epsilon[j-1:2] + epsilon[j]
+	 lines(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: MA過程
+   #+NAME: fig:12_ma
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_ma.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_arma.png :exports results :results graphics :tangle yes
+     ### ARMA(2,1)モデルのシミュレーション
+     set.seed(123)
+     a <- c(0.8, -0.64) # ARの係数
+     b <- -0.5          # MAの係数
+     plot(x=ts(1:n),
+	  ylim=c(-5,5), ylab="value",
+	  main="ARMA(2,1)",
+	  type="n")
+     for(i in 1:k) {
+	 epsilon <- rnorm(n)
+	 x0 <- rnorm(2)     # 初期値
+	 x <- ts(double(n))
+	 x[1:2] <- x0
+	 for(j in 3:n) x[j] <- a%*%x[j-1:2] + b*epsilon[j-1] + epsilon[j]
+	 lines(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: ARMA過程
+   #+NAME: fig:12_arma
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_arma.png]]
+   
+
+
+   
+* 演習
+** 問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下の問に答えなさい．
+     - AR(1)の平均と分散を求めなさい
+     - MA(1)の平均と分散を求めなさい
+       
+** 解答例
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 定義に従い帰納的に計算する
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \mathbb{E}[X_{t}]
+         &=
+           \mathbb{E}[a_{1}X_{t-1}+\epsilon_{t}]\\
+         &=
+           a_{1}\mathbb{E}[X_{t-1}]+\mathbb{E}[\epsilon_{t}]\\
+         &=
+           a_{1}^{t-1}\mathbb{E}[X_{1}]\\
+         \mathrm{Var}(X_{t})
+         &=
+           \mathrm{Var}(a_{1}X_{t-1}+\epsilon_{t})\\
+         &=
+           a_{1}^{2}\mathrm{Var}(X_{t-1})+\mathrm{Var}(\epsilon_{t})\\
+         &=
+           a_{1}^{2(t-1)}\mathrm{Var}(X_{1})
+           +\frac{1-a_{1}^{2(t-1)}}{1-a_{1}^{2}}\cdot\sigma^{2}
+       \end{align}
+     #+end_src
+     #+end_quote
+   #+reveal: split
+   - 定義に従い帰納的に計算する
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \mathbb{E}[X_{t}]
+         &=
+           \mathbb{E}[b_{1}\epsilon_{t-1}+\epsilon_{t}]\\
+         &=
+           b_{1}\mathbb{E}[\epsilon_{t-1}]+\mathbb{E}[\epsilon_{t}]\\
+         &=
+           0\\
+         \mathrm{Var}(X_{t})
+         &=
+           \mathrm{Var}(b_{1}\epsilon_{t-1}+\epsilon_{t})\\
+         &=
+           b_{1}^{2}\mathrm{Var}(\epsilon_{t-1})+\mathrm{Var}(\epsilon_{t})\\
+         &=
+           (b_{1}^{2}+1)\cdot\sigma^{2}
+       \end{align}
+     #+end_src
+     #+end_quote
+
+
+* COMMENT 実習
+** 演習: AR過程を作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-ar.r][13-ar.r]] を確認してみよう
+** 演習: MA過程を作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-ma.r][13-ma.r]] を確認してみよう
+
+** 演習: ARMA過程を作ってみる
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/13-arma.r][13-arma.r]] を確認してみよう
+
+
+* 定常過程と非定常過程
+** 弱定常性
+   - 確率過程\(X_{t},\;t=1,\dotsc,T\)が次の性質をもつ:
+     - \(X_{t}\)の平均は時点\(t\)によらない
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \mathbb{E}[X_{t}]=\mu
+           \quad
+           \text{(時間の添字を持たない)}
+         \end{equation}
+       #+end_src
+       #+end_quote
+     - \(X_{t}\)と\(X_{t+h}\)の共分散は時点\(t\)によらず時差\(h\)のみで定まる
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \mathrm{Cov}(X_{t},X_{t+h})
+           =\gamma(h)
+           \quad
+           \text{(時間の添字を持たない)}
+         \end{equation}
+       #+end_src
+       #+end_quote
+     - 特に\(X_{t}\)の分散は時点\(t\)によらない (\(h=0\)の場合)
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \mathrm{Var}(X_{t})
+           =\gamma(0)
+         \end{equation}
+       #+end_src
+       #+end_quote
+
+** 定常性と非定常性
+   - 定常でない確率過程は *非定常* であるという
+   - いろいろな確率過程の定常性
+     - 定常: ホワイトノイズ, MA
+     - 非定常: トレンドのあるホワイトノイズ, ランダムウォーク
+     - 定常にも非定常にもなりうる: AR, ARMA
+
+** 非定常過程の難しさ
+   - 特徴付ける特徴量が不在
+     - 平均や分散などの基本的な統計量が時間によって変動する
+     - 1つの時系列からこれらの統計量の推測はできない
+   - 擬相関
+     - 独立な時系列にも関わらず見掛けの相関が現れることがある
+     - https://tylervigen.com/spurious-correlations
+
+** 非定常過程の取り扱い       
+   - 定常過程とみなせるように変換したあと分析を実行
+     - 階差をとる変換
+       #+begin_quote
+       ランダムウォークは階差をとればホワイトノイズ(定常過程)となる
+       #+begin_src latex
+         \begin{equation}
+           X_{t}=X_{t-1}+\epsilon_{t}
+           \quad\Rightarrow\quad
+           Y_{t}=X_{t}-X_{t-1}=\epsilon_{t}
+         \end{equation}
+       #+end_src
+       #+end_quote
+     - 対数変換
+       #+begin_quote
+       対数変換と階差で微小な比率の変動を取り出すことができる
+       #+begin_src latex
+         \begin{equation}
+           X_{t}=(1+\epsilon_{t})X_{t-1}
+           \quad\Rightarrow\quad
+           Y_{t}=\log(X_{t})-\log(X_{t-1})
+                  =\log(1+\epsilon_{t})
+                  \simeq\epsilon_{t}
+         \end{equation}
+       #+end_src
+       #+end_quote
+     - トレンド成分+季節成分+変動成分への分解
+       #+begin_quote
+       適当な仮説のもとに取り扱いやすい成分の和に分解する
+       #+end_quote
+
+
+* 自己共分散・自己相関
+** 自己共分散・自己相関
+   - 確率過程\(X_{t}\)が定常過程の場合
+     - $X_{t}$ と $X_{t+h}$ の共分散は時点 $t$ によらずラグ\(h\)のみで定まる
+       #+begin_quote
+       *自己共分散* (定常過程の性質よりラグは\(h\ge0\)を考えればよい)
+       #+begin_src latex
+         \begin{equation}
+           \mathrm{Cov}(X_{t},X_{t+h})
+           =\gamma(h)
+         \end{equation}
+       #+end_src
+       #+end_quote
+     - $X_{t}$ と $X_{t+h}$ の相関も $t$ によらずラグ\(h\)のみで定まる
+       #+begin_quote
+       *自己相関*
+       #+begin_src latex
+         \begin{equation}
+           \mathrm{Cov}(X_{t},X_{t+h})/\mathrm{Var}(X_{t})
+           =\gamma(h)/\gamma(0)
+         \end{equation}
+       #+end_src
+       #+end_quote
+   - 異なる時点間での観測データの従属関係を要約するための最も基本的な統計量
+     
+** 標本自己共分散・標本自己相関
+   - 観測データ $X_1,\dotsc,X_{t}$ からの推定
+     - ラグ $h$ の自己共分散の推定: 標本自己共分散
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \hat\gamma(h)
+           =
+           \frac{1}{T}\sum_{t=1}^{T-h}(X_{t}-\bar{X})(X_{t+h}-\bar{X})
+         \end{equation}
+       #+end_src
+       #+end_quote
+       $\bar{X}=\frac{1}{T}\sum_{t=1}^TX_{t}$ は標本平均
+     - ラグ $h$ での自己相関の推定: 標本自己相関
+       #+begin_quote
+       #+begin_src latex
+         \begin{equation}
+           \hat\gamma(h)/\hat\gamma(0)
+           =
+           \frac{\sum_{t=1}^{T-h}(X_{t}-\bar{X})(X_{t+h}-\bar{X})}{\sum_{t=1}^T(X_{t}-\bar{X})^2}
+         \end{equation}
+       #+end_src
+       #+end_quote
+
+
+* 人工データによる例
+  - 同じモデルに従うパス(系列)の自己相関を比較してみる
+    
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_aracf.png :exports results :results graphics :tangle yes
+     ### AR(2)モデルの自己相関
+     set.seed(123)
+     a <- c(0.669, 0.263) # ARの係数
+     par(mfrow=c(2,2))
+     for(i in 1:k) {
+	 epsilon <- rnorm(n)
+         x0 <- epsilon[1:2]
+	 x <- ts(double(n))
+	 x[1:2] <- x0
+	 for(j in 3:n) x[j] <- a%*%x[j-1:2] + epsilon[j]
+         acf(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: AR過程の自己相関
+   #+NAME: fig:12_aracf
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_aracf.png]]
+   
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_maacf.png :exports results :results graphics :tangle yes
+     ### MA(2)モデルの自己相関
+     set.seed(123)
+     b <- c(0.438, 0.078) # MAの係数
+     par(mfrow=c(2,2))
+     for(i in 1:k) {
+	 epsilon <- rnorm(n)
+	 x0 <- epsilon[1:2]   # 初期値は(epsilon1, epsilon2)
+	 x <- ts(double(n))
+	 x[1:2] <- x0
+	 for(j in 3:n) x[j] <- b %*% epsilon[j-1:2] + epsilon[j]
+	 acf(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: MA過程の自己相関
+   #+NAME: fig:12_maacf
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_maacf.png]]
+
+   #+reveal: split
+   #+header: :width 720 :height 720 :res 100
+   #+begin_src R :file figs/12_armaacf.png :exports results :results graphics :tangle yes
+     ### ARMA(2,1)モデルの自己相関
+     set.seed(123)
+     a <- c(0.8, -0.64) # ARの係数
+     b <- -0.5          # MAの係数
+     par(mfrow=c(2,2))
+     for(i in 1:k) {
+	 epsilon <- rnorm(n)
+	 x0 <- rnorm(2)     # 初期値
+	 x <- ts(double(n))
+	 x[1:2] <- x0
+	 for(j in 3:n) x[j] <- a%*%x[j-1:2] + b*epsilon[j-1] + epsilon[j]
+	 acf(x, col=myCol[i])
+     }
+   #+end_src
+   #+CAPTION: ARMA過程の自己相関
+   #+NAME: fig:12_armaacf
+   #+ATTR_HTML: height 100%
+   #+ATTR_LATEX: :width 0.6\linewidth
+   [[file:figs/12_armaacf.png]]
+   
+   
+* 演習
+** 問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 以下の問に答えなさい．
+     - 定常なAR(\(p\))過程を考える．
+       \(\mathbb{E}[X_{t}]=0\) であるとき，
+       AR過程の係数と自己共分散の間に成り立つ関係を考えなさい．
+       
+** 解答例
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - ラグ\(h>0\)の自己共分散を考える
+     #+begin_quote
+     #+begin_src latex
+       \begin{align}
+         \gamma(h)
+         &=
+           \mathbb{E}[X_{t}X_{t+h}]\\
+         &=
+           \mathbb{E}[X_{t}(a_{1}X_{t+h-1}+\dotsb+a_{p}X_{t+h-p}+\epsilon_{t+h})]\\
+         &=
+           a_{1}\mathbb{E}[X_{t}X_{t+h-1}]
+           +\dotsb
+           +a_{p}\mathbb{E}[X_{t}X_{t+h-p}]
+           +\mathbb{E}[X_{t}\epsilon_{t+h}]\\
+         &=
+           a_{1}\gamma(h-1)
+           +\dotsb+
+           a_{p}\gamma(h-p)
+       \end{align}
+     #+end_src
+     #+end_quote
+   #+reveal: split
+   - \(1\le h\le p\) を考えると以下の関係が成り立つ
+     #+begin_quote
+     #+begin_src latex
+       \begin{equation}
+         \begin{pmatrix}
+           \gamma(1)\\
+           \gamma(2)\\
+           \vdots\\
+           \gamma(p)
+         \end{pmatrix}
+         =
+         \begin{pmatrix}
+           \gamma(0)&\gamma(-1)&\dots&\gamma(-p+1)\\
+           \gamma(1)&\gamma(0)&\dots&\gamma(-p+2)\\
+           \vdots&\vdots&\ddots&\vdots\\
+           \gamma(p-1)&\gamma(p-2)&\dots&\gamma(0)
+         \end{pmatrix}
+         \begin{pmatrix}
+           a_{1}\\
+           a_{2}\\
+           \vdots\\
+           a_{p}
+         \end{pmatrix}
+       \end{equation}
+     #+end_src
+     Yule-Walker方程式という
+     #+end_quote
+   #+reveal: split
+   - Yule-Walker方程式の性質
+     - 行列は Toeplitz 行列と呼ばれる
+     - \(\gamma(h)=\gamma(-h)\)より行列は対称行列
+     - 共分散の性質から行列が正定値(非負定値)
+     - 行列が正則ならばARの係数は一意に決まる
+     - 特殊な形を利用した高速な解法としては
+       Levinson–Durbin アルゴリズムが知られている
+
+
+   
+* COMMENT 実習
+** 演習: 自己共分散・自己相関
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   以下のcodeを確認してみよう
+   - [[./code/13-acf.r][13-acf.r]]
+   - [[./code/13-eustock.r][13-eustock.r]] 
+
+   - Rでは関数 ~acf()~ で計算
+
+* 次週の内容
+  - 第1日: 時系列のモデル
+  - *第2日: モデルの推定と予測*
+
+
+* COMMENT ローカル変数
+# Local Variables:
+# org-latex-listings: minted
+# End:
