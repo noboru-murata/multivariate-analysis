@@ -14,8 +14,7 @@ weight = 1001
 ## 講義資料 {#講義資料}
 
 -   [多変量解析](https://noboru-murata.github.io/multivariate-analysis/pdfs/multivariate-analysis.pdf)
-
-随時修正します．
+    随時修正します．
 
 
 ## 参考資料 {#参考資料}
