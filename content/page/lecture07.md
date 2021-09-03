@@ -6,6 +6,9 @@ draft = false
 weight = 1008
 +++
 
+2020年度版
+
+
 ## スライド {#スライド}
 
 {{< myslide base="multivariate-analysis" name="slide07" >}}
