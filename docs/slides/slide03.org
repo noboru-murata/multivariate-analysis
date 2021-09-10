@@ -3,33 +3,51 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-08-14 17:41:17 mura>
-:reveal:
+# Time-stamp: <2021-09-10 17:11:04 mura>
+:REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
-:end:
+:END:
 
 * 講義の内容
-- *第1日: 回帰モデルの考え方と推定*
-- 第2日: モデルの評価
-- 第3日: モデルによる予測と発展的なモデル
+# 早稲田大学
+- *第1回: 回帰モデルの考え方と推定*
+- 第2回: モデルの評価
+- 第3回: モデルによる予測と発展的なモデル
 
 #+begin_src R :eval no :exports none :tangle yes
-  ### 第03回 資料
+  ### 第3講 資料
 #+end_src
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/mva/slide")
 #+end_src
 
+* COMMENT 講義概要
+# 東京大学
+- *第1回: 回帰モデルの考え方と推定*
+- 第2回: モデルの評価
+- 第3回: モデルによる予測と発展的なモデル
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 第3講 サンプルコード
+  ###
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+
 * COMMENT メモ
-- 修正すべき箇所を記載する
+- 第3講以降は同じファイルを使うように整理する
+- 同じタイトルの項目にはメモを入れる
+- 演習の内容が異なるので演習は2つ作る形で対応
 
 
 * 回帰分析の考え方
-** 回帰分析 (regression analysis)
+** 回帰分析
 - ある変量を別の変量で説明する関係式を構成
 - 関係式: *回帰式* (regression equation)
   - 説明される側: *目的変数*, 被説明変数, 従属変数, 応答変数
@@ -41,15 +59,7 @@
 ** 一般の回帰の枠組
 - 説明変数: \(x_1,\dotsc,x_p\) (p次元)
 - 目的変数: \(y\) (1次元)
-- 観測データ: n個の \((y,x_1,\dotsc,x_p)\) の組
-  #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \{(y_i,x_{i1},\dotsc,x_{ip})\}_{i=1}^n
-    \end{equation}
-  #+end_src
-  #+end_quote
-- \(y\) を \(x_1,\dotsc,x_p\) で説明するための関係式を構成:
+- 回帰式: \(y\) を \(x_1,\dotsc,x_p\) で説明するための関係式
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -58,12 +68,20 @@
   #+end_src
   #+end_quote
   #     一般には p変数関数 \(f\) を使う
-
-** 線形回帰 (linear regression)
-- 任意の \(f\) では一般的すぎて分析に不向き
-- \(f\) として1次関数を考える\\
-  ある定数 \(\beta_0,\beta_1,\dots,\beta_p\) を用いた以下の式:
+- 観測データ: n個の \((y,x_1,\dotsc,x_p)\) の組
   #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \{(y_i,x_{i1},\dotsc,x_{ip})\}_{i=1}^n
+    \end{equation}
+  #+end_src
+  #+end_quote
+
+** 線形回帰
+- 任意の \(f\) では一般的すぎて分析に不向き
+- \(f\) として1次関数を考える
+  #+begin_quote
+  ある定数 \(\beta_0,\beta_1,\dots,\beta_p\) を用いた式:
   #+begin_src latex
     \begin{equation}
       f(x_1,\dots,x_p)=\beta_0+\beta_1x_1+\cdots+\beta_px_p
@@ -74,7 +92,8 @@
   - 一般の場合: 非線形回帰 (nonlinear regression)
 - 非線形関係は新たな説明変数の導入で対応可能
   - 適切な多項式 \(x_j^2, x_jx_k, x_jx_kx_l,\dotsc\)
-  - その他の非線形変換 \(\log x_j, x_j^\alpha,\dotsc\) 
+  - その他の非線形変換 \(\log x_j, x_j^\alpha,\dotsc\)
+  - [[color:gray][全ての非線形関係ではない]]
 
 ** 回帰係数
 - 線形回帰式:
@@ -87,10 +106,11 @@
   #+end_quote
 - \(\beta_0,\beta_1,\dots,\beta_p\): *回帰係数* (regression coefficients)
 - \(\beta_0\): *定数項 / 切片* (constant term / intersection)
-- 線形回帰分析: 未知の回帰係数をデータから決定
+- 線形回帰分析 (linear regression analysis): \\
+  *未知の回帰係数をデータから決定する分析方法*
 
 ** 回帰の確率モデル
-- 回帰式の不確定性
+- 回帰式の不確定性:
   - データは一般に観測誤差などランダムな変動を含む
   - 回帰式がそのまま成立することは期待できない
 - 確率モデル: データのばらつきを表す項 \(\epsilon_i\) を追加
@@ -127,12 +147,13 @@
   #+end_quote
 - 残差 \(e_i(\boldsymbol{\beta})\) の絶対値が小さいほど当てはまりがよい
 
-** 最小二乗法 (least squares)
+** 最小二乗法
 - *残差平方和* (residual sum of squares):
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      S(\boldsymbol{\beta}):=
+      S(\boldsymbol{\beta})
+      =
       \sum_{i=1}^ne_i(\boldsymbol{\beta})^2
     \end{equation}
   #+end_src
@@ -145,7 +166,10 @@
   \(\boldsymbol{\beta}\)
   #+begin_src latex
     \begin{equation}
-      \boldsymbol{\hat{\beta}}=(\hat{\beta}_0,\hat{\beta}_1,\dotsc,\hat{\beta}_p)^{\mathsf{T}}:=
+      \boldsymbol{\hat{\beta}}
+      =
+      (\hat{\beta}_0,\hat{\beta}_1,\dotsc,\hat{\beta}_p)^{\mathsf{T}}
+      =
       \arg\min_{\boldsymbol{\beta}}S(\boldsymbol{\beta})
     \end{equation}
   #+end_src
@@ -219,6 +243,7 @@
   #+end_quote
 
 ** 解の条件
+# 早稲田大学
 - 解 \(\boldsymbol{\beta}\) では残差平方和の勾配は零ベクトル
   # \footnote{例えば杉浦光夫著「解析入門I」(東京大学出版会)の第II章定理8.1参照}:
   #+begin_quote
@@ -236,10 +261,41 @@
   #+end_src
   #+end_quote
 
+** COMMENT 解の条件
+# 東京大学
+- 解 \(\boldsymbol{\beta}\) では残差平方和の勾配は零ベクトル
+  # \footnote{例えば杉浦光夫著「解析入門I」(東京大学出版会)の第II章定理8.1参照}:
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \nabla S(\boldsymbol{\beta}):=
+      \Bigl(
+      \frac{\partial S}{\partial\beta_0}(\boldsymbol{\beta}),
+      \frac{\partial S}{\partial\beta_1}(\boldsymbol{\beta}),\dotsc,
+      \frac{\partial S}{\partial\beta_p}(\boldsymbol{\beta})
+      \Bigr)^\mathsf{T}=\boldsymbol{0}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 成分 (\(j=0,1,\dotsc,p\)) ごとの条件式
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \frac{\partial S}{\partial\beta_j}(\boldsymbol{\beta})
+      =
+      -2\sum_{i=1}^n\Bigl(y_i-\sum_{k=0}^p\beta_kx_{ik}\Bigr)x_{ij}
+      =0
+    \end{equation}
+  #+end_src
+  ただし \(x_{i0}=1\; (i=1,\dotsc,n)\)
+  #+end_quote
+
+
 * 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -251,7 +307,7 @@
   で微分し，
   解の条件を求めよ．
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -327,7 +383,7 @@
       =0
     \end{equation}
   #+end_src
-  但し，
+  ただし，
   \(x_{i0}=1\; (i=1,\dotsc,n)\),
   \(j=0,1,\dotsc,p\)
   #+begin_src latex
@@ -342,7 +398,7 @@
 
 
 * 正規方程式
-** 正規方程式 (normal equation)
+** 正規方程式
 - *正規方程式* (normal equation):
   #+begin_quote
   #+begin_src latex
@@ -361,7 +417,7 @@
 - 正規方程式の基本的な性質
   - 正規方程式は必ず解をもつ (一意に決まらない場合もある)
   - 正規方程式の解は最小二乗推定量であるための必要条件
-- 解の一意性の条件
+- 解の一意性の条件:
   - Gram 行列 \(X^{\mathsf{T}}X\) が *正則*
   - \(X\) の列ベクトルが独立 (後述)
 - 正規方程式の解:
@@ -375,22 +431,32 @@
   #+end_src
   #+end_quote
 
-** COMMENT R: 関数 ~lm()~ による推定
-- ベクトルを用いる基本的な使い方:
-  #+begin_src R :eval no
-    lm(formula= y ~ x1 + ... + xp)
-    ## formula: 目的変数 ~ 説明変数 (複数ある場合は + で並べる)
-    ## y: 目的変数のベクトル
-    ## x1,...,xp: 各説明変数のベクトル
-  #+end_src
+
+* COMMENT 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: 関数 ~lm()~ による推定
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - データフレームを用いる方法: *(こちらを推奨)*
   #+begin_src R :eval no
-    lm(formula= yの変数名 ~ x1の変数名 + ... + xpの変数名,
+    lm(formula = yの変数名 ~ x1の変数名 + ... + xpの変数名,
        data = データフレーム)
     ## formula: 目的変数名 ~ 説明変数名
     ## data: 目的変数，説明変数を含むデータフレーム
   #+end_src
-** COMMENT データセットの準備
+- ベクトルを用いた場合の使い方:
+  #+begin_src R :eval no
+    lm(formula = y ~ x1 + ... + xp)
+    ## formula: 目的変数 ~ 説明変数 (複数ある場合は + で並べる)
+    ## y: 目的変数のベクトル
+    ## x1,...,xp: 各説明変数のベクトル
+  #+end_src
+  
+** データセットの準備
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -409,15 +475,9 @@
     (Springer, 2013) with permission from the authors: G. James,
     D. Witten, T. Hastie and R. Tibshirani "
     #+end_quote
-    http://faculty.marshall.usc.edu/gareth-james/ISL/Advertising.csv
+    https://www.statlearning.com
 
-** COMMENT 演習: 回帰式の推定
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-- [[./code/04-lm.r][04-lm.r]] を確認してみよう
-
-** COMMENT 練習問題
+** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -434,63 +494,78 @@
 
     sales ~ TV + radio
     #+end_quote
-  #+begin_src R :eval no :exports none :tangle yes
-    ### 練習1
-    ### 回帰係数の推定
-    
-    ### 東京の気候データによる回帰分析
-    ## モデル: 8月の"気温"を目的変数，"日射量・気圧"を説明変数とする
-    TW.data <- read.csv("data/tokyo_weather_reg.csv")
-    TW.model <- temp ~ solar + press # モデル式の定義 
-    ## class(model) # モデルは formula class
-    (TW.est <- lm(TW.model, # 回帰係数の推定
-                  data=subset(TW.data, # 8月のデータの抽出
-                              subset= months(as.Date(date),
-                                             abbreviate=TRUE)==" 8"))) 
-    TW.df <- model.frame(TW.est) # 推定に用いたデータフレームの抽出 (後述)
-    plot(TW.df, col="blue")   # 散布図
-    
-    ## 散布図と回帰式の定める平面の描画(3次元プロット)
-    require(scatterplot3d) # パッケージの読み込み
-    s3d <- scatterplot3d( 
-        TW.df[c("solar","press","temp")], # x,y,z の順
-        type="p", # plotの種類: "p"点，"l"線，"h"足付き
-        pch=16,# 点の種類 (?points 参照)
-        angle=30, # xy平面の見る方向 (適宜調整)
-        highlight.3d=TRUE # 高さ(z)ごとに色を変える
-    )
-    s3d$plane3d(TW.est, col="blue", # 回帰式の定める平面の追加
-                draw_polygon=TRUE, # 平面の塗り潰しの設定
-                polygon_args=list(col=rgb(0,0,1,0.1))) 
-    
-    ### 広告費と売上データによる回帰分析
-    Adv.data <- read.csv("data/Advertising.csv",
-                         row.names=1) # 1列目を行名として読み込む
-    ## 以下のように download しないで URL を指定してもよい
-    ## read.csv("http://faculty.marshall.usc.edu/gareth-james/ISL/Advertising.csv")
-    plot(Adv.data, col="orange")
-    ## TVの宣伝費で売上を説明
-    (Adv.est1 <- lm(sales ~ TV, data=Adv.data))
-    plot(sales ~ TV, data=Adv.data, col="orange")
-    abline(Adv.est1, col="brown", lwd=2)
-    ## radioの宣伝費で売上を説明
-    (Adv.est2 <- lm(sales ~ radio, data=Adv.data))
-    plot(sales ~ radio, data=Adv.data, col="orange")
-    abline(Adv.est2, col="brown", lwd=2)
-    ## 両者の宣伝費で売上を説明
-    (Adv.est <- lm(sales ~ TV + radio, data=Adv.data))
-    s3d <- scatterplot3d( 
-        model.frame(Adv.est)[c("TV","radio","sales")], # x,y,z の順
-        type="p", # plotの種類: "p"点，"l"線，"h"足付き
-        pch=16,# 点の種類 (?points 参照)
-        angle=45, # xy平面の見る方向 (適宜調整)
-        highlight.3d=TRUE # 高さ(z)ごとに色を変える
-    )
-    s3d$plane3d(Adv.est, col="brown", # 回帰式の定める平面の追加
-                draw_polygon=TRUE, # 平面の塗り潰しの設定
-                polygon_args=list(col=rgb(1,0,0,0.1))) 
-  #+end_src
+
+#+begin_src R :eval no :exports none :tangle yes
+  ###
+  ### 練習問題 回帰係数の推定
+  ###
+
+  ## 
+  ## 東京の気候データによる回帰分析
+  ##
+  ## データの読み込み
+  TW.data <- read.csv("data/tokyo_weather.csv")
+
+  ## モデルの推定: 8月の"気温"を目的変数，"日射量・気圧"を説明変数とする
+  TW.model <- temp ~ solar + press # モデル式の定義 
+  ## class(model) # モデルは formula class
+  (TW.est <- lm(TW.model, # 回帰係数の推定
+                data=subset(TW.data, # 8月のデータの抽出
+                            subset= month==8)))
+  TW.df <- model.frame(TW.est) # 推定に用いたデータフレームの抽出
+  plot(TW.df, col="blue") # 散布図
   
+  ## 散布図と回帰式の定める平面の描画(3次元プロット)
+  library(scatterplot3d) # パッケージの読み込み
+  s3d <- scatterplot3d( 
+      TW.df[c("solar","press","temp")], # x,y,z の順
+      type="p", # plotの種類: "p"点，"l"線，"h"足付き
+      pch=16,# 点の種類 (?points 参照)
+      angle=30, # xy平面の見る方向 (適宜調整)
+      highlight.3d=TRUE # 高さ(z)ごとに色を変える
+  )
+  s3d$plane3d(TW.est, col="blue", # 回帰式の定める平面の追加
+              draw_polygon=TRUE, # 平面の塗り潰しの設定
+              polygon_args=list(col=rgb(0,0,1,0.1))) 
+
+  ## 
+  ## 広告費と売上データによる回帰分析
+  ## 
+  ## データの読み込み
+  Adv.data <- read.csv('https://www.statlearning.com/s/Advertising.csv',
+                       row.names=1) # 1列目を行名として読み込む
+  plot(Adv.data, col="orange") # 散布図
+
+  ## TVの宣伝費で売上を説明
+  (Adv.est1 <- lm(sales ~ TV, data=Adv.data))
+  plot(sales ~ TV, data=Adv.data, col="orange")
+  abline(Adv.est1, col="brown", lwd=2)
+
+  ## radioの宣伝費で売上を説明
+  (Adv.est2 <- lm(sales ~ radio, data=Adv.data))
+  plot(sales ~ radio, data=Adv.data, col="orange")
+  abline(Adv.est2, col="brown", lwd=2)
+
+  ## 両者の宣伝費で売上を説明
+  (Adv.est <- lm(sales ~ TV + radio, data=Adv.data))
+  s3d <- scatterplot3d( 
+      model.frame(Adv.est)[c("TV","radio","sales")], # x,y,z の順
+      type="p", # plotの種類: "p"点，"l"線，"h"足付き
+      pch=16,# 点の種類 (?points 参照)
+      angle=45, # xy平面の見る方向 (適宜調整)
+      highlight.3d=TRUE # 高さ(z)ごとに色を変える
+  )
+  s3d$plane3d(Adv.est, col="brown", # 回帰式の定める平面の追加
+              draw_polygon=TRUE, # 平面の塗り潰しの設定
+              polygon_args=list(col=rgb(1,0,0,0.1))) 
+#+end_src
+  
+** COMMENT 演習: 回帰式の推定
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/04-lm.r][04-lm.r]] を確認してみよう
+
 
 * 最小二乗推定量の性質
 ** 解析の上での良い条件
@@ -522,11 +597,12 @@
     \end{equation}
   #+end_src
   #+end_quote
-  #+CAPTION: \(n=3\) , \(p+1=2\) の場合の最小二乗法による推定
-  #+NAME:   fig:projection
-  #+ATTR_HTML: :width 60%
-  #+ATTR_LATEX: :width 0.6\linewidth
-  [[file:./figs/projection.png]]
+
+#+CAPTION: \(n=3\) , \(p+1=2\) の場合の最小二乗法による推定
+#+NAME:   fig:projection
+#+ATTR_HTML: :width 60%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:./figs/projection.png]]
 
 #+reveal: split
 - 最小二乗推定量 \(\boldsymbol{\hat{y}}\) の幾何学的性質:
@@ -577,7 +653,16 @@
   # (標本平均)を通る
   # #+END_QUOTE
 
-** COMMENT R: 推定結果からの情報の取得
+
+* COMMENT 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: 推定結果からの情報の取得
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - 関数 ~lm()~ の出力には様々な情報が含まれる
   #+begin_src R :eval no
     ## lmの出力を引数とする関数の例
@@ -588,7 +673,10 @@
     model.matrix(lmの出力) # デザイン行列
   #+end_src
   
-** COMMENT R: 行列とベクトルの計算
+** R: 行列とベクトルの計算
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - \(X^{\mathsf{T}}Y\) および \(X^{\mathsf{T}}X\) の計算
   #+begin_src R :eval no
     crossprod(X, Y) # cross product の略
@@ -605,12 +693,7 @@
     solve(A) # 他にもいくつか関数はある
   #+end_src
 
-** COMMENT 演習: 最小二乗推定量の性質
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-- [[./code/04-lse.r][04-lse.r]] を確認してみよう
-** COMMENT 練習問題
+** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -629,43 +712,61 @@
     となること
   - あてはめ値と残差が直交すること
   - 回帰式が標本平均を通ること
-  #+begin_src R :eval no :exports none :tangle yes
-    ### 練習2
-    ### 最小二乗推定量の性質
     
-    ### 東京の気候データ
-    ## 回帰係数と正規方程式の解の一致
-    (beta <- coef(TW.est))        # 推定された回帰係数
-    X <- model.matrix(TW.est)     # デザイン行列
-    Y <- model.frame(TW.est)[[1]] # 目的変数 (データフレームの1列目に入っている)
-    solve(crossprod(X)) %*% crossprod(X, Y) # 正規方程式の解
-    ## あてはめ値と残差の直交性
-    yhat <- fitted(TW.est) # あてはめ値
-    ehat <- resid(TW.est)  # 残差
-    yhat %*% ehat          # 直交すれば内積はO(に近い値)となる
-    ## 回帰式が標本平均を通ること
-    colMeans(X) %*% beta # 説明変数の標本平均のあてはめ値
-    mean(Y)              # 目的変数の標本平均 
-    
-    ### 広告費と売上データ
-    (beta <- coef(Adv.est))        # 推定された回帰係数
-    X <- model.matrix(Adv.est)     # デザイン行列
-    Y <- model.frame(Adv.est)[[1]] # 目的変数
-    solve(crossprod(X)) %*% crossprod(X, Y) # 正規方程式の解
-    ## あてはめ値と残差の直交性
-    yhat <- fitted(Adv.est) # あてはめ値
-    ehat <- resid(Adv.est)  # 残差
-    yhat %*% ehat           # 直交すれば内積はO
-    ## 回帰式が標本平均を通ること
-    colMeans(X) %*% beta # 説明変数の標本平均のあてはめ値
-    mean(Y)              # 目的変数の標本平均 
-  #+end_src
-
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 練習問題 最小二乗推定量の性質
+  ### 
   
+  ##
+  ## 東京の気候データ
+  ##
+  ## 回帰係数と正規方程式の解の一致
+  (beta <- coef(TW.est))        # 推定された回帰係数
+  X <- model.matrix(TW.est)     # デザイン行列
+  Y <- model.frame(TW.est)[[1]] # 目的変数 (データフレームの1列目に入っている)
+  solve(crossprod(X)) %*% crossprod(X, Y) # 正規方程式の解
+
+  ## あてはめ値と残差の直交性
+  yhat <- fitted(TW.est) # あてはめ値
+  ehat <- resid(TW.est)  # 残差
+  yhat %*% ehat          # 直交すれば内積はO(に近い値)となる
+
+  ## 回帰式が標本平均を通ること
+  colMeans(X) %*% beta # 説明変数の標本平均のあてはめ値
+  mean(Y)              # 目的変数の標本平均 
+  
+  ##
+  ## 広告費と売上データ
+  ## 
+  ## 回帰係数と正規方程式の解の一致
+  (beta <- coef(Adv.est))        # 推定された回帰係数
+  X <- model.matrix(Adv.est)     # デザイン行列
+  Y <- model.frame(Adv.est)[[1]] # 目的変数
+  solve(crossprod(X)) %*% crossprod(X, Y) # 正規方程式の解
+
+  ## あてはめ値と残差の直交性
+  yhat <- fitted(Adv.est) # あてはめ値
+  ehat <- resid(Adv.est)  # 残差
+  yhat %*% ehat           # 直交すれば内積はO
+
+  ## 回帰式が標本平均を通ること
+  colMeans(X) %*% beta # 説明変数の標本平均のあてはめ値
+  mean(Y)              # 目的変数の標本平均 
+#+end_src
+
+** COMMENT 演習: 最小二乗推定量の性質
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/04-lse.r][04-lse.r]] を確認してみよう
+  
+
 * 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -681,7 +782,7 @@
         =0
       \end{equation}
     #+end_src
-    但し \(\boldsymbol{1}=(1,\dotsc,1)^{\mathsf{T}}\) とする
+    ただし \(\boldsymbol{1}=(1,\dotsc,1)^{\mathsf{T}}\) とする
     #+end_quote
   - 回帰式が標本平均を通ることを示しなさい．
     #+begin_quote
@@ -694,7 +795,7 @@
     #+end_src
     #+end_quote
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -818,17 +919,17 @@
   #+end_src
   #+end_quote
 
-** COMMENT 演習: 残差の性質
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-- [[./code/04-resid.r][04-resid.r]] を確認してみよう
 
-** COMMENT 練習問題
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 前問の推定結果を用いて
+# 東京大学
+** 練習問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 前問の結果を用いて
   残差の性質を確認しなさい
   - 以下の分解
     #+begin_quote
@@ -848,37 +949,50 @@
     #+end_src
     #+end_quote
     が成り立つこと
-  #+begin_src R :eval no :exports none :tangle yes
-    ### 練習3
-    ### 残差の分解
-    
-    ### 東京の気候データ
-    TW.model
-    TW.est <- lm(TW.model,
-                 data=subset(TW.data, # 8月のデータの抽出
-                             subset= months(as.Date(date),
-                                            abbreviate=TRUE)==" 8"),
-                 y=TRUE) # 目的変数をYとして返すように指定
-    Y <- with(TW.est,y)                     # 目的変数の取得
-    (Sy <- sum((Y-mean(Y))^2))              # 目的変数のばらつき
-    (S <- sum(resid(TW.est)^2))             # 残差のばらつき
-    (Sr <- sum((fitted(TW.est)-mean(Y))^2)) # 回帰のばらつき
-    S+Sr # Sy と同じになっている
-    
-    ### 広告費と売上データ
-    summary(Adv.est)
-    Y <- model.frame(Adv.est)[[1]]           # 目的変数の取得
-    (Sy <- sum((Y-mean(Y))^2))               # 目的変数のばらつき
-    (S <- sum(resid(Adv.est)^2))             # 残差のばらつき
-    (Sr <- sum((fitted(Adv.est)-mean(Y))^2)) # 回帰のばらつき
-    S+Sr # Sy と同じになっている
-  #+end_src
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 練習問題 残差の分解
+  ### 
+  
+  ##
+  ## 東京の気候データ
+  ##
+  TW.model # モデルの確認
+  ## 以下は目的変数を推定結果に含める方法
+  TW.est <- lm(TW.model,
+               data=subset(TW.data, # 8月のデータの抽出
+                           subset= month==8),
+               y=TRUE) # 目的変数をYとして返すように指定
+  Y <- with(TW.est,y)                     # 目的変数の取得
+  (Sy <- sum((Y-mean(Y))^2))              # 目的変数のばらつき
+  (S <- sum(resid(TW.est)^2))             # 残差のばらつき
+  (Sr <- sum((fitted(TW.est)-mean(Y))^2)) # 回帰のばらつき
+  S+Sr # Sy と同じになっている
+  
+  ##
+  ## 広告費と売上データ
+  ## 
+  summary(Adv.est)
+  Y <- model.frame(Adv.est)[[1]]           # 目的変数の取得
+  (Sy <- sum((Y-mean(Y))^2))               # 目的変数のばらつき
+  (S <- sum(resid(Adv.est)^2))             # 残差のばらつき
+  (Sr <- sum((fitted(Adv.est)-mean(Y))^2)) # 回帰のばらつき
+  S+Sr # Sy と同じになっている
+#+end_src
+
+** COMMENT 演習: 残差の性質
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/04-resid.r][04-resid.r]] を確認してみよう
 
 
 * 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -904,7 +1018,7 @@
     #+end_src
     #+end_quote
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -947,7 +1061,7 @@
       =\boldsymbol{y}-\boldsymbol{\hat{y}}+\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}}
     \end{equation}
   #+end_src
-  但し \(\bar{\boldsymbol{y}}=\bar{y}\boldsymbol{1}\) である
+  ただし \(\bar{\boldsymbol{y}}=\bar{y}\boldsymbol{1}\) である
   #+end_quote
 - このとき以下の項は0になる
   #+begin_quote
@@ -1010,29 +1124,20 @@
       {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
     \end{equation}
   #+end_src
-  不偏分散で補正している
   #+end_quote
+  - 不偏分散で補正している
 
-** COMMENT 演習: 決定係数
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-- [[./code/04-rsq.r][04-rsq.r]] を確認してみよう
 
-** COMMENT 演習
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-#+ATTR_HTML: :align left
-- 以下のデータで回帰分析を行ってみよう
-  - datasets::airquality
-  - datasets::LifeCycleSavings
-
-** COMMENT 練習問題
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 決定係数を用いてモデルの比較を行ってみなさい
+# 東京大学
+** 練習問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 決定係数を用いてモデルの比較を行いなさい
   - 東京の8月の気候データ
     #+begin_quote
     temp ~ solar
@@ -1049,82 +1154,104 @@
 
     sales ~ TV + radio
     #+end_quote
-  #+begin_src R :eval no :exports none :tangle yes
-    ### 練習4
-    ### 決定係数によるモデルの比較
-    
-    ### 東京の気候データ
-    TW.subset <- subset(TW.data, # 8月のデータの抽出
-                        subset= months(as.Date(date),
-                                       abbreviate=TRUE)==" 8")
-    TW.model1 <- temp ~ solar
-    TW.model2 <- temp ~ solar + press
-    TW.model3 <- temp ~ solar + press + cloud
-    TW.est1 <- lm(TW.model1, data=TW.subset, y=TRUE)
-    TW.est2 <- lm(TW.model2, data=TW.subset, y=TRUE)
-    TW.est3 <- lm(TW.model3, data=TW.subset, y=TRUE)
-    summary(TW.est1)$adj.r.squared # 自由度調整済み決定係数
-    summary(TW.est2)$adj.r.squared # (model1より上昇)
-    summary(TW.est3)$adj.r.squared # (model2より上昇)
-    ## 予測値と実測値の比較
-    with(TW.est1,
-         plot(y,fitted.values,col="orange",pch=17, # 三角
-              xlab="temperature",
-              ylab="fitted values",ylim=range(y)))   
-    abline(0,1,col="red",lwd=2)
-    with(TW.est2,
-         points(y,fitted.values,col="green",pch=15)) # 四角
-    with(TW.est3,
-         points(y,fitted.values,col="blue",pch=16))  # 丸
-    legend("bottomright",inset=.05, # 凡例の作成
-           col=c("orange","green","blue"), pch=c(17,15,16), 
-           legend=c("model1","model2","model3"))
-    
-    ### 広告費と売上データ
-    Adv.model1 <- sales ~ TV
-    Adv.model2 <- sales ~ radio
-    Adv.model3 <- sales ~ TV + radio
-    Adv.est1 <- lm(Adv.model1, data=Adv.data, y=TRUE)
-    Adv.est2 <- lm(Adv.model2, data=Adv.data, y=TRUE)
-    Adv.est3 <- lm(Adv.model3, data=Adv.data, y=TRUE)
-    summary(Adv.est1)$adj.r.squared # 自由度調整済み決定係数
-    summary(Adv.est2)$adj.r.squared # (model1より減少)
-    summary(Adv.est3)$adj.r.squared # (model1より上昇)
-    ## 予測値と実測値の比較
-    with(Adv.est1,
-         plot(y,fitted.values,col="orange",pch=17, # 三角
-              xlab="sales",
-              ylab="fitted values",ylim=range(y)))   
-    abline(0,1,col="red",lwd=2)
-    with(Adv.est2,
-         points(y,fitted.values,col="green",pch=15)) # 四角
-    with(Adv.est3,
-         points(y,fitted.values,col="blue",pch=16))  # 丸
-    legend("bottomright",inset=.05, # 凡例の作成
-           col=c("orange","green","blue"), pch=c(17,15,16), 
-           legend=c("model1","model2","model3"))
-  #+end_src
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 練習問題 決定係数によるモデルの比較
+  ###
+
+  ##
+  ## 東京の気候データ
+  ##
+  ## モデルの比較
+  TW.subset <- subset(TW.data, # 8月のデータの抽出
+                      subset= month==8)
+  TW.model1 <- temp ~ solar
+  TW.model2 <- temp ~ solar + press
+  TW.model3 <- temp ~ solar + press + cloud
+  TW.est1 <- lm(TW.model1, data=TW.subset, y=TRUE)
+  TW.est2 <- lm(TW.model2, data=TW.subset, y=TRUE)
+  TW.est3 <- lm(TW.model3, data=TW.subset, y=TRUE)
+  summary(TW.est1)$adj.r.squared # 自由度調整済み決定係数
+  summary(TW.est2)$adj.r.squared # (model1より上昇)
+  summary(TW.est3)$adj.r.squared # (model2より上昇)
+
+  ## 予測値と実測値の比較
+  with(TW.est1,
+       plot(y,fitted.values,col="orange",pch=17, # 三角
+            xlab="temperature",
+            ylab="fitted values",ylim=range(y)))   
+  abline(0,1,col="red",lwd=2)
+  with(TW.est2,
+       points(y,fitted.values,col="green",pch=15)) # 四角
+  with(TW.est3,
+       points(y,fitted.values,col="blue",pch=16))  # 丸
+  legend("bottomright",inset=.05, # 凡例の作成
+         col=c("orange","green","blue"), pch=c(17,15,16), 
+         legend=c("model1","model2","model3"))
   
+  ##
+  ## 広告費と売上データ
+  ##
+  ## モデルの比較
+  Adv.model1 <- sales ~ TV
+  Adv.model2 <- sales ~ radio
+  Adv.model3 <- sales ~ TV + radio
+  Adv.est1 <- lm(Adv.model1, data=Adv.data, y=TRUE)
+  Adv.est2 <- lm(Adv.model2, data=Adv.data, y=TRUE)
+  Adv.est3 <- lm(Adv.model3, data=Adv.data, y=TRUE)
+  summary(Adv.est1)$adj.r.squared # 自由度調整済み決定係数
+  summary(Adv.est2)$adj.r.squared # (model1より減少)
+  summary(Adv.est3)$adj.r.squared # (model1より上昇)
+
+  ## 予測値と実測値の比較
+  with(Adv.est1,
+       plot(y,fitted.values,col="orange",pch=17, # 三角
+            xlab="sales",
+            ylab="fitted values",ylim=range(y)))   
+  abline(0,1,col="red",lwd=2)
+  with(Adv.est2,
+       points(y,fitted.values,col="green",pch=15)) # 四角
+  with(Adv.est3,
+       points(y,fitted.values,col="blue",pch=16))  # 丸
+  legend("bottomright",inset=.05, # 凡例の作成
+         col=c("orange","green","blue"), pch=c(17,15,16), 
+         legend=c("model1","model2","model3"))
+#+end_src
+  
+** COMMENT 演習: 決定係数
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/04-rsq.r][04-rsq.r]] を確認してみよう
+** COMMENT 演習
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+#+ATTR_HTML: :align left
+- 以下のデータで回帰分析を行ってみよう
+  - datasets::airquality
+  - datasets::LifeCycleSavings
+
 
 * 解析の事例
 ** データについて
 - 気象庁より取得した東京の気候データ \\
   - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
-  - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather_reg.csv
+  - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
     # - 広告費(TV,radio,newspaper)と売上データ \\
     #   - 書籍のサイト https://faculty.marshall.usc.edu/gareth-james/ISL/
     #   - データ https://faculty.marshall.usc.edu/gareth-james/ISL/Advertising.csv
 
 ** 東京の8月の気候の分析
-- 気候 (気温,降雨,日射,降雪,風速,気圧,湿度,雲量) \\
+- 気候 (気温,降雨,日射,降雪,風向,風速,気圧,湿度,雲量) \\
   に関するデータ(の一部)
   #+begin_src R :exports results :tangle yes
     ## データの読み込み
-    TW.data <- read.csv("data/tokyo_weather_reg.csv")
+    TW.data <- read.csv("data/tokyo_weather.csv")
     TW.subset <- subset(TW.data, # 8月のデータの抽出
-                        subset= months(as.Date(date),
-                                       abbreviate=TRUE)==" 8")
-    head(TW.subset, 14) # 2週間分を表示
+                        subset= month==8)
+    head(TW.subset[,-1], 14) # 2週間分を表示
     
     ### モデル式
     TW.model1 <- temp ~ press
@@ -1148,6 +1275,7 @@
 
 #+reveal: split
 - 関連するデータの散布図
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/03_pairs.png :exports results :results graphics :tangle yes
     ## 関連データの散布図
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
@@ -1156,14 +1284,16 @@
     plot(TW.df, labels=c("気温","気圧","日射","湿度","雲量"),
          col="blue")   # 散布図
   #+end_src
-  #+CAPTION: 散布図
-  #+NAME: fig:03_pairs
-  #+ATTR_HTML: height 100%
-  #+ATTR_LATEX: :width 0.6\linewidth
-  [[file:figs/03_pairs.png]]
+
+#+CAPTION: 散布図
+#+NAME: fig:03_pairs
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/03_pairs.png]]
 
 #+reveal: split
 - モデル1の推定結果
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/03_model1.png :exports results :results graphics :tangle yes
     ## モデル1の推定結果
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
@@ -1172,18 +1302,20 @@
          col="brown", pch=20)
     abline(TW.est1, col="blue", lwd=3)
   #+end_src
-  #+CAPTION: モデル1
-  #+NAME: fig:
-  #+ATTR_HTML: height 100%
-  #+ATTR_LATEX: :width 0.6\linewidth
-  [[file:figs/03_model1.png]]
+
+#+CAPTION: モデル1
+#+NAME: fig:
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/03_model1.png]]
   
 #+reveal: split
 - モデル2の推定結果
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/03_model2.png :exports results :results graphics :tangle yes
     ## モデル2の推定結果
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    require(scatterplot3d) # パッケージの読み込み
+    library(scatterplot3d) # パッケージの読み込み
     s3d <- scatterplot3d( 
         TW.df[c("press","solar","temp")], # x,y,z の順
         type="p", # plotの種類: "p"点，"l"線，"h"足付き
@@ -1198,32 +1330,34 @@
                 draw_polygon=TRUE, # 平面の塗り潰しの設定
                 polygon_args=list(col=rgb(0,0,1,0.1))) 
   #+end_src
-  #+CAPTION: モデル2
-  #+NAME: fig:03_model2
-  #+ATTR_HTML: height 100%
-  #+ATTR_LATEX: :width 0.6\linewidth
-  [[file:figs/03_model2.png]]
+
+#+CAPTION: モデル2
+#+NAME: fig:03_model2
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/03_model2.png]]
 
 #+reveal: split
 - 観測値とあてはめ値の比較
-#+begin_src R :file figs/03_models.png :exports results :results graphics :tangle yes
-  ## 観測値とあてはめ値の比較
-  if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-  with(TW.est1,
-       plot(y,fitted.values,col="orange",pch=17, # 三角
-            xlab="気温",
-            ylab="あてはめ値",ylim=range(y)))   
-  abline(0,1,col="red",lwd=2)
-  with(TW.est2,
-       points(y,fitted.values,col="green",pch=15)) # 四角
-  with(TW.est3,
-       points(y,fitted.values,col="blue",pch=21))  # 丸
-  with(TW.est4,
-       points(y,fitted.values,col="cyan",pch=23))  # 菱形
-  legend("bottomright",inset=.05, # 凡例の作成
-         col=c("orange","green","blue","cyan"), pch=c(17,15,21,23), 
-         legend=c("モデル1","モデル2","モデル3","モデル4"))
-#+end_src
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/03_models.png :exports results :results graphics :tangle yes
+    ## 観測値とあてはめ値の比較
+    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+    with(TW.est1,
+         plot(y,fitted.values,col="orange",pch=17, # 三角
+              xlab="気温",
+              ylab="あてはめ値",ylim=range(y)))   
+    abline(0,1,col="red",lwd=2)
+    with(TW.est2,
+         points(y,fitted.values,col="green",pch=15)) # 四角
+    with(TW.est3,
+         points(y,fitted.values,col="blue",pch=21))  # 丸
+    with(TW.est4,
+         points(y,fitted.values,col="cyan",pch=23))  # 菱形
+    legend("bottomright",inset=.05, # 凡例の作成
+           col=c("orange","green","blue","cyan"), pch=c(17,15,21,23), 
+           legend=c("モデル1","モデル2","モデル3","モデル4"))
+  #+end_src
 #+CAPTION: モデルの比較
 #+NAME: fig:03_models
 #+ATTR_HTML: height 100%
@@ -1233,47 +1367,47 @@
 #+reveal: split
 - 決定係数・自由度調整済み決定係数
   - モデル1
-  #+begin_src R :exports results :tangle yes
-    ## モデル1
-    print(
-        paste("R2:",
-              signif(summary(TW.est1)$r.squared,digits=3),
-              "; adj. R2:",
-              signif(summary(TW.est1)$adj.r.squared,digits=3)))
-  #+end_src
+    #+begin_src R :exports results :tangle yes
+      ## モデル1
+      print(
+          paste("R2:",
+                signif(summary(TW.est1)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est1)$adj.r.squared,digits=3)))
+    #+end_src
   - モデル2
-  #+begin_src R :exports results :tangle yes
-    ## モデル2
-    print(
-        paste("R2:",
-              signif(summary(TW.est2)$r.squared,digits=3),
-              "; adj. R2:",
-              signif(summary(TW.est2)$adj.r.squared,digits=3)))
-  #+end_src
+    #+begin_src R :exports results :tangle yes
+      ## モデル2
+      print(
+          paste("R2:",
+                signif(summary(TW.est2)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est2)$adj.r.squared,digits=3)))
+    #+end_src
   - モデル3
-  #+begin_src R :exports results :tangle yes
-    ## モデル3
-    print(
-        paste("R2:",
-              signif(summary(TW.est3)$r.squared,digits=3),
-              "; adj. R2:",
-              signif(summary(TW.est3)$adj.r.squared,digits=3)))
-  #+end_src
+    #+begin_src R :exports results :tangle yes
+      ## モデル3
+      print(
+          paste("R2:",
+                signif(summary(TW.est3)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est3)$adj.r.squared,digits=3)))
+    #+end_src
   - モデル4
-  #+begin_src R :exports results :tangle yes
-    ## モデル4
-    print(
-        paste("R2:",
-              signif(summary(TW.est4)$r.squared,digits=3),
-              "; adj. R2:",
-              signif(summary(TW.est4)$adj.r.squared,digits=3)))
-  #+end_src
+    #+begin_src R :exports results :tangle yes
+      ## モデル4
+      print(
+          paste("R2:",
+                signif(summary(TW.est4)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est4)$adj.r.squared,digits=3)))
+    #+end_src
+  
 
-
-* 次週の予定
-- 第1日: 回帰モデルの考え方と推定
-- *第2日: モデルの評価*
-- 第3日: モデルによる予測と発展的なモデル
+* 次回の予定
+- 第1回: 回帰モデルの考え方と推定
+- *第2回: モデルの評価*
+- 第3回: モデルによる予測と発展的なモデル
 
 
 * COMMENT ローカル変数

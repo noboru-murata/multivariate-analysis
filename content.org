@@ -5,7 +5,7 @@
 #+LINK: github https://noboru-murata.github.io/multivariate-analysis/
 #+STARTUP: hidestars content indent
 
-# Time-stamp: <2021-09-03 17:56:17 mura>
+# Time-stamp: <2021-09-10 17:43:32 mura>
 # C-c C-e H A (generate MDs for all subtrees)
 
 * 概要
@@ -57,13 +57,13 @@
 :EXPORT_FILE_NAME: lecture03
 :EXPORT_DATE: <2020-08-26 Wed>
 :END:
-2020年度版
+<2021-09-03 Fri> 更新
 ** スライド
 {{< myslide base="multivariate-analysis" name="slide03" >}}
 ** ハンドアウト
 - [[github:pdfs/slide03.pdf][PDF file]]
 ** 付録
-- [[github:data/tokyo_weather_reg.csv][東京の気候データ]]
+- [[github:data/tokyo_weather.csv][東京の気候データ]]
 
 * 第4講
 :PROPERTIES:

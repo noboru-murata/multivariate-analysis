@@ -6,7 +6,7 @@ draft = false
 weight = 1004
 +++
 
-2020年度版
+<span class="timestamp-wrapper"><span class="timestamp">&lt;2021-09-03 Fri&gt; </span></span> 更新
 
 
 ## スライド {#スライド}
@@ -21,4 +21,4 @@ weight = 1004
 
 ## 付録 {#付録}
 
--   [東京の気候データ](https://noboru-murata.github.io/multivariate-analysis/data/tokyo%5Fweather%5Freg.csv)
+-   [東京の気候データ](https://noboru-murata.github.io/multivariate-analysis/data/tokyo%5Fweather.csv)
