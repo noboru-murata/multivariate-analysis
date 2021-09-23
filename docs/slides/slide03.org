@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-23 14:10:09 mura>
+# Time-stamp: <2021-09-23 14:52:39 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -388,8 +388,7 @@
   \(S(\boldsymbol{\beta})\)
   をベクトル
   \(\boldsymbol{\beta}\)
-  で微分し，
-  解の条件を求めよ．
+  で微分して解の条件を求なさい
 
 ** COMMENT 解答例
 :PROPERTIES:
@@ -851,8 +850,8 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 最小二乗推定量について以下の問に答えなさい．
-  - 残差の標本平均が0となることを示しなさい．
+- 最小二乗推定量について以下を示しなさい
+  - 残差の標本平均が0となること
     #+begin_quote
     以下を示せばよい
     #+begin_src latex
@@ -864,7 +863,7 @@
     #+end_src
     ただし \(\boldsymbol{1}=(1,\dotsc,1)^{\mathsf{T}}\) とする
     #+end_quote
-  - 回帰式が標本平均を通ることを示しなさい．
+  - 回帰式が標本平均を通ること
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -1075,8 +1074,8 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
-  - あてはめ値と残差のベクトルが直交することを示しなさい．
+- 以下の関係式を示しなさい
+  - あてはめ値と残差のベクトルが直交すること
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -1087,7 +1086,7 @@
       \end{equation}
     #+end_src
     #+end_quote
-  - 残差平方和の分解が成り立つことを示しなさい．
+  - 残差平方和の分解が成り立つこと
     #+begin_quote
     #+begin_src latex
       \begin{equation}
