@@ -6,7 +6,7 @@ draft = false
 weight = 1005
 +++
 
-2020年度版
+<span class="timestamp-wrapper"><span class="timestamp">&lt;2021-09-23 Thu&gt; </span></span> 更新
 
 
 ## スライド {#スライド}

@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-23 14:52:39 mura>
+# Time-stamp: <2021-09-23 16:15:10 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -1429,9 +1429,9 @@
     with(TW.est3,
          points(y,fitted.values,col="blue",pch=21))  # 丸
     with(TW.est4,
-         points(y,fitted.values,col="cyan",pch=23))  # 菱形
+         points(y,fitted.values,col="brown",pch=23))  # 菱形
     legend("bottomright",inset=.05, # 凡例の作成
-           col=c("orange","green","blue","cyan"), pch=c(17,15,21,23), 
+           col=c("orange","green","blue","brown"), pch=c(17,15,21,23), 
            legend=c("モデル1","モデル2","モデル3","モデル4"))
   #+end_src
 #+CAPTION: モデルの比較
@@ -1442,7 +1442,7 @@
 
 #+reveal: split
 - 決定係数・自由度調整済み決定係数
-  - モデル1
+  - モデル1: 気温 = F(気圧)
     #+begin_src R :exports results :tangle yes
       ## モデル1
       print(
@@ -1451,7 +1451,7 @@
                 "; adj. R2:",
                 signif(summary(TW.est1)$adj.r.squared,digits=3)))
     #+end_src
-  - モデル2
+  - モデル2: 気温 = F(気圧, 日射)
     #+begin_src R :exports results :tangle yes
       ## モデル2
       print(
@@ -1460,7 +1460,7 @@
                 "; adj. R2:",
                 signif(summary(TW.est2)$adj.r.squared,digits=3)))
     #+end_src
-  - モデル3
+  - モデル3: 気温 = F(気圧, 日射, 湿度)
     #+begin_src R :exports results :tangle yes
       ## モデル3
       print(
@@ -1469,7 +1469,7 @@
                 "; adj. R2:",
                 signif(summary(TW.est3)$adj.r.squared,digits=3)))
     #+end_src
-  - モデル4
+  - モデル4: 気温 = F(気圧, 日射, 雲量)
     #+begin_src R :exports results :tangle yes
       ## モデル4
       print(
