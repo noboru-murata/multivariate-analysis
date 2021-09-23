@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-10 17:11:04 mura>
+# Time-stamp: <2021-09-23 14:10:09 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -44,6 +44,90 @@
 - 第3講以降は同じファイルを使うように整理する
 - 同じタイトルの項目にはメモを入れる
 - 演習の内容が異なるので演習は2つ作る形で対応
+
+* COMMENT 演習 (早稲田大学雛型)
+  :PROPERTIES:
+  :reveal_background: #fef4f4
+  :END:
+  # 早稲田大学
+** 問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - について以下を示しなさい．
+     - である．
+       #+begin_quote
+       #+begin_src latex
+       #+end_src
+       #+end_quote
+       
+** 解答例
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - いずれも定義にもとづいて計算すればよい
+     #+begin_quote
+     #+begin_src latex
+     #+end_src
+     #+end_quote
+
+   
+
+#+OPTIONS: reveal_mousewheel:nil
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第05回 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
+* COMMENT 演習 (東京大学雛型)
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: 概要
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- ほげほげな方法:
+  #+begin_src R :eval no
+  #+end_src
+** データセット
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 以下のデータセットを使用します
+  - ~xxx~
+    #+begin_quote
+    データの素性
+    #+end_quote
+    [[https://www.foo.com/]]
+
+** 練習問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 構成しなさい
+  - データ
+    #+begin_quote
+    formulaなどを与える
+    #+end_quote
+
+#+begin_src R :eval no :exports none :tangle yes
+  ###
+  ### 練習問題 
+  ###
+
+  ## 
+  ## 分析
+  ##
+#+end_src
+  
+** COMMENT 講義資料: 概略
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/bar.r][bar.r]] を確認してみよう
 
 
 * 回帰分析の考え方
@@ -104,8 +188,8 @@
     \end{equation}
   #+end_src
   #+end_quote
-- \(\beta_0,\beta_1,\dots,\beta_p\): *回帰係数* (regression coefficients)
-- \(\beta_0\): *定数項 / 切片* (constant term / intersection)
+  - \(\beta_0,\beta_1,\dots,\beta_p\): *回帰係数* (regression coefficients)
+  - \(\beta_0\): *定数項 / 切片* (constant term / intersection)
 - 線形回帰分析 (linear regression analysis): \\
   *未知の回帰係数をデータから決定する分析方法*
 
@@ -268,7 +352,7 @@
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      \nabla S(\boldsymbol{\beta}):=
+      \nabla S(\boldsymbol{\beta})=
       \Bigl(
       \frac{\partial S}{\partial\beta_0}(\boldsymbol{\beta}),
       \frac{\partial S}{\partial\beta_1}(\boldsymbol{\beta}),\dotsc,
@@ -369,7 +453,7 @@
   #+end_src
   #+end_quote
 
-** 補足
+** COMMENT 補足
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -461,7 +545,7 @@
 :reveal_background: #fef4f4
 :END:
 - 回帰分析では以下のデータセットを使用します
-  - ~tokyo_weather_reg.csv~
+  - ~tokyo_weather.csv~
     #+begin_quote
     気象庁より取得した東京の気候データを回帰分析用に整理したもの
     #+end_quote
@@ -500,9 +584,8 @@
   ### 練習問題 回帰係数の推定
   ###
 
-  ## 
-  ## 東京の気候データによる回帰分析
-  ##
+  ### 東京の気候データによる回帰分析
+
   ## データの読み込み
   TW.data <- read.csv("data/tokyo_weather.csv")
 
@@ -528,9 +611,8 @@
               draw_polygon=TRUE, # 平面の塗り潰しの設定
               polygon_args=list(col=rgb(0,0,1,0.1))) 
 
-  ## 
-  ## 広告費と売上データによる回帰分析
-  ## 
+  ### 広告費と売上データによる回帰分析
+
   ## データの読み込み
   Adv.data <- read.csv('https://www.statlearning.com/s/Advertising.csv',
                        row.names=1) # 1列目を行名として読み込む
@@ -560,7 +642,7 @@
               polygon_args=list(col=rgb(1,0,0,0.1))) 
 #+end_src
   
-** COMMENT 演習: 回帰式の推定
+** COMMENT 講義資料: 回帰式の推定
 :PROPERTIES:
 :reveal_background: #EEEEFF
 :END:
@@ -569,12 +651,12 @@
 
 * 最小二乗推定量の性質
 ** 解析の上での良い条件
-- 最小二乗推定量がただ一つだけ存在する条件 \\
-  (以下同値条件)
+- 最小二乗推定量がただ一つだけ存在する条件 
   - \(X^{\mathsf{T}}X\) が正則
   - \(X^{\mathsf{T}}X\) の階数が \(p{+}1\)
   - \(X\) の階数が \(p{+}1\)
   - \(X\) の列ベクトルが *1次独立*
+  これらは同値条件
 
 ** 解析の上での良くない条件
 - 説明変数が1次従属: *多重共線性* (multicollinearity)
@@ -610,7 +692,7 @@
   - \(X\) の階数が \(p{+}1\) ならば \(L[X]\) の次元は \(p{+}1\) (解の一意性)
   - \(\boldsymbol{\hat{y}}\) は \(\boldsymbol{y}\) の \(L[X]\) への直交射影
   - *残差* (residuals)
-    \(\boldsymbol{\hat{\epsilon}}:=\boldsymbol{y}-\boldsymbol{\hat{y}}\)
+    \(\boldsymbol{\hat{\epsilon}}=\boldsymbol{y}-\boldsymbol{\hat{y}}\)
     はあてはめ値
     \(\boldsymbol{\hat{y}}\) に直交
     #+begin_quote
@@ -718,9 +800,8 @@
   ### 練習問題 最小二乗推定量の性質
   ### 
   
-  ##
-  ## 東京の気候データ
-  ##
+  ### 東京の気候データ
+
   ## 回帰係数と正規方程式の解の一致
   (beta <- coef(TW.est))        # 推定された回帰係数
   X <- model.matrix(TW.est)     # デザイン行列
@@ -736,9 +817,8 @@
   colMeans(X) %*% beta # 説明変数の標本平均のあてはめ値
   mean(Y)              # 目的変数の標本平均 
   
-  ##
-  ## 広告費と売上データ
-  ## 
+  ### 広告費と売上データ
+
   ## 回帰係数と正規方程式の解の一致
   (beta <- coef(Adv.est))        # 推定された回帰係数
   X <- model.matrix(Adv.est)     # デザイン行列
@@ -755,7 +835,7 @@
   mean(Y)              # 目的変数の標本平均 
 #+end_src
 
-** COMMENT 演習: 最小二乗推定量の性質
+** COMMENT 講義資料: 最小二乗推定量の性質
 :PROPERTIES:
 :reveal_background: #EEEEFF
 :END:
@@ -955,9 +1035,8 @@
   ### 練習問題 残差の分解
   ### 
   
-  ##
-  ## 東京の気候データ
-  ##
+  ### 東京の気候データ
+
   TW.model # モデルの確認
   ## 以下は目的変数を推定結果に含める方法
   TW.est <- lm(TW.model,
@@ -970,9 +1049,8 @@
   (Sr <- sum((fitted(TW.est)-mean(Y))^2)) # 回帰のばらつき
   S+Sr # Sy と同じになっている
   
-  ##
-  ## 広告費と売上データ
-  ## 
+  ### 広告費と売上データ
+
   summary(Adv.est)
   Y <- model.frame(Adv.est)[[1]]           # 目的変数の取得
   (Sy <- sum((Y-mean(Y))^2))               # 目的変数のばらつき
@@ -981,7 +1059,7 @@
   S+Sr # Sy と同じになっている
 #+end_src
 
-** COMMENT 演習: 残差の性質
+** COMMENT 講義資料: 残差の性質
 :PROPERTIES:
 :reveal_background: #EEEEFF
 :END:
@@ -1160,9 +1238,8 @@
   ### 練習問題 決定係数によるモデルの比較
   ###
 
-  ##
-  ## 東京の気候データ
-  ##
+  ### 東京の気候データ
+
   ## モデルの比較
   TW.subset <- subset(TW.data, # 8月のデータの抽出
                       subset= month==8)
@@ -1190,9 +1267,8 @@
          col=c("orange","green","blue"), pch=c(17,15,16), 
          legend=c("model1","model2","model3"))
   
-  ##
-  ## 広告費と売上データ
-  ##
+  ### 広告費と売上データ
+
   ## モデルの比較
   Adv.model1 <- sales ~ TV
   Adv.model2 <- sales ~ radio
@@ -1219,12 +1295,12 @@
          legend=c("model1","model2","model3"))
 #+end_src
   
-** COMMENT 演習: 決定係数
+** COMMENT 講義資料: 決定係数
 :PROPERTIES:
 :reveal_background: #EEEEFF
 :END:
 - [[./code/04-rsq.r][04-rsq.r]] を確認してみよう
-** COMMENT 演習
+** COMMENT 講義資料
 :PROPERTIES:
 :reveal_background: #EEEEFF
 :END:
@@ -1235,6 +1311,7 @@
 
 
 * 解析の事例
+# 早稲田大学
 ** データについて
 - 気象庁より取得した東京の気候データ \\
   - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
@@ -1404,7 +1481,7 @@
     #+end_src
   
 
-* 次回の予定
+* 次週の予定
 - 第1回: 回帰モデルの考え方と推定
 - *第2回: モデルの評価*
 - 第3回: モデルによる予測と発展的なモデル

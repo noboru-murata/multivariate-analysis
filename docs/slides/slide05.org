@@ -2,14 +2,76 @@
 #+SUBTITLE: 予測と発展的なモデル
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
-#+DATE: 2020.10.27
-:reveal:
+#+DATE: 
+# Time-stamp: <2021-09-13 10:33:35 mura>
+:REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
-#+STARTUP: hidestars content
+#+STARTUP: hidestars content indent
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
-:end:
+:END:
+
+* 講義の内容
+# 早稲田大学
+- 第1回: 回帰モデルの考え方と推定
+- 第2回: モデルの評価
+- *第3回: モデルによる予測と発展的なモデル*
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第5講 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
+
+* COMMENT 講義概要
+# 東京大学
+- 第1回: 回帰モデルの考え方と推定
+- 第2回: モデルの評価
+- *第3回: モデルによる予測と発展的なモデル*
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 第5講 サンプルコード
+  ###
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+
+* COMMENT メモ
+- 第3講以降は同じファイルを使うように整理する
+- 同じタイトルの項目にはメモを入れる
+- 演習の内容が異なるので演習は2つ作る形で対応
+
+* COMMENT 演習 (早稲田大学雛型)
+  :PROPERTIES:
+  :reveal_background: #fef4f4
+  :END:
+  # 早稲田大学
+** 問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - について以下を示しなさい．
+     - である．
+       #+begin_quote
+       #+begin_src latex
+       #+end_src
+       #+end_quote
+       
+** 解答例
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - いずれも定義にもとづいて計算すればよい
+     #+begin_quote
+     #+begin_src latex
+     #+end_src
+     #+end_quote
+
+   
 
 #+OPTIONS: reveal_mousewheel:nil
 #+begin_src R :eval no :exports none :tangle yes
@@ -19,10 +81,54 @@
   setwd("~/Desktop/lectures/mva/slide")
 #+end_src
 
-* 講義の予定
-  - 第1日: 回帰モデルの考え方と推定
-  - 第2日: モデルの評価
-  - *第3日: モデルによる予測と発展的なモデル*
+* COMMENT 演習 (東京大学雛型)
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: 概要
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- ほげほげな方法:
+  #+begin_src R :eval no
+  #+end_src
+** データセット
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 以下のデータセットを使用します
+  - ~xxx~
+    #+begin_quote
+    データの素性
+    #+end_quote
+    [[https://www.foo.com/]]
+
+** 練習問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 構成しなさい
+  - データ
+    #+begin_quote
+    formulaなどを与える
+    #+end_quote
+
+#+begin_src R :eval no :exports none :tangle yes
+  ###
+  ### 練習問題 
+  ###
+
+  ## 
+  ## 分析
+  ##
+#+end_src
+  
+** COMMENT 講義資料: 概略
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/bar.r][bar.r]] を確認してみよう
 
 
 * 回帰分析の復習
@@ -369,7 +475,7 @@
        ## モデル4
        signif(summary(TW.est4)$coef,digits=3)
      #+end_src
-** COMMENT 演習: 回帰分析とその評価
+** COMMENT 講義資料: 回帰分析とその評価
    :PROPERTIES:
    :reveal_background: #EEEEFF
    :END:
@@ -446,6 +552,7 @@
   :PROPERTIES:
   :reveal_background: #fef4f4
   :END:
+  # 早稲田大学
 ** 問題
    :PROPERTIES:
    :reveal_background: #fef4f4
@@ -574,88 +681,88 @@
 
 
 * 演習
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 ** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-	  - 以下の問に答えなさい．
-	    - 信頼区間について以下の式が成り立つことを示しなさい．
-	      #+begin_quote
-	      #+begin_src latex
-		\begin{equation}
-		  P(\tilde{y}\in\mathcal{I}^{c}_{\alpha})
-		  =\alpha
-		\end{equation}
-	      #+end_src
-	      #+end_quote
-	    - 観測値と予測値の差 $y-\hat{y}$ の平均と分散を求めなさい．
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 以下の問に答えなさい．
+  - 信頼区間について以下の式が成り立つことを示しなさい．
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+	P(\tilde{y}\in\mathcal{I}^{c}_{\alpha})
+	=\alpha
+      \end{equation}
+    #+end_src
+    #+end_quote
+  - 観測値と予測値の差 $y-\hat{y}$ の平均と分散を求めなさい．
 
 ** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - $C_{\alpha}$ の定義にもとづいて計算すればよい
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \alpha
-         &=
-           P(|Z| < {C_{\alpha}})\\
-         &=
-           P\left(
-           \left|\frac{\tilde{y}-\hat{y}}{\hat{\sigma}\gamma_{c}(\boldsymbol{x})}\right|
-           < {C_{\alpha}}
-           \right)\\
-         &=
-           P\left(
-           |\tilde{y}-\hat{y}|
-           < C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
-           \right)\\
-         &=
-           P\left(
-           -C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
-           < \tilde{y}-\hat{y}
-           < C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
-           \right)\\
-         &=
-           P\left(
-           \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
-           < \tilde{y}
-           < \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
-           \right)
-       \end{align}
-     #+end_src
-     #+end_quote
-   #+reveal: split
-   - 定義にもとづいて計算する
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \mathbb{E}[y-\hat{y}]
-         &=
-           \mathbb{E}[y]
-           -\mathbb{E}[\hat{y}]\\
-         &=
-           \tilde{y}-\tilde{y}\\
-         &=
-           0\\
-         \mathrm{Var}(y-\hat{y})
-         &=
-           \mathrm{Var}(y)
-           +\mathrm{Var}(\hat{y})\\
-         &=
-           \sigma^{2}
-           +
-           \sigma^{2}
-           (1,\boldsymbol{x}^{\mathsf{T}})
-           (X^{\mathsf{T}}X)^{-1}
-           (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}
-       \end{align}
-     #+end_src
-     #+end_quote
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- $C_{\alpha}$ の定義にもとづいて計算すればよい
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \alpha
+      &=
+	P(|Z| < {C_{\alpha}})\\
+      &=
+	P\left(
+	\left|\frac{\tilde{y}-\hat{y}}{\hat{\sigma}\gamma_{c}(\boldsymbol{x})}\right|
+	< {C_{\alpha}}
+	\right)\\
+      &=
+	P\left(
+	|\tilde{y}-\hat{y}|
+	< C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
+	\right)\\
+      &=
+	P\left(
+	-C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
+	< \tilde{y}-\hat{y}
+	< C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
+	\right)\\
+      &=
+	P\left(
+	\hat{y}-C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
+	< \tilde{y}
+	< \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
+	\right)
+    \end{align}
+  #+end_src
+  #+end_quote
+  #+reveal: split
+  - 定義にもとづいて計算する
+    #+begin_quote
+    #+begin_src latex
+      \begin{align}
+	\mathbb{E}[y-\hat{y}]
+	&=
+   \mathbb{E}[y]
+   -\mathbb{E}[\hat{y}]\\
+	&=
+   \tilde{y}-\tilde{y}\\
+	&=
+   0\\
+	\mathrm{Var}(y-\hat{y})
+	&=
+   \mathrm{Var}(y)
+   +\mathrm{Var}(\hat{y})\\
+	&=
+   \sigma^{2}
+   +
+   \sigma^{2}
+   (1,\boldsymbol{x}^{\mathsf{T}})
+   (X^{\mathsf{T}}X)^{-1}
+   (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}
+      \end{align}
+    #+end_src
+    #+end_quote
    
 
 * 予測区間
@@ -725,7 +832,14 @@
    #   - 確率 $\alpha$ で観測値 $y$ が入ることが期待される区間
    - $\gamma_{p}>\gamma_{c}$ なので信頼区間より広くなる
 
-** COMMENT R: モデルからの予測
+
+
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: モデルからの予測
    - 関数 ~predict()~ を用いた予測:
      #+begin_src R :eval no
        ## モデルの作成
@@ -742,7 +856,7 @@
                        interval="prediction", level=0.95) # 予測区間
        ## 信頼区間，予測区間の水準の既定値は0.95
      #+end_src
-** COMMENT R: 予測の例
+** R: 予測の例
    - 東京の気候データによる例:
      #+begin_src R :eval no :tangle yes
        ### 9,10月のデータでモデルを構築し，8,11月のデータを予測
@@ -775,18 +889,7 @@
               legend=c("Aug","Sep","Oct","Nov"), col=myColor[8:11])
      #+end_src
      
-** COMMENT 演習: 信頼区間と予測区間
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-interval.r][06-interval.r]] を確認してみよう
-** COMMENT 演習: モデルの更新
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-model.r][06-model.r]] を確認してみよう
-
-** COMMENT 練習問題
+** 練習問題
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -906,6 +1009,17 @@
        cor(ynew, yhat3)^2
      #+end_src
      
+** COMMENT 講義資料: 信頼区間と予測区間
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/06-interval.r][06-interval.r]] を確認してみよう
+** COMMENT 講義資料: モデルの更新
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/06-model.r][06-model.r]] を確認してみよう
+
 ** 事例: 信頼区間と予測区間
    - 東京の気候データを用いて以下を試みる
      - 8月のデータで回帰式を推定する
@@ -988,32 +1102,6 @@
    [[file:figs/05_sep_pint.png]]
      
 
-* COMMENT 演習
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
-** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - について以下を示しなさい．
-     - である．
-       #+begin_quote
-       #+begin_src latex
-       #+end_src
-       #+end_quote
-       
-** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - いずれも定義にもとづいて計算すればよい
-     #+begin_quote
-     #+begin_src latex
-     #+end_src
-     #+end_quote
-
-   
    
 * 非線形の関係
 ** 非線形な関係のモデル化
@@ -1023,6 +1111,62 @@
      - 交互作用 (交差項): $X_iX_j$ のような説明変数の積
      - 非線形変換: $\log(X_k)$ のような関数による変換
 
+** 事例: 非線形な関係を含むモデル
+   - 東京の気候データの問題で
+     - 日射量，気圧，湿度，雲量の線形回帰モデル
+     - 湿度と雲量の交互作用を加えた線形回帰モデル
+     を比較してみる
+   #+reveal: split
+   - 日射量，気圧，湿度，雲量の線形回帰モデル
+     #+begin_src R :exports results :tangle yes
+       ## 日射量，気圧，湿度の線形回帰モデル
+       TW.est <- lm(temp ~ solar + press + humid + cloud, data=TW.subset)
+       TW.sum <- summary(TW.est)
+       TW.r2 <- TW.sum$r.squared
+       TW.ar2 <- TW.sum$adj.r.squared
+       TW.fstat <- TW.sum$fstat
+       signif(TW.sum$coef,digits=3)
+       cat("\n")
+       print(
+           paste("R2:",
+                 signif(TW.r2,digits=3),
+                 "; adj. R2:",
+                 signif(TW.ar2,digits=3),
+                 "; F-stat:",
+                 signif(TW.fstat[1],digits=3),
+                 "; p-val:",
+                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                 ))
+     #+end_src
+   #+reveal: split
+   - 湿度と雲量の交互作用を加えた線形回帰モデル
+     #+begin_src R :exports results :tangle yes
+       ## 湿度と雲量の交互作用を加えた線形回帰モデル
+       TW.est <- lm(temp ~ solar + press + humid * cloud, data=TW.subset)
+       TW.sum <- summary(TW.est)
+       TW.r2 <- TW.sum$r.squared
+       TW.ar2 <- TW.sum$adj.r.squared
+       TW.fstat <- TW.sum$fstat
+       signif(TW.sum$coef,digits=3)
+       cat("\n")
+       print(
+           paste("R2:",
+                 signif(TW.r2,digits=3),
+                 "; adj. R2:",
+                 signif(TW.ar2,digits=3),
+                 "; F-stat:",
+                 signif(TW.fstat[1],digits=3),
+                 "; p-val:",
+                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                 ))
+     #+end_src
+   
+
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
 ** COMMENT R: 線形でないモデル式の書き方
    - 交互作用を記述するためには特殊な記法がある
    - 非線形変換はそのまま関数を記述すればよい
@@ -1077,84 +1221,8 @@
        ## 最後のモデルの視覚的な評価 (診断プロット)
        plot(lm(temp ~ solar * press * humid, data=TW.subset))
      #+end_src
-** 事例: 非線形な関係を含むモデル
-   - 東京の気候データの問題で
-     - 日射量，気圧，湿度，雲量の線形回帰モデル
-     - 湿度と雲量の交互作用を加えた線形回帰モデル
-     を比較してみる
-   #+reveal: split
-   - 日射量，気圧，湿度，雲量の線形回帰モデル
-     #+begin_src R :exports results :tangle yes
-       ## 日射量，気圧，湿度の線形回帰モデル
-       TW.est <- lm(temp ~ solar + press + humid + cloud, data=TW.subset)
-       TW.sum <- summary(TW.est)
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       signif(TW.sum$coef,digits=3)
-       cat("\n")
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-     #+end_src
-   #+reveal: split
-   - 湿度と雲量の交互作用を加えた線形回帰モデル
-     #+begin_src R :exports results :tangle yes
-       ## 湿度と雲量の交互作用を加えた線形回帰モデル
-       TW.est <- lm(temp ~ solar + press + humid * cloud, data=TW.subset)
-       TW.sum <- summary(TW.est)
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       signif(TW.sum$coef,digits=3)
-       cat("\n")
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-     #+end_src
-   
 
-* COMMENT 演習
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
-** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - について以下を示しなさい．
-     - である．
-       #+begin_quote
-       #+begin_src latex
-       #+end_src
-       #+end_quote
 
-** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - いずれも定義にもとづいて計算すればよい
-     #+begin_quote
-     #+begin_src latex
-     #+end_src
-     #+end_quote
-
-   
-   
 * カテゴリカル変数
 ** カテゴリカル変数
    - 悪性良性や血液型などの数値ではないデータ
@@ -1167,59 +1235,6 @@
        - B型: (0,1,0)
        - O型: (0,0,1)
        - AB型: (0,0,0)
-
-** COMMENT R: カテゴリカル変数の取り扱い
-   - 何も宣言しなくても通常は適切に対応してくれる
-   - 陽にカテゴリカル変数として扱いたい場合は関数 ~factor()~ を利用:
-     #+begin_src R :eval no :tangle yes
-       ## factor属性の与え方
-       X <- c("A","S","A","B","D")
-       Y <- c(85,100,80,70,30)
-       dat1 <- data.frame(X,Y)
-       dat2 <- transform(dat1, 
-                         X2=factor(X))
-       str(dat2) # 作成したデータフレームの素性を見る
-       dat3 <- transform(dat2, 
-                         X3=factor(X, levels=c("S","A","B","C","D")))
-       str(dat3) # dat2とはfactorの順序が異なる
-       dat4 <- transform(dat2,
-                         Y2=factor(Y > 60)) 
-       str(dat4) # 条件の真偽で2値に類別される
-     #+end_src
-
-** COMMENT 演習: ダミー変数
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-dummy.r][06-dummy.r]] を確認してみよう
-
-** COMMENT 練習問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 東京の気候データ(1年分)を用いて
-     気温を回帰する以下のモデルを検討しなさい
-     - 降水の有無を表すカテゴリカル変数を用いたモデル \\
-       (雨が降ると気温が変化することを検証するモデル)
-     - 月をカテゴリカル変数として加えたモデル \\
-       (月毎の気温の差を考慮して検証するモデル)
-     #+begin_src R :eval no :exports none :tangle yes
-       ### 練習3
-       ### カテゴリカル変数
-
-       ### 東京の気候データによる分析
-       ## 雨と気温の関係を分析
-       TW.data <- transform(TW.data,
-                            rain=factor(rain > 0)) 
-       summary(lm(temp ~ rain, data=TW.data))
-       ## 通年では雨と気温の関係は積極的に支持されない
-
-       ## 月毎の気温の差を考慮して月を表す変数をダミー化する
-       TW.data <- transform(TW.data,
-                            month=factor(month))
-       summary(lm(temp ~ rain + month, data=TW.data))
-       ## 月毎に比較すると雨の日の方が気温が低いことが支持される
-     #+end_src
 
 ** 事例: カテゴリカル変数の利用
    - 東京の気候データ(1年分)を用いて
@@ -1277,35 +1292,69 @@
        ## 月毎に比較すると雨の日の方が気温が低いことが支持される
      #+end_src
    
-* COMMENT 演習
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
-** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - について以下を示しなさい．
-     - である．
-       #+begin_quote
-       #+begin_src latex
-       #+end_src
-       #+end_quote
 
-** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - いずれも定義にもとづいて計算すればよい
-     #+begin_quote
-     #+begin_src latex
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** COMMENT R: カテゴリカル変数の取り扱い
+   - 何も宣言しなくても通常は適切に対応してくれる
+   - 陽にカテゴリカル変数として扱いたい場合は関数 ~factor()~ を利用:
+     #+begin_src R :eval no :tangle yes
+       ## factor属性の与え方
+       X <- c("A","S","A","B","D")
+       Y <- c(85,100,80,70,30)
+       dat1 <- data.frame(X,Y)
+       dat2 <- transform(dat1, 
+                         X2=factor(X))
+       str(dat2) # 作成したデータフレームの素性を見る
+       dat3 <- transform(dat2, 
+                         X3=factor(X, levels=c("S","A","B","C","D")))
+       str(dat3) # dat2とはfactorの順序が異なる
+       dat4 <- transform(dat2,
+                         Y2=factor(Y > 60)) 
+       str(dat4) # 条件の真偽で2値に類別される
      #+end_src
-     #+end_quote
 
-   
+** COMMENT 演習: ダミー変数
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/06-dummy.r][06-dummy.r]] を確認してみよう
 
+** COMMENT 練習問題
+   :PROPERTIES:
+   :reveal_background: #fef4f4
+   :END:
+   - 東京の気候データ(1年分)を用いて
+     気温を回帰する以下のモデルを検討しなさい
+     - 降水の有無を表すカテゴリカル変数を用いたモデル \\
+       (雨が降ると気温が変化することを検証するモデル)
+     - 月をカテゴリカル変数として加えたモデル \\
+       (月毎の気温の差を考慮して検証するモデル)
+     #+begin_src R :eval no :exports none :tangle yes
+       ### 練習3
+       ### カテゴリカル変数
+
+       ### 東京の気候データによる分析
+       ## 雨と気温の関係を分析
+       TW.data <- transform(TW.data,
+                            rain=factor(rain > 0)) 
+       summary(lm(temp ~ rain, data=TW.data))
+       ## 通年では雨と気温の関係は積極的に支持されない
+
+       ## 月毎の気温の差を考慮して月を表す変数をダミー化する
+       TW.data <- transform(TW.data,
+                            month=factor(month))
+       summary(lm(temp ~ rain + month, data=TW.data))
+       ## 月毎に比較すると雨の日の方が気温が低いことが支持される
+     #+end_src
+
+     
    
-* COMMENT 補足
+* 補足
+# 東京大学
 ** COMMENT R: モデルの探索
    - 変数が増えるとモデルの比較が困難
    - 関数 ~step()~ を用いて自動化することができる \\
@@ -1322,9 +1371,7 @@
        summary(opt)
      #+end_src
    
-     
-* COMMENT 補遺 car package の紹介
-** COMMENT さまざまな評価
+** COMMENT R: car package の利用
    - 回帰モデルの評価
      - 与えられたデータの再現
      - 新しいデータの予測
@@ -1341,7 +1388,7 @@
      # - spread-level plot 
      # - influence plots
      などが用意されている
-** COMMENT 演習: car package の使用例
+** COMMENT 講義資料: car package の使用例
    :PROPERTIES:
    :reveal_background: #EEEEFF
    :END:
@@ -1360,6 +1407,12 @@
      - 検討結果を踏まえてモデルを更新する (評価の繰り返し)
 
 
+* 次週の予定
+  - *第1回: 主成分分析の考え方*
+  - 第2回: 分析の評価と視覚化
+
+
+   
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted
