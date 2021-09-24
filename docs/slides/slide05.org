@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-24 10:02:32 mura>
+# Time-stamp: <2021-09-24 19:12:18 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -46,32 +46,32 @@
 - 演習の内容が異なるので演習は2つ作る形で対応
 
 * COMMENT 演習 (早稲田大学雛型)
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
-  # 早稲田大学
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 早稲田大学
 ** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - について以下を示しなさい．
-     - である．
-       #+begin_quote
-       #+begin_src latex
-       #+end_src
-       #+end_quote
-       
-** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - いずれも定義にもとづいて計算すればよい
-     #+begin_quote
-     #+begin_src latex
-     #+end_src
-     #+end_quote
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- について以下を示しなさい．
+  - である．
+    #+begin_quote
+    #+begin_src latex
+    #+end_src
+    #+end_quote
 
-   
+** 解答例
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- いずれも定義にもとづいて計算すればよい
+  #+begin_quote
+  #+begin_src latex
+  #+end_src
+  #+end_quote
+
+
 
 #+OPTIONS: reveal_mousewheel:nil
 #+begin_src R :eval no :exports none :tangle yes
@@ -123,7 +123,7 @@
   ## 分析
   ##
 #+end_src
-  
+
 ** COMMENT 講義資料: 概略
 :PROPERTIES:
 :reveal_background: #EEEEFF
@@ -133,578 +133,587 @@
 
 * 回帰分析の復習
 ** 線形回帰モデル
-   - *目的変数* を *説明変数* で説明する関係式を構成:
-     - 説明変数: $x_1,\dotsc,x_p$ (p次元)
-     - 目的変数: $y$ (1次元)
-   - *回帰係数* $\beta_0,\beta_1,\dotsc,\beta_p$ を用いた一次式:
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         y=\beta_0+\beta_1x_1+\dotsb+\beta_px_p
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - *誤差項* を含む確率モデルで観測データを表現:
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         y_i=\beta_0+\beta_1 x_{i1}+\cdots+\beta_px_{ip}+\epsilon_i
-         \quad (i=1,\dotsc,n)
-       \end{equation}
-     #+end_src
-     #+end_quote
+- *目的変数* を *説明変数* で説明する関係式を構成:
+  - 説明変数: \(x_1,\dotsc,x_p\) (p次元)
+  - 目的変数: \(y\) (1次元)
+- *回帰係数* \(\beta_0,\beta_1,\dotsc,\beta_p\) を用いた一次式:
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      y=\beta_0+\beta_1x_1+\dotsb+\beta_px_p
+    \end{equation}
+  #+end_src
+  #+end_quote
+- *誤差項* を含む確率モデルで観測データを表現:
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      y_i=\beta_0+\beta_1 x_{i1}+\cdots+\beta_px_{ip}+\epsilon_i
+      \quad (i=1,\dotsc,n)
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 問題設定
-   - 確率モデル:
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \boldsymbol{y}
-         =X\boldsymbol{\beta}+\boldsymbol{\epsilon}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 式の評価: *残差平方和* の最小化による推定
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         S(\boldsymbol{\beta})
-         =(\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
-         (\boldsymbol{y}-X\boldsymbol{\beta})
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 確率モデル:
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \boldsymbol{y}
+      =X\boldsymbol{\beta}+\boldsymbol{\epsilon}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 式の評価: *残差平方和* の最小化による推定
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      S(\boldsymbol{\beta})
+      =(\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
+      (\boldsymbol{y}-X\boldsymbol{\beta})
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 解
-   - 解の条件: *正規方程式*
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X^{\mathsf{T}}X\boldsymbol{\beta}
-         =X^{\mathsf{T}}\boldsymbol{y}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 解の一意性: *Gram 行列* $X^{\mathsf{T}}X$ が正則
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \hat{\boldsymbol{\beta}}
-         =
-         (X^{\mathsf{T}}X)^{-1}
-         X^{\mathsf{T}}\boldsymbol{y}  
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 解の条件: *正規方程式*
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X^{\mathsf{T}}X\boldsymbol{\beta}
+      =X^{\mathsf{T}}\boldsymbol{y}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 解の一意性: *Gram 行列* \(X^{\mathsf{T}}X\) が正則
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \hat{\boldsymbol{\beta}}
+      =
+      (X^{\mathsf{T}}X)^{-1}
+      X^{\mathsf{T}}\boldsymbol{y}  
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 寄与率
-	- *決定係数* (R-squared):
-	  #+begin_quote
-	  #+begin_src latex
-	    \begin{equation}
-	      R^2
-	      =
-	      1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
-	    \end{equation}
-	  #+end_src
-	  #+end_quote
-	- *自由度調整済み決定係数* (adjusted R-squared):
-	  #+begin_quote
-	  #+begin_src latex
-	    \begin{equation}
-	      \bar{R}^2
-	      =
-	      1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
-	      {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
-	    \end{equation}
-	  #+end_src
-	  不偏分散で補正
-	  #+end_quote
+- *決定係数* (R-squared):
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      R^2
+      =
+      1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- *自由度調整済み決定係数* (adjusted R-squared):
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \bar{R}^2
+      =
+      1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
+      {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
+    \end{equation}
+  #+end_src
+  #+end_quote
+  - 不偏分散で補正
 
-** 事例 
-   - 東京の8月の気候 (気温,降雨,日射,降雪,風速,気圧,湿度,雲量)
-     に関するデータ(の一部)
-     #+begin_src R :exports results :tangle yes
-       ## データの読み込み
-       TW.data <- read.csv("data/tokyo_weather_reg.csv")
-       TW.subset <- subset(TW.data, # 8月のデータの抽出
-                           subset= months(as.Date(date),
-                                          abbreviate=TRUE)==" 8")
-       head(TW.subset, 14) # 2週間分を表示
+** 実データによる例 
+- 東京の8月の気候 (気温,降雨,日射,降雪,風速,気圧,湿度,雲量)
+  に関するデータ(の一部)
+  #+begin_src R :exports results :tangle yes
+    ## データの読み込み
+    TW.data <- read.csv("data/tokyo_weather.csv")
+    TW.subset <- subset(TW.data, # 8月のデータの抽出
+                        subset= month==8)
+    head(TW.subset[,-1], 14) # 2週間分を表示
 
-       ### モデル式
-       TW.model0 <- temp ~ press + solar + humid + cloud
-       TW.model1 <- temp ~ press
-       TW.model2 <- temp ~ press + solar
-       TW.model3 <- temp ~ press + solar + humid
-       TW.model4 <- temp ~ press + solar + cloud
+    ### モデル式
+    TW.model0 <- temp ~ press + solar + humid + cloud
+    TW.model1 <- temp ~ press
+    TW.model2 <- temp ~ press + solar
+    TW.model3 <- temp ~ press + solar + humid
+    TW.model4 <- temp ~ press + solar + cloud
 
-       ## 推定
-       TW.est0 <- lm(TW.model0, data=TW.subset, y=TRUE)
-       TW.est1 <- lm(TW.model1, data=TW.subset, y=TRUE)
-       TW.est2 <- lm(TW.model2, data=TW.subset, y=TRUE)
-       TW.est3 <- lm(TW.model3, data=TW.subset, y=TRUE)
-       TW.est4 <- lm(TW.model4, data=TW.subset, y=TRUE)
-     #+end_src
-   #+reveal: split
-   - 作成した線形回帰モデルを検討する
-     - モデル1: 気温 = F(気圧)
-     - モデル2: 気温 = F(気圧, 日射)
-     - モデル3: 気温 = F(気圧, 日射, 湿度)
-     - モデル4: 気温 = F(気圧, 日射, 雲量)
-       
-   #+reveal: split
-   - 説明変数と目的変数の関係
-     #+begin_src R :file figs/05_variables.png :exports results :results graphics :tangle yes
-       ## 説明変数と目的変数の散布図
-       if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-       plot(model.frame(TW.est0),
-            labels=c("気温","気圧","日射","湿度","雲量"),
-            col="blue", pch=20)
-     #+end_src
-   #+CAPTION: 説明変数と目的変数の散布図
-   #+NAME: fig:05_variables
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/05_variables.png]]
-     
-   #+reveal: split
-   - 観測値とあてはめ値の比較
-     #+begin_src R :file figs/05_models.png :exports results :results graphics :tangle yes
-       ## 観測値とあてはめ値の比較
-       if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-       with(TW.est1,
-            plot(y,fitted.values,col="orange",pch=17, # 三角
-                 xlab="気温",
-                 ylab="あてはめ値",ylim=range(y)))   
-       abline(0,1,col="red",lwd=2)
-       with(TW.est2,
-            points(y,fitted.values,col="green",pch=15)) # 四角
-       with(TW.est3,
-            points(y,fitted.values,col="blue",pch=21))  # 丸
-       with(TW.est4,
-            points(y,fitted.values,col="cyan",pch=23))  # 菱形
-       legend("bottomright",inset=.05, # 凡例の作成
-              col=c("orange","green","blue","cyan"), pch=c(17,15,21,23), 
-              legend=c("モデル1","モデル2","モデル3","モデル4"))
-     #+end_src
-   #+CAPTION: モデルの比較
-   #+NAME: fig:04_models
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/05_models.png]]
+    ## 推定
+    TW.est0 <- lm(TW.model0, data=TW.subset, y=TRUE)
+    TW.est1 <- lm(TW.model1, data=TW.subset, y=TRUE)
+    TW.est2 <- lm(TW.model2, data=TW.subset, y=TRUE)
+    TW.est3 <- lm(TW.model3, data=TW.subset, y=TRUE)
+    TW.est4 <- lm(TW.model4, data=TW.subset, y=TRUE)
+  #+end_src
+  
+#+reveal: split
+- 作成した線形回帰モデルを検討する
+  - モデル1: 気温 = F(気圧)
+  - モデル2: 気温 = F(気圧, 日射)
+  - モデル3: 気温 = F(気圧, 日射, 湿度)
+  - モデル4: 気温 = F(気圧, 日射, 雲量)
+
+#+reveal: split
+- 説明変数と目的変数の関係
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/05_variables.png :exports results :results graphics :tangle yes
+    ## 説明変数と目的変数の散布図
+    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+    plot(model.frame(TW.est0),
+         labels=c("気温","気圧","日射","湿度","雲量"),
+         col="blue", pch=20)
+  #+end_src
+
+#+CAPTION: 説明変数と目的変数の散布図
+#+NAME: fig:05_variables
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/05_variables.png]]
+
+#+reveal: split
+- 観測値とあてはめ値の比較
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/05_models.png :exports results :results graphics :tangle yes
+    ## 観測値とあてはめ値の比較
+    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+    with(TW.est1,
+         plot(y,fitted.values,col="orange",pch=17, # 三角
+              xlab="気温",
+              ylab="あてはめ値",ylim=range(y)))   
+    abline(0,1,col="red",lwd=2)
+    with(TW.est2,
+         points(y,fitted.values,col="green",pch=15)) # 四角
+    with(TW.est3,
+         points(y,fitted.values,col="blue",pch=21))  # 丸
+    with(TW.est4,
+         points(y,fitted.values,col="brown",pch=23))  # 菱形
+    legend("bottomright",inset=.05, # 凡例の作成
+           col=c("orange","green","blue","brown"), pch=c(17,15,21,23), 
+           legend=c("モデル1","モデル2","モデル3","モデル4"))
+  #+end_src
+
+#+CAPTION: モデルの比較
+#+NAME: fig:04_models
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/05_models.png]]
 ** モデルの評価
-   - 決定係数
-     - モデル1
-     #+begin_src R :exports results :tangle yes
-       ## モデル1
-       print(
-           paste("R2:",
-                 signif(summary(TW.est1)$r.squared,digits=3),
-                 "; adj. R2:",
-                 signif(summary(TW.est1)$adj.r.squared,digits=3)
-                 ))
-     #+end_src
-     - モデル2
-     #+begin_src R :exports results :tangle yes
-       ## モデル2
-       print(
-           paste("R2:",
-                 signif(summary(TW.est2)$r.squared,digits=3),
-                 "; adj. R2:",
-                 signif(summary(TW.est2)$adj.r.squared,digits=3)
-                 ))
-     #+end_src
-     - モデル3 (モデル2より改善しているとは言えない)
-     #+begin_src R :exports results :tangle yes
-       ## モデル3
-       print(
-           paste("R2:",
-                 signif(summary(TW.est3)$r.squared,digits=3),
-                 "; adj. R2:",
-                 signif(summary(TW.est3)$adj.r.squared,digits=3)
-                 ))
-     #+end_src
-     - モデル4 (モデル2より改善している)
-     #+begin_src R :exports results :tangle yes
-       ## モデル4
-       print(
-           paste("R2:",
-                 signif(summary(TW.est4)$r.squared,digits=3),
-                 "; adj. R2:",
-                 signif(summary(TW.est4)$adj.r.squared,digits=3)
-                 ))
-     #+end_src
+- 決定係数
+  - モデル1: 気温 = F(気圧)
+    #+begin_src R :exports results :tangle yes
+      ## モデル1
+      print(
+          paste("R2:",
+                signif(summary(TW.est1)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est1)$adj.r.squared,digits=3)
+                ))
+    #+end_src
+  - モデル2: 気温 = F(気圧, 日射)
+    #+begin_src R :exports results :tangle yes
+      ## モデル2
+      print(
+          paste("R2:",
+                signif(summary(TW.est2)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est2)$adj.r.squared,digits=3)
+                ))
+    #+end_src
+  - モデル3: 気温 = F(気圧, 日射, 湿度) (2より改善している)
+    #+begin_src R :exports results :tangle yes
+      ## モデル3
+      print(
+          paste("R2:",
+                signif(summary(TW.est3)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est3)$adj.r.squared,digits=3)
+                ))
+    #+end_src
+  - モデル4: 気温 = F(気圧, 日射, 雲量) (2より改善していない)
+    #+begin_src R :exports results :tangle yes
+      ## モデル4
+      print(
+          paste("R2:",
+                signif(summary(TW.est4)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est4)$adj.r.squared,digits=3)
+                ))
+    #+end_src
+
 ** \(F\)-統計量による検定
-	- 説明変数のうち1つでも役に立つか否かを検定する
-	  - 帰無仮説: $\beta_1=\dotsb=\beta_p=0$
-	  - 対立仮説: $\exists j\;\beta_j\neq0$ (少なくとも1つは役に立つ)
-	- \(F\)-統計量: 決定係数(または残差)を用いて計算
-	  #+begin_quote
-	  #+begin_src latex
-	    \begin{equation}
-	      F
-	      =\frac{n{-}p{-}1}{p}\frac{R^2}{1-R^2}
-	    \end{equation}
-	  #+end_src
-	  #+end_quote
-	- $p$ -値: 自由度 $p,n{-}p{-}1$ の $F$ 分布で計算
-	  # #+begin_src latex
-	  #   \begin{equation}
-	  #     \text{($p$-値)}
-	  #     =
-	  #     \int_{F}^\infty f(x)dx,
-	  #   \end{equation}
-	  # #+end_src
-** モデルの評価
-   - 決定係数と\(F\)-統計量
-     - モデル1
-     #+begin_src R :exports results :tangle yes
-       ## モデル1
-       TW.sum <- summary(TW.est1)
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-     #+end_src
-     - モデル2
-     #+begin_src R :exports results :tangle yes
-       ## モデル2
-       TW.sum <- summary(TW.est2)
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-     #+end_src
-     - モデル3
-     #+begin_src R :exports results :tangle yes
-       ## モデル3
-       TW.sum <- summary(TW.est3)
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-     #+end_src
-     - モデル4
-     #+begin_src R :exports results :tangle yes
-       ## モデル4
-       TW.sum <- summary(TW.est4)
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-     #+end_src
-** \(t\)-統計量による検定
-	- 回帰係数 $\beta_j$ が回帰式に寄与するか否かを検定する
-	  - 帰無仮説: $\beta_j=0$
-	  - 対立仮説: $\beta_j\neq0$ ($\beta_j$ は役に立つ)
-	- \(t\)-統計量: 各係数ごと，$\xi$ は $(X^{\mathsf{T}} X)^{-1}$ の対角成分
-	  #+begin_quote
-	  #+begin_src latex
-	    \begin{equation}
-	      t=\frac{\hat{\beta}_j}{\hat{\sigma}\sqrt{\xi_j}}
-	    \end{equation}
-	  #+end_src
-	  #+end_quote
-	- $p$ -値: 自由度 $n{-}p{-}1$ の $t$ 分布を用いて計算
-	  # #+begin_src latex
-	  # \begin{equation}
-	  #   \text{($p$-値)}
-	  #   =
-	  #   2\int_{|t|}^\infty f(x)dx
-	  # \end{equation}
-	  # #+end_src
+- 説明変数のうち1つでも役に立つか否かを検定する
+  - 帰無仮説 \(H_{0}\): \(\beta_1=\dotsb=\beta_p=0\)
+  - 対立仮説 \(H_{1}\): \(\exists j\;\beta_j\neq0\) (少なくとも1つは役に立つ)
+- \(F\)-統計量: 決定係数(または残差)を用いて計算
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      F
+      =\frac{n{-}p{-}1}{p}\frac{R^2}{1-R^2}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- \(p\)-値: 自由度 \(p,n{-}p{-}1\) の \(F\)-分布で計算
+  # #+begin_src latex
+  #   \begin{equation}
+  #     \text{(\(p\)-値)}
+  #     =
+  #     \int_{F}^\infty f(x)dx,
+  #   \end{equation}
+  # #+end_src
 
 ** モデルの評価
-   - 回帰係数の推定量と\(t\)-統計量
-     - モデル1
-     #+begin_src R :exports results :tangle yes
-       ## モデル1
-       signif(summary(TW.est1)$coef,digits=3)
-     #+end_src
-     - モデル2
-     #+begin_src R :exports results :tangle yes
-       ## モデル2
-       signif(summary(TW.est2)$coef,digits=3)
-     #+end_src
-   #+reveal: split     
-   - 回帰係数の推定量と\(t\)-統計量 (つづき)
-     - モデル3
-     #+begin_src R :exports results :tangle yes
-       ## モデル3
-       signif(summary(TW.est3)$coef,digits=3)
-     #+end_src
-     - モデル4 (雲量の回帰係数は有用でないことを示唆)
-     #+begin_src R :exports results :tangle yes
-       ## モデル4
-       signif(summary(TW.est4)$coef,digits=3)
-     #+end_src
+- 決定係数と\(F\)-統計量
+  - モデル1: 気温 = F(気圧)
+    #+begin_src R :exports results :tangle yes
+      ## モデル1
+      TW.sum <- summary(TW.est1)
+      TW.r2 <- TW.sum$r.squared
+      TW.ar2 <- TW.sum$adj.r.squared
+      TW.fstat <- TW.sum$fstat
+      print(
+          paste("R2:",
+                signif(TW.r2,digits=3),
+                "; adj. R2:",
+                signif(TW.ar2,digits=3),
+                "; F-stat:",
+                signif(TW.fstat[1],digits=3),
+                "; p-val:",
+                signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                ))
+    #+end_src
+  - モデル2: 気温 = F(気圧, 日射)
+    #+begin_src R :exports results :tangle yes
+      ## モデル2
+      TW.sum <- summary(TW.est2)
+      TW.r2 <- TW.sum$r.squared
+      TW.ar2 <- TW.sum$adj.r.squared
+      TW.fstat <- TW.sum$fstat
+      print(
+          paste("R2:",
+                signif(TW.r2,digits=3),
+                "; adj. R2:",
+                signif(TW.ar2,digits=3),
+                "; F-stat:",
+                signif(TW.fstat[1],digits=3),
+                "; p-val:",
+                signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                ))
+    #+end_src
+  - モデル3: 気温 = F(気圧, 日射, 湿度)
+    #+begin_src R :exports results :tangle yes
+      ## モデル3
+      TW.sum <- summary(TW.est3)
+      TW.r2 <- TW.sum$r.squared
+      TW.ar2 <- TW.sum$adj.r.squared
+      TW.fstat <- TW.sum$fstat
+      print(
+          paste("R2:",
+                signif(TW.r2,digits=3),
+                "; adj. R2:",
+                signif(TW.ar2,digits=3),
+                "; F-stat:",
+                signif(TW.fstat[1],digits=3),
+                "; p-val:",
+                signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                ))
+    #+end_src
+  - モデル4: 気温 = F(気圧, 日射, 雲量)
+    #+begin_src R :exports results :tangle yes
+      ## モデル4
+      TW.sum <- summary(TW.est4)
+      TW.r2 <- TW.sum$r.squared
+      TW.ar2 <- TW.sum$adj.r.squared
+      TW.fstat <- TW.sum$fstat
+      print(
+          paste("R2:",
+                signif(TW.r2,digits=3),
+                "; adj. R2:",
+                signif(TW.ar2,digits=3),
+                "; F-stat:",
+                signif(TW.fstat[1],digits=3),
+                "; p-val:",
+                signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                ))
+    #+end_src
+
+** \(t\)-統計量による検定
+- 回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定する
+  - 帰無仮説 \(H_{0}\): \(\beta_j=0\)
+  - 対立仮説 \(H_{1}\): \(\beta_j\neq0\) (\(\beta_j\) は役に立つ)
+- \(t\)-統計量: 各係数ごと，\(\zeta\) は \((X^{\mathsf{T}} X)^{-1}\) の対角成分
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      t=\frac{\hat{\beta}_j}{\hat{\sigma}\zeta_{j}}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- \(p\)-値: 自由度 \(n{-}p{-}1\) の \(t\)-分布を用いて計算
+  # #+begin_src latex
+  # \begin{equation}
+  #   \text{(\(p\)-値)}
+  #   =
+  #   2\int_{|t|}^\infty f(x)dx
+  # \end{equation}
+  # #+end_src
+
+** モデルの評価
+- 回帰係数の推定量と\(t\)-統計量
+  - モデル1: 気温 = F(気圧)
+    #+begin_src R :exports results :tangle yes
+      ## モデル1
+      signif(summary(TW.est1)$coef,digits=3)
+    #+end_src
+    - 気圧単体では回帰係数は有意ではない
+  - モデル2: 気温 = F(気圧, 日射)
+    #+begin_src R :exports results :tangle yes
+      ## モデル2
+      signif(summary(TW.est2)$coef,digits=3)
+    #+end_src
+    - 日射と組み合わせることで有意となる
+
+#+reveal: split     
+- 回帰係数の推定量と\(t\)-統計量 (つづき)
+  - モデル3: 気温 = F(気圧, 日射, 湿度)
+    #+begin_src R :exports results :tangle yes
+      ## モデル3
+      signif(summary(TW.est3)$coef,digits=3)
+    #+end_src
+  - モデル4: 気温 = F(気圧, 日射, 雲量) 
+    #+begin_src R :exports results :tangle yes
+      ## モデル4
+      signif(summary(TW.est4)$coef,digits=3)
+    #+end_src
+    - このモデルでは雲量は有用でないことが示唆される
+
 ** COMMENT 講義資料: 回帰分析とその評価
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-wine.r][06-wine.r]] を確認してみよう
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/06-wine.r][06-wine.r]] を確認してみよう
 
 
 * 回帰モデルによる予測
 ** 予測
-   - 新しいデータ (説明変数) $\boldsymbol{x}$ に対する *予測値*
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \hat{y}
-         =
-         (1,\boldsymbol{x}^{\mathsf{T}})\hat{\boldsymbol{\beta}},
-         \qquad
-         \hat{\boldsymbol{\beta}}
-         =
-         (X^{\mathsf{T}}X)^{-1}
-         X^{\mathsf{T}}\boldsymbol{y}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 予測値は元データの目的変数の重み付け線形和
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \hat{y}
-         =
-         \boldsymbol{w}(\boldsymbol{x})^{\mathsf{T}}\boldsymbol{y}
-       \end{equation}
-     #+end_src
-     重みは元データと新規データの説明変数で決定
-     #+begin_src latex
-       \begin{equation}
-         \boldsymbol{w}(\boldsymbol{x})^{\mathsf{T}}
-         =
-         (1,\boldsymbol{x}^{\mathsf{T}})
-         (X^{\mathsf{T}}X)^{-1}
-         X^{\mathsf{T}}
-       \end{equation}
-     #+end_src
-     #+end_quote
-     
+- 新しいデータ (説明変数) \(\boldsymbol{x}\) に対する *予測値*
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \hat{y}
+      =
+      (1,\boldsymbol{x}^{\mathsf{T}})\hat{\boldsymbol{\beta}},
+      \qquad
+      \hat{\boldsymbol{\beta}}
+      =
+      (X^{\mathsf{T}}X)^{-1}
+      X^{\mathsf{T}}\boldsymbol{y}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 予測値は元データの目的変数の重み付け線形和
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \hat{y}
+      =
+      \boldsymbol{w}(\boldsymbol{x})^{\mathsf{T}}\boldsymbol{y}
+    \end{equation}
+    \begin{equation}
+      \boldsymbol{w}(\boldsymbol{x})^{\mathsf{T}}
+      =
+      (1,\boldsymbol{x}^{\mathsf{T}})
+      (X^{\mathsf{T}}X)^{-1}
+      X^{\mathsf{T}}
+    \end{equation}
+  #+end_src
+  #+end_quote
+  - 重みは元データと新規データの説明変数で決定
+
 ** 予測値の性質
-	- 推定量は以下の性質をもつ多変量正規分布
-	  #+begin_quote
-	  #+begin_src latex
-	    \begin{align}
-	      \mathbb{E}[\hat{\boldsymbol{\beta}}]
-	      &=\boldsymbol{\beta}\\
-	      \mathrm{Cov}(\hat{\boldsymbol{\beta}})
-	      &=\sigma^{2}(X^{\mathsf{T}}X)^{-1}
-	    \end{align}
-	  #+end_src
-	  #+end_quote
-	- この性質を利用して以下の3つの値の違いを評価
-	  #+begin_quote
-	  #+begin_src latex
-	    \begin{align}
-	      \hat{y}&=(1,\boldsymbol{x}^{\mathsf{T}})\hat{\boldsymbol{\beta}}
-	      &&\text{(回帰式による予測値)}\\
-	      \tilde{y}&=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}
-	      &&\text{(最適な予測値)}\\
-	      y&=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}+\epsilon
-	      &&\text{(観測値)}
-	    \end{align}
-	  #+end_src
-	  $\hat{y}$ と $y$ は独立な正規分布に従うことに注意
-	  #+end_quote
+- 推定量は以下の性質をもつ多変量正規分布
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \mathbb{E}[\hat{\boldsymbol{\beta}}]
+      &=\boldsymbol{\beta}\\
+      \mathrm{Cov}(\hat{\boldsymbol{\beta}})
+      &=\sigma^{2}(X^{\mathsf{T}}X)^{-1}
+    \end{align}
+  #+end_src
+  #+end_quote
+- この性質を利用して以下の3つの値の違いを評価
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \hat{y}&=(1,\boldsymbol{x}^{\mathsf{T}})\hat{\boldsymbol{\beta}}
+      &&\text{(回帰式による予測値)}\\
+      \tilde{y}&=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}
+      &&\text{(最適な予測値)}\\
+      y&=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}+\epsilon
+      &&\text{(観測値)}
+    \end{align}
+  #+end_src
+  #+end_quote
+  - \(\hat{y}\) と \(y\) は独立な正規分布に従うことに注意
 
 
 * 演習
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
-  # 早稲田大学
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 早稲田大学
 ** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 誤差が平均0，分散 $\sigma^{2}$ の正規分布に従うとき，
-     以下の問について答えなさい．
-     - 予測値 $\hat{y}$ の平均を求めなさい．
-     - 予測値 $\hat{y}$ の分散を求めなさい．
-** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 定義にもとづいて計算する
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \mathbb{E}[\hat{y}]
-         &=
-           \mathbb{E}[(1,\boldsymbol{x}^{\mathsf{T}})\hat{\boldsymbol{\beta}}]\\
-         &=
-           (1,\boldsymbol{x}^{\mathsf{T}})\mathbb{E}[\hat{\boldsymbol{\beta}}]\\
-         &=
-           (1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}\\
-         &=
-           \tilde{y}
-       \end{align}
-     #+end_src
-     真の回帰式による最適な予測値
-     #+end_quote
-   #+reveal: split
-   - 定義にもとづいて計算する
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \mathrm{Var}(\hat{y})
-         &=
-           \mathrm{Var}((1,\boldsymbol{x}^{\mathsf{T}})
-           (\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}))\\
-         &=
-           (1,\boldsymbol{x}^{\mathsf{T}})
-           \mathrm{Cov}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})
-           (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}\\
-         &=
-           (1,\boldsymbol{x}^{\mathsf{T}})
-           \mathrm{Cov}(\hat{\boldsymbol{\beta}})
-           (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}\\
-         &=
-           (1,\boldsymbol{x}^{\mathsf{T}})
-           \sigma^{2}
-           (X^{\mathsf{T}}X)^{-1}
-           (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}\\
-         &=
-           \sigma^{2}
-           (1,\boldsymbol{x}^{\mathsf{T}})
-           (X^{\mathsf{T}}X)^{-1}
-           (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}
-       \end{align}
-     #+end_src
-     #+end_quote
-     
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 誤差が平均0 分散 \(\sigma^{2}\) の正規分布に従うとき，
+  以下の問に答えなさい
+  - 予測値 \(\hat{y}\) の平均を求めよ
+  - 予測値 \(\hat{y}\) の分散を求めよ
+** COMMENT 解答例
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 定義にもとづいて計算する
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \mathbb{E}[\hat{y}]
+      &=
+        \mathbb{E}[(1,\boldsymbol{x}^{\mathsf{T}})\hat{\boldsymbol{\beta}}]\\
+      &=
+        (1,\boldsymbol{x}^{\mathsf{T}})\mathbb{E}[\hat{\boldsymbol{\beta}}]\\
+      &=
+        (1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}\\
+      &=
+        \tilde{y}
+    \end{align}
+  #+end_src
+  #+end_quote
+  -  真の回帰式による最適な予測値
+
+#+reveal: split
+- 定義にもとづいて計算する
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \mathrm{Var}(\hat{y})
+      &=
+        \mathrm{Var}((1,\boldsymbol{x}^{\mathsf{T}})
+        (\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}))\\
+      &=
+        (1,\boldsymbol{x}^{\mathsf{T}})
+        \mathrm{Cov}(\hat{\boldsymbol{\beta}}-\boldsymbol{\beta})
+        (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}\\
+      &=
+        (1,\boldsymbol{x}^{\mathsf{T}})
+        \mathrm{Cov}(\hat{\boldsymbol{\beta}})
+        (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}\\
+      &=
+        (1,\boldsymbol{x}^{\mathsf{T}})
+        \sigma^{2}
+        (X^{\mathsf{T}}X)^{-1}
+        (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}\\
+      &=
+        \sigma^{2}
+        (1,\boldsymbol{x}^{\mathsf{T}})
+        (X^{\mathsf{T}}X)^{-1}
+        (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}
+    \end{align}
+  #+end_src
+  #+end_quote
+
 
 * 信頼区間
 ** 最適な予測値との差
-   - 差の分布は以下の平均・分散の正規分布
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-	 \check{\boldsymbol{x}}^{\mathsf{T}}&=(1,\boldsymbol{x}^{\mathsf{T}})\\
-	 \mathbb{E}[\tilde{y}-\hat{y}]
-                                            &=\check{\boldsymbol{x}}^{\mathsf{T}}\boldsymbol{\beta}
-                                              -\check{\boldsymbol{x}}^{\mathsf{T}}
-                                              \mathbb{E}[\hat{\boldsymbol{\beta}}]
-                                              =0\\
-	 \mathrm{Var}(\tilde{y}-\hat{y})
-                                            &=\underbrace{\sigma^{2}\check{\boldsymbol{x}}^{\mathsf{T}}
-                                              (X^{\mathsf{T}}X)^{-1}\check{\boldsymbol{x}}
-                                              }_{\text{$\hat{\boldsymbol{\beta}}$の推定誤差による分散}}
-                                              =\sigma^{2}\gamma_{c}(\boldsymbol{x})^{2}
-       \end{align}
-     #+end_src
-     #+end_quote
-   - 正規化による表現
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \frac{\tilde{y}-\hat{y}}{\sigma\gamma_{c}(\boldsymbol{x})}
-         \sim \mathcal{N}(0,1)
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 差の分布は以下の平均・分散をもつ正規分布に従う
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \mathbb{E}[\tilde{y}-\hat{y}]
+      &=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}
+        -(1,\boldsymbol{x}^{\mathsf{T}})\mathbb{E}[\hat{\boldsymbol{\beta}}]
+        =0\\
+      \mathrm{Var}(\tilde{y}-\hat{y})
+      &=\underbrace{\sigma^{2}(1,\boldsymbol{x}^{\mathsf{T}})(X^{\mathsf{T}}X)^{-1}
+        (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}}_{\text{\(\hat{\boldsymbol{\beta}}\)の推定誤差による分散}}
+        =\sigma^{2}\gamma_{c}(\boldsymbol{x})^{2}
+    \end{align}
+  #+end_src
+  #+end_quote
+- 正規化による表現
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \frac{\tilde{y}-\hat{y}}{\sigma\gamma_{c}(\boldsymbol{x})}
+      \sim \mathcal{N}(0,1)
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 信頼区間
-   - 未知の分散を不偏分散で推定
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         Z=
-         \frac{\tilde{y}-\hat{y}}{\hat{\sigma}\gamma_{c}(\boldsymbol{x})}
-         \sim \mathcal{T}(n{-}p{-}1) 
-         \quad (\text{$t$-分布})
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 確率 $\alpha$ の信頼区間 \\
-     (最適な予測値 $\tilde{y}$ が入ることが期待される区間)
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \mathcal{I}^{c}_{\alpha}
-         =
-         \left(
-           \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x}),\;
-           \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
-         \right)
-       \end{equation}
-     #+end_src
-     ただし $C_{\alpha}$ は以下を満たす定数
-     #+begin_src latex
-       \begin{equation}
-         P(|Z| < {C_{\alpha}} | Z\sim\mathcal{T}(n{-}p{-}1))
-         =\alpha
-       \end{equation}
-     #+end_src
-     #+end_quote
-   #   - 確率 $\alpha$ で最適な予測値 $\tilde{y}$ が入ることが期待される区間
+- 未知の分散を不偏分散で推定
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      Z=
+      \frac{\tilde{y}-\hat{y}}{\hat{\sigma}\gamma_{c}(\boldsymbol{x})}
+      \sim \mathcal{T}(n{-}p{-}1) 
+      \quad (\text{\(t\)-分布})
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 確率 \(\alpha\) の信頼区間
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \mathcal{I}^{c}_{\alpha}
+      =
+      \left(
+        \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x}),\;
+        \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
+      \right)
+    \end{equation}
+  #+end_src
+  #  ただし \(C_{\alpha}\) は以下を満たす定数
+  #+begin_src latex
+    \begin{equation}
+      P(|Z| < {C_{\alpha}} | Z\sim\mathcal{T}(n{-}p{-}1))
+      =\alpha
+    \end{equation}
+  #+end_src
+  #+end_quote
+  - 最適な予測値 \(\tilde{y}\) が入ることが期待される区間
+  #   - 確率 \(\alpha\) で最適な予測値 \(\tilde{y}\) が入ることが期待される区間
 
 
 * 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
-  - 信頼区間について以下の式が成り立つことを示しなさい．
+- 以下の問に答えなさい
+  - 信頼区間について以下の式が成り立つことを示せ
     #+begin_quote
     #+begin_src latex
       \begin{equation}
-	P(\tilde{y}\in\mathcal{I}^{c}_{\alpha})
-	=\alpha
+        P(\tilde{y}\in\mathcal{I}^{c}_{\alpha})
+        =\alpha
       \end{equation}
     #+end_src
     #+end_quote
-  - 観測値と予測値の差 $y-\hat{y}$ の平均と分散を求めなさい．
+  - 観測値と予測値の差 \(y-\hat{y}\) の平均と分散を求めよ
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- $C_{\alpha}$ の定義にもとづいて計算すればよい
+- \(C_{\alpha}\) の定義にもとづいて計算すればよい
   #+begin_quote
   #+begin_src latex
     \begin{align}
@@ -736,682 +745,697 @@
     \end{align}
   #+end_src
   #+end_quote
-  #+reveal: split
-  - 定義にもとづいて計算する
-    #+begin_quote
-    #+begin_src latex
-      \begin{align}
-	\mathbb{E}[y-\hat{y}]
-	&=
-   \mathbb{E}[y]
-   -\mathbb{E}[\hat{y}]\\
-	&=
-   \tilde{y}-\tilde{y}\\
-	&=
-   0\\
-	\mathrm{Var}(y-\hat{y})
-	&=
-   \mathrm{Var}(y)
-   +\mathrm{Var}(\hat{y})\\
-	&=
-   \sigma^{2}
-   +
-   \sigma^{2}
-   (1,\boldsymbol{x}^{\mathsf{T}})
-   (X^{\mathsf{T}}X)^{-1}
-   (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}
-      \end{align}
-    #+end_src
-    #+end_quote
-   
+
+#+reveal: split
+- 独立性を利用して計算する
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \mathbb{E}[y-\hat{y}]
+      &=
+        \mathbb{E}[y]
+        -\mathbb{E}[\hat{y}]\\
+      &=
+        \tilde{y}-\tilde{y}\\
+      &=
+        0\\
+      \mathrm{Var}(y-\hat{y})
+      &=
+        \mathrm{Var}(y)
+        +\mathrm{Var}(\hat{y})\\
+      &=
+        \sigma^{2}
+        +
+        \sigma^{2}
+        (1,\boldsymbol{x}^{\mathsf{T}})
+        (X^{\mathsf{T}}X)^{-1}
+        (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}
+    \end{align}
+  #+end_src
+  #+end_quote
+
 
 * 予測区間
 ** 観測値との差
-   - 差の分布は以下の平均・分散の正規分布
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \mathbb{E}[y-\hat{y}]
-         &=\check{\boldsymbol{x}}^{\mathsf{T}}\boldsymbol{\beta}
-           +\mathbb{E}[\boldsymbol{\epsilon}]
-           -\check{\boldsymbol{x}}^{\mathsf{T}}
-           \mathbb{E}[\hat{\boldsymbol{\beta}}]
-           =0\\
-         \mathrm{Var}(y-\hat{y})
-         &=\underbrace{\sigma^{2}\check{\boldsymbol{x}}^{\mathsf{T}}
-           (X^{\mathsf{T}}X)^{-1}\check{\boldsymbol{x}}
-           }_{\text{$\hat{\boldsymbol{\beta}}$の推定誤差による分散}}
-           +\underbrace{\sigma^{2}}_{\text{誤差の分散}}
-           =\sigma^{2}\gamma_{p}(\boldsymbol{x})^{2}
-       \end{align}
-     #+end_src
-     #+end_quote
-   - 正規化による表現
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \frac{y-\hat{y}}{\sigma\gamma_{p}(\boldsymbol{x})}
-         \sim \mathcal{N}(0,1)
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 差の分布は以下の平均・分散をもつ正規分布に従う
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \mathbb{E}[y-\hat{y}]
+      &=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}
+        +\mathbb{E}[\boldsymbol{\epsilon}]
+        -(1,\boldsymbol{x}^{\mathsf{T}})
+        \mathbb{E}[\hat{\boldsymbol{\beta}}]
+        =0\\
+      \mathrm{Var}(y-\hat{y})
+      &=\underbrace{\sigma^{2}
+        (1,\boldsymbol{x}^{\mathsf{T}})(X^{\mathsf{T}}X)^{-1}
+        (1,\boldsymbol{x}^{\mathsf{T}})^{\mathsf{T}}
+        }_{\text{\(\hat{\boldsymbol{\beta}}\)の推定誤差による分散}}
+        +\underbrace{\sigma^{2}}_{\text{誤差の分散}}
+        =\sigma^{2}\gamma_{p}(\boldsymbol{x})^{2}
+    \end{align}
+  #+end_src
+  #+end_quote
+- 正規化による表現
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \frac{y-\hat{y}}{\sigma\gamma_{p}(\boldsymbol{x})}
+      \sim \mathcal{N}(0,1)
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 予測区間
-   - 未知の分散を不偏分散で推定
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         Z=
-         \frac{y-\hat{y}}{\hat{\sigma}\gamma_{p}(\boldsymbol{x})}
-         \sim \mathcal{T}(n{-}p{-}1) 
-         \quad (\text{$t$-分布})
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 確率 $\alpha$ の予測区間 \\
-     (観測値 $y$ が入ることが期待される区間)
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \mathcal{I}^{p}_{\alpha}
-         =
-         \left(
-           \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{p}(\boldsymbol{x}),\;
-           \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{p}(\boldsymbol{x})
-         \right)
-       \end{equation}
-     #+end_src
-     ただし $C_{\alpha}$ は以下を満たす定数
-     #+begin_src latex
-       \begin{equation}
-         P(|Z| < {C_{\alpha}} | Z\sim\mathcal{T}(n{-}p{-}1))
-         =\alpha
-       \end{equation}
-     #+end_src
-     #+end_quote
-   #   - 確率 $\alpha$ で観測値 $y$ が入ることが期待される区間
-   - $\gamma_{p}>\gamma_{c}$ なので信頼区間より広くなる
+- 未知の分散を不偏分散で推定
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      Z=
+      \frac{y-\hat{y}}{\hat{\sigma}\gamma_{p}(\boldsymbol{x})}
+      \sim \mathcal{T}(n{-}p{-}1) 
+      \quad (\text{\(t\)-分布})
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 確率 \(\alpha\) の予測区間 
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \mathcal{I}^{p}_{\alpha}
+      =
+      \left(
+        \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{p}(\boldsymbol{x}),\;
+        \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{p}(\boldsymbol{x})
+      \right)
+    \end{equation}
+  #+end_src
+  # ただし \(C_{\alpha}\) は以下を満たす定数
+  #+begin_src latex
+    \begin{equation}
+      P(|Z| < {C_{\alpha}} | Z\sim\mathcal{T}(n{-}p{-}1))
+      =\alpha
+    \end{equation}
+  #+end_src
+  #+end_quote
+  #   - 確率 \(\alpha\) で観測値 \(y\) が入ることが期待される区間
+  - 観測値 \(y\) が入ることが期待される区間
+  - \(\gamma_{p}>\gamma_{c}\) なので信頼区間より広くなる
 
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
+** R: 予測値と区間推定
+- 関数 ~predict()~ を用いた予測
+  #+begin_src R :eval no
+    ## モデルの作成
+    train <- data.frame(x1=..., x2=..., y=...)
+    est  <- lm(y ~ x1 + x2, data=train) 
+    fit  <- predict(est) # あてはめ値の計算
+    ## 新しいデータの予測
+    test <- data.frame(x1=..., x2=...) # 予測したいデータの説明変数
+    pred <- predict(est, # 予測値の計算
+                    newdata=test) # 説明変数のデータフレーム
+    cint <- predict(est, newdata=test, 
+                    interval="confidence", level=0.95) # 信頼区間
+    pint <- predict(est, newdata=test, 
+                    interval="prediction", level=0.95) # 予測区間
+    ## 信頼区間，予測区間の水準の既定値は0.95
+  #+end_src
+
 ** R: モデルからの予測
-   - 関数 ~predict()~ を用いた予測:
-     #+begin_src R :eval no
-       ## モデルの作成
-       train <- data.frame(x1=..., x2=..., y=...)
-       est  <- lm(y ~ x1 + x2, data=train) 
-       fit  <- predict(est) # あてはめ値の計算
-       ## 新しいデータの予測
-       test <- data.frame(x1=..., x2=...) # 予測したいデータの説明変数
-       pred <- predict(est, # 予測値の計算
-                       newdata=test) # 説明変数のデータフレーム
-       cint <- predict(est, newdata=test, 
-                       interval="confidence", level=0.95) # 信頼区間
-       pint <- predict(est, newdata=test, 
-                       interval="prediction", level=0.95) # 予測区間
-       ## 信頼区間，予測区間の水準の既定値は0.95
-     #+end_src
-** R: 予測の例
-   - 東京の気候データによる例:
-     #+begin_src R :eval no :tangle yes
-       ### 9,10月のデータでモデルを構築し，8,11月のデータを予測
-       TW.data <- transform( # 月(数値)を付加する
-           read.csv("data/tokyo_weather_reg.csv"),
-           month=as.numeric(months(as.Date(date), abbreviate=TRUE)))
-       TW.model <- temp ~ solar + press # モデルの定義 
-       TW.train <- subset(TW.data, # モデル推定用データ
-                          subset= month %in% c(9,10)) # %in% は集合に含むか
+- 東京の気候データによる例
+  #+begin_src R :eval no :tangle yes
+    ### 9,10月のデータでモデルを構築し，8,11月のデータを予測
+    TW.data <- read.csv("data/tokyo_weather.csv")
+    TW.train <- subset(TW.data, # モデル推定用データ
+                       subset= month %in% c(9,10)) # %in% は集合に含むか
+    TW.test  <- subset(TW.data, # 予測用データ
+                       subset= month %in% c(8,11))
 
-       TW.test  <- subset(TW.data, # 予測用データ
-                          subset= month %in% c(8,11))
-       TW.est <- lm(TW.model, data=TW.train) # モデルの推定
-       summary(TW.est) # モデルの評価
-       TW.fit  <- predict(TW.est) # データのあてはめ値
-       TW.pred <- predict(TW.est, # 新規データの予測値
-                          newdata=TW.test) 
-     #+end_src
-     #+begin_src R :eval no :exports none :tangle yes
-       ## 予測結果を図示
-       myColor <- rep("black",12) 
-       myColor[8:11] <- c("red","orange","violet","blue") # 色の定義
-       with(TW.train,
-            plot(temp ~ TW.fit, pch=1, col=myColor[month],
-                 xlab="fitted", ylab="observed"))
-       with(TW.test,
-            points(temp ~ TW.pred, pch=4, col=myColor[month]))
-       abline(0,1,col="gray") # 予測が完全に正しい場合のガイド線
-       legend("bottomright",inset=.05, pch=15, # 凡例の作成
-              legend=c("Aug","Sep","Oct","Nov"), col=myColor[8:11])
-     #+end_src
-     
+    TW.model <- temp ~ solar + press # モデルの定義 
+    TW.est <- lm(TW.model, data=TW.train) # モデルの推定
+    summary(TW.est) # モデルの評価
+    TW.fit  <- predict(TW.est) # データのあてはめ値
+    TW.pred <- predict(TW.est, # 新規データの予測値
+                       newdata=TW.test) 
+  #+end_src
+
+#+reveal: split
+- グラフ表示の例
+  #+begin_src R :eval no :tangle yes
+    ## 予測結果を図示
+    myColor <- rep("black",12) 
+    myColor[8:11] <- c("red","orange","violet","blue") # 色の定義
+    with(TW.train,
+         plot(temp ~ TW.fit, pch=1, col=myColor[month],
+              xlab="fitted", ylab="observed"))
+    with(TW.test,
+         points(temp ~ TW.pred, pch=4, col=myColor[month]))
+    abline(0,1,col="gray") # 予測が完全に正しい場合のガイド線
+    legend("bottomright",inset=.05, pch=15, # 凡例の作成
+           legend=c("Aug","Sep","Oct","Nov"), col=myColor[8:11])
+  #+end_src
+
 ** 練習問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 東京の気候データを用いて以下の実験を試みなさい
-     - 8月のデータで回帰式を推定する
-     - 上記のモデルで9月のデータを予測する
-     #+begin_src R :eval no
-       ## 8月と9月のデータを取り出すには，例えば以下のようにすればよい
-       TW.data <- transform(read.csv("data/tokyo_weather_reg.csv"),
-			    month=as.numeric(months(as.Date(date), 
-						    abbreviate=TRUE)))
-       TW.model <- temp ~ solar + press + cloud # モデルの定義 
-       TW.train <- subset(TW.data, subset= month==8) # 推定用データ
-       TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
-     #+end_src
-   - 人工データを作成してモデルの予測について検討しなさい (宿題)
-     #+begin_src R :eval no :exports none :tangle yes
-       ### 練習1
-       ### 回帰式を用いた予測
-
-       ### 東京の気候データによる分析
-       ## 信頼区間と予測区間の計算
-       require(plotrix) # 区間付きのグラフを利用するため
-       TW.data <- transform(read.csv("data/tokyo_weather_reg.csv"),
-			    date=as.Date(date), # 日付をx軸で使えるように変換
-			    month=as.numeric(months(as.Date(date), 
-						    abbreviate=TRUE)))
-       TW.model <- temp ~ solar + press + cloud # モデルの定義 
-       TW.train <- subset(TW.data, subset= month %in% 8) # 推定用データ
-       TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
-       TW.est <- lm(TW.model, data=TW.train) # モデルの推定
-       ## 信頼区間
-       TW.fit <- data.frame(TW.train,
-                            predict(TW.est, # 回帰式によるあてはめ値を付加
-                                    interval="confidence")) 
-       TW.cint <- data.frame(TW.test,
-                             predict(TW.est, newdata=TW.test,
-                                     interval="confidence"))
-       ## 予測区間
-       TW.pint <- data.frame(TW.test,
-                             predict(TW.est, newdata=TW.test,
-                                     interval="prediction"))
-
-       ## 8月のデータで8月をあてはめた信頼区間
-       with(TW.fit, { # 2つのプロットをまとめて実行
-           plotCI(date, fit, ui=upr, li=lwr, # それぞれの列名に注意
-                  col="blue", scol="lightblue",
-                  xlab="August", ylab="temperature")
-           points(date, temp, col="red", pch=16)
-       })
-       
-       ## 8月のデータで9月をあてはめた信頼区間
-       with(TW.cint, {
-           plotCI(date, fit, ui=upr, li=lwr, ylim=c(20,32), 
-                  col="blue", scol="lightblue", 
-                  xlab="September", ylab="temperature")
-           points(date, temp, col="red", pch=16)
-       })
-
-       ## 8月のデータで9月をあてはめた予測区間
-       with(TW.pint, {
-           plotCI(date, fit, ui=upr, li=lwr, ylim=c(20,32),
-                  col="blue", scol="lightblue",
-                  xlab="September", ylab="temperature")
-           points(date, temp, col="red", pch=16)
-       })
-
-       ### 人工データによる検討例
-       ###   以下はあくまで例です
-       ###   自由に数値実験を設計して下さい
-
-       ## 試行の設定
-       ## モデル: y = -1 + 2*x1
-       ## 人工データの生成
-       set.seed(1313) # 乱数のシード
-       n <- 50 # データ数の設定
-       xobs1 <- runif(n) # 説明変数1
-       xobs2 <- runif(n) # 説明変数2
-       beta0 <- -1 # 切片 
-       beta1 <-  2 # xの係数
-       beta2 <-  0 # xの係数
-       sigma <-  1/2 # 誤差の標準偏差
-       epsilon <- rnorm(length(xobs1),sd=sigma) # 誤差項
-       yobs <- beta0 + beta1*xobs1 + beta2*xobs2 + epsilon # 目的変数
-       myTrain <- data.frame(x1=xobs1,
-                             x2=xobs2,
-                             y=yobs) # データフレームの作成
-       est1 <- lm(y ~ x1, data=myTrain) # x1による回帰分析の実行(正しいモデル)
-       summary(est1)
-       est2 <- lm(y ~ x1 + x2, data=myTrain) # x1とx2による回帰分析の実行(冗長なモデル)
-       summary(est2)
-       est3 <- lm(y ~ x2, data=myTrain) # x2による回帰分析の実行(誤ったモデル)
-       summary(est3)
-
-       ## 新規データに対する予測
-       myTest <- data.frame(x1=runif(n),
-                            x2=runif(n,-10,10)) # 説明変数の新規データ
-       ynew <- beta0 + beta1*myTest$x1 # 新規データに対する目的変数の真値 (誤差なし)
-       yhat1 <- predict(est1, newdata=myTest) # est1による予測値
-       yhat2 <- predict(est2, newdata=myTest) # est2による予測値
-       yhat3 <- predict(est3, newdata=myTest) # est3による予測値
-
-       ## 散布図による可視化
-       plot(ynew ~ yhat1, 
-	    col="red", pch=20,
-	    xlab="fitted value", ylab="observed value") # 黒
-       points(ynew ~ yhat2, pch=20, col="green")  # 赤
-       points(ynew ~ yhat3, pch=20, col="blue") # 青
-       abline(0,1, col="gray") # 理想的な結果
-       legend("bottomright",inset=.05, # 凡例の作成
-	      col=c("red","green","blue"), pch=c(20,20,20), 
-	      legend=c("model1","model2","model3"))
-
-       ## 相関係数による数値的な評価 (R-squared と等価)
-       cor(ynew, yhat1)^2 
-       cor(ynew, yhat2)^2
-       cor(ynew, yhat3)^2
-     #+end_src
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 東京の気候データを用いて以下の実験を試みなさい
+  - 8月のデータで回帰式を推定する
+  - 上記のモデルで9月のデータを予測する
+  #+begin_src R :eval no
+    ## 8月と9月のデータを取り出すには，例えば以下のようにすればよい
+    TW.data <- read.csv("data/tokyo_weather.csv")
+    TW.train <- subset(TW.data, subset= month==8) # 推定用データ
+    TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
+  #+end_src
+  
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 練習問題 回帰式を用いた予測
+  ### 
+  
+  ### 東京の気候データによる分析
+  
+  ## 信頼区間と予測区間の計算
+  library(plotrix) # 区間付きのグラフを利用するため
+  TW.data <- read.csv("data/tokyo_weather.csv")
+  TW.train <- subset(TW.data, subset= month %in% 8) # 推定用データ
+  TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
+  TW.model <- temp ~ solar + press + cloud # モデルの定義 
+  TW.est <- lm(TW.model, data=TW.train) # モデルの推定
+  
+  ## 信頼区間
+  TW.fit <- data.frame(TW.train,
+                       predict(TW.est, # 回帰式によるあてはめ値を付加
+                               interval="confidence")) 
+  TW.cint <- data.frame(TW.test,
+                        predict(TW.est, newdata=TW.test,
+                                interval="confidence"))
+  
+  ## 予測区間
+  TW.pint <- data.frame(TW.test,
+                        predict(TW.est, newdata=TW.test,
+                                interval="prediction"))
+  
+  ## 8月のデータで推定したモデルで8月をあてはめた信頼区間
+  with(TW.fit, { # 2つのプロットをまとめて実行
+      plotCI(day, fit, ui=upr, li=lwr, # それぞれの列名に注意
+             col="blue", scol="steelblue", lwd=2,
+             xlab="August", ylab="temperature")
+      points(day, temp, col="red", pch=16)
+  })
+  
+  ## 8月のモデルで9月をあてはめた信頼区間
+  with(TW.cint, {
+      plotCI(day, fit, ui=upr, li=lwr, ylim=c(20,32), 
+             col="blue", scol="steelblue", lwd=2,
+             xlab="September", ylab="temperature")
+      points(day, temp, col="red", pch=16)
+  })
+  
+  ## 8月のモデルで9月をあてはめた予測区間
+  with(TW.pint, {
+      plotCI(day, fit, ui=upr, li=lwr, ylim=c(20,32),
+             col="blue", scol="lightblue", lwd=2,
+             xlab="September", ylab="temperature")
+      points(day, temp, col="red", pch=16)
+  })
+  
+  ### 人工データによる検討例
+  ###   (以下はあくまで例なので自由に数値実験を設計して下さい)
+  
+  ## 試行の設定
+  ## モデル: y = -1 + 2*x1
+  ## 人工データの生成
+  set.seed(1515) # 乱数のシード
+  n <- 50 # データ数の設定
+  x1.obs <- runif(n) # 説明変数1
+  x2.obs <- runif(n) # 説明変数2
+  beta0 <- -1 # 切片 
+  beta1 <-  2 # xの係数
+  beta2 <-  0 # xの係数
+  sigma <-  1/2 # 誤差の標準偏差
+  epsilon <- rnorm(length(x1.obs),sd=sigma) # 誤差項
+  y.obs <- beta0 + beta1*x1.obs + beta2*x2.obs + epsilon # 目的変数
+  x.obs <- data.frame(x1=x1.obs,
+                      x2=x2.obs,
+                      y=y.obs) # データフレームの作成
+  est1 <- lm(y ~ x1, data=x.obs) # x1による回帰分析の実行(正しいモデル)
+  summary(est1)
+  est2 <- lm(y ~ x1 + x2, data=x.obs) # x1とx2による回帰分析の実行(冗長なモデル)
+  summary(est2)
+  est3 <- lm(y ~ x2, data=x.obs) # x2による回帰分析の実行(誤ったモデル)
+  summary(est3)
+  
+  ## 新規データに対する予測
+  x.new <- data.frame(x1=runif(n),
+                      x2=runif(n,-10,10)) # 説明変数の新規データ
+  y.new <- beta0 + beta1*x.new$x1 # 新規データに対する目的変数の真値 (誤差なし)
+  y.hat1 <- predict(est1, newdata=x.new) # est1による予測値
+  y.hat2 <- predict(est2, newdata=x.new) # est2による予測値
+  y.hat3 <- predict(est3, newdata=x.new) # est3による予測値
+  
+  ## 散布図による可視化
+  plot(y.new ~ y.hat1, 
+       col="red", pch=20,
+       xlab="fitted value", ylab="observed value") # 黒
+  points(y.new ~ y.hat2, pch=20, col="green")  # 赤
+  points(y.new ~ y.hat3, pch=20, col="blue") # 青
+  abline(0,1, col="gray") # 理想的な結果
+  legend("bottomright",inset=.05, # 凡例の作成
+         col=c("red","green","blue"), pch=c(20,20,20), 
+         legend=c("model1","model2","model3"))
+  
+  ## 相関係数による数値的な評価 (R-squared と等価)
+  cor(y.new, y.hat1)^2 
+  cor(y.new, y.hat2)^2
+  cor(y.new, y.hat3)^2
+#+end_src
      
 ** COMMENT 講義資料: 信頼区間と予測区間
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-interval.r][06-interval.r]] を確認してみよう
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/06-interval.r][06-interval.r]] を確認してみよう
 ** COMMENT 講義資料: モデルの更新
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-model.r][06-model.r]] を確認してみよう
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/06-model.r][06-model.r]] を確認してみよう
 
-** 事例: 信頼区間と予測区間
-   - 東京の気候データを用いて以下を試みる
-     - 8月のデータで回帰式を推定する
-       #+begin_quote
-       気温 = F(気圧, 日射, 雲量) (モデル4)
-       #+end_quote
-     - 上記のモデルで9月のデータを予測する
-   #+reveal: split
-     #+begin_src R :exports none :tangle yes
-       ### 東京の気候データによる分析
-       ## 信頼区間と予測区間の計算
-       require(plotrix) # 区間付きのグラフを利用するため
-       TW.data <- transform(read.csv("data/tokyo_weather_reg.csv"),
-			    date=as.Date(date), # 日付をx軸で使えるように変換
-			    month=as.numeric(months(as.Date(date), 
-						    abbreviate=TRUE)))
-       TW.model <- temp ~ solar + press + cloud # モデルの定義 
-       TW.train <- subset(TW.data, subset= month %in% 8) # 推定用データ
-       TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
-       TW.est <- lm(TW.model, data=TW.train) # モデルの推定
-       ## 信頼区間
-       TW.fit <- data.frame(TW.train,
-                            predict(TW.est, # 回帰式によるあてはめ値を付加
-                                    interval="confidence")) 
-       TW.cint <- data.frame(TW.test,
-                             predict(TW.est, newdata=TW.test,
-                                     interval="confidence"))
-       ## 予測区間
-       TW.pint <- data.frame(TW.test,
-                             predict(TW.est, newdata=TW.test,
-                                     interval="prediction"))
 
-     #+end_src
-     #+begin_src R :file figs/05_aug_cint.png :exports results :results graphics :tangle yes
-       ## 8月のデータで8月をあてはめた信頼区間
-       if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-       with(TW.fit, { # 2つのプロットをまとめて実行
-           plotCI(date, fit, ui=upr, li=lwr, # それぞれの列名に注意
-                  col="blue", scol="lightblue",
-                  xlab="8月", ylab="気温")
-           points(date, temp, col="red", pch=16)
-       })
-     #+end_src
-   #+CAPTION: 8月のあてはめ値の信頼区間
-   #+NAME: fig:05_aug_cint
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/05_aug_cint.png]]
-   #+reveal: split
-     #+begin_src R :file figs/05_sep_cint.png :exports results :results graphics :tangle yes
-       ## 8月のデータで9月をあてはめた信頼区間
-       if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-       with(TW.cint, {
-           plotCI(date, fit, ui=upr, li=lwr, ylim=range(temp), 
-                  col="blue", scol="lightblue", 
-                  xlab="9月", ylab="気温")
-           points(date, temp, col="red", pch=16)
-       })
-     #+end_src
-   #+CAPTION: 9月の予測値の信頼区間
-   #+NAME: fig:05_sep_cint
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/05_sep_cint.png]]
-   #+reveal: split
-     #+begin_src R :file figs/05_sep_pint.png :exports results :results graphics :tangle yes
-       ## 8月のデータで9月をあてはめた予測区間
-       if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-       with(TW.pint, {
-           plotCI(date, fit, ui=upr, li=lwr, ylim=range(temp),
-                  col="blue", scol="lightblue",
-                  xlab="9月", ylab="気温")
-           points(date, temp, col="red", pch=16)
-       })
-     #+end_src
-   #+CAPTION: 9月の予測値の予測区間
-   #+NAME: fig:05_sep_pint
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/05_sep_pint.png]]
+* 解析の事例
+# 早稲田大学
+** 信頼区間と予測区間
+- 東京の気候データを用いて以下を試みる
+  - 8月のデータで回帰式を推定する
+    #+begin_quote
+    気温 = F(気圧, 日射, 湿度)
+    #+end_quote
+  - 上記のモデルで9月のデータを予測する
+
+#+reveal: split
+#+begin_src R :exports none :tangle yes
+  ### 東京の気候データによる分析
+  ## 信頼区間と予測区間の計算
+  require(plotrix) # 区間付きのグラフを利用するため
+  TW.data <- read.csv("data/tokyo_weather.csv")
+  TW.model <- temp ~ solar + press + humid # モデルの定義 
+  TW.train <- subset(TW.data, subset= month %in% 8) # 推定用データ
+  TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
+  TW.est <- lm(TW.model, data=TW.train) # モデルの推定
+  ## 信頼区間
+  TW.fit <- data.frame(TW.train,
+                       predict(TW.est, # 回帰式によるあてはめ値を付加
+                               interval="confidence")) 
+  TW.cint <- data.frame(TW.test,
+                        predict(TW.est, newdata=TW.test,
+                                interval="confidence"))
+  ## 予測区間
+  TW.pint <- data.frame(TW.test,
+                        predict(TW.est, newdata=TW.test,
+                                interval="prediction"))
+#+end_src
      
+#+header: :width 720 :height 720 :res 100
+#+begin_src R :file figs/05_aug_cint.png :exports results :results graphics :tangle yes
+  ## 8月のデータで推定したモデルで8月をあてはめた場合の信頼区間
+  if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+  with(TW.fit, { # 2つのプロットをまとめて実行
+      plotCI(day, fit, ui=upr, li=lwr, # それぞれの列名に注意
+             col="blue", scol="steelblue", lwd=2,
+             xlab="8月", ylab="気温")
+      points(day, temp, col="red", pch=16)
+  })
+#+end_src
 
+#+CAPTION: 8月のあてはめ値の信頼区間
+#+NAME: fig:05_aug_cint
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/05_aug_cint.png]]
+
+#+reveal: split
+#+header: :width 720 :height 720 :res 100
+#+begin_src R :file figs/05_sep_cint.png :exports results :results graphics :tangle yes
+  ## 8月のモデルで9月を予測した場合の信頼区間
+  if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+  with(TW.cint, {
+      plotCI(day, fit, ui=upr, li=lwr, ylim=range(temp), 
+             col="blue", scol="steelblue", lwd=2,
+             xlab="9月", ylab="気温")
+      points(day, temp, col="red", pch=16)
+  })
+#+end_src
+
+#+CAPTION: 8月モデルによる9月の予測値の信頼区間
+#+NAME: fig:05_sep_cint
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/05_sep_cint.png]]
+
+#+reveal: split
+#+header: :width 720 :height 720 :res 100
+#+begin_src R :file figs/05_sep_pint.png :exports results :results graphics :tangle yes
+  ## 8月のモデルで9月を予測した場合の予測区間
+  if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+  with(TW.pint, {
+      plotCI(day, fit, ui=upr, li=lwr, ylim=range(temp),
+             col="blue", scol="lightblue", lwd=2,
+             xlab="9月", ylab="気温")
+      points(day, temp, col="red", pch=16)
+  })
+#+end_src
+
+#+CAPTION: 8月モデルによる9月の予測値の予測区間
+#+NAME: fig:05_sep_pint
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/05_sep_pint.png]]
+     
    
-* 非線形の関係
-** 非線形な関係のモデル化
-   - 目的変数 $Y$
-   - 説明変数 $X_1,\dotsc,X_p$
-   - 説明変数の追加で対応可能
-     - 交互作用 (交差項): $X_iX_j$ のような説明変数の積
-     - 非線形変換: $\log(X_k)$ のような関数による変換
+* 発展的なモデル
+** 非線形性を含むモデル
+- 目的変数 \(Y\)
+- 説明変数 \(X_1,\dotsc,X_p\)
+- 説明変数の追加で対応可能
+  - 交互作用 (交差項): \(X_iX_j\) のような説明変数の積
+  - 非線形変換: \(\log(X_k)\) のような関数による変換
 
-** 事例: 非線形な関係を含むモデル
-   - 東京の気候データの問題で
-     - 日射量，気圧，湿度，雲量の線形回帰モデル
-     - 湿度と雲量の交互作用を加えた線形回帰モデル
-     を比較してみる
-   #+reveal: split
-   - 日射量，気圧，湿度，雲量の線形回帰モデル
-     #+begin_src R :exports results :tangle yes
-       ## 日射量，気圧，湿度の線形回帰モデル
-       TW.est <- lm(temp ~ solar + press + humid + cloud, data=TW.subset)
-       TW.sum <- summary(TW.est)
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       signif(TW.sum$coef,digits=3)
-       cat("\n")
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-     #+end_src
-   #+reveal: split
-   - 湿度と雲量の交互作用を加えた線形回帰モデル
-     #+begin_src R :exports results :tangle yes
-       ## 湿度と雲量の交互作用を加えた線形回帰モデル
-       TW.est <- lm(temp ~ solar + press + humid * cloud, data=TW.subset)
-       TW.sum <- summary(TW.est)
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       signif(TW.sum$coef,digits=3)
-       cat("\n")
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-     #+end_src
-   
+** カテゴリカル変数を含むモデル
+- 数値ではないデータ
+  - [[color:darkgreen][悪性良性]]
+  - [[color:darkgreen][血液型]]
+- 適切な方法で数値に変換して対応:
+  - 2値の場合は 1,0 (真，偽) を割り当てる
+    - 悪性: 1
+    - 良性: 0
+  - 3値以上の場合は *ダミー変数* を利用する (カテゴリ数-1個)
+    - A型: (1,0,0)
+    - B型: (0,1,0)
+    - O型: (0,0,1)
+    - AB型: (0,0,0)
 
-* 演習
+
+* 解析の事例
+# 早稲田大学
+** 非線形な関係の分析
+- 東京の気候データを用いて
+  気温に影響する変数の関係を検討する
+  - 日射量と気圧の線形回帰モデル \\
+    (日射量と気圧が気温にどのように影響するか検討する)
+  - これらの交互作用を加えた線形回帰モデル \\
+    (日射量と気圧の相互の関係の影響を検討する)
+
+#+reveal: split
+- 日射量，気圧の線形回帰モデル
+  #+begin_src R :exports results :tangle yes
+    ## 日射量，気圧の線形回帰モデル
+    TW.est <- lm(temp ~ solar + press, data=TW.subset)
+    TW.sum <- summary(TW.est)
+    TW.r2 <- TW.sum$r.squared
+    TW.ar2 <- TW.sum$adj.r.squared
+    TW.fstat <- TW.sum$fstat
+    signif(TW.sum$coef,digits=3)
+    cat("\n")
+    print(
+        paste("R2:",
+              signif(TW.r2,digits=3),
+              "; adj. R2:",
+              signif(TW.ar2,digits=3),
+              "; F-stat:",
+              signif(TW.fstat[1],digits=3),
+              "; p-val:",
+              signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+              ))
+  #+end_src
+  - 係数の正負から
+    - 日射が高くなるほど
+    - 気圧が低くなるほど
+    気温が高くなることが示唆される
+    
+#+reveal: split
+- 交互作用を加えた線形回帰モデル
+  #+begin_src R :exports results :tangle yes
+    ## 湿度と雲量の交互作用を加えた線形回帰モデル
+    TW.est <- lm(temp ~ solar * press, data=TW.subset)
+    TW.sum <- summary(TW.est)
+    TW.r2 <- TW.sum$r.squared
+    TW.ar2 <- TW.sum$adj.r.squared
+    TW.fstat <- TW.sum$fstat
+    signif(TW.sum$coef,digits=3)
+    cat("\n")
+    print(
+        paste("R2:",
+              signif(TW.r2,digits=3),
+              "; adj. R2:",
+              signif(TW.ar2,digits=3),
+              "; F-stat:",
+              signif(TW.fstat[1],digits=3),
+              "; p-val:",
+              signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+              ))
+  #+end_src
+  - 2次式を整理すると
+    - ある気圧より低い場合には日射量が高くなるほど
+    - ある日射量より低い場合には気圧が高くなるほど
+    気温が高くなることが示唆される
+  - [[color:gray][係数の有意性は低いのでより多くのデータでの分析が必要]]
+
+    
+** カテゴリカル変数の利用
+- 東京の気候データを用いて
+  気温を回帰するモデルを検討する
+  - 降水の有無を表すカテゴリカル変数を用いたモデル \\
+    (雨が降ると気温が変化することを検証する)
+  - 月をカテゴリカル変数として加えたモデル \\
+    (月毎の気温の差を考慮する)
+
+#+reveal: split
+- 降水の有無を表すカテゴリカル変数を用いたモデル
+  #+begin_src R :exports results :tangle yes
+    ## 雨と気温の関係を分析
+    TW.data <- transform(TW.data,
+                         rain=factor(rain > 0)) 
+    TW.sum <- summary(lm(temp ~ rain, data=TW.data))
+    TW.r2 <- TW.sum$r.squared
+    TW.ar2 <- TW.sum$adj.r.squared
+    TW.fstat <- TW.sum$fstat
+    signif(TW.sum$coef,digits=3)
+    cat("\n")
+    print(
+        paste("R2:",
+              signif(TW.r2,digits=3),
+              "; adj. R2:",
+              signif(TW.ar2,digits=3),
+              "; F-stat:",
+              signif(TW.fstat[1],digits=3),
+              "; p-val:",
+              signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+              ))
+    ## 通年では雨と気温の関係は積極的に支持されない
+  #+end_src
+  - 降水の有無は気温の予測に無関係ではないと考えられる
+  - 決定係数から回帰式としての説明力は極めて低い
+    
+#+reveal: split
+- 月をカテゴリカル変数として加えたモデル
+  #+begin_src R :exports results :tangle yes
+    ## 月毎の気温の差を考慮して月を表す変数をダミー化する
+    TW.data <- transform(TW.data,
+                         month=factor(month))
+    TW.sum <- summary(lm(temp ~ rain + month, data=TW.data))
+    TW.r2 <- TW.sum$r.squared
+    TW.ar2 <- TW.sum$adj.r.squared
+    TW.fstat <- TW.sum$fstat
+    signif(TW.sum$coef,digits=3)
+    cat("\n")
+    print(
+        paste("R2:",
+              signif(TW.r2,digits=3),
+              "; adj. R2:",
+              signif(TW.ar2,digits=3),
+              "; F-stat:",
+              signif(TW.fstat[1],digits=3),
+              "; p-val:",
+              signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+              ))
+  #+end_src
+  - 月毎に比較すると雨の日の方が気温が低いことが支持される
+
+
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
 ** R: 線形でないモデル式の書き方
-   - 交互作用を記述するためには特殊な記法がある
-   - 非線形変換はそのまま関数を記述すればよい
-   - 1つの変数の多項式は関数 ~I()~ を用いる
-     #+begin_src R :eval no
-       ## 目的変数 Y, 説明変数 X1,X2,X3
-       ## 交互作用を含む式 (formula) の書き方
-       Y ~ X1 + X1:X2       # X1 + X1*X2
-       Y ~ X1 * X2          # X1 + X2 + X1*X2
-       Y ~ (X1 + X2 + X3)^2 # X1 + X2 + X3 + X1*X2 + X2*X3 + X3*X1
-       ## 非線形変換を含む式 (formula) の書き方
-       Y ~ f(X1)            # f(X1) (fは任意の関数)
-       Y ~ X1 + I(X2^2)     # X1 + X2^2
-     #+end_src
+- 交互作用を記述するためには特殊な記法がある
+- 非線形変換はそのまま関数を記述すればよい
+- 1つの変数の多項式は関数 ~I()~ を用いる
+  #+begin_src R :eval no
+    ## 目的変数 Y, 説明変数 X1,X2,X3
+    ## 交互作用を含む式 (formula) の書き方
+    Y ~ X1 + X1:X2       # X1 + X1*X2
+    Y ~ X1 * X2          # X1 + X2 + X1*X2
+    Y ~ (X1 + X2 + X3)^2 # X1 + X2 + X3 + X1*X2 + X2*X3 + X3*X1
+    ## 非線形変換を含む式 (formula) の書き方
+    Y ~ f(X1)            # f(X1) (fは任意の関数)
+    Y ~ X1 + I(X2^2)     # X1 + X2^2
+  #+end_src
+** R: カテゴリカル変数の取り扱い
+- 何も宣言しなくても通常は適切に対応してくれる
+- 陽に扱う場合は関数 ~factor()~ を利用する
+  #+begin_src R :eval no :tangle yes
+    ## factor属性の与え方
+    X <- c("A","S","A","B","D")
+    Y <- c(85,100,80,70,30)
+    dat1 <- data.frame(X,Y)
+    dat2 <- transform(dat1, 
+                      X2=factor(X))
+    str(dat2) # 作成したデータフレームの素性を見る
+    dat3 <- transform(dat2, 
+                      X3=factor(X, levels=c("S","A","B","C","D")))
+    str(dat3) # dat2とはfactorの順序が異なる
+    dat4 <- transform(dat2,
+                      Y2=factor(Y > 60)) 
+    str(dat4) # 条件の真偽で2値に類別される
+  #+end_src
 
 ** 練習問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 東京の気候データ(9-11月)を用いて
-     気温を回帰する以下のモデルを検討しなさい
-     - 日射量，気圧，湿度の線形回帰モデル
-     - 湿度の対数を考えた線形回帰モデル
-     - 最初のモデルにそれぞれの交互作用を加えたモデル
-     - 更に3つの変数の積を加えたモデル
-     - 自由にモデルを設定してみよ
-     #+begin_src R :eval no :exports none :tangle yes
-       ### 練習2
-       ### 交互作用と非線形を含む回帰
-
-       ### 東京の気候データによる分析
-       ## データの整形
-       TW.subset <- subset(TW.data, subset= month %in% 9:11)
-
-       ## 日射量，気圧，湿度の線形回帰モデル
-       summary(lm(temp ~ solar + press + humid, data=TW.subset))
-       ## 湿度の対数を考えた線形回帰モデル
-       summary(lm(temp ~ solar + press + log(humid), data=TW.subset))
-       ## 最初のモデルにそれぞれの交互作用を加えたモデル (書き方はいろいろある)
-       summary(lm(temp ~ (solar + press + humid)^2, data=TW.subset))
-       ## 更に3つの変数の積を加えたモデル
-       summary(lm(temp ~ solar * press * humid, data=TW.subset))
-
-       ## 用いた変数の散布図
-       plot(~ temp + solar + press + humid, data=TW.subset)
-       ## 最後のモデルの視覚的な評価 (診断プロット)
-       plot(lm(temp ~ solar * press * humid, data=TW.subset))
-     #+end_src
-** COMMENT 講義資料: 交互作用
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-cross.r][06-cross.r]] を確認してみよう
-
-
-* カテゴリカル変数
-** カテゴリカル変数
-   - 悪性良性や血液型などの数値ではないデータ
-   - 適切な方法で数値に変換して対応:
-     - 2値の場合は0,1を割り当てる
-       - 悪性:1
-       - 良性:0
-     - 3値以上の場合は *ダミー変数* を利用する (カテゴリ数-1個)
-       - A型: (1,0,0)
-       - B型: (0,1,0)
-       - O型: (0,0,1)
-       - AB型: (0,0,0)
-
-** 事例: カテゴリカル変数の利用
-   - 東京の気候データ(1年分)を用いて
-     気温を回帰する以下のモデルを検討する
-     - 降水の有無を表すカテゴリカル変数を用いたモデル
-       (雨が降ると気温が変化することを検証するモデル)
-     - 月をカテゴリカル変数として加えたモデル
-       (月毎の気温の差を考慮して検証するモデル)
-   #+reveal: split
-   - 降水の有無を表すカテゴリカル変数を用いたモデル
-     #+begin_src R :exports results :tangle yes
-       ## 雨と気温の関係を分析
-       TW.data <- transform(TW.data,
-                            rain=factor(rain > 0)) 
-       TW.sum <- summary(lm(temp ~ rain, data=TW.data))
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       signif(TW.sum$coef,digits=3)
-       cat("\n")
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-       ## 通年では雨と気温の関係は積極的に支持されない
-     #+end_src
-   #+reveal: split
-   - 月をカテゴリカル変数として加えたモデル
-     #+begin_src R :exports results :tangle yes
-       ## 月毎の気温の差を考慮して月を表す変数をダミー化する
-       TW.data <- transform(TW.data,
-                            month=factor(month))
-       TW.sum <- summary(lm(temp ~ rain + month, data=TW.data))
-       TW.r2 <- TW.sum$r.squared
-       TW.ar2 <- TW.sum$adj.r.squared
-       TW.fstat <- TW.sum$fstat
-       signif(TW.sum$coef,digits=3)
-       cat("\n")
-       print(
-           paste("R2:",
-                 signif(TW.r2,digits=3),
-                 "; adj. R2:",
-                 signif(TW.ar2,digits=3),
-                 "; F-stat:",
-                 signif(TW.fstat[1],digits=3),
-                 "; p-val:",
-                 signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
-                 ))
-       ## 月毎に比較すると雨の日の方が気温が低いことが支持される
-     #+end_src
-   
-
-* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-# 東京大学
-** R: カテゴリカル変数の取り扱い
-   - 何も宣言しなくても通常は適切に対応してくれる
-   - 陽にカテゴリカル変数として扱いたい場合は関数 ~factor()~ を利用:
-     #+begin_src R :eval no :tangle yes
-       ## factor属性の与え方
-       X <- c("A","S","A","B","D")
-       Y <- c(85,100,80,70,30)
-       dat1 <- data.frame(X,Y)
-       dat2 <- transform(dat1, 
-                         X2=factor(X))
-       str(dat2) # 作成したデータフレームの素性を見る
-       dat3 <- transform(dat2, 
-                         X3=factor(X, levels=c("S","A","B","C","D")))
-       str(dat3) # dat2とはfactorの順序が異なる
-       dat4 <- transform(dat2,
-                         Y2=factor(Y > 60)) 
-       str(dat4) # 条件の真偽で2値に類別される
-     #+end_src
+- 東京の気候データ(9-11月)を用いて
+  気温を回帰する以下のモデルを検討しなさい
+  - 日射量，気圧，湿度の線形回帰モデル
+  - 湿度の対数を考えた線形回帰モデル
+  - 最初のモデルにそれぞれの交互作用を加えたモデル
+- 東京の気候データ(1年分)を用いて
+  気温を回帰する以下のモデルを検討しなさい
+  - 降水の有無を表すカテゴリカル変数を用いたモデル \\
+    (雨が降ると気温が変化することを検証する)
+  - 上記に月をカテゴリカル変数として加えたモデル \\
+    (月毎の気温の差を考慮する)
 
-** 練習問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 東京の気候データ(1年分)を用いて
-     気温を回帰する以下のモデルを検討しなさい
-     - 降水の有無を表すカテゴリカル変数を用いたモデル \\
-       (雨が降ると気温が変化することを検証するモデル)
-     - 月をカテゴリカル変数として加えたモデル \\
-       (月毎の気温の差を考慮して検証するモデル)
-     #+begin_src R :eval no :exports none :tangle yes
-       ### 練習3
-       ### カテゴリカル変数
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 練習問題 交互作用と非線形を含むモデルとカテゴリカル変数の扱い
+  ### 
+  
+  ### 9月から11月のデータによる分析 (交互作用と非線形性)
 
-       ### 東京の気候データによる分析
-       ## 雨と気温の関係を分析
-       TW.data <- transform(TW.data,
-                            rain=factor(rain > 0)) 
-       summary(lm(temp ~ rain, data=TW.data))
-       ## 通年では雨と気温の関係は積極的に支持されない
+  ## データの整形
+  TW.subset <- subset(TW.data, subset= month %in% 9:11)
+  
+  ## 日射量，気圧，湿度の線形回帰モデル
+  summary(lm(temp ~ solar + press + humid, data=TW.subset))
+  ## 湿度の対数を考えた線形回帰モデル
+  summary(lm(temp ~ solar + press + log(humid), data=TW.subset))
+  ## 最初のモデルにそれぞれの交互作用を加えたモデル (書き方はいろいろある)
+  summary(lm(temp ~ (solar + press + humid)^2, data=TW.subset))
+  ## 更に3つの変数の積を加えたモデル
+  summary(lm(temp ~ solar * press * humid, data=TW.subset))
+  
+  ## 用いた変数の散布図
+  plot(~ temp + solar + press + humid, data=TW.subset)
+  ## 最後のモデルの視覚的な評価 (診断プロット)
+  plot(lm(temp ~ solar * press * humid, data=TW.subset))
 
-       ## 月毎の気温の差を考慮して月を表す変数をダミー化する
-       TW.data <- transform(TW.data,
-                            month=factor(month))
-       summary(lm(temp ~ rain + month, data=TW.data))
-       ## 月毎に比較すると雨の日の方が気温が低いことが支持される
-     #+end_src
+  ### 雨と気温の関係の分析 (カテゴリカル変数)
 
-     
+  ## 雨の有無をダミー化(因子化)する
+  TW.data <- transform(TW.data,
+                       rain=factor(rain > 0)) 
+  summary(lm(temp ~ rain, data=TW.data))
+  ## 通年では雨と気温の関係は積極的に支持されない
+  
+  ## 月毎の気温の差を考慮して月を表す変数(整数値)をダミー化する
+  TW.data <- transform(TW.data, 
+                       month=factor(month))
+  summary(lm(temp ~ rain + month, data=TW.data))
+  ## 月毎に比較すると雨の日の方が気温が低いことが支持される
+#+end_src
+
+** COMMENT 講義資料: 交互作用
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/06-cross.r][06-cross.r]] を確認してみよう
+
+
+
 ** COMMENT 講義資料: ダミー変数
    :PROPERTIES:
    :reveal_background: #EEEEFF
    :END:
    - [[./code/06-dummy.r][06-dummy.r]] を確認してみよう
 
-   
-* 補足
+
+* COMMENT 補足
 # 東京大学
 ** R: モデルの探索
-   - 変数が増えるとモデルの比較が困難
-   - 関数 ~step()~ を用いて自動化することができる \\
-     (最適とは限らないので注意は必要)
-     #+begin_src R :eval no :tangle yes
-       ## モデルの探索
-       Adv.data <- read.csv("data/Advertising.csv",
-                            row.names=1) 
-       summary(lm(sales ~ radio, data=Adv.data))
-       summary(lm(sales ~ TV + radio, data=Adv.data))
-       summary(lm(sales ~ TV + radio + newspaper, data=Adv.data))
-       summary(init <- lm(sales ~ TV * radio * newspaper, data=Adv.data))
-       opt <- step(init)
-       summary(opt)
-     #+end_src
-   
-** R: car package の利用
-   - 回帰モデルの評価
-     - 与えられたデータの再現
-     - 新しいデータの予測
-   - モデルの再構築のための視覚化
-     - *residual plots*: 
-       説明変数・予測値と残差の関係
-     - *marginal-model plots*:
-       説明変数と目的変数・モデルの関係
-     - *added-variable plots*:
-       説明変数・目的変数をその他の変数で回帰したときの残差の関係
-     - *component+residual plots*:
-       説明変数とそれ以外の説明変数による残差の関係
-     # - QQ plots
-     # - spread-level plot 
-     # - influence plots
-     などが用意されている
-** 演習
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - これまでに用いたデータでモデルを更新して評価してみよう
-     - 変数間の線形回帰の関係について仮説を立てる 
-     - モデルのあてはめを行い評価する
-       - 説明力があるのか? (\(F\)-統計量，\(t\)-統計量，決定係数)
-       - 残差に偏りはないか? (様々な診断プロット)
-       - 変数間の線形関係は妥当か? (様々な診断プロット)
-     - 検討結果を踏まえてモデルを更新する (評価の繰り返し)
+- 変数が増えるとモデルの比較が困難
+- 関数 ~step()~ を用いて自動化することができる
+  #+begin_src R :eval no :tangle yes
+    ## モデルの探索
+    Adv.data <- read.csv('https://www.statlearning.com/s/Advertising.csv',
+                         row.names=1) 
+    summary(lm(sales ~ radio, data=Adv.data))
+    summary(lm(sales ~ TV + radio, data=Adv.data))
+    summary(lm(sales ~ TV + radio + newspaper, data=Adv.data))
+    summary(init <- lm(sales ~ TV * radio * newspaper, data=Adv.data))
+    opt <- step(init)
+    summary(opt)
+  #+end_src
+  - 最適とは限らないので注意は必要
+
+** R: car package
+- 回帰モデルの評価
+  - 与えられたデータの再現
+  - 新しいデータの予測
+- モデルの再構築のための視覚化
+  - *residual plots*: 
+    説明変数・予測値と残差の関係
+  - *marginal-model plots*:
+    説明変数と目的変数・モデルの関係
+  - *added-variable plots*:
+    説明変数・目的変数をその他の変数で回帰したときの残差の関係
+  - *component+residual plots*:
+    説明変数とそれ以外の説明変数による残差の関係
+  # - QQ plots
+  # - spread-level plot 
+  # - influence plots
+  などが用意されている
+
+** 例題
+- これまでに用いたデータでモデルを更新して評価してみよう
+  - 変数間の線形回帰の関係について仮説を立てる 
+  - モデルのあてはめを行い評価する
+    - 説明力があるのか? (\(F\)-統計量，\(t\)-統計量，決定係数)
+    - 残差に偏りはないか? (様々な診断プロット)
+    - 変数間の線形関係は妥当か? (様々な診断プロット)
+  - 検討結果を踏まえてモデルを更新する (評価の繰り返し)
 
 ** COMMENT 講義資料: car package の使用例
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-car.r][06-car.r]] を確認してみよう
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/06-car.r][06-car.r]] を確認してみよう
 
 
 * 次週の予定
-  - *第1回: 主成分分析の考え方*
-  - 第2回: 分析の評価と視覚化
+- *第1回: 主成分分析の考え方*
+- 第2回: 分析の評価と視覚化
+  
 
-
-   
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted
