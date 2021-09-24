@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-13 10:33:35 mura>
+# Time-stamp: <2021-09-24 10:02:32 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -1167,7 +1167,7 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** COMMENT R: 線形でないモデル式の書き方
+** R: 線形でないモデル式の書き方
    - 交互作用を記述するためには特殊な記法がある
    - 非線形変換はそのまま関数を記述すればよい
    - 1つの変数の多項式は関数 ~I()~ を用いる
@@ -1182,13 +1182,7 @@
        Y ~ X1 + I(X2^2)     # X1 + X2^2
      #+end_src
 
-** COMMENT 演習: 交互作用
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-cross.r][06-cross.r]] を確認してみよう
-
-** COMMENT 練習問題
+** 練習問題
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -1221,6 +1215,11 @@
        ## 最後のモデルの視覚的な評価 (診断プロット)
        plot(lm(temp ~ solar * press * humid, data=TW.subset))
      #+end_src
+** COMMENT 講義資料: 交互作用
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/06-cross.r][06-cross.r]] を確認してみよう
 
 
 * カテゴリカル変数
@@ -1298,7 +1297,7 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** COMMENT R: カテゴリカル変数の取り扱い
+** R: カテゴリカル変数の取り扱い
    - 何も宣言しなくても通常は適切に対応してくれる
    - 陽にカテゴリカル変数として扱いたい場合は関数 ~factor()~ を利用:
      #+begin_src R :eval no :tangle yes
@@ -1317,13 +1316,7 @@
        str(dat4) # 条件の真偽で2値に類別される
      #+end_src
 
-** COMMENT 演習: ダミー変数
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-dummy.r][06-dummy.r]] を確認してみよう
-
-** COMMENT 練習問題
+** 練習問題
    :PROPERTIES:
    :reveal_background: #fef4f4
    :END:
@@ -1352,10 +1345,16 @@
      #+end_src
 
      
+** COMMENT 講義資料: ダミー変数
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/06-dummy.r][06-dummy.r]] を確認してみよう
+
    
 * 補足
 # 東京大学
-** COMMENT R: モデルの探索
+** R: モデルの探索
    - 変数が増えるとモデルの比較が困難
    - 関数 ~step()~ を用いて自動化することができる \\
      (最適とは限らないので注意は必要)
@@ -1371,7 +1370,7 @@
        summary(opt)
      #+end_src
    
-** COMMENT R: car package の利用
+** R: car package の利用
    - 回帰モデルの評価
      - 与えられたデータの再現
      - 新しいデータの予測
@@ -1388,13 +1387,7 @@
      # - spread-level plot 
      # - influence plots
      などが用意されている
-** COMMENT 講義資料: car package の使用例
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/06-car.r][06-car.r]] を確認してみよう
-
-** COMMENT 演習
+** 演習
    :PROPERTIES:
    :reveal_background: #EEEEFF
    :END:
@@ -1405,6 +1398,12 @@
        - 残差に偏りはないか? (様々な診断プロット)
        - 変数間の線形関係は妥当か? (様々な診断プロット)
      - 検討結果を踏まえてモデルを更新する (評価の繰り返し)
+
+** COMMENT 講義資料: car package の使用例
+   :PROPERTIES:
+   :reveal_background: #EEEEFF
+   :END:
+   - [[./code/06-car.r][06-car.r]] を確認してみよう
 
 
 * 次週の予定
