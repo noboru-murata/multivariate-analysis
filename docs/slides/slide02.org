@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-13 10:35:19 mura>
+# Time-stamp: <2021-10-05 08:54:56 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -347,7 +347,7 @@
 # Cauchy分布は平均値や分散が定義されない分布の例としても有名である．
 # なお，平均値，分散については後節で定義する．
 
-** \(\chi^{2}\)-分布 (\(\chi^{2}\) distribution)
+** \(\chi^{2}\)-分布 (\(\chi^{2}\)-distribution)
 #+begin_leftcol
 #+begin_src R :file figs/pdf_chisq.png :exports results :results graphics
   par(family="HiraginoSans-W4") 
@@ -378,13 +378,13 @@
 #+end_quote
 #+end_rightcol  
 
-** \(\chi^{2}\)-分布の性質
+** \(\chi^{2}\)-分布の特徴付け
 - 性質
   - 標準正規分布に従う独立な確率変数の2乗和の分布
     #+begin_quote
     #+begin_src latex
       \begin{align}
-        Z&=\sum_{i=1}X_{i}^{2}
+        Z&=\sum_{i=1}^{\nu}X_{i}^{2}
            \sim \chi^{2}(\nu)
            \quad\text{(自由度\(\nu\)の\(\chi^{2}\)-分布)}\\
          &X_{i}\sim \mathcal{N}(0,1)\;(i=1,\dotsc,\nu)
@@ -398,7 +398,7 @@
   - 分散の大きさに関する検定に用いられる
   - 独立性検定・適合度検定など様々な検定でも用いられる
 
-** \(t\)-分布 (Student's \(t\) distribution)
+** \(t\)-分布 (Student's \(t\)-distribution)
 #+begin_leftcol
 #+begin_src R :file figs/pdf_t.png :exports results :results graphics
   par(family="HiraginoSans-W4") 
@@ -431,7 +431,7 @@
 #+end_quote
 #+end_rightcol  
 
-** \(t\)-分布の性質
+** \(t\)-分布の特徴付け
 - 性質
   - 標準正規分布と \(\chi^{2}\)-分布に従う独立な確率変数の比の分布
     #+begin_quote
@@ -447,12 +447,12 @@
     #+end_src
     #+end_quote
   - 正規分布に従う確率変数の標本平均と真の値の差は
-    \(t\)-分布に従う確率変数の定数(分散)倍となる
+    不偏分散で正規化すると\(t\)-分布に従う確率変数となる
 - 用途
   - 平均値を推定する問題の検定に利用される
   - 信頼区間の構成に利用される
 
-** \(F\)-分布 (\(F\) distribution)
+** \(F\)-分布 (\(F\)-distribution)
 #+begin_leftcol
 #+begin_src R :file figs/pdf_F.png :exports results :results graphics
   par(family="HiraginoSans-W4") 
@@ -483,7 +483,7 @@
 #+end_quote
 #+end_rightcol  
 
-** \(F\)-分布の性質
+** \(F\)-分布の特徴付け
 - 性質
   - \(\chi^{2}\)-分布に従う独立な確率変数の比の分布
     #+begin_quote
@@ -539,7 +539,6 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -555,13 +554,13 @@
   #+end_src
   #+end_quote
   を\(\mathbb{R}\)上で積分すると
-  1となることを確かめよ．
+  1となることを確かめよ
 - 標準正規分布に従う確率変数を\(X\)とする．
   \(X\)が
   0付近の値をとる確率と
-  1付近の値をとる確率の比を求めよ．
+  1付近の値をとる確率の比を求めよ
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -583,18 +582,19 @@
     \end{align}
   #+end_src
   #+end_quote
-  #+reveal: split
-  - 微小な区間 \(\Delta\) を考えて，
-    密度を用いた近似計算を利用すればよい
-    #+begin_quote
-    #+begin_src latex
-      \begin{align}
-        &\frac{P(X\text{が0付近})}{P(X\text{が1付近})}\\
-        &\simeq\frac{p(0)|\Delta|}{p(1)|\Delta|}
-          =\frac{\exp(0)}{\exp(-1/2)}=\sqrt{e}\simeq 1.65
-      \end{align}
-    #+end_src
-    #+end_quote
+
+#+reveal: split
+- 微小な区間 \(\Delta\) を考えて，
+  密度を用いた近似計算を利用すればよい
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      &\frac{P(X\text{が0付近})}{P(X\text{が1付近})}\\
+      &\simeq\frac{p(0)|\Delta|}{p(1)|\Delta|}
+        =\frac{\exp(0)}{\exp(-1/2)}=\sqrt{e}\simeq 1.65
+    \end{align}
+  #+end_src
+  #+end_quote
 
 
 * 統計
@@ -704,7 +704,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-  - 標本分散の平方根
+  - 分散の平方根
 - *標本標準偏差* (sample standard deviation): 
   #+begin_quote
   #+begin_src latex
@@ -788,110 +788,112 @@
   #+end_quote
 
 ** 離散分布の尤度関数
-        - \(X_1=x_1,X_2=x_2,\dots,X_n=x_n\) の同時確率
-          - 確率質量関数: \(f_{\boldsymbol{\theta}}(x)\) 
-          - 確率質量関数のパラメタ: \(\boldsymbol{\theta}:=(\theta_1,\dots,\theta_p)\) 
-          - 独立な確率変数の同時確率:
-            #+begin_quote
-            #+begin_src latex
-              \begin{align}
-                & P(X_1=x_1,X_2=x_2,\dots,X_n=x_n)
-                  =\prod_{i=1}^nP(X_i=x_i)\\
-                &=
-                  \prod_{i=1}^nf_{\boldsymbol{\theta}}(x_i)
-                  =f_{\boldsymbol{\theta}}(x_1)\cdot
-                  f_{\boldsymbol{\theta}}(x_2)\cdots
-                  f_{\boldsymbol{\theta}}(x_n)
-              \end{align}
-            #+end_src
-            #+end_quote
-            #+reveal: split     
-            - 定義
-              #+begin_quote
-              パラメタ \(\boldsymbol{\theta}\) に対して
-              観測データ \(X_1,X_2,\dots,X_n\) が得られる理論上の確率
-              #+begin_src latex
-                \begin{equation}
-                  L(\boldsymbol{\theta})
-                  :=\prod_{i=1}^nf_{\boldsymbol{\theta}}(X_i)
-                \end{equation}
-              #+end_src
-              を
-              \(\boldsymbol{\theta}\) の 
-              *尤度* と言い，
-              \(\boldsymbol{\theta}\) の関数 \(L\) を *尤度関数* と呼ぶ．
-              #+end_quote
-              - 観測データ 
-                \(X_1,X_2,\dots,X_n\) 
-                が現れるのにパラメタ 
-                \(\boldsymbol{\theta}\) 
-                の値がどの程度尤もらしいかを測る尺度となる
+- \(X_1=x_1,X_2=x_2,\dots,X_n=x_n\) の同時確率
+  - 確率質量関数: \(f_{\boldsymbol{\theta}}(x)\) 
+  - 確率質量関数のパラメタ: \(\boldsymbol{\theta}=\theta_1,\dots,\theta_p)\) 
+  - 独立な確率変数の同時確率:
+    #+begin_quote
+    #+begin_src latex
+      \begin{align}
+        & P(X_1=x_1,X_2=x_2,\dots,X_n=x_n)
+          =\prod_{i=1}^nP(X_i=x_i)\\
+        &=
+          \prod_{i=1}^nf_{\boldsymbol{\theta}}(x_i)
+          =f_{\boldsymbol{\theta}}(x_1)\cdot
+          f_{\boldsymbol{\theta}}(x_2)\cdots
+          f_{\boldsymbol{\theta}}(x_n)
+      \end{align}
+    #+end_src
+    #+end_quote
+
+#+reveal: split     
+- 定義
+  #+begin_quote
+  パラメタ \(\boldsymbol{\theta}\) に対して
+  観測データ \(X_1,X_2,\dots,X_n\) が得られる理論上の確率
+  #+begin_src latex
+    \begin{equation}
+      L(\boldsymbol{\theta})
+      =\prod_{i=1}^nf_{\boldsymbol{\theta}}(X_i)
+    \end{equation}
+  #+end_src
+  を
+  \(\boldsymbol{\theta}\) の 
+  *尤度* と言い，
+  \(\boldsymbol{\theta}\) の関数 \(L\) を *尤度関数* と呼ぶ．
+  #+end_quote
+  - 観測データ 
+    \(X_1,X_2,\dots,X_n\) 
+    が現れるのにパラメタ 
+    \(\boldsymbol{\theta}\) 
+    の値がどの程度尤もらしいかを測る尺度となる
 
 ** 連続分布の尤度関数
-      - \(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta\) の同時確率
-        - 確率密度関数: \(f_{\boldsymbol{\theta}}(x)\) 
-        - 確率密度関数のパラメタ: \(\boldsymbol{\theta}:=(\theta_1,\dots,\theta_p)\) 
-        - 独立な確率変数の同時確率:
-          #+begin_quote
-          #+begin_src latex
-            \begin{align}
-              & P(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta)
-                =\prod_{i=1}^nP(x_i\leq X_i\leq x_i+\delta)\\
-              &\simeq
-                \prod_{i=1}^nf_{\boldsymbol{\theta}}(x_i)\delta
-                =f_{\boldsymbol{\theta}}(x_1)\cdot
-                f_{\boldsymbol{\theta}}(x_2)\cdots
-                f_{\boldsymbol{\theta}}(x_n)\delta^{n}
-            \end{align}
-          #+end_src
-          #+end_quote
-          #+reveal: split
-          - 定義
-            #+begin_quote
-            パラメタ \(\boldsymbol{\theta}\) に対して
-            観測データ \(X_1,X_2,\dots,X_n\) が得られる理論上の確率密度
-            #+begin_src latex
-              \begin{equation}
-                L(\boldsymbol{\theta})
-                :=\prod_{i=1}^nf_{\boldsymbol{\theta}}(X_i)
-              \end{equation}
-            #+end_src
-            を
-            \(\boldsymbol{\theta}\) の 
-            *尤度* と言い，
-            \(\boldsymbol{\theta}\) の関数 \(L\) を *尤度関数* と呼ぶ．
-            #+end_quote
+- \(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta\) の同時確率
+  - 確率密度関数: \(f_{\boldsymbol{\theta}}(x)\) 
+  - 確率密度関数のパラメタ: \(\boldsymbol{\theta}=(\theta_1,\dots,\theta_p)\) 
+  - 独立な確率変数の同時確率:
+    #+begin_quote
+    #+begin_src latex
+      \begin{align}
+        & P(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta)
+          =\prod_{i=1}^nP(x_i\leq X_i\leq x_i+\delta)\\
+        &\simeq
+          \prod_{i=1}^nf_{\boldsymbol{\theta}}(x_i)\delta
+          =f_{\boldsymbol{\theta}}(x_1)\cdot
+          f_{\boldsymbol{\theta}}(x_2)\cdots
+          f_{\boldsymbol{\theta}}(x_n)\delta^{n}
+      \end{align}
+    #+end_src
+    #+end_quote
+
+#+reveal: split
+- 定義
+  #+begin_quote
+  パラメタ \(\boldsymbol{\theta}\) に対して
+  観測データ \(X_1,X_2,\dots,X_n\) が得られる理論上の確率密度
+  #+begin_src latex
+    \begin{equation}
+      L(\boldsymbol{\theta})
+      =\prod_{i=1}^nf_{\boldsymbol{\theta}}(X_i)
+    \end{equation}
+  #+end_src
+  を
+  \(\boldsymbol{\theta}\) の 
+  *尤度* と言い，
+  \(\boldsymbol{\theta}\) の関数 \(L\) を *尤度関数* と呼ぶ．
+  #+end_quote
 
 ** 最尤法
-  - 最尤法: 
-    #+begin_quote
-    観測データに対して「最も尤もらしい」パラメタ値を
-    \(\boldsymbol{\theta}\) の推定量として採用する方法
-    を最尤法という．
-    #+end_quote
-  - 最尤推定量:
-    #+begin_quote
-    \(\Theta\) を尤度関数の定義域として，
-    尤度関数を最大とする  \(\hat{\boldsymbol{\theta}}\) 
-    #+begin_src latex
-      \begin{equation}
-        L(\hat{\boldsymbol{\theta}})
-        =\max_{\boldsymbol{\theta}\in\Theta}L(\boldsymbol{\theta}).
-      \end{equation}
-    #+end_src
-    を 
-    \(\boldsymbol{\theta}\) 
-    の *最尤推定量* という．
-    #+end_quote
-    # - 以下のように表現することもある
-    #   #+begin_quote
-    #   #+begin_src latex
-    #     \begin{equation}
-    #       \hat{\boldsymbol{\theta}}
-    #       =\arg\max_{\boldsymbol{\theta}\in\Theta}L(\boldsymbol{\theta}).
-    #     \end{equation}
-    #   #+end_src
-    #   #+end_quote
+- 最尤法: 
+  #+begin_quote
+  観測データに対して「最も尤もらしい」パラメタ値を
+  \(\boldsymbol{\theta}\) の推定量として採用する方法
+  を最尤法という．
+  #+end_quote
+- 最尤推定量:
+  #+begin_quote
+  \(\Theta\) を尤度関数の定義域として，
+  尤度関数を最大とする  \(\hat{\boldsymbol{\theta}}\) 
+  #+begin_src latex
+    \begin{equation}
+      L(\hat{\boldsymbol{\theta}})
+      =\max_{\boldsymbol{\theta}\in\Theta}L(\boldsymbol{\theta}).
+    \end{equation}
+  #+end_src
+  を 
+  \(\boldsymbol{\theta}\) 
+  の *最尤推定量* という．
+  #+end_quote
+  # - 以下のように表現することもある
+  #   #+begin_quote
+  #   #+begin_src latex
+  #     \begin{equation}
+  #       \hat{\boldsymbol{\theta}}
+  #       =\arg\max_{\boldsymbol{\theta}\in\Theta}L(\boldsymbol{\theta}).
+  #     \end{equation}
+  #   #+end_src
+  #   #+end_quote
 
 ** Bayesの定理 (基本形)
 - 定理
@@ -920,7 +922,6 @@
   #+end_quote
 
 
-
 * 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -929,7 +930,7 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   #+begin_quote
   A先生は大の野球ファンで，
   球団Hの勝敗で翌日の機嫌が左右されるとしよう．
@@ -937,6 +938,7 @@
   - 球団Hが勝つと90%の確率で機嫌が良い
   - 球団Hが負けると70%の確率で機嫌が悪い
   が成り立っているとする．
+
   また球団Hの勝率は現在のところ
   - 球団Hは60%の確率で勝つ
   - 球団Hは40%の確率で負ける
@@ -945,62 +947,64 @@
   - A先生が機嫌が良いときに球団Hが勝った確率は？
   - A先生が機嫌が悪いときに球団Hが負けた確率は？
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-      - まず事象を定義する
-        #+begin_quote
-        #+begin_src latex
-          \begin{align}
-            A&:\text{先生の機嫌が良い}&&&
-                                          A^{c}&:\text{先生の機嫌が悪い}\\
-            H&:\text{球団が勝つ}&&&
-                                    H^{c}&:\text{球団が負ける}
-          \end{align}
-        #+end_src
-        #+end_quote
-      - 条件を書き下す
-        #+begin_quote
-        #+begin_src latex
-          \begin{align}
-            P(A|H)&=0.9&&&
-                           P(A^{c}|H)&=0.1\\
-            P(A^{c}|H^{c})&=0.7&&&
-                                   P(A|H^{c})&=0.3\\
-            P(H)&=0.6&&&
-                         P(H^{c})&=0.4
-          \end{align}
-        #+end_src
-        #+end_quote
-        #+reveal: split     
-        - A先生が機嫌が良いときに球団Hが勝った確率は？
-          #+begin_quote
-          #+begin_src latex
-            \begin{align}
-              P(H|A)
-              &=\frac{P(A,H)}{P(A)}\\
-              &=\frac{P(A,H)}{P(A,H)+P(A,H^{c})}\\
-              &=\frac{P(A|H)P(H)}{P(A|H)P(H)+P(A|H^{c})P(H^{c})}\\
-              &=\frac{0.9\times 0.6}{0.9\times 0.6+0.3\times 0.4}\\
-              &=\frac{9}{11}\simeq 0.818
-            \end{align}
-          #+end_src
-          #+end_quote
-          #+reveal: split     
-          - A先生が機嫌が悪いときに球団Hが負けた確率は？
-            #+begin_quote
-            #+begin_src latex
-              \begin{align}
-                P(H^{c}|A^{c})
-                &=\frac{P(A^{c},H^{c})}{P(A^{c})}\\
-                &=\frac{P(A^{c},H^{c})}{P(A^{c},H)+P(A^{c},H^{c})}\\
-                &=\frac{P(A^{c}|H^{c})P(H^{c})}{P(A^{c}|H)P(H)+P(A^{c}|H^{c})P(H^{c})}\\
-                &=\frac{0.7\times 0.4}{0.1\times 0.6+0.7\times 0.4}\\
-                &=\frac{14}{17}\simeq 0.824
-              \end{align}
-            #+end_src
-            #+end_quote
+- まず事象を定義する
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      A&:\text{先生の機嫌が良い}&
+      && A^{c}&:\text{先生の機嫌が悪い}\\
+      H&:\text{球団が勝つ}&
+      && H^{c}&:\text{球団が負ける}
+    \end{align}
+  #+end_src
+  #+end_quote
+- 条件を書き下す
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      P(A|H)&=0.9&
+      && P(A^{c}|H)&=0.1\\
+      P(A^{c}|H^{c})&=0.7&
+      && P(A|H^{c})&=0.3\\
+      P(H)&=0.6&
+      && P(H^{c})&=0.4
+    \end{align}
+  #+end_src
+  #+end_quote
+
+#+reveal: split     
+- A先生が機嫌が良いときに球団Hが勝った確率は？
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      P(H|A)
+      &=\frac{P(A,H)}{P(A)}\\
+      &=\frac{P(A,H)}{P(A,H)+P(A,H^{c})}\\
+      &=\frac{P(A|H)P(H)}{P(A|H)P(H)+P(A|H^{c})P(H^{c})}\\
+      &=\frac{0.9\times 0.6}{0.9\times 0.6+0.3\times 0.4}\\
+      &=\frac{9}{11}\simeq 0.818
+    \end{align}
+  #+end_src
+  #+end_quote
+
+#+reveal: split     
+- A先生が機嫌が悪いときに球団Hが負けた確率は？
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      P(H^{c}|A^{c})
+      &=\frac{P(A^{c},H^{c})}{P(A^{c})}\\
+      &=\frac{P(A^{c},H^{c})}{P(A^{c},H)+P(A^{c},H^{c})}\\
+      &=\frac{P(A^{c}|H^{c})P(H^{c})}{P(A^{c}|H)P(H)+P(A^{c}|H^{c})P(H^{c})}\\
+      &=\frac{0.7\times 0.4}{0.1\times 0.6+0.7\times 0.4}\\
+      &=\frac{14}{17}\simeq 0.824
+    \end{align}
+  #+end_src
+  #+end_quote
 
 
 * 関数の微分
@@ -1173,17 +1177,17 @@
   #+end_quote
 
 ** 行列による微分 (例題2)     
-- 問題
-  #+begin_quote
-  \(d\times d\) 行列 \(A\) と \(B\)
-  を用いて定義される関数
-  #+begin_src latex
-    \begin{equation}
-      f(A)=\mathrm{tr} AB=\sum_{i,j=1}^{d}a_{ij}b_{ji}
-    \end{equation}
-  #+end_src
-  の行列 \(A\) による微分を求めよ．
-  #+end_quote
+  - 問題
+    #+begin_quote
+    \(d\times d\) 行列 \(A\) と \(B\)
+    を用いて定義される関数
+    #+begin_src latex
+      \begin{equation}
+        f(A)=\mathrm{tr} AB=\sum_{i,j=1}^{d}a_{ij}b_{ji}
+      \end{equation}
+    #+end_src
+    の行列 \(A\) による微分を求めよ．
+    #+end_quote
 
 #+reveal: split
 - 解答例
@@ -1259,7 +1263,7 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 行列のトレースに関して
+- 行列(正方行列に限らない)のトレースに関して
   #+begin_src latex
     \begin{equation}
       \mathrm{tr} AB
@@ -1268,17 +1272,17 @@
       =\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
     \end{equation}
   #+end_src
-  が成り立つことを示せ．
+  が成り立つことを示せ
 - \(d\) 次元ベクトル \(\boldsymbol{a}\) と
   \(d\times d\) 行列 \(A\)
   で定義される関数
   \(f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}A\boldsymbol{a}\)
-  のベクトル \(\boldsymbol{a}\) による微分を求めよ．
+  のベクトル \(\boldsymbol{a}\) による微分を求めよ
 - 行列 \(A\) の行列式を \(|A|\) と書くとき
-  行列 \(A\) による行列式 \(|A|\) の微分を求めよ．
-  (ヒント: 余因子展開を利用すると容易に求められる．)
+  行列 \(A\) による行列式 \(|A|\) の微分を求めよ
+  - ヒント: 余因子展開を利用すると容易に求められる
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:

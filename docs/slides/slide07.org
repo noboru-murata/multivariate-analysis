@@ -2,511 +2,640 @@
 #+SUBTITLE: 評価と視覚化
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
-#+DATE: 2020.11.10
-:reveal:
+#+DATE: 
+# Time-stamp: <2021-09-27 17:17:51 mura>
+:REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
-#+STARTUP: hidestars content
+#+STARTUP: hidestars content indent
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
-:end:
+:END:
+
+* 講義の内容
+# 早稲田大学
+- 第1日: 主成分分析の考え方
+- *第2日: 分析の評価と視覚化*
 
 #+begin_src R :eval no :exports none :tangle yes
-  ### 第07回 資料
+  ### 第7講 資料
 #+end_src
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/mva/slide")
 #+end_src
 
-* 講義の予定
-  - 第1日: 主成分分析の考え方
-  - *第2日: 分析の評価と視覚化*
+* COMMENT 講義概要
+# 東京大学
+- 第1日: 主成分分析の考え方
+- *第2日: 分析の評価と視覚化*
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 第7講 サンプルコード
+  ###
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+#+end_src
+
+* COMMENT メモ
+- 第3講以降は同じファイルを使うように整理する
+- 同じタイトルの項目にはメモを入れる
+- 演習の内容が異なるので演習は2つ作る形で対応
+
+* COMMENT 演習 (早稲田大学雛型)
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 早稲田大学
+** 問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- について以下を示しなさい．
+  - である．
+    #+begin_quote
+    #+begin_src latex
+    #+end_src
+    #+end_quote
+
+** 解答例
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- いずれも定義にもとづいて計算すればよい
+  #+begin_quote
+  #+begin_src latex
+  #+end_src
+  #+end_quote
+
+
+
+#+OPTIONS: reveal_mousewheel:nil
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第05回 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
+
+* COMMENT 演習 (東京大学雛型)
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: 概要
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- ほげほげな方法:
+  #+begin_src R :eval no
+  #+end_src
+** データセット
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 以下のデータセットを使用します
+  - ~xxx~
+    #+begin_quote
+    データの素性
+    #+end_quote
+    [[https://www.foo.com/]]
+
+** 練習問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 構成しなさい
+  - データ
+    #+begin_quote
+    formulaなどを与える
+    #+end_quote
+
+#+begin_src R :eval no :exports none :tangle yes
+  ###
+  ### 練習問題 
+  ###
+
+  ## 
+  ## 分析
+  ##
+#+end_src
+
+** COMMENT 講義資料: 概略
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/bar.r][bar.r]] を確認してみよう
+
+
+#+begin_src R :eval no :exports none :tangle yes
+  ### 第06回 資料
+#+end_src
+#+begin_src R :exports none
+  setwd("~/Desktop/lectures/mva/slide")
+#+end_src
+
 
 
 * 主成分分析の復習
 ** 主成分分析
-   - 多数の変量のもつ情報の分析・視覚化
-     - 変量を効率的に縮約して少数の特徴量を構成する
-     - 変量の間の関係を明らかにする
-   - 分析の方針:
-     - データの情報を最大限保持する変量の線形結合を構成
-     - データの情報を最大限反映する座標(方向)を探索
-     - (データの情報を保持する=データを区別できる)
+- 多数の変量のもつ情報の分析・視覚化
+  - 変量を効率的に縮約して少数の特徴量を構成する
+  - 変量の間の関係を明らかにする
+- 分析の方針:
+  - データの情報を最大限保持する変量の線形結合を構成
+  - データの情報を最大限反映する座標(方向)を探索
+  - (データの情報を保持する=データを区別できる)
 
 ** 分析の考え方
-   - 1変量データ
-     $\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n$
-     を構成
-     - 観測データ $\boldsymbol{x}_1,\dots,\boldsymbol{x}_n$
-       のもつ情報を最大限保持するベクトル
-       $\boldsymbol{a}$ を *うまく* 選択
-     - $\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n$
-       の変動(ばらつき)が最も大きい方向を選択
-   - *最適化問題*
-     #+begin_quote
-     制約条件
-     $\|\boldsymbol{a}\|=1$
-     の下で以下の関数を最大化せよ
-     #+begin_src latex
-       \begin{equation}
-         f(\boldsymbol{a})
-         =
-         \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
-         -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2,
-         \quad
-         \bar{\boldsymbol{x}}
-         =
-         \frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 1変量データ
+  \(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n\)
+  を構成
+  - 観測データ \(\boldsymbol{x}_1,\dots,\boldsymbol{x}_n\)
+    のもつ情報を最大限保持するベクトル
+    \(\boldsymbol{a}\) を *うまく* 選択
+  - \(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n\)
+    の変動(ばらつき)が最も大きい方向を選択
+- *最適化問題*
+  #+begin_quote
+  制約条件
+  \(\|\boldsymbol{a}\|=1\)
+  の下で以下の関数を最大化せよ
+  #+begin_src latex
+    \begin{equation}
+      f(\boldsymbol{a})
+      =
+      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+      -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2,
+      \quad
+      \bar{\boldsymbol{x}}
+      =
+      \frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 行列による表現
-   - 中心化したデータ行列
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X
-         =
-         \begin{pmatrix}
-           \boldsymbol{x}_{1}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}} \\
-           \vdots \\
-           \boldsymbol{x}_{n}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}}
-         \end{pmatrix}
-         =
-         \begin{pmatrix}
-           x_{11}-\bar{x}_1 & \cdots & x_{1p}-\bar{x}_p\\
-           \vdots & & \vdots \\
-           x_{n1}-\bar{x}_1 & \cdots & x_{np}-\bar{x}_p
-         \end{pmatrix}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 評価関数 $f(\boldsymbol{a})$ は行列 $X^{\mathsf{T}}X$ 
-     の二次形式
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         f(\boldsymbol{a})
-         =
-         \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 中心化したデータ行列
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X
+      =
+      \begin{pmatrix}
+	\boldsymbol{x}_{1}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}} \\
+	\vdots \\
+	\boldsymbol{x}_{n}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}}
+      \end{pmatrix}
+      =
+      \begin{pmatrix}
+	x_{11}-\bar{x}_1 & \cdots & x_{1p}-\bar{x}_p\\
+	\vdots & & \vdots \\
+	x_{n1}-\bar{x}_1 & \cdots & x_{np}-\bar{x}_p
+      \end{pmatrix}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 評価関数 \(f(\boldsymbol{a})\) は行列 \(X^{\mathsf{T}}X\) 
+  の二次形式
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      f(\boldsymbol{a})
+      =
+      \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 固有値問題
-   - 最適化問題
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \text{maximize}\quad
-         f(\boldsymbol{a})
-         =
-         \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
-         \quad\text{s.t.}\quad
-         \boldsymbol{a}^{\mathsf{T}}\boldsymbol{a}=1
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 解の条件
-     #+begin_quote
-     $f(\boldsymbol{a})$ の極大値を与える $\boldsymbol{a}$ は
-     $X^{\mathsf{T}}X$ の固有ベクトルである
-     #+begin_src latex
-       \begin{equation}
-         X^{\mathsf{T}}X\boldsymbol{a}
-         =
-         \lambda\boldsymbol{a}
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 最適化問題
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \text{maximize}\quad
+      f(\boldsymbol{a})
+      =
+      \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+      \quad\text{s.t.}\quad
+      \boldsymbol{a}^{\mathsf{T}}\boldsymbol{a}=1
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 解の条件
+  #+begin_quote
+  \(f(\boldsymbol{a})\) の極大値を与える \(\boldsymbol{a}\) は
+  \(X^{\mathsf{T}}X\) の固有ベクトルである
+  #+begin_src latex
+    \begin{equation}
+      X^{\mathsf{T}}X\boldsymbol{a}
+      =
+      \lambda\boldsymbol{a}
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 主成分負荷量と主成分得点
-   - $\boldsymbol{a}$:
-     *主成分負荷量* (principal component loading)
-   - $\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i$:
-     *主成分得点* (principal component score)
-   - 第1主成分負荷量
-     #+begin_quote
-     $X^{\mathsf{T}}X$ の第1(最大)固有値 $\lambda_1$
-     に対応する固有ベクトル $\boldsymbol{a}_1$
-     #+end_quote
-   - 第\(k\)主成分負荷量
-     #+begin_quote
-     $X^{\mathsf{T}}X$ の第 $k$ 固有値 $\lambda_k$
-     に対応する固有ベクトル $\boldsymbol{a}_k$
-     #+end_quote
+- \(\boldsymbol{a}\):
+  *主成分負荷量* (principal component loading)
+- \(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i\):
+  *主成分得点* (principal component score)
+- 第1主成分負荷量
+  #+begin_quote
+  \(X^{\mathsf{T}}X\) の第1(最大)固有値 \(\lambda_1\)
+  に対応する固有ベクトル \(\boldsymbol{a}_1\)
+  #+end_quote
+- 第\(k\)主成分負荷量
+  #+begin_quote
+  \(X^{\mathsf{T}}X\) の第 \(k\) 固有値 \(\lambda_k\)
+  に対応する固有ベクトル \(\boldsymbol{a}_k\)
+  #+end_quote
 
 
 * 演習
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 ** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 以下の問に答えなさい．
-     - ベクトル\(\boldsymbol{a}\)
-       を
-       \(X^{\mathsf{T}}X\)
-       の単位固有ベクトルとするとき
-       #+begin_quote
-       #+begin_src latex
-         \begin{equation}
-           f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
-         \end{equation}
-       #+end_src
-       #+end_quote
-       の値を求めよ．
-     - 行列\(X\)を中心化したデータ行列，
-       ベクトル\(\boldsymbol{a}_{k}\)を第\(k\)主成分負荷量とする．
-       第\(k\)主成分得点の平均まわりの平方和
-       #+begin_quote
-       #+begin_src latex
-         \begin{equation}
-           \sum_{i=1}^n(\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{x}_i
-           -\boldsymbol{a}_{k}^{\mathsf{T}}\bar{\boldsymbol{x}})^2
-         \end{equation}
-       #+end_src
-       #+end_quote
-       を
-       \(X\)と\(\boldsymbol{a}_{k}\)で表せ．
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 以下の問に答えなさい．
+  - ベクトル\(\boldsymbol{a}\)
+    を
+    \(X^{\mathsf{T}}X\)
+    の単位固有ベクトルとするとき
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+	f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+      \end{equation}
+    #+end_src
+    #+end_quote
+    の値を求めよ．
+  - 行列\(X\)を中心化したデータ行列，
+    ベクトル\(\boldsymbol{a}_{k}\)を第\(k\)主成分負荷量とする．
+    第\(k\)主成分得点の平均まわりの平方和
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+	\sum_{i=1}^n(\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{x}_i
+	-\boldsymbol{a}_{k}^{\mathsf{T}}\bar{\boldsymbol{x}})^2
+      \end{equation}
+    #+end_src
+    #+end_quote
+    を
+    \(X\)と\(\boldsymbol{a}_{k}\)で表せ．
+    
 ** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 固有値・固有ベクトルの性質を利用する
-     #+begin_quote
-     \(X^{\mathsf{T}}X\)の
-     固有値・固有ベクトルを
-     \(\lambda_{k}, \boldsymbol{a}_{k}\)
-     とする．
-     \(\boldsymbol{a}=\boldsymbol{a}_{k}\)とすれば
-     #+begin_src latex
-       \begin{align}
-         f(\boldsymbol{a}_{k})
-         &=\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}\\
-         &=\boldsymbol{a}_{k}^{\mathsf{T}}\lambda_{k}\boldsymbol{a}_{k}
-         &&\text{(固有ベクトル)}\\
-         &=\lambda_{k}
-         &&\text{(単位ベクトル)}
-       \end{align}
-     #+end_src
-     #+end_quote
-   #+reveal: split
-   - 定義に従い計算すればよい(前回の復習)
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         f(\boldsymbol{a}_{k})
-         &=
-           \sum_{i=1}^{n}(\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{x}_i
-           -\boldsymbol{a}_{k}^{\mathsf{T}}\bar{\boldsymbol{x}})^2\\
-         &=
-           \sum_{i=1}^{n}
-           (X\boldsymbol{a}_{k})_{i}^{2}\\
-         &=
-           \sum_{i=1}^{n}
-           (X\boldsymbol{a}_{k})_{i}
-           (X\boldsymbol{a}_{k})_{i}\\
-         &=
-           (\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}})
-           (X\boldsymbol{a}_{k})
-           =
-           \boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
-       \end{align}
-     #+end_src
-     #+end_quote
-
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 固有値・固有ベクトルの性質を利用する
+  #+begin_quote
+  \(X^{\mathsf{T}}X\)の
+  固有値・固有ベクトルを
+  \(\lambda_{k}, \boldsymbol{a}_{k}\)
+  とする．
+  \(\boldsymbol{a}=\boldsymbol{a}_{k}\)とすれば
+  #+begin_src latex
+    \begin{align}
+      f(\boldsymbol{a}_{k})
+      &=\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}\\
+      &=\boldsymbol{a}_{k}^{\mathsf{T}}\lambda_{k}\boldsymbol{a}_{k}
+      &&\text{(固有ベクトル)}\\
+      &=\lambda_{k}
+      &&\text{(単位ベクトル)}
+    \end{align}
+  #+end_src
+  #+end_quote
+  #+reveal: split
+  - 定義に従い計算すればよい(前回の復習)
+    #+begin_quote
+    #+begin_src latex
+      \begin{align}
+	f(\boldsymbol{a}_{k})
+	&=
+   \sum_{i=1}^{n}(\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{x}_i
+   -\boldsymbol{a}_{k}^{\mathsf{T}}\bar{\boldsymbol{x}})^2\\
+	&=
+   \sum_{i=1}^{n}
+   (X\boldsymbol{a}_{k})_{i}^{2}\\
+	&=
+   \sum_{i=1}^{n}
+   (X\boldsymbol{a}_{k})_{i}
+   (X\boldsymbol{a}_{k})_{i}\\
+	&=
+   (\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}})
+   (X\boldsymbol{a}_{k})
+   =
+   \boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
+      \end{align}
+    #+end_src
+    #+end_quote
+     
    
 * 寄与率
 ** 寄与率の考え方
-   - 回帰分析で考察した *寄与率* の一般形
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \text{(寄与率)}=
-         \frac{\text{(その方法で説明できる変動)}}{\text{(データ全体の変動)}}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 主成分分析での定義 (proportion of variance)
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \text{(寄与率)}=
-         \frac{\text{(主成分の変動)}}{\text{(全体の変動)}}
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 回帰分析で考察した *寄与率* の一般形
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \text{(寄与率)}=
+      \frac{\text{(その方法で説明できる変動)}}{\text{(データ全体の変動)}}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 主成分分析での定義 (proportion of variance)
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \text{(寄与率)}=
+      \frac{\text{(主成分の変動)}}{\text{(全体の変動)}}
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** Gram行列のスペクトル分解
-   - 行列 $X^{\mathsf{T}}X$ (非負値正定対称行列) のスペクトル分解
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X^{\mathsf{T}}X
-         =\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
-       \end{equation}
-     #+end_src     
-     固有値と固有ベクトルによる行列の表現
-     #+end_quote
-   - 主成分の変動の評価
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         f(\boldsymbol{a}_{k})
-         =
-         \boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
-         =\lambda_{k}
-       \end{equation}
-     #+end_src
-     固有ベクトル(単位ベクトル)の直交性を利用
-     #+end_quote
+- 行列 \(X^{\mathsf{T}}X\) (非負値正定対称行列) のスペクトル分解
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X^{\mathsf{T}}X
+      =\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
+    \end{equation}
+  #+end_src     
+  固有値と固有ベクトルによる行列の表現
+  #+end_quote
+- 主成分の変動の評価
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      f(\boldsymbol{a}_{k})
+      =
+      \boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
+      =\lambda_{k}
+    \end{equation}
+  #+end_src
+  固有ベクトル(単位ベクトル)の直交性を利用
+  #+end_quote
 
 ** 寄与率の計算
-   - 主成分と全体の変動
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \text{(主成分の変動)}
-         &=
-           \sum_{i=1}^{n}(\boldsymbol{a}_k^{\mathsf{T}}\boldsymbol{x}_i
-           -\boldsymbol{a}_k^{\mathsf{T}}\bar{\boldsymbol{x}})^2
-           =\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
-           =\lambda_k\\
-         \text{(全体の変動)}
-         &=
-           \sum_{i=1}^{n}\|\boldsymbol{x}_i-\bar{\boldsymbol{x}}\|^2
-           =\sum_{l=1}^p\boldsymbol{a}_{l}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{l}
-           =\sum_{l=1}^p\lambda_l
-       \end{align}
-     #+end_src
-     #+end_quote
-   - 寄与率の固有値による表現:
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \text{(寄与率)}
-         =
-         \frac{\lambda_k}{\sum_{l=1}^p\lambda_l}  
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 主成分と全体の変動
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \text{(主成分の変動)}
+      &=
+	\sum_{i=1}^{n}(\boldsymbol{a}_k^{\mathsf{T}}\boldsymbol{x}_i
+	-\boldsymbol{a}_k^{\mathsf{T}}\bar{\boldsymbol{x}})^2
+	=\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
+	=\lambda_k\\
+      \text{(全体の変動)}
+      &=
+	\sum_{i=1}^{n}\|\boldsymbol{x}_i-\bar{\boldsymbol{x}}\|^2
+	=\sum_{l=1}^p\boldsymbol{a}_{l}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{l}
+	=\sum_{l=1}^p\lambda_l
+    \end{align}
+  #+end_src
+  #+end_quote
+- 寄与率の固有値による表現:
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \text{(寄与率)}
+      =
+      \frac{\lambda_k}{\sum_{l=1}^p\lambda_l}  
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** 累積寄与率
-   - *累積寄与率* (cumulative proportion) :
-     第 $k$ 主成分までの変動の累計
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \text{(累積寄与率)}
-         =
-         \frac{\sum_{l=1}^k\lambda_l}{\sum_{l=1}^p\lambda_l}
-       \end{equation}
-     #+end_src
-     第1から第 $k$ までの寄与率の総和
-     #+end_quote
-     - 累積寄与率はいくつの主成分を用いるべきかの基準
-     - 一般に累積寄与率が80%程度までの主成分を用いる
+- *累積寄与率* (cumulative proportion) :
+  第 \(k\) 主成分までの変動の累計
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \text{(累積寄与率)}
+      =
+      \frac{\sum_{l=1}^k\lambda_l}{\sum_{l=1}^p\lambda_l}
+    \end{equation}
+  #+end_src
+  第1から第 \(k\) までの寄与率の総和
+  #+end_quote
+  - 累積寄与率はいくつの主成分を用いるべきかの基準
+  - 一般に累積寄与率が80%程度までの主成分を用いる
 
-** COMMENT R: 主成分分析の評価
-   - 分析結果の評価を行う関数:
-     - ~summary()~: 主成分負荷量や寄与率を表示 
-     - ~plot()~: 寄与率を図示
-     #+BEGIN_SRC R :eval no
-       ## データフレームを分析
-       est <- prcomp( ~ x1の変数名 + ... + xpの変数名, data = データフレーム)
-       ## 主成分負荷量と寄与率を確認する
-       summary(est)
-       ## 寄与率を図示する
-       plot(est)
-     #+END_SRC
+
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: 主成分分析の評価
+- 分析結果の評価を行う関数:
+  - ~summary()~: 主成分負荷量や寄与率を表示 
+  - ~plot()~: 寄与率を図示
+  #+BEGIN_SRC R :eval no
+    ## データフレームを分析
+    est <- prcomp( ~ x1の変数名 + ... + xpの変数名, data = データフレーム)
+    ## 主成分負荷量と寄与率を確認する
+    summary(est)
+    ## 寄与率を図示する
+    plot(est)
+  #+END_SRC
+
+** データセットの準備
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 以下の2つのデータセットを使用します
+  - ~japan_social.csv~ (先週から使用)
+    #+begin_quote
+    総務省統計局より取得した都道府県別の社会生活統計指標の一部
+    #+end_quote
+  - ~MASS::UScereal~ \\
+    #+begin_quote
+    *Nutritional and Marketing Information on US Cereals* \\
+    The UScereal data frame has 65 rows and 11 columns. The data
+    come from the 1993 ASA Statistical Graphics Exposition, and are
+    taken from the mandatory F&DA food label. The data have been
+    normalized here to a portion of one American cup.
+    #+end_quote
+    #+begin_src R :eval no
+      library(MASS) # パッケージの読み込み
+      help(UScereal) # 変数名などの詳細はヘルプを参照して下さい
+    #+end_src
+
+** 練習問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- それぞれのデータにおいて，
+  正規化の有無の違いで寄与率・累積寄与率がどのように異なるか確認しなさい．
+  #+begin_src R :eval no
+    prcomp(データフレーム) # 正規化を行わない場合
+    prcomp(データフレーム, scale.=TRUE) # 正規化を行う場合
+    ## 正式なオプション名は "scale." であるが，"sc=TRUE" などでも可
+  #+end_src
+  - ~japan_social.csv~
+    #+begin_src R :eval no
+      JS.data <- read.csv("data/japan_social.csv", row.names=1)
+    #+end_src
+  - ~MASS::UScereal~
+    #+begin_src R :eval no
+      ## UScereal にはカテゴリカル変数が含まれるので以下のように処理すると良い
+      str(UScereal) # 各変数の属性を確認する．factor/intが不要
+      UC.data <- UScereal[sapply(UScereal, is.double)]
+    #+end_src
+    
+#+begin_src R :eval no :exports none :tangle yes
+  ### 練習1
+  ### 寄与率・累積寄与率
+
+  ### 総務省統計局の都道府県別の社会生活統計指標データ
+  ## - Pref: 都道府県名
+  ## - Forest: 森林面積割合 (%) 2014年
+  ## - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+  ## - Ratio: 全国総人口に占める人口割合 (%) 2015年
+  ## - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+  ## - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+  JS.data <- read.csv("data/japan_social.csv", row.names=1)
+  JS.pca0 <- prcomp(JS.data) # 正規化なし
+  JS.pca1 <- prcomp(JS.data, scale.=TRUE) # 正規化あり
+  ## 正規化しない場合
+  summary(JS.pca0) # 第1,2主成分でほとんど説明できることが示唆される
+  plot(JS.pca0) # 分散の棒グラフを表示 (寄与率の定数倍)
+  JS.pca0$rotation # 負荷量が偏る傾向があり，各主成分はほぼ1つの変数に対応している
+  ## 正規化した場合
+  summary(JS.pca1)
+  plot(JS.pca1)
+  JS.pca1$rotation
+
+  ### UScereal
+  ## 各変数の内容についてはhelpを参照
+  library(MASS)
+  UC.data <- UScereal[sapply(UScereal, is.double)]
+  UC.pca0 <- prcomp(UC.data)
+  UC.pca1 <- prcomp(UC.data, scale.=TRUE)
+  summary(UC.pca0)
+  plot(UC.pca0) 
+  UC.pca0$rotation
+  summary(UC.pca1)
+  plot(UC.pca1)
+  UC.pca1$rotation
+#+end_src
 
 ** COMMENT 演習: 寄与率による分析の評価
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/08-summary.r][08-summary.r]] を確認してみよう
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/08-summary.r][08-summary.r]] を確認してみよう
 
 ** COMMENT 演習: 実データによる考察
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - 累積寄与率から適切な成分数を考察してみよう
-     - datasets::USArrests
-     - MASS::Cars93
-     - MASS::UScereal
-
-** COMMENT データセットの準備
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 以下の2つのデータセットを使用します
-     - ~japan_social.csv~ (先週から使用)
-       #+begin_quote
-       総務省統計局より取得した都道府県別の社会生活統計指標の一部
-       #+end_quote
-     - ~MASS::UScereal~ \\
-       #+begin_quote
-       *Nutritional and Marketing Information on US Cereals* \\
-       The UScereal data frame has 65 rows and 11 columns. The data
-       come from the 1993 ASA Statistical Graphics Exposition, and are
-       taken from the mandatory F&DA food label. The data have been
-       normalized here to a portion of one American cup.
-       #+end_quote
-       #+begin_src R :eval no
-         library(MASS) # パッケージの読み込み
-         help(UScereal) # 変数名などの詳細はヘルプを参照して下さい
-       #+end_src
-
-** COMMENT 練習問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - それぞれのデータにおいて，
-     正規化の有無の違いで寄与率・累積寄与率がどのように異なるか確認しなさい．
-     #+begin_src R :eval no
-       prcomp(データフレーム) # 正規化を行わない場合
-       prcomp(データフレーム, scale.=TRUE) # 正規化を行う場合
-       ## 正式なオプション名は "scale." であるが，"sc=TRUE" などでも可
-     #+end_src
-     - ~japan_social.csv~
-       #+begin_src R :eval no
-         JS.data <- read.csv("data/japan_social.csv", row.names=1)
-       #+end_src
-     - ~MASS::UScereal~
-       #+begin_src R :eval no
-	 ## UScereal にはカテゴリカル変数が含まれるので以下のように処理すると良い
-	 str(UScereal) # 各変数の属性を確認する．factor/intが不要
-	 UC.data <- UScereal[sapply(UScereal, is.double)]
-       #+end_src
-
-     #+begin_src R :eval no :exports none :tangle yes
-       ### 練習1
-       ### 寄与率・累積寄与率
-       
-       ### 総務省統計局の都道府県別の社会生活統計指標データ
-       ## - Pref: 都道府県名
-       ## - Forest: 森林面積割合 (%) 2014年
-       ## - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-       ## - Ratio: 全国総人口に占める人口割合 (%) 2015年
-       ## - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-       ## - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
-       JS.data <- read.csv("data/japan_social.csv", row.names=1)
-       JS.pca0 <- prcomp(JS.data) # 正規化なし
-       JS.pca1 <- prcomp(JS.data, scale.=TRUE) # 正規化あり
-       ## 正規化しない場合
-       summary(JS.pca0) # 第1,2主成分でほとんど説明できることが示唆される
-       plot(JS.pca0) # 分散の棒グラフを表示 (寄与率の定数倍)
-       JS.pca0$rotation # 負荷量が偏る傾向があり，各主成分はほぼ1つの変数に対応している
-       ## 正規化した場合
-       summary(JS.pca1)
-       plot(JS.pca1)
-       JS.pca1$rotation
-       
-       ### UScereal
-       ## 各変数の内容についてはhelpを参照
-       library(MASS)
-       UC.data <- UScereal[sapply(UScereal, is.double)]
-       UC.pca0 <- prcomp(UC.data)
-       UC.pca1 <- prcomp(UC.data, scale.=TRUE)
-       summary(UC.pca0)
-       plot(UC.pca0) 
-       UC.pca0$rotation
-       summary(UC.pca1)
-       plot(UC.pca1)
-       UC.pca1$rotation
-     #+end_src
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- 累積寄与率から適切な成分数を考察してみよう
+  - datasets::USArrests
+  - MASS::Cars93
+  - MASS::UScereal
 
 
 * 解析の事例
 ** データセット
-   - 総務省統計局より取得した都道府県別の社会生活統計指標の一部
-     - 総務省 [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
-       #+begin_quote
-       - Pref: 都道府県名
-       - Forest: 森林面積割合 (%) 2014年
-       - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-       - Ratio: 全国総人口に占める人口割合 (%) 2015年
-       - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-       - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
-       #+end_quote
-   #+reveal: split
-   - データの一部
-   #+begin_src R :exports results :tangle yes
-     ## データの読み込み
-     JS.data <- read.csv("data/japan_social.csv", row.names=1)
-     head(JS.data, 18)
-   #+end_src
-** 各変数の分布
-   - 変数のばらつきに大きな違いがある
-   #+begin_src R :file figs/07_boxplot.png :exports results :results graphics :tangle yes
-     boxplot(JS.data, col="orchid") # 箱ひげ図．変数のばらつきに大きな違いがある
-   #+end_src
-   #+CAPTION: 各変数の箱ひげ図
-   #+NAME: fig:07_boxplot
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/07_boxplot.png]]
+- 総務省統計局より取得した都道府県別の社会生活統計指標の一部
+  - 総務省 [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
+    #+begin_quote
+    - Pref: 都道府県名
+    - Forest: 森林面積割合 (%) 2014年
+    - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+    - Ratio: 全国総人口に占める人口割合 (%) 2015年
+    - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+    - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+    #+end_quote
+    #+reveal: split
+    - データの一部
+    #+begin_src R :exports results :tangle yes
+      ## データの読み込み
+      JS.data <- read.csv("data/japan_social.csv", row.names=1)
+      head(JS.data, 18)
+    #+end_src
 
-** データの正規化
-   - 各変数の標本平均を0，不偏分散を1に規格化する
-   #+begin_src R :file figs/07_pairs.png :exports results :results graphics :tangle yes
-     ## データの視覚化
-     pairs(scale(JS.data), col="blue") # いくつかの変数は相関が強い
+** 各変数の分布
+- 変数のばらつきに大きな違いがある
+  #+begin_src R :file figs/07_boxplot.png :exports results :results graphics :tangle yes
+    boxplot(JS.data, col="orchid") # 箱ひげ図．変数のばらつきに大きな違いがある
    #+end_src
-   #+CAPTION: 正規化したデータの散布図
-   #+NAME: fig:07_pairs
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/07_pairs.png]]
+
+#+CAPTION: 各変数の箱ひげ図
+#+NAME: fig:07_boxplot
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_boxplot.png]]
+   
+** データの正規化
+- 各変数の標本平均を0，不偏分散を1に規格化する
+  #+begin_src R :file figs/07_pairs.png :exports results :results graphics :tangle yes
+    ## データの視覚化
+    pairs(scale(JS.data), col="blue") # いくつかの変数は相関が強い
+  #+end_src
+
+#+CAPTION: 正規化したデータの散布図
+#+NAME: fig:07_pairs
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_pairs.png]]
 
 ** 主成分分析
-   - 主成分負荷量
-     #+begin_src R :exports results :tangle yes
-       JS.pca <- prcomp(JS.data, scale.=TRUE)
-       JS.pca$rot
-     #+end_src
-     - 第1: 人の多さに関する成分(正の向きほど人が多い)
-     - 第2: 農業生産力に関する成分(正の向きほど高い)
-   - 寄与率
-     #+begin_src R :exports results :tangle yes
-       summary(JS.pca)
-     #+end_src
-   #+reveal: split
-   - 第1,2主成分得点の表示
-   #+begin_src R :file figs/07_pcaplot12.png :exports results :results graphics :tangle yes
-     xrange <- 1.1*range(predict(JS.pca)[,"PC1"])
-     yrange <- xrange-mean(xrange)
-     plot(PC2 ~ PC1, data=predict(JS.pca),
-          type="n",
-          xlim=xrange, ylim=yrange)
-     text(PC2 ~ PC1, data=predict(JS.pca),
-          labels=row.names(JS.data),
-          col="blue", cex=1.0)
+- 主成分負荷量
+  #+begin_src R :exports results :tangle yes
+    JS.pca <- prcomp(JS.data, scale.=TRUE)
+    JS.pca$rot
+  #+end_src
+  - 第1: 人の多さに関する成分(正の向きほど人が多い)
+  - 第2: 農業生産力に関する成分(正の向きほど高い)
+- 寄与率
+  #+begin_src R :exports results :tangle yes
+    summary(JS.pca)
+  #+end_src
+  
+#+reveal: split
+- 第1,2主成分得点の表示
+  #+begin_src R :file figs/07_pcaplot12.png :exports results :results graphics :tangle yes
+    xrange <- 1.1*range(predict(JS.pca)[,"PC1"])
+    yrange <- xrange-mean(xrange)
+    plot(PC2 ~ PC1, data=predict(JS.pca),
+	 type="n",
+	 xlim=xrange, ylim=yrange)
+    text(PC2 ~ PC1, data=predict(JS.pca),
+	 labels=row.names(JS.data),
+	 col="blue", cex=1.0)
    #+end_src
-   #+CAPTION: 主成分得点による散布図
-   #+NAME: fig:07_pcaplot12
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/07_pcaplot12.png]]
-   #+reveal: split
-   - 第3,2主成分得点の表示
-   #+begin_src R :file figs/07_pcaplot32.png :exports results :results graphics :tangle yes
-     plot(PC2 ~ PC3, data=predict(JS.pca),
-          type="n",
-          xlim=yrange, ylim=yrange)
-     text(PC2 ~ PC3, data=predict(JS.pca),
-          labels=row.names(JS.data),
-          col="blue", cex=1.0)
-   #+end_src
-   #+CAPTION: 主成分得点による散布図
-   #+NAME: fig:07_pcaplot32
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/07_pcaplot32.png]]
+
+#+CAPTION: 主成分得点による散布図
+#+NAME: fig:07_pcaplot12
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_pcaplot12.png]]
+
+#+reveal: split
+- 第3,2主成分得点の表示
+  #+begin_src R :file figs/07_pcaplot32.png :exports results :results graphics :tangle yes
+    plot(PC2 ~ PC3, data=predict(JS.pca),
+         type="n",
+         xlim=yrange, ylim=yrange)
+    text(PC2 ~ PC3, data=predict(JS.pca),
+         labels=row.names(JS.data),
+         col="blue", cex=1.0)
+  #+end_src
+
+#+CAPTION: 主成分得点による散布図
+#+NAME: fig:07_pcaplot32
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_pcaplot32.png]]
 
 
 * 演習
@@ -514,260 +643,262 @@
   :reveal_background: #fef4f4
   :END:
 ** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 以下の問に答えなさい．
-     - 正規化条件を満たす線形変換
-       \(x'_{ij}=a_{j}(x_{ij}-b_{j})\)
-       を求めよ．
-       #+begin_quote
-       #+begin_src latex
-         \begin{equation}
-           \frac{1}{n}\sum_{i=1}^{n}x'_{ij}=0,\quad
-           \frac{1}{n-1}\sum_{i=1}^{n}(x'_{ij})^{2}=1
-         \end{equation}
-       #+end_src
-       #+end_quote
-     - 正規化されたデータ行列を
-       #+begin_quote
-       #+begin_src latex
-         \begin{equation}
-           X'
-           =
-           \begin{pmatrix}
-             {\boldsymbol{x}'_{1}}^{\mathsf{T}}\\
-             \vdots \\
-             {\boldsymbol{x}'_{n}}^{\mathsf{T}}
-           \end{pmatrix}
-           =
-           \begin{pmatrix}
-             x'_{11} & \cdots & x'_{1p}\\
-             \vdots & & \vdots \\
-             x'_{n1} & \cdots & x'_{np}
-           \end{pmatrix}
-         \end{equation}
-       #+end_src
-       #+end_quote
-       と書くとき，\(X'^{\mathsf{T}}X'\)の対角成分を求めよ．
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 以下の問に答えなさい．
+  - 正規化条件を満たす線形変換
+    \(x'_{ij}=a_{j}(x_{ij}-b_{j})\)
+    を求めよ．
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+	\frac{1}{n}\sum_{i=1}^{n}x'_{ij}=0,\quad
+	\frac{1}{n-1}\sum_{i=1}^{n}(x'_{ij})^{2}=1
+      \end{equation}
+    #+end_src
+    #+end_quote
+  - 正規化されたデータ行列を
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+	X'
+	=
+	\begin{pmatrix}
+	  {\boldsymbol{x}'_{1}}^{\mathsf{T}}\\
+	  \vdots \\
+	  {\boldsymbol{x}'_{n}}^{\mathsf{T}}
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+	  x'_{11} & \cdots & x'_{1p}\\
+	  \vdots & & \vdots \\
+	  x'_{n1} & \cdots & x'_{np}
+	\end{pmatrix}
+      \end{equation}
+    #+end_src
+    #+end_quote
+    と書くとき，\(X'^{\mathsf{T}}X'\)の対角成分を求めよ．
 
 ** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 標本平均の定義どおりに計算すればよい
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \frac{1}{n}\sum_{i=1}^{n}x'_{ij}
-         &=
-         \frac{1}{n}\sum_{i=1}^{n}\left(a_{j}(x_{ij}-b_{j})\right)\\
-         &=
-           a_{j}\left(\frac{1}{n}\sum_{i=1}^{n}x_{ij}-b_{j}\right)\\
-         &=0
-       \end{align}
-     #+end_src
-     したがって
-     #+begin_src latex
-       \begin{equation}
-         b_{j}
-         =
-         \frac{1}{n}\sum_{i=1}^{n}x_{ij}
-         =\bar{x}_{j}
-         \quad\text{(元の変数の標本平均)}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   #+reveal: split
-   - 不偏分散も同様に計算すればよい
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \frac{1}{n-1}\sum_{i=1}^{n}(x'_{ij})^{2}
-         &=
-         a_{j}^{2}\frac{1}{n-1}\sum_{i=1}^{n}(x_{ij}-\bar{x}_{j})^{2}\\
-         &=1
-       \end{align}
-     #+end_src
-     したがって
-     #+begin_src latex
-       \begin{equation}
-         a_{j}
-         =
-         \left(\frac{1}{n-1}\sum_{i=1}^{n}(x_{ij}-\bar{x}_{j})^{2}\right)^{-1/2}
-         \quad\text{(標準偏差の逆数)}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   #+reveal: split
-   - 不偏分散であることに注意する
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         (X'^{\mathsf{T}}X')_{jj}
-         =
-         \sum_{i=1}^{n}(x'_{ij})^{2}
-         =
-         n-1
-       \end{equation}
-     #+end_src
-     #+end_quote
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 標本平均の定義どおりに計算すればよい
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \frac{1}{n}\sum_{i=1}^{n}x'_{ij}
+      &=
+        \frac{1}{n}\sum_{i=1}^{n}\left(a_{j}(x_{ij}-b_{j})\right)\\
+      &=
+	a_{j}\left(\frac{1}{n}\sum_{i=1}^{n}x_{ij}-b_{j}\right)\\
+      &=0
+    \end{align}
+  #+end_src
+  したがって
+  #+begin_src latex
+    \begin{equation}
+      b_{j}
+      =
+      \frac{1}{n}\sum_{i=1}^{n}x_{ij}
+      =\bar{x}_{j}
+      \quad\text{(元の変数の標本平均)}
+    \end{equation}
+  #+end_src
+  #+end_quote
 
-   
+#+reveal: split
+- 不偏分散も同様に計算すればよい
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \frac{1}{n-1}\sum_{i=1}^{n}(x'_{ij})^{2}
+      &=
+        a_{j}^{2}\frac{1}{n-1}\sum_{i=1}^{n}(x_{ij}-\bar{x}_{j})^{2}\\
+      &=1
+    \end{align}
+  #+end_src
+  したがって
+  #+begin_src latex
+    \begin{equation}
+      a_{j}
+      =
+      \left(\frac{1}{n-1}\sum_{i=1}^{n}(x_{ij}-\bar{x}_{j})^{2}\right)^{-1/2}
+      \quad\text{(標準偏差の逆数)}
+    \end{equation}
+  #+end_src
+  #+end_quote
+  
+#+reveal: split
+- 不偏分散であることに注意する
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      (X'^{\mathsf{T}}X')_{jj}
+      =
+      \sum_{i=1}^{n}(x'_{ij})^{2}
+      =
+      n-1
+    \end{equation}
+  #+end_src
+  #+end_quote
+
+
 * 主成分負荷量
 ** 主成分負荷量と主成分得点
-   - 負荷量(得点係数)の大きさ: 変数の貢献度
-   - *問題点*:
-     - 変数のスケールによって係数の大きさは変化する
-     - 変数の正規化(平均0，分散1)がいつも妥当とは限らない
-   - スケールによらない変数と主成分の関係: \\
-     *相関係数* を考えればよい
+- 負荷量(得点係数)の大きさ: 変数の貢献度
+- *問題点*:
+  - 変数のスケールによって係数の大きさは変化する
+  - 変数の正規化(平均0，分散1)がいつも妥当とは限らない
+- スケールによらない変数と主成分の関係: \\
+  *相関係数* を考えればよい
 
 ** 相関係数
-   - $\boldsymbol{e}_{j}$: 第 $j$ 成分は1，それ以外は0のベクトル
-   - $X\boldsymbol{e}_{j}$: 第 $j$ 変数ベクトル
-   - $X\boldsymbol{a}_{k}$: 第 $k$ 主成分得点ベクトル
-   - 主成分と変数の相関係数:
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         \mathrm{Cor}(X\boldsymbol{a}_{k},X\boldsymbol{e}_{j})
-         % &=\frac{(X\boldsymbol{a}_{k})^{\mathsf{T}}X\boldsymbol{e}_{l}}
-         % {\sqrt{(X\boldsymbol{a}_{k})^{\mathsf{T}}X\boldsymbol{a}_{k}}
-         % \sqrt{(X\boldsymbol{e}_{l})^{\mathsf{T}}X\boldsymbol{e}_{l}}}\\
-           &=\frac{\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{e}_{j}}
-             {\sqrt{\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}}
-             \sqrt{\boldsymbol{e}_{j}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{e}_{j}}}\\
-           &=\frac{\lambda_{k}\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{e}_{j}}
-             {\sqrt{\lambda_{k}}\sqrt{(X^{\mathsf{T}}X)_{jj}}}
-       \end{align}
-     #+end_src
-     #+end_quote
+- \(\boldsymbol{e}_{j}\): 第 \(j\) 成分は1，それ以外は0のベクトル
+- \(X\boldsymbol{e}_{j}\): 第 \(j\) 変数ベクトル
+- \(X\boldsymbol{a}_{k}\): 第 \(k\) 主成分得点ベクトル
+- 主成分と変数の相関係数:
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      \mathrm{Cor}(X\boldsymbol{a}_{k},X\boldsymbol{e}_{j})
+      % &=\frac{(X\boldsymbol{a}_{k})^{\mathsf{T}}X\boldsymbol{e}_{l}}
+      % {\sqrt{(X\boldsymbol{a}_{k})^{\mathsf{T}}X\boldsymbol{a}_{k}}
+      % \sqrt{(X\boldsymbol{e}_{l})^{\mathsf{T}}X\boldsymbol{e}_{l}}}\\
+	&=\frac{\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{e}_{j}}
+   {\sqrt{\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}}
+   \sqrt{\boldsymbol{e}_{j}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{e}_{j}}}\\
+	&=\frac{\lambda_{k}\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{e}_{j}}
+   {\sqrt{\lambda_{k}}\sqrt{(X^{\mathsf{T}}X)_{jj}}}
+    \end{align}
+  #+end_src
+  #+end_quote
 
 ** 正規化データの場合
-   - $X^{\mathsf{T}}X$ の対角成分は全て\(n-1\)
-     ($(X^{\mathsf{T}}X)_{jj}=n-1$)
-   # - 第 $k$ 主成分に対する第 $j$ 変数の相関係数:
-   #   #+begin_quote
-   #   #+begin_src latex
-   #     \begin{equation}
-   #       (\boldsymbol{r}_{k})_{j}
-   #       =\sqrt{\lambda_{k}/(n-1)}\cdot(\boldsymbol{a}_{k})_{j}
-   #     \end{equation}
-   #   #+end_src
-   #   #+end_quote
-   - 第 $k$ 主成分に対する相関係数ベクトル:
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \boldsymbol{r}_{k}
-         =\sqrt{\lambda_{k}/(n-1)}\cdot\boldsymbol{a}_{k},
-         \quad
-         (\boldsymbol{r}_{k})_{j}
-         =\sqrt{\lambda_{k}/(n-1)}\cdot(\boldsymbol{a}_{k})_{j}
-       \end{equation}
-     #+end_src
-     #+end_quote
-     # =\sigma_{k}\boldsymbol{a}_{k}\quad\text{(特異値による表現)}
-   - *主成分負荷量*
-     - 同じ主成分への各変数の影響は固有ベクトルの成分比
-     - 同じ変数の各主成分への影響は固有値の平方根で重みづけ
+- \(X^{\mathsf{T}}X\) の対角成分は全て\(n-1\)
+  (\((X^{\mathsf{T}}X)_{jj}=n-1\))
+  # - 第 \(k\) 主成分に対する第 \(j\) 変数の相関係数:
+  #   #+begin_quote
+  #   #+begin_src latex
+  #     \begin{equation}
+  #       (\boldsymbol{r}_{k})_{j}
+  #       =\sqrt{\lambda_{k}/(n-1)}\cdot(\boldsymbol{a}_{k})_{j}
+  #     \end{equation}
+  #   #+end_src
+  #   #+end_quote
+  - 第 \(k\) 主成分に対する相関係数ベクトル:
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+	\boldsymbol{r}_{k}
+	=\sqrt{\lambda_{k}/(n-1)}\cdot\boldsymbol{a}_{k},
+	\quad
+	(\boldsymbol{r}_{k})_{j}
+	=\sqrt{\lambda_{k}/(n-1)}\cdot(\boldsymbol{a}_{k})_{j}
+      \end{equation}
+    #+end_src
+    #+end_quote
+    # =\sigma_{k}\boldsymbol{a}_{k}\quad\text{(特異値による表現)}
+  - *主成分負荷量*
+    - 同じ主成分への各変数の影響は固有ベクトルの成分比
+    - 同じ変数の各主成分への影響は固有値の平方根で重みづけ
 
 
 * データ行列の分解表現
 ** 特異値分解
-   - 階数 $r$ の $n\times p$ 型行列 $X$ の分解:
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X=U\Sigma V^{\mathsf{T}}
-       \end{equation}
-     #+end_src
-     #+end_quote
-     - $U$ は $n\times n$ 型直交行列, $V$ は $p\times p$ 型直交行列
-     - $\Sigma$ は $n\times p$ 型行列
-       #+begin_quote
-       #+begin_src latex
-         \begin{equation}
-           \Sigma
-           =
-           \begin{pmatrix}
-             D & O_{r,p-r}\\
-             O_{n-r,r} & O_{n-r,m-r}
-           \end{pmatrix}
-         \end{equation}
-       #+end_src
-       #+end_quote
-       - $O_{s,t}$ は $s\times t$ 型零行列
-       - $D$ は $\sigma_{1}\geq\sigma_{2}\geq\sigma_{r}>0$ 
-         を対角成分とする $r\times r$ 型対角行列
-
+- 階数 \(r\) の \(n\times p\) 型行列 \(X\) の分解:
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X=U\Sigma V^{\mathsf{T}}
+    \end{equation}
+  #+end_src
+  #+end_quote
+  - \(U\) は \(n\times n\) 型直交行列, \(V\) は \(p\times p\) 型直交行列
+  - \(\Sigma\) は \(n\times p\) 型行列
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+	\Sigma
+	=
+	\begin{pmatrix}
+	  D & O_{r,p-r}\\
+	  O_{n-r,r} & O_{n-r,m-r}
+	\end{pmatrix}
+      \end{equation}
+    #+end_src
+    #+end_quote
+    - \(O_{s,t}\) は \(s\times t\) 型零行列
+    - \(D\) は \(\sigma_{1}\geq\sigma_{2}\geq\sigma_{r}>0\) 
+      を対角成分とする \(r\times r\) 型対角行列
 
 ** 特異値   
-   - 行列 $\Sigma$ の成分表示
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \Sigma
-         =
-         \begin{pmatrix}
-           \sigma_{1}&&&\\
-           &\ddots&&O_{r,p-r}\\
-           &&\sigma_{r}&\\
-           &&&\\
-           &O_{n-r,r} && O_{n-r,m-r}
-         \end{pmatrix}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - $D$ の対角成分: $X$ の *特異値* (singular value)
+- 行列 \(\Sigma\) の成分表示
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \Sigma
+      =
+      \begin{pmatrix}
+	\sigma_{1}&&&\\
+	&\ddots&&O_{r,p-r}\\
+	&&\sigma_{r}&\\
+	&&&\\
+	&O_{n-r,r} && O_{n-r,m-r}
+      \end{pmatrix}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- \(D\) の対角成分: \(X\) の *特異値* (singular value)
 
 ** 特異値分解によるGram行列の表現
-   - Gram行列の展開:
-     #+begin_quote
-     #+begin_src latex
-       \begin{align*}
-         X^{\mathsf{T}}X
-         &=(U\Sigma V^{\mathsf{T}})^{\mathsf{T}}(U\Sigma V^{\mathsf{T}})\\
-         &=V\Sigma^{\mathsf{T}}U^{\mathsf{T}}U\Sigma V^{\mathsf{T}}\\
-         &=V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}
-       \end{align*}
-     #+end_src
-     #+end_quote
-   # - 行列 $\Sigma^{\mathsf{T}}\Sigma$ は対角行列 
-   #   #+begin_quote
-   #   #+begin_src latex
-   #     \begin{equation}
-   #       \Sigma^{\mathsf{T}}\Sigma
-   #       =
-   #       \begin{pmatrix}
-   #         \sigma_{1}&&&\\
-   #         &\ddots&&O_{r,p-r}\\
-   #         &&\sigma_{r}&\\
-   #         &&&\\
-   #         &O_{p-r,r} && O_{p-r,p-r}
-   #       \end{pmatrix}
-   #     \end{equation}
-   #   #+end_src
-   #   #+end_quote
-   #+reveal: split
-   - 行列 $\Sigma^{\mathsf{T}}\Sigma$ は対角行列
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \Sigma^{\mathsf{T}}\Sigma
-         =
-         \begin{pmatrix}
-           \sigma_{1}^{2}&&&&&\\
-           &\ddots&&&&\\
-           &&\sigma_{r}^{2}&&&\\
-           &&&0&&\\
-           &&&&\ddots&\\
-           &&&&&0
-         \end{pmatrix}
-       \end{equation}
-     #+end_src
-     #+end_quote
+- Gram行列の展開:
+  #+begin_quote
+  #+begin_src latex
+    \begin{align*}
+      X^{\mathsf{T}}X
+      &=(U\Sigma V^{\mathsf{T}})^{\mathsf{T}}(U\Sigma V^{\mathsf{T}})\\
+      &=V\Sigma^{\mathsf{T}}U^{\mathsf{T}}U\Sigma V^{\mathsf{T}}\\
+      &=V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}
+    \end{align*}
+  #+end_src
+  #+end_quote
+  # - 行列 \(\Sigma^{\mathsf{T}}\Sigma\) は対角行列 
+  #   #+begin_quote
+  #   #+begin_src latex
+  #     \begin{equation}
+  #       \Sigma^{\mathsf{T}}\Sigma
+  #       =
+  #       \begin{pmatrix}
+  #         \sigma_{1}&&&\\
+  #         &\ddots&&O_{r,p-r}\\
+  #         &&\sigma_{r}&\\
+  #         &&&\\
+  #         &O_{p-r,r} && O_{p-r,p-r}
+  #       \end{pmatrix}
+  #     \end{equation}
+  #   #+end_src
+  #   #+end_quote
+
+#+reveal: split
+- 行列 \(\Sigma^{\mathsf{T}}\Sigma\) は対角行列
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \Sigma^{\mathsf{T}}\Sigma
+      =
+      \begin{pmatrix}
+	\sigma_{1}^{2}&&&&&\\
+	&\ddots&&&&\\
+	&&\sigma_{r}^{2}&&&\\
+	&&&0&&\\
+	&&&&\ddots&\\
+	&&&&&0
+      \end{pmatrix}
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 
 * 演習
@@ -775,355 +906,376 @@
   :reveal_background: #fef4f4
   :END:
 ** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - 行列\(X\)の特異値分解を\(U\Sigma V^{\mathsf{T}}\)とし，
-     行列\(U\)の第\(k\)列ベクトルを\(\boldsymbol{u}_{k}\)，
-     行列\(V\)の第\(k\)列ベクトルを\(\boldsymbol{v}_{k}\)
-     とする．
-     以下の問に答えなさい．
-     - 行列\(U,V\)の列ベクトルを用いて\(X\)を展開しなさい
-     - Gram行列\(X^{\mathsf{T}}X\)の固有値を特異値で表しなさい．
-     - 行列\(X\)の主成分負荷量を求めなさい．
-     - それぞれの負荷量に対応する主成分得点を求めなさい．
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 行列\(X\)の特異値分解を\(U\Sigma V^{\mathsf{T}}\)とし，
+  行列\(U\)の第\(k\)列ベクトルを\(\boldsymbol{u}_{k}\)，
+  行列\(V\)の第\(k\)列ベクトルを\(\boldsymbol{v}_{k}\)
+  とする．
+  以下の問に答えなさい．
+  - 行列\(U,V\)の列ベクトルを用いて\(X\)を展開しなさい
+  - Gram行列\(X^{\mathsf{T}}X\)の固有値を特異値で表しなさい．
+  - 行列\(X\)の主成分負荷量を求めなさい．
+  - それぞれの負荷量に対応する主成分得点を求めなさい．
 
 ** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - \(\Sigma\)が対角成分しか持たないことに注意すると
-     以下のように展開される
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X
-         =
-         U\Sigma V^{\mathsf{T}}
-         =
-         \sum_{k=1}^{r}\sigma_{k}\boldsymbol{u}_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   #+reveal: split
-   - 先週の演習問題と特異値分解を比較する
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X^{\mathsf{T}}X
-         =
-         V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}
-         =
-         A^{\mathsf{T}}\Lambda A
-       \end{equation}
-     #+end_src
-     より
-     #+begin_src latex
-       \begin{equation}
-         \lambda_{k}
-         =
-         \begin{cases}
-           \sigma_{k}^{2},&k\leq r\\
-           0,&k>r
-         \end{cases}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   #+reveal: split
-   - 転置に気をつけて同様に比較すればよい
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         A
-         =
-         \begin{pmatrix}
-           \boldsymbol{a}_{1}^{\mathsf{T}}\\
-           \vdots \\
-           \boldsymbol{a}_{p}^{\mathsf{T}}
-         \end{pmatrix}
-       \end{equation}
-     #+end_src
-     と定義されているので
-     主成分負荷量(固有ベクトル)は行列 $V$ の列ベクトル
-     #+begin_src latex
-       \begin{equation}
-         \boldsymbol{a}_{k}=\boldsymbol{v}_{k}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   #+reveal: split
-   - 主成分得点の定義どおり計算する
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X\boldsymbol{a}_{k}
-         =
-         U\Sigma V^{\mathsf{T}}\boldsymbol{v}_{k}
-         =\sigma_{k}\boldsymbol{u}_{k}
-       \end{equation}
-     #+end_src
-     ただし\(k>r\)のとき\(\sigma_{k}=0\)とする
-     #+end_quote
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- \(\Sigma\)が対角成分しか持たないことに注意すると
+  以下のように展開される
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X
+      =
+      U\Sigma V^{\mathsf{T}}
+      =
+      \sum_{k=1}^{r}\sigma_{k}\boldsymbol{u}_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
+    \end{equation}
+  #+end_src
+  #+end_quote
 
-** COMMENT 特異値と固有値の関係
-   - 行列 $V$ の第 $k$ 列ベクトル $\boldsymbol{v}_{k}$
-   - 特異値の平方
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         \lambda_{k}
-         =
-         \begin{cases}
-           \sigma_{k}^{2},&k\leq r\\
-           0,&k>r
-         \end{cases}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - Gram行列の固有値問題
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         X^{\mathsf{T}}X\boldsymbol{v}_{k}
-         &=V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}\boldsymbol{v}_{k}
-           =\lambda_{k}\boldsymbol{v}_{k}
-       \end{align}
-     #+end_src
-     #+end_quote
-     - $X^{\mathsf{T}}X$ の固有値は行列 $X$ の特異値の平方
-     - 固有ベクトルは行列 $V$ の列ベクトル $\boldsymbol{a}_{k}=\boldsymbol{v}_{k}$ 
+#+reveal: split
+- 先週の演習問題と特異値分解を比較する
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X^{\mathsf{T}}X
+      =
+      V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}
+      =
+      A^{\mathsf{T}}\Lambda A
+    \end{equation}
+  #+end_src
+  より
+  #+begin_src latex
+    \begin{equation}
+      \lambda_{k}
+      =
+      \begin{cases}
+	\sigma_{k}^{2},&k\leq r\\
+	0,&k>r
+      \end{cases}
+    \end{equation}
+  #+end_src
+  #+end_quote
+
+#+reveal: split
+- 転置に気をつけて同様に比較すればよい
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      A
+      =
+      \begin{pmatrix}
+	\boldsymbol{a}_{1}^{\mathsf{T}}\\
+	\vdots \\
+	\boldsymbol{a}_{p}^{\mathsf{T}}
+      \end{pmatrix}
+    \end{equation}
+  #+end_src
+  と定義されているので
+  主成分負荷量(固有ベクトル)は行列 \(V\) の列ベクトル
+  #+begin_src latex
+    \begin{equation}
+      \boldsymbol{a}_{k}=\boldsymbol{v}_{k}
+    \end{equation}
+  #+end_src
+  #+end_quote
+
+#+reveal: split
+- 主成分得点の定義どおり計算する
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X\boldsymbol{a}_{k}
+      =
+      U\Sigma V^{\mathsf{T}}\boldsymbol{v}_{k}
+      =\sigma_{k}\boldsymbol{u}_{k}
+    \end{equation}
+  #+end_src
+  ただし\(k>r\)のとき\(\sigma_{k}=0\)とする
+  #+end_quote
 
 
 * バイプロット
+** 特異値と固有値の関係
+# 東京大学
+- 行列 \(V\) の第 \(k\) 列ベクトル \(\boldsymbol{v}_{k}\)
+- 特異値の平方
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \lambda_{k}
+      =
+      \begin{cases}
+	\sigma_{k}^{2},&k\leq r\\
+	0,&k>r
+      \end{cases}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- Gram行列の固有値問題
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      X^{\mathsf{T}}X\boldsymbol{v}_{k}
+      &=V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}\boldsymbol{v}_{k}
+	=\lambda_{k}\boldsymbol{v}_{k}
+    \end{align}
+  #+end_src
+  #+end_quote
+  - \(X^{\mathsf{T}}X\) の固有値は行列 \(X\) の特異値の平方
+  - 固有ベクトルは行列 \(V\) の列ベクトル \(\boldsymbol{a}_{k}=\boldsymbol{v}_{k}\) 
+
 ** データ行列の分解
-   - 行列 $U$ の第 $k$ 列ベクトル $\boldsymbol{u}_{k}$
-   - 行列 $V$ の第 $k$ 列ベクトル $\boldsymbol{v}_{k}$
-   - データ行列の特異値分解: (*注意* $\Sigma$ は対角行列)
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X
-         =
-         U\Sigma V^{\mathsf{T}}
-         =
-         \sum_{k=1}^{r}\sigma_{k}\boldsymbol{u}_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
-       \end{equation}
-     #+end_src
-     #+end_quote
+- 行列 \(U\) の第 \(k\) 列ベクトル \(\boldsymbol{u}_{k}\)
+- 行列 \(V\) の第 \(k\) 列ベクトル \(\boldsymbol{v}_{k}\)
+- データ行列の特異値分解: (*注意* \(\Sigma\) は対角行列)
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X
+      =
+      U\Sigma V^{\mathsf{T}}
+      =
+      \sum_{k=1}^{r}\sigma_{k}\boldsymbol{u}_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
+    \end{equation}
+  #+end_src
+  #+end_quote
 
 ** データ行列の近似表現
-   - 第 $k$ 主成分と第 $l$ 主成分を用いた行列 $X$ の近似 $X'$
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X\simeq X'
-         =\sigma_{k}\boldsymbol{u}_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
-         +\sigma_{l}\boldsymbol{u}_{l}\boldsymbol{v}_{l}^{\mathsf{T}}
-       \end{equation}
-     #+end_src
-     #+end_quote
-   - 行列の積による表現
-     #+begin_quote
-     #+begin_src latex
-       \begin{align}
-         X'&=GH^{\mathsf{T}},\\
-         &G=
-         \begin{pmatrix}
-           \sigma_{k}^{1-s}\boldsymbol{u}_{k}&
-           \sigma_{l}^{1-s}\boldsymbol{u}_{l}
-         \end{pmatrix}
-         ,\quad
-         H=
-         \begin{pmatrix}
-           \sigma_{k}^{s}\boldsymbol{v}_{k}&
-           \sigma_{l}^{s}\boldsymbol{v}_{l}
-         \end{pmatrix}
-         \quad
-         (0\leq s\leq1)
-       \end{align}
-     #+end_src
-     #+end_quote
+- 第 \(k\) 主成分と第 \(l\) 主成分を用いた行列 \(X\) の近似 \(X'\)
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X\simeq X'
+      =\sigma_{k}\boldsymbol{u}_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
+      +\sigma_{l}\boldsymbol{u}_{l}\boldsymbol{v}_{l}^{\mathsf{T}}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- 行列の積による表現
+  #+begin_quote
+  #+begin_src latex
+    \begin{align}
+      X'&=GH^{\mathsf{T}},\\
+        &G=
+          \begin{pmatrix}
+            \sigma_{k}^{1-s}\boldsymbol{u}_{k}&
+            \sigma_{l}^{1-s}\boldsymbol{u}_{l}
+          \end{pmatrix}
+                                                ,\quad
+                                                H=
+                                                \begin{pmatrix}
+                                                  \sigma_{k}^{s}\boldsymbol{v}_{k}&
+                                                  \sigma_{l}^{s}\boldsymbol{v}_{l}
+                                                \end{pmatrix}
+                                                                                    \quad
+                                                                                    (0\leq s\leq1)
+    \end{align}
+  #+end_src
+  #+end_quote
 
 ** バイプロット
-   - 関連がある2枚の散布図を1つの画面に表示する散布図を一般に
-     *バイプロット* (biplot) と呼ぶ
-   - 行列\(G,H\)の各行を2次元座標と見なす
-     #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         X'=GH^{\mathsf{T}}
-       \end{equation}
-     #+end_src
-     #+end_quote
-     - 行列 $G$ の各行は各データの2次元座標
-     - 行列 $H$ の各行は各変量の2次元座標
-   - パラメタ $s$ は $0$, $1$ または $1/2$ が主に用いられる
-   - $X$ の変動を最大限保持する近似は $k=1,l=2$
+- 関連がある2枚の散布図を1つの画面に表示する散布図を一般に
+  *バイプロット* (biplot) と呼ぶ
+- 行列\(G,H\)の各行を2次元座標と見なす
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      X'=GH^{\mathsf{T}}
+    \end{equation}
+  #+end_src
+  #+end_quote
+  - 行列 \(G\) の各行は各データの2次元座標
+  - 行列 \(H\) の各行は各変量の2次元座標
+- パラメタ \(s\) は \(0\), \(1\) または \(1/2\) が主に用いられる
+- \(X\) の変動を最大限保持する近似は \(k=1,l=2\)
 
-** COMMENT R: 関数 ~biplot()~ の使い方
-   - Rの標準関数: ~biplot()~ 
-   - 主成分分析の結果に対して表示:
-     #+BEGIN_SRC R :eval no
-       ## データフレームを分析
-       est <- prcomp( ~ x1の変数名 + ... + xpの変数名, data = データフレーム)
-       ## 第1と第2主成分を利用した散布図
-       biplot(est)
-       ## 第2と第3主成分を利用した散布図
-       biplot(est, choices = c(2,3))
-       ## パラメタ s を変更 (既定値は1)
-       biplot(est, scale=0)
-     #+END_SRC
+
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: 関数 ~biplot()~ の使い方
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- Rの標準関数: ~biplot()~ 
+- 主成分分析の結果に対して表示:
+  #+BEGIN_SRC R :eval no
+    ## データフレームを分析
+    est <- prcomp( ~ x1の変数名 + ... + xpの変数名, data = データフレーム)
+    ## 第1と第2主成分を利用した散布図
+    biplot(est)
+    ## 第2と第3主成分を利用した散布図
+    biplot(est, choices = c(2,3))
+    ## パラメタ s を変更 (既定値は1)
+    biplot(est, scale=0)
+  #+END_SRC
+
+** 練習問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- それぞれのデータの主成分分析の結果を利用してバイプロットによる可視化を行いなさい．
+  - 正規化したデータでの主成分分析を行いなさい
+  - 第1主成分と第2主成分でのバイプロットを描きなさい
+  - 第2主成分と第3主成分でのバイプロットを描きなさい
+    #+begin_src R :eval no
+      biplot(prcompの結果, choices=c(x軸成分,y軸成分)) # 主成分の指定
+    #+end_src
+  #+begin_src R :eval no :exports none :tangle yes
+    ### 練習2
+    ### 主成分分析の視覚化
+
+    ## 総務省統計局の都道府県別の社会生活統計指標データ
+    ## - Pref: 都道府県名
+    ## - Forest: 森林面積割合 (%) 2014年
+    ## - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+    ## - Ratio: 全国総人口に占める人口割合 (%) 2015年
+    ## - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+    ## - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+    JS.data <- read.csv("data/japan_social.csv", row.names=1)
+    JS.pca <- prcomp(JS.data, scale.=TRUE) # データを正規化      
+    biplot(JS.pca, # バイプロット(既定値: 第1 vs 第2主成分)
+	   cex=c(0.6, 0.8), # 文字の大きさを調整
+	   col=c("blue","red")) # 色の指定 (データ，変数)
+    ## 第1主成分方向の正の向きには大都市をもつ県が集中
+    ## 人口割合, 商品販売額および森林面積割合は１人当たり農業産出額とほぼ直交しており,
+    ## 両者に関連はあまりないといえそう
+    ## 第2主成分方向の正の向きには１人当たり農業産出額の上位県が集中
+
+    ## 気になるデータをいくつか見てみる
+    ## 並べ替えるためにデータフレームの列をベクトルとして取り出す
+    JS.agri <- # １人当たり農業産出額に行名を付ける
+        setNames(JS.data$Agri, row.names(JS.data))
+    head(sort(JS.agri, decreasing=TRUE)) # 降順に並べてみる
+
+    ## 第2,3主成分を確認する
+    biplot(JS.pca, choices=c(2,3), # バイプロット(第2 vs 第3主成分)
+	   cex=c(0.6, 0.8), 
+	   col=c("blue","red")) 
+    ## 第3主成分方向の負の向きには土地生産性の上位県が集中
+    JS.land <- # 土地生産性に行名を付けて取出
+        setNames(JS.data$Land, row.names(JS.data))
+    head(sort(JS.land, decreasing=TRUE))
+    head(sort(JS.land))
+    ## 北海道の土地生産性は低いことがわかる
+
+    ### UScereal
+    ## 各変数の内容についてはhelpを参照
+    library(MASS)
+    UC.data <- UScereal[sapply(UScereal, is.double)]
+    UC.pca <- prcomp(UC.data, scale.=TRUE)
+    biplot(UC.pca, 
+	   cex=c(0.6, 0.8), 
+	   col=c("black","orange"))
+    biplot(UC.pca, choices=c(2,3),
+	   cex=c(0.6, 0.8), 
+	   col=c("black","orange"))
+
+    ## 第1,2主成分得点で散布図を描く (上と比較せよ)
+    plot(PC2 ~ PC1, data=predict(UC.pca), type="n")
+    text(PC2 ~ PC1, data=predict(UC.pca),
+	 labels=rownames(UC.data), cex=0.5)
+    biplot(UC.pca,
+	   scale=0, # s=0とするとデータの座標は主成分得点となる
+	   cex=c(0.6, 0.8), 
+	   col=c("black","orange"))
+  #+end_src
 
 ** COMMENT 演習: 関数 ~biplot()~ の使い方
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - [[./code/08-biplot.r][08-biplot.r]] を確認してみよう
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- [[./code/08-biplot.r][08-biplot.r]] を確認してみよう
 
 ** COMMENT 演習: 実データへの適用
-   :PROPERTIES:
-   :reveal_background: #EEEEFF
-   :END:
-   - バイプロットによる分析結果の図示を行ってみよう
-     - datasets::USArrests
-     - MASS::Cars93
-     - MASS::UScereal
-
-** COMMENT 練習問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - それぞれのデータの主成分分析の結果を利用してバイプロットによる可視化を行いなさい．
-     - 正規化したデータでの主成分分析を行いなさい
-     - 第1主成分と第2主成分でのバイプロットを描きなさい
-     - 第2主成分と第3主成分でのバイプロットを描きなさい
-       #+begin_src R :eval no
-         biplot(prcompの結果, choices=c(x軸成分,y軸成分)) # 主成分の指定
-       #+end_src
-     #+begin_src R :eval no :exports none :tangle yes
-       ### 練習2
-       ### 主成分分析の視覚化
-
-       ## 総務省統計局の都道府県別の社会生活統計指標データ
-       ## - Pref: 都道府県名
-       ## - Forest: 森林面積割合 (%) 2014年
-       ## - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-       ## - Ratio: 全国総人口に占める人口割合 (%) 2015年
-       ## - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-       ## - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
-       JS.data <- read.csv("data/japan_social.csv", row.names=1)
-       JS.pca <- prcomp(JS.data, scale.=TRUE) # データを正規化      
-       biplot(JS.pca, # バイプロット(既定値: 第1 vs 第2主成分)
-              cex=c(0.6, 0.8), # 文字の大きさを調整
-              col=c("blue","red")) # 色の指定 (データ，変数)
-       ## 第1主成分方向の正の向きには大都市をもつ県が集中
-       ## 人口割合, 商品販売額および森林面積割合は１人当たり農業産出額とほぼ直交しており,
-       ## 両者に関連はあまりないといえそう
-       ## 第2主成分方向の正の向きには１人当たり農業産出額の上位県が集中
-
-       ## 気になるデータをいくつか見てみる
-       ## 並べ替えるためにデータフレームの列をベクトルとして取り出す
-       JS.agri <- # １人当たり農業産出額に行名を付ける
-	 setNames(JS.data$Agri, row.names(JS.data))
-       head(sort(JS.agri, decreasing=TRUE)) # 降順に並べてみる
-
-       ## 第2,3主成分を確認する
-       biplot(JS.pca, choices=c(2,3), # バイプロット(第2 vs 第3主成分)
-              cex=c(0.6, 0.8), 
-              col=c("blue","red")) 
-       ## 第3主成分方向の負の向きには土地生産性の上位県が集中
-       JS.land <- # 土地生産性に行名を付けて取出
-	 setNames(JS.data$Land, row.names(JS.data))
-       head(sort(JS.land, decreasing=TRUE))
-       head(sort(JS.land))
-       ## 北海道の土地生産性は低いことがわかる
-
-       ### UScereal
-       ## 各変数の内容についてはhelpを参照
-       library(MASS)
-       UC.data <- UScereal[sapply(UScereal, is.double)]
-       UC.pca <- prcomp(UC.data, scale.=TRUE)
-       biplot(UC.pca, 
-              cex=c(0.6, 0.8), 
-              col=c("black","orange"))
-       biplot(UC.pca, choices=c(2,3),
-              cex=c(0.6, 0.8), 
-              col=c("black","orange"))
-
-       ## 第1,2主成分得点で散布図を描く (上と比較せよ)
-       plot(PC2 ~ PC1, data=predict(UC.pca), type="n")
-       text(PC2 ~ PC1, data=predict(UC.pca),
-            labels=rownames(UC.data), cex=0.5)
-       biplot(UC.pca,
-              scale=0, # s=0とするとデータの座標は主成分得点となる
-              cex=c(0.6, 0.8), 
-              col=c("black","orange"))
-     #+end_src
+:PROPERTIES:
+:reveal_background: #EEEEFF
+:END:
+- バイプロットによる分析結果の図示を行ってみよう
+  - datasets::USArrests
+  - MASS::Cars93
+  - MASS::UScereal
 
 
 * 解析の事例
 ** バイプロット
-   - 主成分負荷量
-     #+begin_src R :exports results :tangle yes
-       JS.pca <- prcomp(JS.data, scale=TRUE)
-       JS.pca$rot
-     #+end_src
-   - 寄与率
-     #+begin_src R :exports results :tangle yes
-       summary(JS.pca)
-     #+end_src
-   #+reveal: split
-   - 第1,2主成分によるバイプロット
-   #+begin_src R :file figs/07_biplot12.png :exports results :results graphics :tangle yes
-     biplot(JS.pca, scale=0,# バイプロット(既定値: 第1 vs 第2主成分)
-            xlim=xrange, ylim=yrange,
-            cex=c(1, 0.8), # 文字の大きさを調整
-            col=c("blue","red")) # 色の指定 (データ，変数)
+- 主成分負荷量
+  #+begin_src R :exports results :tangle yes
+    JS.pca <- prcomp(JS.data, scale=TRUE)
+    JS.pca$rot
+  #+end_src
+- 寄与率
+  #+begin_src R :exports results :tangle yes
+    summary(JS.pca)
+  #+end_src
+
+#+reveal: split
+- 第1,2主成分によるバイプロット
+  #+begin_src R :file figs/07_biplot12.png :exports results :results graphics :tangle yes
+    biplot(JS.pca, scale=0,# バイプロット(既定値: 第1 vs 第2主成分)
+	   xlim=xrange, ylim=yrange,
+	   cex=c(1, 0.8), # 文字の大きさを調整
+	   col=c("blue","red")) # 色の指定 (データ，変数)
    #+end_src
-   #+CAPTION: 主成分分析のバイプロット(第1,2)
-   #+NAME: fig:07_biplot12
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/07_biplot12.png]]
-   #+reveal: split
-   - 第3,2主成分によるバイプロット
-   #+begin_src R :file figs/07_biplot32.png :exports results :results graphics :tangle yes
-     biplot(JS.pca, scale=0, choices=c(3,2), # バイプロット(第2 vs 第3主成分)
-            xlim=yrange, ylim=yrange,
-            cex=c(1, 0.8), 
-            col=c("blue","red")) 
+   
+#+CAPTION: 主成分分析のバイプロット(第1,2)
+#+NAME: fig:07_biplot12
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_biplot12.png]]
+
+#+reveal: split
+- 第3,2主成分によるバイプロット
+  #+begin_src R :file figs/07_biplot32.png :exports results :results graphics :tangle yes
+    biplot(JS.pca, scale=0, choices=c(3,2), # バイプロット(第2 vs 第3主成分)
+	   xlim=yrange, ylim=yrange,
+	   cex=c(1, 0.8), 
+	   col=c("blue","red")) 
    #+end_src
-   #+CAPTION: 主成分分析のバイプロット(第3,2)
-   #+NAME: fig:07_biplot32
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/07_biplot32.png]]
-   #+reveal: split
-   - 中心部の拡大 (第1,2主成分)
-   #+begin_src R :file figs/07_biplot12e.png :exports results :results graphics :tangle yes
-     biplot(JS.pca, scale=0, choices=c(1,2), # バイプロット(第1 vs 第2主成分)
-            xlim=c(-2,2), ylim=c(-2,2),
-            cex=c(1, 0.8), 
-            col=c("blue","red")) 
+
+#+CAPTION: 主成分分析のバイプロット(第3,2)
+#+NAME: fig:07_biplot32
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_biplot32.png]]
+
+#+reveal: split
+- 中心部の拡大 (第1,2主成分)
+  #+begin_src R :file figs/07_biplot12e.png :exports results :results graphics :tangle yes
+    biplot(JS.pca, scale=0, choices=c(1,2), # バイプロット(第1 vs 第2主成分)
+	   xlim=c(-2,2), ylim=c(-2,2),
+	   cex=c(1, 0.8), 
+	   col=c("blue","red")) 
    #+end_src
-   #+CAPTION: 主成分分析のバイプロット(第1,2)
-   #+NAME: fig:07_biplot12e
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/07_biplot12e.png]]
-   #+reveal: split
-   - 中心部の拡大 (第3,2主成分)
-   #+begin_src R :file figs/07_biplot32e.png :exports results :results graphics :tangle yes
-     biplot(JS.pca, scale=0, choices=c(3,2), # バイプロット(第1 vs 第2主成分)
-            xlim=c(-2,2), ylim=c(-2,2),
-            cex=c(1, 0.8), 
-            col=c("blue","red")) 
+
+#+CAPTION: 主成分分析のバイプロット(第1,2)
+#+NAME: fig:07_biplot12e
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_biplot12e.png]]
+
+#+reveal: split
+- 中心部の拡大 (第3,2主成分)
+  #+begin_src R :file figs/07_biplot32e.png :exports results :results graphics :tangle yes
+    biplot(JS.pca, scale=0, choices=c(3,2), # バイプロット(第1 vs 第2主成分)
+	   xlim=c(-2,2), ylim=c(-2,2),
+	   cex=c(1, 0.8), 
+	   col=c("blue","red")) 
    #+end_src
-   #+CAPTION: 主成分分析のバイプロット(第3,2)
-   #+NAME: fig:07_biplot32e
-   #+ATTR_HTML: height 100%
-   #+ATTR_LATEX: :width 0.6\linewidth
-   [[file:figs/07_biplot32e.png]]
+
+#+CAPTION: 主成分分析のバイプロット(第3,2)
+#+NAME: fig:07_biplot32e
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_biplot32e.png]]
 
 
 * 次週の予定

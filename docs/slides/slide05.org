@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-24 19:12:18 mura>
+# Time-stamp: <2021-10-01 15:56:45 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -70,8 +70,6 @@
   #+begin_src latex
   #+end_src
   #+end_quote
-
-
 
 #+OPTIONS: reveal_mousewheel:nil
 #+begin_src R :eval no :exports none :tangle yes
@@ -851,6 +849,9 @@
 :END:
 # 東京大学
 ** R: 予測値と区間推定
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - 関数 ~predict()~ を用いた予測
   #+begin_src R :eval no
     ## モデルの作成
@@ -869,6 +870,9 @@
   #+end_src
 
 ** R: モデルからの予測
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - 東京の気候データによる例
   #+begin_src R :eval no :tangle yes
     ### 9,10月のデータでモデルを構築し，8,11月のデータを予測
@@ -1277,6 +1281,9 @@
 :END:
 # 東京大学
 ** R: 線形でないモデル式の書き方
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - 交互作用を記述するためには特殊な記法がある
 - 非線形変換はそのまま関数を記述すればよい
 - 1つの変数の多項式は関数 ~I()~ を用いる
@@ -1291,6 +1298,9 @@
     Y ~ X1 + I(X2^2)     # X1 + X2^2
   #+end_src
 ** R: カテゴリカル変数の取り扱い
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - 何も宣言しなくても通常は適切に対応してくれる
 - 陽に扱う場合は関数 ~factor()~ を利用する
   #+begin_src R :eval no :tangle yes

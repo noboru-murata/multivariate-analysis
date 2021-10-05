@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-23 16:15:10 mura>
+# Time-stamp: <2021-10-01 15:49:31 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -46,32 +46,30 @@
 - 演習の内容が異なるので演習は2つ作る形で対応
 
 * COMMENT 演習 (早稲田大学雛型)
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
-  # 早稲田大学
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 早稲田大学
 ** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - について以下を示しなさい．
-     - である．
-       #+begin_quote
-       #+begin_src latex
-       #+end_src
-       #+end_quote
-       
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- について以下を示しなさい．
+  - である．
+    #+begin_quote
+    #+begin_src latex
+    #+end_src
+    #+end_quote
+    
 ** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - いずれも定義にもとづいて計算すればよい
-     #+begin_quote
-     #+begin_src latex
-     #+end_src
-     #+end_quote
-
-   
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- いずれも定義にもとづいて計算すればよい
+  #+begin_quote
+  #+begin_src latex
+  #+end_src
+  #+end_quote
 
 #+OPTIONS: reveal_mousewheel:nil
 #+begin_src R :eval no :exports none :tangle yes
@@ -80,6 +78,7 @@
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/mva/slide")
 #+end_src
+
 * COMMENT 演習 (東京大学雛型)
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -122,7 +121,7 @@
   ## 分析
   ##
 #+end_src
-  
+
 ** COMMENT 講義資料: 概略
 :PROPERTIES:
 :reveal_background: #EEEEFF
@@ -388,7 +387,7 @@
   \(S(\boldsymbol{\beta})\)
   をベクトル
   \(\boldsymbol{\beta}\)
-  で微分して解の条件を求なさい
+  で微分して解の条件を求めなさい
 
 ** COMMENT 解答例
 :PROPERTIES:
@@ -851,7 +850,7 @@
 :reveal_background: #fef4f4
 :END:
 - 最小二乗推定量について以下を示しなさい
-  - 残差の標本平均が0となること
+  - 残差の標本平均が0となる
     #+begin_quote
     以下を示せばよい
     #+begin_src latex
@@ -863,7 +862,7 @@
     #+end_src
     ただし \(\boldsymbol{1}=(1,\dotsc,1)^{\mathsf{T}}\) とする
     #+end_quote
-  - 回帰式が標本平均を通ること
+  - 回帰式が標本平均を通る
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -1075,7 +1074,7 @@
 :reveal_background: #fef4f4
 :END:
 - 以下の関係式を示しなさい
-  - あてはめ値と残差のベクトルが直交すること
+  - あてはめ値と残差のベクトルが直交する
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -1086,7 +1085,7 @@
       \end{equation}
     #+end_src
     #+end_quote
-  - 残差平方和の分解が成り立つこと
+  - 残差平方和の分解が成り立つ
     #+begin_quote
     #+begin_src latex
       \begin{equation}
