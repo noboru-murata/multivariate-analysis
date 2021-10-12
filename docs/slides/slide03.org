@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-10-01 15:49:31 mura>
+# Time-stamp: <2021-10-12 08:39:01 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -389,7 +389,7 @@
   \(\boldsymbol{\beta}\)
   で微分して解の条件を求めなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -451,7 +451,7 @@
   #+end_src
   #+end_quote
 
-** COMMENT 補足
+** 補足
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -873,7 +873,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1094,7 +1094,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
