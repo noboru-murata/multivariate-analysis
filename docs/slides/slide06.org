@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-27 16:59:00 mura>
+# Time-stamp: <2021-10-15 16:03:54 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -68,8 +68,6 @@
   #+begin_src latex
   #+end_src
   #+end_quote
-
-
 
 #+OPTIONS: reveal_mousewheel:nil
 #+begin_src R :eval no :exports none :tangle yes
@@ -140,19 +138,20 @@
 
 * 主成分分析の考え方
 ** 主成分分析
-- *PCA* (Principal Component Analysis)
 - 多数の変量のもつ情報の分析・視覚化:
   - 変量を効率的に縮約して少数の特徴量を構成する
   - 特徴量に関与する変量間の関係を明らかにする
+- *PCA* (Principal Component Analysis)
+  - 構成する特徴量: *主成分* (princial component)
 
 ** 分析の枠組み
-- \(X_1,\dotsc,X_p\): *変数*
-- \(Z_1,\dotsc,Z_d\): *特徴量* ( \(d\leq p\) )
+- \(X_{1},\dotsc,X_{p}\): *変数*
+- \(Z_{1},\dotsc,Z_{d}\): *特徴量* ( \(d\leq p\) )
 - 変数と特徴量の関係: (線形結合)
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      Z_k=a_{1k}X_1+\cdots+a_{pk}X_p\quad(k=1,\dotsc,d)
+      Z_k=a_{1k}X_{1}+\cdots+a_{pk}X_{p}\quad(k=1,\dotsc,d)
     \end{equation}
   #+end_src
   #+end_quote
@@ -179,11 +178,11 @@
 - 目的:
   #+begin_quote
   主成分得点
-  \(Z_1,\dots,Z_d\)
+  \(Z_{1},\dots,Z_{d}\)
   が変数
-  \(X_1,\dotsc,X_p\)
+  \(X_{1},\dotsc,X_{p}\)
   の情報を効率よく反映するように主成分負荷量
-  \(\boldsymbol{a}_1,\dotsc,\boldsymbol{a}_d\)
+  \(\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{d}\)
   を観測データから *うまく* 決定する
   #+end_quote
 - 分析の方針: (以下は同値)
@@ -194,7 +193,7 @@
   - 特徴抽出: 情報処理に重要な特性を変数に凝集
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -227,7 +226,7 @@
     ## formula: ~ 変数名 (解析の対象を + で並べる) 左辺はないので注意すること
     ## data: 必要な変数を含むデータフレーム
   #+end_src
-- 関数の返り値は ~help(prcomp)~ を参照
+  - 関数の返り値は ~help(prcomp)~ を参照
 
 ** 練習問題
 :PROPERTIES:
@@ -251,33 +250,35 @@
     #+begin_src R :eval no
       abline(切片,傾き) # 指定の直線を追加できる
     #+end_src
-  #+begin_src R :eval no :exports none :tangle yes
-    ### 練習1
-    ### 主成分分析の考え方
 
-    ### 人工データ(2次元)による例
-    set.seed(123123)
-    n <- 100 # データ数
-    a <- c(1, 2)/sqrt(5) # 主成分負荷量(単位ベクトル)の設定 (適宜変更せよ)
-    myData <- data.frame( # aのスカラー倍に正規乱数を重畳
-        runif(n,-1,1) %o% a + rnorm(2*n, sd=0.3))
-    names(myData) <- paste0("x",1:2) # 列名を付与
-    plot(myData, asp=1, # 縦横比を1とした散布図
-	 pch=4, col="blue") 
-    ## a方向に本質的な情報が集約されていることがわかる
-    abline(0, a[2]/a[1], # 切片と傾きを指定
-	   col="red", lwd=2) # 主成分負荷量の図示
-    ## 主成分負荷量の推定
-    est <- prcomp(myData)
-    ahat <- est$rotation[,1]
-    ## 第１主成分負荷量がaに非常に近い (符号は反対)
-    abline(0, ahat[2]/ahat[1],
-	   col="orange", lty="dotted", lwd=2)
-    ## 主成分得点の計算
-    pc1 <- predict(est)[,1] # 第１主成分得点の取得
-    points(pc1 %o% ahat, # 第1主成分を元の散布図上で図示
-	   pch=18, col="purple") 
-  #+end_src
+#+begin_src R :eval no :exports none :tangle yes
+  ### 
+  ### 練習問題 主成分分析の考え方
+  ###
+  
+  ### 人工データ(2次元)による例
+  set.seed(123123)
+  n <- 100 # データ数
+  a <- c(1, 2)/sqrt(5) # 主成分負荷量(単位ベクトル)の設定 (適宜変更せよ)
+  myData <- data.frame( # aのスカラー倍に正規乱数を重畳
+    runif(n,-1,1) %o% a + rnorm(2*n, sd=0.3))
+  names(myData) <- paste0("x",1:2) # 列名を付与
+  plot(myData, asp=1, # 縦横比を1とした散布図
+       pch=4, col="blue") 
+  ## a方向に本質的な情報が集約されていることがわかる
+  abline(0, a[2]/a[1], # 切片と傾きを指定
+         col="red", lwd=2) # 主成分負荷量の図示
+  ## 主成分負荷量の推定
+  est <- prcomp(myData)
+  ahat <- est$rotation[,1]
+  ## 第１主成分負荷量がaに非常に近い (符号は反対)
+  abline(0, ahat[2]/ahat[1],
+         col="orange", lty="dotted", lwd=2)
+  ## 主成分得点の計算
+  pc1 <- predict(est)[,1] # 第１主成分得点の取得
+  points(pc1 %o% ahat, # 第1主成分を元の散布図上で図示
+         pch=18, col="purple")
+#+end_src
   
   # #+begin_quote
   # 主成分負荷量 (単位ベクトル):
@@ -306,8 +307,8 @@
 
 * 第1主成分の計算
 ** 記号の準備 
-- 変数: \(x_1,\dotsc,x_p\) (p次元)
-- 観測データ: \(n\) 個の \((x_1,\dotsc,x_p)\) の組
+- 変数: \(x_{1},\dotsc,x_{p}\) (p次元)
+- 観測データ: \(n\) 個の \((x_{1},\dotsc,x_{p})\) の組
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -315,28 +316,28 @@
     \end{equation}
   #+end_src
   #+end_quote
-- \(\boldsymbol{x}_i=(x_{i1},\dots,x_{ip})^{\mathsf{T}}\) : \\
+- \(\boldsymbol{x}_{i}=(x_{i1},\dots,x_{ip})^{\mathsf{T}}\) : \\
   \(i\) 番目の観測データ (\(p\) 次元空間内の1点)
-- \(\boldsymbol{a}=(a_1,\dots,a_p)^{\mathsf{T}}\) : \\
+- \(\boldsymbol{a}=(a_{1},\dots,a_{p})^{\mathsf{T}}\) : \\
   長さ1の \(p\) 次元ベクトル
 
 ** 係数ベクトルによる射影
-- データ \(\boldsymbol{x}_i\) の \(\boldsymbol{a}\) 方向成分の長さ:
+- データ \(\boldsymbol{x}_{i}\) の \(\boldsymbol{a}\) 方向成分の長さ:
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+      \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
       \quad\text{(スカラー)}
     \end{equation}
   #+end_src
   #+end_quote
 - 方向ベクトル \(\boldsymbol{a}\)
-  をもつ直線上への点 \(\boldsymbol{x}_i\)
+  をもつ直線上への点 \(\boldsymbol{x}_{i}\)
   の直交射影
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      (\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i)\,\boldsymbol{a}
+      (\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i})\,\boldsymbol{a}
       \quad\text{(スカラー \(\times\) ベクトル)}
     \end{equation}
   #+end_src
@@ -350,33 +351,33 @@
 [[file:./figs/pca-figure.png]]
    
 ** ベクトル \(\boldsymbol{a}\) の選択の指針
-- 線形結合での見方
+- 射影による特徴量の構成
   #+begin_quote
   ベクトル \(\boldsymbol{a}\) を *うまく* 選んで
-  観測データ \(\boldsymbol{x}_1,\dots,\boldsymbol{x}_n\)
+  観測データ \(\boldsymbol{x}_{1},\dots,\boldsymbol{x}_n\)
   の情報を最も保持する1変量データを構成:
   #+begin_src latex
     \begin{equation}
-      \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,
+      \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{1},
       \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_2,
       \dotsc,
       \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n
     \end{equation}
   #+end_src
   #+end_quote
-- 座標軸での見方
+- 特徴量のばらつき
   #+begin_quote
   観測データの *ばらつき*
   を最も反映するベクトル \(\boldsymbol{a}\) を選択:
   #+begin_src latex
     \begin{equation}
       \arg\max_{\boldsymbol{a}}
-      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
       -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2,
       \quad
       \bar{\boldsymbol{x}}
       =
-      \frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i,
+      \frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_{i},
     \end{equation}
   #+end_src
   #+end_quote
@@ -390,7 +391,7 @@
     \begin{equation}
       f(\boldsymbol{a})
       =
-      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
       -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2
     \end{equation}
   #+end_src
@@ -399,7 +400,7 @@
   - \(f(\boldsymbol{a})\) は連続関数
   - 集合 \(\{\boldsymbol{a}\in\mathbb{R}^p:\|\boldsymbol{a}\|=1\}\) はコンパクト(有界閉集合)
 
-
+    
 * 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -409,9 +410,9 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - 評価関数 \(f(\boldsymbol{a})\)
-    を以下の中心化したデータ行列で表しなさい．
+    を以下の中心化したデータ行列で表しなさい
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -424,14 +425,14 @@
 	\end{pmatrix}
 	=
 	\begin{pmatrix}
-	  x_{11}-\bar{x}_1 & \cdots & x_{1p}-\bar{x}_p\\
+	  x_{11}-\bar{x}_{1} & \cdots & x_{1p}-\bar{x}_{p}\\
 	  \vdots & & \vdots \\
-	  x_{n1}-\bar{x}_1 & \cdots & x_{np}-\bar{x}_p
+	  x_{n1}-\bar{x}_{1} & \cdots & x_{np}-\bar{x}_{p}
 	\end{pmatrix}
       \end{equation}
     #+end_src
     #+end_quote
-  - 上の結果を用いて次の最適化問題の解の条件を求めなさい．
+  - 上の結果を用いて次の最適化問題の解の条件を求めなさい
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -443,7 +444,7 @@
     #+end_src
     #+end_quote
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -453,20 +454,20 @@
       \begin{align}
 	f(\boldsymbol{a})
 	&=
-	  \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+	  \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
 	  -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2\\
 	&=
 	  \sum_{i=1}^n
-	  (\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+	  (\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
 	  -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})
-	  (\boldsymbol{x}_i^{\mathsf{T}}\boldsymbol{a}
+	  (\boldsymbol{x}_{i}^{\mathsf{T}}\boldsymbol{a}
 	  -\bar{\boldsymbol{x}}\boldsymbol{a}^{\mathsf{T}})\\
 	&=
 	  \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
       \end{align}
     #+end_src
-    回帰分析の Gram 行列を参照
     #+end_quote
+    - 回帰分析の Gram 行列を参照
 
 #+reveal: split
 - 制約付き最適化なので未定係数法を用いればよい
@@ -494,7 +495,7 @@
 
 
 * 第1主成分の解
-** 行列による表現
+** COMMENT 行列による表現
 # 東京大学
 - 中心化したデータ行列:
   #+begin_quote
@@ -509,13 +510,13 @@
       \end{pmatrix}
       =
       \begin{pmatrix}
-	x_{11}-\bar{x}_1 & \cdots & x_{1p}-\bar{x}_p\\
+	x_{11}-\bar{x}_{1} & \cdots & x_{1p}-\bar{x}_{p}\\
 	\vdots & & \vdots \\
-	x_{n1}-\bar{x}_1 & \cdots & x_{np}-\bar{x}_p
+	x_{n1}-\bar{x}_{1} & \cdots & x_{np}-\bar{x}_{p}
       \end{pmatrix}
     \end{equation}
   #+end_src
-  回帰分析のデザイン行列を参照
+  (回帰分析のデザイン行列を参照)
   #+end_quote
 - 評価関数 \(f(\boldsymbol{a})\) は行列 \(X^{\mathsf{T}}X\) 
   の二次形式:
@@ -527,7 +528,7 @@
       \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
     \end{equation}
   #+end_src
-  回帰分析の Gram 行列を参照
+  (回帰分析の Gram 行列を参照)
   #+end_quote
 
 ** ベクトル \(\boldsymbol{a}\) の解
@@ -577,13 +578,16 @@
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      z_{i1}=a_1x_{i1}+\cdots+a_px_{ip}\quad(i=1,\dots,n)
+      z_{i1}
+      =a_{1}x_{i1}+\cdots+a_{p}x_{ip}
+      =\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i},
+      \quad(i=1,\dots,n)
     \end{equation}
   #+end_src
   #+end_quote
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -606,11 +610,12 @@
     #+end_src
 
 #+begin_src R :eval no :exports none :tangle yes
-  ### 練習2
-  ### 第1主成分の求め方
-
+  ### 
+  ### 練習問題 第1主成分の求め方
+  ###
+  
   ### 人工データ(3次元)による例
-  require(scatterplot3d)
+  library(scatterplot3d) # パッケージを利用
   set.seed(242424)
   n <- 50 # データ数
   d <- 3
@@ -624,7 +629,7 @@
   est <- prcomp(myData)
   pc1 <- predict(est)[,1]
   s3d$points3d(pc1 %o% a, col="blue")
-
+  
   ## 主成分負荷量の推定を固有値分解と比較
   eig <- eigen(crossprod(scale(myData,scale=FALSE))) # 固有値分解
   est$rotation # 主成分負荷量
@@ -648,28 +653,28 @@
     #+begin_quote
     #+begin_src latex
       \begin{equation}
-	\lambda_1\geq\dotsb\geq\lambda_p\quad(\geq0)
+        \lambda_{1}\geq\dotsb\geq\lambda_{p}\quad(\geq0)
       \end{equation}
     #+end_src
     #+end_quote
-  - 固有値 \(\lambda_j\) に対する固有ベクトルを \(\boldsymbol{a}_j\)(長さ1)とする
+  - 固有値 \(\lambda_{k}\) に対する固有ベクトルを \(\boldsymbol{a}_{k}\)(長さ1)とする
     #+begin_quote
     #+begin_src latex
       \begin{equation}
-	\|\boldsymbol{a}_j\|=1\quad
-	(j=1,\dotsc,p)
+        \|\boldsymbol{a}_{k}\|=1,
+        \quad (k=1,\dotsc,p)
       \end{equation}
     #+end_src
     #+end_quote
 
 ** Gram 行列のスペクトル分解
-- \(\boldsymbol{a}_1,\dotsc,\boldsymbol{a}_p\) は *互いに直交* するようとることができる
+- \(\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{p}\) は *互いに直交* するようとることができる
   #+begin_quote
   #+begin_src latex
     \begin{equation}
       j\neq k
       \quad\Rightarrow\quad
-      \boldsymbol{a}_j^{\mathsf{T}}\boldsymbol{a}_k=0
+      \boldsymbol{a}_{j}^{\mathsf{T}}\boldsymbol{a}_k=0
     \end{equation}
   #+end_src
   #+end_quote
@@ -697,10 +702,10 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - Gram 行列のスペクトル分解において
     \(\lambda_{j}\) と \(\boldsymbol{a}_{j}\)
-    が固有値・固有ベクトルとなることを確かめなさい．
+    が固有値・固有ベクトルとなることを確かめなさい
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -709,7 +714,7 @@
       \end{equation}
     #+end_src
     #+end_quote
-  - 以下の行列を用いて Gram 行列のスペクトル分解を書き直しなさい．
+  - 以下の行列を用いて Gram 行列のスペクトル分解を書き直しなさい
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -733,7 +738,7 @@
     #+end_src
     #+end_quote
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -767,13 +772,13 @@
 * 第2主成分以降の計算
 ** 第2主成分の考え方
 - 第1主成分:
-  - 主成分負荷量: ベクトル \(\boldsymbol{a}_1\)
-  - 主成分得点: \(\boldsymbol{a}_1^{\mathsf{T}}\boldsymbol{x}_i\) (\(i=1,\dotsc,n\))
+  - 主成分負荷量: ベクトル \(\boldsymbol{a}_{1}\)
+  - 主成分得点: \(\boldsymbol{a}_{1}^{\mathsf{T}}\boldsymbol{x}_{i}\) (\(i=1,\dotsc,n\))
 - 第1主成分負荷量に関してデータが有する情報:
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      (\boldsymbol{a}_1^{\mathsf{T}}\boldsymbol{x}_i)\,\boldsymbol{a}_1
+      (\boldsymbol{a}_{1}^{\mathsf{T}}\boldsymbol{x}_{i})\,\boldsymbol{a}_{1}
       \quad(i=1,\dotsc,n)
     \end{equation}
   #+end_src
@@ -782,10 +787,10 @@
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      \tilde{\boldsymbol{x}}_i
+      \tilde{\boldsymbol{x}}_{i}
       =
-      \boldsymbol{x}_i
-      -(\boldsymbol{a}_1^{\mathsf{T}}\boldsymbol{x}_i)\,\boldsymbol{a}_1
+      \boldsymbol{x}_{i}
+      -(\boldsymbol{a}_{1}^{\mathsf{T}}\boldsymbol{x}_{i})\,\boldsymbol{a}_{1}
       \quad(i=1,\dotsc,n)
     \end{equation}
   #+end_src
@@ -800,12 +805,12 @@
     \begin{equation}
       \tilde{f}(\boldsymbol{a})
       =
-      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\tilde{\boldsymbol{x}}_i
+      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\tilde{\boldsymbol{x}}_{i}
       -\boldsymbol{a}^{\mathsf{T}}\bar{\tilde{\boldsymbol{x}}})^2
       \quad\text{ただし}\quad
       \bar{\tilde{\boldsymbol{x}}}
       =
-      \frac{1}{n}\sum_{i=1}^n\tilde{\boldsymbol{x}}_i
+      \frac{1}{n}\sum_{i=1}^n\tilde{\boldsymbol{x}}_{i}
     \end{equation}
   #+end_src
   #+end_quote
@@ -820,10 +825,10 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - 以下の中心化したデータ行列を
     \(X\) と \(\boldsymbol{a}_{1}\)
-    で表しなさい．
+    で表しなさい
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -838,7 +843,7 @@
     #+end_src
     #+end_quote
   - 上の結果を用いて
-    次の最適化問題の解を求めなさい．       
+    次の最適化問題の解を求めなさい
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -850,7 +855,7 @@
     #+end_src
     #+end_quote
     
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -897,8 +902,8 @@
   #+end_quote
 
 
-* 第2主成分の解
-** 行列による表現
+* 第2主成分以降の解
+** COMMENT 行列による表現
 # 東京大学
 - 中心化したデータ行列:
   #+begin_quote
@@ -907,9 +912,9 @@
       \tilde{X}
       =
       \begin{pmatrix}
-	\tilde{\boldsymbol{x}}_{1}^{\mathsf{T}}-\bar{\tilde{\boldsymbol{x}}}^{\mathsf{T}} \\
-	\vdots \\
-	\tilde{\boldsymbol{x}}_{n}^{\mathsf{T}}-\bar{\tilde{\boldsymbol{x}}}^{\mathsf{T}}
+        \tilde{\boldsymbol{x}}_{1}^{\mathsf{T}}-\bar{\tilde{\boldsymbol{x}}}^{\mathsf{T}} \\
+        \vdots \\
+        \tilde{\boldsymbol{x}}_{n}^{\mathsf{T}}-\bar{\tilde{\boldsymbol{x}}}^{\mathsf{T}}
       \end{pmatrix}
       =
       X-X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}
@@ -922,12 +927,12 @@
     \begin{align}
       \tilde{X}^{\mathsf{T}}\tilde{X}
       &=
-	(X-X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}})^{\mathsf{T}}
-	(X-X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}})\\
+        (X-X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}})^{\mathsf{T}}
+        (X-X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}})\\
       &=
-	X^{\mathsf{T}}X-\lambda_{1}\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}\\
-      &=
-	\sum_{k=2}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
+        X^{\mathsf{T}}X-\lambda_{1}\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}
+        =
+        \sum_{k=2}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
     \end{align}
   #+end_src
   #+end_quote
@@ -945,7 +950,7 @@
   に対応する固有ベクトル \(\boldsymbol{a}_k\)
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -985,9 +990,10 @@
     #+end_src
     
 #+begin_src R :eval no :exports none :tangle yes
-  ### 練習3
-  ### 主成分分析
-
+  ### 
+  ### 練習問題 主成分分析
+  ###
+  
   ### 実データによる確認
   ## データの読み込み
   JS.data <- read.csv("data/japan_social.csv", row.names=1)
@@ -1042,17 +1048,20 @@
 
 ** 社会生活統計指標の分析
 - データ(の一部)の内容
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :exports results :tangle yes
     ## データの読み込み
     JS.data <- read.csv("data/japan_social.csv", row.names=1)
     head(JS.data, 18)
   #+end_src
-  #+reveal: split
-  - データの散布図
-    #+begin_src R :file figs/06_pairs.png :exports results :results graphics :tangle yes
-      ## データの視覚化
-      plot(JS.data, col="blue") # いくつかの変数は相関強い
-    #+end_src
+
+#+reveal: split
+- データの散布図
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/06_pairs.png :exports results :results graphics :tangle yes
+    ## データの視覚化
+    plot(JS.data, col="blue") # いくつかの変数は相関強い
+  #+end_src
 
 #+CAPTION: 散布図
 #+NAME: fig:06_pairs
@@ -1062,6 +1071,7 @@
 
 #+reveal: split
 - データの箱ひげ図
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/06_boxplot.png :exports results :results graphics :tangle yes
     boxplot(JS.data, col="green") # 箱ひげ図．変数のばらつきに大きな違いがある
   #+end_src
@@ -1074,6 +1084,7 @@
 
 #+reveal: split
 - 主成分負荷量を計算 (正規化後)
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :exports results :tangle yes
     JS.pca <- prcomp(JS.data, scale=TRUE)
     JS.pca$rot
@@ -1084,6 +1095,7 @@
 
 #+reveal: split
 - 主成分得点の表示
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/06_pcaplot.png :exports results :results graphics :tangle yes
     plot(PC2 ~ PC1, data=predict(JS.pca),
 	 type="n")
