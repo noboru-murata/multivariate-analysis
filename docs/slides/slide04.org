@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-10-01 15:55:04 mura>
+# Time-stamp: <2021-10-18 21:22:54 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -527,7 +527,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT ヒント
+** ヒント
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -772,7 +772,7 @@
   - 平均は \(\boldsymbol{\beta}\) (真の母数)となる
   - 共分散行列は \(\sigma^{2}(X^{\mathsf{T}}X)^{-1}\) となる
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1024,7 +1024,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1221,7 +1221,7 @@
 
 * モデルの評価
 ** \(F\)-統計量
-- *ばらつきの比*に関する定理: 
+- *ばらつきの比* に関する定理: 
   #+begin_quote
   \(\beta_1=\dotsb=\beta_p=0\) ならば
   *\(F\)-統計量*
