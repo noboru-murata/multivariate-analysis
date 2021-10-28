@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-10-12 08:39:01 mura>
+# Time-stamp: <2021-10-22 14:43:33 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -764,9 +764,11 @@
     ## Y: 行列 (またはベクトル)
     crossprod(X) # 同じものを掛ける場合は引数は1つで良い
   #+end_src
-- 行列 \(A,B\) の積 \(AB\)
+- 行列 \(A,B\) の積 \(AB\) および
+  ベクトル \(a,b\) の内積 \(a\cdot b\)
   #+begin_src R :eval no
     A %*% B # 行列の大きさは適切である必要がある
+    a %*% b # ベクトルは同じ長さである必要がある
   #+end_src
 - 正方行列 \(A\) の逆行列 \(A^{-1}\)
   #+begin_src R :eval no
