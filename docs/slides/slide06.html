@@ -47,8 +47,8 @@
 </section>
 
 <section>
-<section id="slide-org49bd617">
-<h2 id="org49bd617">講義の内容</h2>
+<section id="slide-org11a5c14">
+<h2 id="org11a5c14">講義の内容</h2>
 <ul>
 <li><b>第1日: 主成分分析の考え方</b></li>
 <li>第2日: 分析の評価と視覚化</li>
@@ -59,13 +59,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org5bb0fb8">
-<h2 id="org5bb0fb8">主成分分析の考え方</h2>
-<div class="outline-text-2" id="text-org5bb0fb8">
+<section id="slide-org275321d">
+<h2 id="org275321d">主成分分析の考え方</h2>
+<div class="outline-text-2" id="text-org275321d">
 </div>
 </section>
-<section id="slide-orgdeb5208">
-<h3 id="orgdeb5208">主成分分析</h3>
+<section id="slide-org3cc5ae9">
+<h3 id="org3cc5ae9">主成分分析</h3>
 <ul>
 <li>多数の変量のもつ情報の分析・視覚化:
 <ul>
@@ -83,8 +83,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org5d772f8">
-<h3 id="org5d772f8">分析の枠組み</h3>
+<section id="slide-org864f0f1">
+<h3 id="org864f0f1">分析の枠組み</h3>
 <ul>
 <li>\(X_{1},\dotsc,X_{p}\): <b>変数</b></li>
 <li>\(Z_{1},\dotsc,Z_{d}\): <b>特徴量</b> ( \(d\leq p\) )</li>
@@ -98,7 +98,8 @@
 \end{equation}
 
 </div>
-</blockquote></li>
+</blockquote>
+<ul>
 <li><p>
 特徴量は定数倍の任意性があるので以下を仮定:
 </p>
@@ -111,28 +112,34 @@
 </div>
 </blockquote></li>
 
+</ul></li>
+
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org1be5d10">
-<h3 id="org1be5d10">主成分分析の用語</h3>
+<section id="slide-orgf587cdc">
+<h3 id="orgf587cdc">主成分分析の用語</h3>
 <ul>
-<li>特徴量 \(Z_k\): <br />
-第 \(k\) <b>主成分得点</b> (principal component score) <br />
-または <br />
-第 \(k\) <b>主成分</b></li>
-<li>係数ベクトル \(\boldsymbol{a}_k\): <br />
-第 \(k\) <b>主成分負荷量</b> (principal component loading)<br />
-または <br />
-第 \(k\) <b>主成分方向</b> (principal component direction)</li>
+<li>特徴量 \(Z_k\):
+<ul>
+<li>第 \(k\) <b>主成分</b></li>
+<li>第 \(k\) <b>主成分得点</b> (principal component score)</li>
+
+</ul></li>
+<li>係数ベクトル \(\boldsymbol{a}_k\): 
+<ul>
+<li>第 \(k\) <b>主成分負荷量</b> (principal component loading)</li>
+<li>第 \(k\) <b>主成分方向</b> (principal component direction)</li>
+
+</ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org1d9ad65">
-<h3 id="org1d9ad65">分析の目的</h3>
+<section id="slide-org50897fa">
+<h3 id="org50897fa">分析の目的</h3>
 <ul>
 <li><p>
 目的:
@@ -168,13 +175,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org5cde8b4">
-<h2 id="org5cde8b4">第1主成分の計算</h2>
-<div class="outline-text-2" id="text-org5cde8b4">
+<section id="slide-org422adc1">
+<h2 id="org422adc1">第1主成分の計算</h2>
+<div class="outline-text-2" id="text-org422adc1">
 </div>
 </section>
-<section id="slide-org58ad590">
-<h3 id="org58ad590">記号の準備</h3>
+<section id="slide-org701541c">
+<h3 id="org701541c">記号の準備</h3>
 <ul>
 <li>変数: \(x_{1},\dotsc,x_{p}\) (p次元)</li>
 <li><p>
@@ -188,17 +195,21 @@
 
 </div>
 </blockquote></li>
-<li>\(\boldsymbol{x}_{i}=(x_{i1},\dots,x_{ip})^{\mathsf{T}}\) : <br />
+<li>ベクトル表現
+<ul>
+<li>\(\boldsymbol{x}_{i}=(x_{i1},\dots,x_{ip})^{\mathsf{T}}\) :
 \(i\) 番目の観測データ (\(p\) 次元空間内の1点)</li>
-<li>\(\boldsymbol{a}=(a_{1},\dots,a_{p})^{\mathsf{T}}\) : <br />
+<li>\(\boldsymbol{a}=(a_{1},\dots,a_{p})^{\mathsf{T}}\) : 
 長さ1の \(p\) 次元ベクトル</li>
+
+</ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org82ec4bc">
-<h3 id="org82ec4bc">係数ベクトルによる射影</h3>
+<section id="slide-org0a89d1c">
+<h3 id="org0a89d1c">係数ベクトルによる射影</h3>
 <ul>
 <li><p>
 データ \(\boldsymbol{x}_{i}\) の \(\boldsymbol{a}\) 方向成分の長さ:
@@ -231,10 +242,10 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org3fee0ea">
-<h3 id="org3fee0ea">幾何学的描像</h3>
+<section id="slide-orge30fb79">
+<h3 id="orge30fb79">幾何学的描像</h3>
 
-<div id="org70bd60f" class="figure">
+<div id="orgcedfe4b" class="figure">
 <p><img src="./figs/pca-figure.png" alt="pca-figure.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 1: </span>観測データの直交射影 (\(p=2,n=2\) の場合)</p>
@@ -242,8 +253,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org2542f97">
-<h3 id="org2542f97">ベクトル \(\boldsymbol{a}\) の選択の指針</h3>
+<section id="slide-org277a87b">
+<h3 id="org277a87b">ベクトル \(\boldsymbol{a}\) の選択の指針</h3>
 <ul>
 <li><p>
 射影による特徴量の構成
@@ -265,7 +276,7 @@
 </div>
 </blockquote></li>
 <li><p>
-特徴量のばらつき
+特徴量のばらつきの最大化
 </p>
 <blockquote>
 <p>
@@ -290,8 +301,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgac49ffb">
-<h3 id="orgac49ffb">ベクトル \(\boldsymbol{a}\) の最適化</h3>
+<section id="slide-org91b243d">
+<h3 id="org91b243d">ベクトル \(\boldsymbol{a}\) の最適化</h3>
 <ul>
 <li><p>
 最適化問題
@@ -325,12 +336,12 @@
 </section>
 </section>
 <section>
-<section id="slide-orgc1c6953" data-background="#fef4f4">
-<h2 id="orgc1c6953">演習</h2>
+<section id="slide-org682caca" data-background="#fef4f4">
+<h2 id="org682caca">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org7c51833" data-background="#fef4f4">
-<h3 id="org7c51833">問題</h3>
+<section id="slide-org93f93be" data-background="#fef4f4">
+<h3 id="org93f93be">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -379,15 +390,92 @@
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-org28aacc5" data-background="#fef4f4">
+<h3 id="org28aacc5">解答例</h3>
+<ul>
+<li><p>
+定義どおりに計算する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  f(\boldsymbol{a})
+  &=
+    \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
+    -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2\\
+  &=
+    \sum_{i=1}^n
+    (\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
+    -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})
+    (\boldsymbol{x}_{i}^{\mathsf{T}}\boldsymbol{a}
+    -\bar{\boldsymbol{x}}\boldsymbol{a}^{\mathsf{T}})\\
+  &=
+    \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+\end{align}
+
+</div>
+</blockquote>
+<ul>
+<li>回帰分析の Gram 行列を参照</li>
+
+</ul></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+制約付き最適化なので未定係数法を用いればよい
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  L(\boldsymbol{a},\lambda)
+  =f(\boldsymbol{a})+\lambda(1-\boldsymbol{a}^{\mathsf{T}}\boldsymbol{a})
+\end{equation}
+
+</div>
+<p>
+の鞍点
+</p>
+<div>
+\begin{equation}
+  \frac{\partial}{\partial\boldsymbol{a}}L(\boldsymbol{a},\lambda)
+  =0
+\end{equation}
+
+</div>
+<p>
+を求めればよいので
+</p>
+<div>
+\begin{align}
+  2X^{\mathsf{T}}X\boldsymbol{a}-2\lambda\boldsymbol{a}
+  &=0\\
+  X^{\mathsf{T}}X\boldsymbol{a}
+  &=\lambda\boldsymbol{a}
+    \quad\text{(固有値問題)}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-org93bb2b3">
-<h2 id="org93bb2b3">第1主成分の解</h2>
-<div class="outline-text-2" id="text-org93bb2b3">
+<section id="slide-orgadf4780">
+<h2 id="orgadf4780">第1主成分の解</h2>
+<div class="outline-text-2" id="text-orgadf4780">
 </div>
 </section>
-<section id="slide-org1fd1343">
-<h3 id="org1fd1343">ベクトル \(\boldsymbol{a}\) の解</h3>
+<section id="slide-orge43a4aa">
+<h3 id="orge43a4aa">ベクトル \(\boldsymbol{a}\) の解</h3>
 <ul>
 <li><p>
 最適化問題
@@ -427,14 +515,12 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgcebe8d5">
-<h3 id="orgcebe8d5">第1主成分</h3>
+<section id="slide-org986cba7">
+<h3 id="org986cba7">第1主成分</h3>
 <ul>
-<li>求める \(\boldsymbol{a}\)
-は行列 \(X^{\mathsf{T}}X\) の最大固有ベクトル (長さ1)</li>
 <li><p>
-このとき \(f(\boldsymbol{a})\)
-は行列 \(X^{\mathsf{T}}X\) の最大固有値
+固有ベクトル\(\boldsymbol{a}\)に対する\(f(\boldsymbol{a})\)
+は行列 \(X^{\mathsf{T}}X\) の固有値
 </p>
 <blockquote>
 <div>
@@ -447,6 +533,8 @@
 
 </div>
 </blockquote></li>
+<li>求める \(\boldsymbol{a}\)
+は行列 \(X^{\mathsf{T}}X\) の最大固有ベクトル (長さ1)</li>
 <li><b>第1主成分負荷量</b>: ベクトル \(\boldsymbol{a}\)</li>
 <li><p>
 <b>第1主成分得点</b>:
@@ -470,13 +558,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orge38a77e">
-<h2 id="orge38a77e">Gram 行列の性質</h2>
-<div class="outline-text-2" id="text-orge38a77e">
+<section id="slide-org143a571">
+<h2 id="org143a571">Gram 行列の性質</h2>
+<div class="outline-text-2" id="text-org143a571">
 </div>
 </section>
-<section id="slide-orgc7b4226">
-<h3 id="orgc7b4226">Gram 行列の固有値</h3>
+<section id="slide-org63b0947">
+<h3 id="org63b0947">Gram 行列の固有値</h3>
 <ul>
 <li>\(X^{\mathsf{T}}X\) は非負定値対称行列</li>
 <li>\(X^{\mathsf{T}}X\) の固有値は0以上の実数
@@ -511,8 +599,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgd870d0c">
-<h3 id="orgd870d0c">Gram 行列のスペクトル分解</h3>
+<section id="slide-orgaab0ebf">
+<h3 id="orgaab0ebf">Gram 行列のスペクトル分解</h3>
 <ul>
 <li><p>
 \(\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{p}\) は <b>互いに直交</b> するようとることができる
@@ -554,12 +642,12 @@
 </section>
 </section>
 <section>
-<section id="slide-orgd7f3b7b" data-background="#fef4f4">
-<h2 id="orgd7f3b7b">演習</h2>
+<section id="slide-org61109d0" data-background="#fef4f4">
+<h2 id="org61109d0">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org3395d0c" data-background="#fef4f4">
-<h3 id="org3395d0c">問題</h3>
+<section id="slide-org440436a" data-background="#fef4f4">
+<h3 id="org440436a">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -610,15 +698,60 @@ Gram 行列のスペクトル分解において
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-org1db3874" data-background="#fef4f4">
+<h3 id="org1db3874">解答例</h3>
+<ul>
+<li><p>
+固有ベクトルの直交性に注意する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  X^{\mathsf{T}}X\boldsymbol{a}_{j}
+  &=\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{a}_{j}
+  &&\text{(直交性)}\\
+  &=\lambda_{j}\boldsymbol{a}_{j}\boldsymbol{a}_{j}^{\mathsf{T}}\boldsymbol{a}_{j}
+  &&\text{(単位ベクトル)}\\
+  &=\lambda_{j}\boldsymbol{a}_{j}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+転置に注意して計算する
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  X^{\mathsf{T}}X
+  =
+  A^{\mathsf{T}}\Lambda A
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-org24c461d">
-<h2 id="org24c461d">第2主成分以降の計算</h2>
-<div class="outline-text-2" id="text-org24c461d">
+<section id="slide-orgcbdc886">
+<h2 id="orgcbdc886">第2主成分以降の計算</h2>
+<div class="outline-text-2" id="text-orgcbdc886">
 </div>
 </section>
-<section id="slide-org9fa765d">
-<h3 id="org9fa765d">第2主成分の考え方</h3>
+<section id="slide-orgadf485f">
+<h3 id="orgadf485f">第2主成分の考え方</h3>
 <ul>
 <li>第1主成分:
 <ul>
@@ -658,8 +791,8 @@ Gram 行列のスペクトル分解において
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org0987801">
-<h3 id="org0987801">第2主成分の最適化</h3>
+<section id="slide-orge3e5766">
+<h3 id="orge3e5766">第2主成分の最適化</h3>
 <ul>
 <li><p>
 最適化問題
@@ -691,12 +824,12 @@ Gram 行列のスペクトル分解において
 </section>
 </section>
 <section>
-<section id="slide-orgfc4853e" data-background="#fef4f4">
-<h2 id="orgfc4853e">演習</h2>
+<section id="slide-orge939b06" data-background="#fef4f4">
+<h2 id="orge939b06">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org441124a" data-background="#fef4f4">
-<h3 id="org441124a">問題</h3>
+<section id="slide-org3478067" data-background="#fef4f4">
+<h3 id="org3478067">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -741,15 +874,79 @@ Gram 行列のスペクトル分解において
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-org9382652" data-background="#fef4f4">
+<h3 id="org9382652">解答例</h3>
+<ul>
+<li><p>
+定義どおりに計算する
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \tilde{X}
+  =
+  \begin{pmatrix}
+    \tilde{\boldsymbol{x}}_{1}^{\mathsf{T}}-\bar{\tilde{\boldsymbol{x}}}^{\mathsf{T}} \\
+    \vdots \\
+    \tilde{\boldsymbol{x}}_{n}^{\mathsf{T}}-\bar{\tilde{\boldsymbol{x}}}^{\mathsf{T}}
+  \end{pmatrix}
+  =
+  X-X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\) を計算する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \tilde{X}^{\mathsf{T}}\tilde{X}
+  &=
+    (X-X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}})^{\mathsf{T}}
+    (X-X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}})\\
+  &=
+    X^{\mathsf{T}}X
+    -X^{\mathsf{T}}X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}
+    -\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}X^{\mathsf{T}}X
+    +\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}\\
+  &=
+    X^{\mathsf{T}}X-\lambda_{1}\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}\\
+  &=
+    \sum_{k=2}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
+\end{align}
+
+</div>
+
+<p>
+元の Gram 行列 \(X^{\mathsf{T}}X\)
+の固有ベクトル \(\boldsymbol{a}_{1}\)
+の固有値が0となっていると考えることができる
+</p>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-orgc81187c">
-<h2 id="orgc81187c">第2主成分以降の解</h2>
-<div class="outline-text-2" id="text-orgc81187c">
+<section id="slide-orgc4afd04">
+<h2 id="orgc4afd04">第2主成分以降の解</h2>
+<div class="outline-text-2" id="text-orgc4afd04">
 </div>
 </section>
-<section id="slide-org9f98236">
-<h3 id="org9f98236">第2主成分</h3>
+<section id="slide-org3b717a8">
+<h3 id="org3b717a8">第2主成分</h3>
 <ul>
 <li>Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 の固有ベクトル \(\boldsymbol{a}_{1}\) の固有値は 0</li>
@@ -769,12 +966,12 @@ Gram 行列のスペクトル分解において
 </section>
 </section>
 <section>
-<section id="slide-org77a0c61">
-<h2 id="org77a0c61">解析の事例</h2>
+<section id="slide-orga663598">
+<h2 id="orga663598">解析の事例</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0460892">
-<h3 id="org0460892">データセットについて</h3>
+<section id="slide-org99d2e65">
+<h3 id="org99d2e65">データセットについて</h3>
 <ul>
 <li>総務省統計局より取得した都道府県別の社会生活統計指標の一部
 <ul>
@@ -800,13 +997,13 @@ Gram 行列のスペクトル分解において
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org3d354be">
-<h3 id="org3d354be">社会生活統計指標の分析</h3>
+<section id="slide-org46f02ec">
+<h3 id="org46f02ec">社会生活統計指標の分析</h3>
 <ul>
 <li><p>
 データ(の一部)の内容
 </p>
-<pre class="example" id="orgbd982a1">
+<pre class="example" id="orge987b8a">
 	  Forest   Agri Ratio  Land  Goods
 Hokkaido    67.9 1150.6  4.23  96.8  283.3
 Aomori      63.8  444.7  1.03 186.0  183.0
@@ -841,7 +1038,7 @@ Fukui       73.9  216.1  0.62  98.5  167.3
 </ul>
 
 
-<div id="org9426fc7" class="figure">
+<div id="org7c0eb4a" class="figure">
 <p><img src="figs/06_pairs.png" alt="06_pairs.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>散布図</p>
@@ -858,7 +1055,7 @@ Fukui       73.9  216.1  0.62  98.5  167.3
 </ul>
 
 
-<div id="orgd5918a3" class="figure">
+<div id="org51e0222" class="figure">
 <p><img src="figs/06_boxplot.png" alt="06_boxplot.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>箱ひげ図</p>
@@ -900,7 +1097,7 @@ Goods   0.5258481 -0.2689436 -0.09517368  0.5708093  0.56238052
 </ul>
 
 
-<div id="orgc9ba03b" class="figure">
+<div id="orgba98aa6" class="figure">
 <p><img src="figs/06_pcaplot.png" alt="06_pcaplot.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>主成分得点による散布図</p>
@@ -911,8 +1108,8 @@ Goods   0.5258481 -0.2689436 -0.09517368  0.5708093  0.56238052
 </section>
 </section>
 <section>
-<section id="slide-orga35d8aa">
-<h2 id="orga35d8aa">次週の予定</h2>
+<section id="slide-org84f14eb">
+<h2 id="org84f14eb">次週の予定</h2>
 <ul>
 <li>第1日: 主成分分析の考え方</li>
 <li><b>第2日: 分析の評価と視覚化</b></li>

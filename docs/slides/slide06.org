@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-10-15 16:03:54 mura>
+# Time-stamp: <2021-11-01 17:51:04 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -155,24 +155,22 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 特徴量は定数倍の任意性があるので以下を仮定:
-  #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \|\boldsymbol{a}_k\|^2=\sum_{j=1}^pa_{jk}^2=1
-    \end{equation}
-  #+end_src
-  #+end_quote
+  - 特徴量は定数倍の任意性があるので以下を仮定:
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+        \|\boldsymbol{a}_k\|^2=\sum_{j=1}^pa_{jk}^2=1
+      \end{equation}
+    #+end_src
+    #+end_quote
 
 ** 主成分分析の用語
-- 特徴量 \(Z_k\): \\
-  第 \(k\) *主成分得点* (principal component score) \\
-  または \\
-  第 \(k\) *主成分*
-- 係数ベクトル \(\boldsymbol{a}_k\): \\
-  第 \(k\) *主成分負荷量* (principal component loading)\\
-  または \\
-  第 \(k\) *主成分方向* (principal component direction)
+- 特徴量 \(Z_k\):
+  - 第 \(k\) *主成分*
+  - 第 \(k\) *主成分得点* (principal component score) 
+- 係数ベクトル \(\boldsymbol{a}_k\): 
+  - 第 \(k\) *主成分負荷量* (principal component loading)
+  - 第 \(k\) *主成分方向* (principal component direction)
 
 ** 分析の目的
 - 目的:
@@ -316,10 +314,11 @@
     \end{equation}
   #+end_src
   #+end_quote
-- \(\boldsymbol{x}_{i}=(x_{i1},\dots,x_{ip})^{\mathsf{T}}\) : \\
-  \(i\) 番目の観測データ (\(p\) 次元空間内の1点)
-- \(\boldsymbol{a}=(a_{1},\dots,a_{p})^{\mathsf{T}}\) : \\
-  長さ1の \(p\) 次元ベクトル
+- ベクトル表現
+  - \(\boldsymbol{x}_{i}=(x_{i1},\dots,x_{ip})^{\mathsf{T}}\) :
+    \(i\) 番目の観測データ (\(p\) 次元空間内の1点)
+  - \(\boldsymbol{a}=(a_{1},\dots,a_{p})^{\mathsf{T}}\) : 
+    長さ1の \(p\) 次元ベクトル
 
 ** 係数ベクトルによる射影
 - データ \(\boldsymbol{x}_{i}\) の \(\boldsymbol{a}\) 方向成分の長さ:
@@ -365,7 +364,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 特徴量のばらつき
+- 特徴量のばらつきの最大化
   #+begin_quote
   観測データの *ばらつき*
   を最も反映するベクトル \(\boldsymbol{a}\) を選択:
@@ -444,7 +443,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -559,10 +558,8 @@
   #+end_quote
 
 ** 第1主成分
-- 求める \(\boldsymbol{a}\)
-  は行列 \(X^{\mathsf{T}}X\) の最大固有ベクトル (長さ1)
-- このとき \(f(\boldsymbol{a})\)
-  は行列 \(X^{\mathsf{T}}X\) の最大固有値
+- 固有ベクトル\(\boldsymbol{a}\)に対する\(f(\boldsymbol{a})\)
+  は行列 \(X^{\mathsf{T}}X\) の固有値
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -573,6 +570,8 @@
     \end{equation}
   #+end_src
   #+end_quote
+- 求める \(\boldsymbol{a}\)
+  は行列 \(X^{\mathsf{T}}X\) の最大固有ベクトル (長さ1)
 - *第1主成分負荷量*: ベクトル \(\boldsymbol{a}\)
 - *第1主成分得点*:
   #+begin_quote
@@ -738,7 +737,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -855,7 +854,7 @@
     #+end_src
     #+end_quote
     
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:

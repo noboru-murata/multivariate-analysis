@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-27 17:17:51 mura>
+# Time-stamp: <2021-11-01 19:15:12 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -69,8 +69,6 @@
   #+end_src
   #+end_quote
 
-
-
 #+OPTIONS: reveal_mousewheel:nil
 #+begin_src R :eval no :exports none :tangle yes
   ### 第05回 資料
@@ -91,6 +89,7 @@
 - ほげほげな方法:
   #+begin_src R :eval no
   #+end_src
+
 ** データセット
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -146,7 +145,7 @@
 - 分析の方針:
   - データの情報を最大限保持する変量の線形結合を構成
   - データの情報を最大限反映する座標(方向)を探索
-  - (データの情報を保持する=データを区別できる)
+  - *データの情報を保持する* = *データを区別できる*
 
 ** 分析の考え方
 - 1変量データ
@@ -154,9 +153,9 @@
   を構成
   - 観測データ \(\boldsymbol{x}_1,\dots,\boldsymbol{x}_n\)
     のもつ情報を最大限保持するベクトル
-    \(\boldsymbol{a}\) を *うまく* 選択
+    \(\boldsymbol{a}\) を *適切に* 選択
   - \(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n\)
-    の変動(ばらつき)が最も大きい方向を選択
+    の変動 (ばらつき) が最も大きい方向を選択
 - *最適化問題*
   #+begin_quote
   制約条件
@@ -175,7 +174,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-
+  
 ** 行列による表現
 - 中心化したデータ行列
   #+begin_quote
@@ -257,11 +256,12 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - ベクトル\(\boldsymbol{a}\)
     を
     \(X^{\mathsf{T}}X\)
@@ -273,9 +273,9 @@
       \end{equation}
     #+end_src
     #+end_quote
-    の値を求めよ．
+    の値を求めよ
   - 行列\(X\)を中心化したデータ行列，
-    ベクトル\(\boldsymbol{a}_{k}\)を第\(k\)主成分負荷量とする．
+    ベクトル\(\boldsymbol{a}_{k}\)を第\(k\)主成分負荷量とするとき，
     第\(k\)主成分得点の平均まわりの平方和
     #+begin_quote
     #+begin_src latex
@@ -286,7 +286,7 @@
     #+end_src
     #+end_quote
     を
-    \(X\)と\(\boldsymbol{a}_{k}\)で表せ．
+    \(X\)と\(\boldsymbol{a}_{k}\)で表せ
     
 ** 解答例
 :PROPERTIES:
@@ -338,7 +338,7 @@
    
 * 寄与率
 ** 寄与率の考え方
-- 回帰分析で考察した *寄与率* の一般形
+- 回帰分析で考察した寄与率の一般形
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -366,8 +366,8 @@
       =\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
     \end{equation}
   #+end_src     
-  固有値と固有ベクトルによる行列の表現
   #+end_quote
+  - 固有値と固有ベクトルによる行列の表現
 - 主成分の変動の評価
   #+begin_quote
   #+begin_src latex
@@ -378,8 +378,8 @@
       =\lambda_{k}
     \end{equation}
   #+end_src
-  固有ベクトル(単位ベクトル)の直交性を利用
   #+end_quote
+  - 固有ベクトル(単位ベクトル)の直交性を利用
 
 ** 寄与率の計算
 - 主成分と全体の変動
@@ -400,7 +400,7 @@
     \end{align}
   #+end_src
   #+end_quote
-- 寄与率の固有値による表現:
+- 固有値による寄与率の表現
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -413,8 +413,8 @@
 
 ** 累積寄与率
 - *累積寄与率* (cumulative proportion) :
-  第 \(k\) 主成分までの変動の累計
   #+begin_quote
+  第 \(k\) 主成分までの変動の累計
   #+begin_src latex
     \begin{equation}
       \text{(累積寄与率)}
@@ -422,10 +422,10 @@
       \frac{\sum_{l=1}^k\lambda_l}{\sum_{l=1}^p\lambda_l}
     \end{equation}
   #+end_src
-  第1から第 \(k\) までの寄与率の総和
   #+end_quote
   - 累積寄与率はいくつの主成分を用いるべきかの基準
   - 一般に累積寄与率が80%程度までの主成分を用いる
+#  - 第1から第 \(k\) までの寄与率の総和
 
 
 * 演習
@@ -434,6 +434,9 @@
 :END:
 # 東京大学
 ** R: 主成分分析の評価
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - 分析結果の評価を行う関数:
   - ~summary()~: 主成分負荷量や寄与率を表示 
   - ~plot()~: 寄与率を図示
@@ -450,7 +453,7 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の2つのデータセットを使用します
+- 以下の2つのデータセットを使用する
   - ~japan_social.csv~ (先週から使用)
     #+begin_quote
     総務省統計局より取得した都道府県別の社会生活統計指標の一部
@@ -465,7 +468,7 @@
     #+end_quote
     #+begin_src R :eval no
       library(MASS) # パッケージの読み込み
-      help(UScereal) # 変数名などの詳細はヘルプを参照して下さい
+      help(UScereal) # 変数名などの詳細はヘルプを参照のこと
     #+end_src
 
 ** 練習問題
@@ -479,11 +482,11 @@
     prcomp(データフレーム, scale.=TRUE) # 正規化を行う場合
     ## 正式なオプション名は "scale." であるが，"sc=TRUE" などでも可
   #+end_src
-  - ~japan_social.csv~
+  - ~japan_social.csv~ の読み込み方の例
     #+begin_src R :eval no
       JS.data <- read.csv("data/japan_social.csv", row.names=1)
     #+end_src
-  - ~MASS::UScereal~
+  - ~MASS::UScereal~ の整理の例
     #+begin_src R :eval no
       ## UScereal にはカテゴリカル変数が含まれるので以下のように処理すると良い
       str(UScereal) # 各変数の属性を確認する．factor/intが不要
@@ -491,17 +494,24 @@
     #+end_src
     
 #+begin_src R :eval no :exports none :tangle yes
-  ### 練習1
-  ### 寄与率・累積寄与率
-
+  ### 
+  ### 練習問題 寄与率・累積寄与率
+  ###
+  
   ### 総務省統計局の都道府県別の社会生活統計指標データ
-  ## - Pref: 都道府県名
-  ## - Forest: 森林面積割合 (%) 2014年
-  ## - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-  ## - Ratio: 全国総人口に占める人口割合 (%) 2015年
-  ## - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-  ## - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+  ### - Pref: 都道府県名
+  ### - Forest: 森林面積割合 (%) 2014年
+  ### - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+  ### - Ratio: 全国総人口に占める人口割合 (%) 2015年
+  ### - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+  ### - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
   JS.data <- read.csv("data/japan_social.csv", row.names=1)
+  ## 視覚化の例 (データの性質を見ておくことは重要)
+  plot(JS.data,col="blue") # 散布図
+  plot(Forest ~ Agri, data=JS.data, col="blue") # 特定の要素
+  text(Forest -1 ~ Agri, data=JS.data, # 県名を付与
+       labels=rownames(JS.data), col="orange")
+  ## 主成分分析
   JS.pca0 <- prcomp(JS.data) # 正規化なし
   JS.pca1 <- prcomp(JS.data, scale.=TRUE) # 正規化あり
   ## 正規化しない場合
@@ -516,7 +526,8 @@
   ### UScereal
   ## 各変数の内容についてはhelpを参照
   library(MASS)
-  UC.data <- UScereal[sapply(UScereal, is.double)]
+  UC.data <- UScereal[sapply(UScereal, is.double)] 
+  ## 適当な方法で視覚化をすることを推奨
   UC.pca0 <- prcomp(UC.data)
   UC.pca1 <- prcomp(UC.data, scale.=TRUE)
   summary(UC.pca0)
@@ -544,6 +555,7 @@
 
 
 * 解析の事例
+# 早稲田大学
 ** データセット
 - 総務省統計局より取得した都道府県別の社会生活統計指標の一部
   - 総務省 [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
@@ -639,22 +651,23 @@
 
 
 * 演習
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - 正規化条件を満たす線形変換
     \(x'_{ij}=a_{j}(x_{ij}-b_{j})\)
-    を求めよ．
+    を求めよ
     #+begin_quote
     #+begin_src latex
       \begin{equation}
-	\frac{1}{n}\sum_{i=1}^{n}x'_{ij}=0,\quad
-	\frac{1}{n-1}\sum_{i=1}^{n}(x'_{ij})^{2}=1
+        \frac{1}{n}\sum_{i=1}^{n}x'_{ij}=0,\quad
+        \frac{1}{n-1}\sum_{i=1}^{n}(x'_{ij})^{2}=1
       \end{equation}
     #+end_src
     #+end_quote
@@ -662,24 +675,25 @@
     #+begin_quote
     #+begin_src latex
       \begin{equation}
-	X'
-	=
-	\begin{pmatrix}
-	  {\boldsymbol{x}'_{1}}^{\mathsf{T}}\\
-	  \vdots \\
-	  {\boldsymbol{x}'_{n}}^{\mathsf{T}}
-	\end{pmatrix}
-	=
-	\begin{pmatrix}
-	  x'_{11} & \cdots & x'_{1p}\\
-	  \vdots & & \vdots \\
-	  x'_{n1} & \cdots & x'_{np}
-	\end{pmatrix}
+        X'
+        =
+        \begin{pmatrix}
+          {\boldsymbol{x}'_{1}}^{\mathsf{T}}\\
+          \vdots \\
+          {\boldsymbol{x}'_{n}}^{\mathsf{T}}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+          x'_{11} & \cdots & x'_{1p}\\
+          \vdots & & \vdots \\
+          x'_{n1} & \cdots & x'_{np}
+        \end{pmatrix}
       \end{equation}
     #+end_src
     #+end_quote
-    と書くとき，\(X'^{\mathsf{T}}X'\)の対角成分を求めよ．
-
+    と書くとき，
+    \(X'^{\mathsf{T}}X'\)の対角成分を求めよ
+    
 ** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
