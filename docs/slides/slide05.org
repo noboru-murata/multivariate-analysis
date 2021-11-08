@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-10-26 00:28:11 mura>
+# Time-stamp: <2021-11-05 15:57:35 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -195,30 +195,6 @@
   #+end_src
   #+end_quote
 
-** 寄与率
-- *決定係数* (R-squared):
-  #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      R^2
-      =
-      1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
-    \end{equation}
-  #+end_src
-  #+end_quote
-- *自由度調整済み決定係数* (adjusted R-squared):
-  #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \bar{R}^2
-      =
-      1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
-      {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
-    \end{equation}
-  #+end_src
-  #+end_quote
-  - 不偏分散で補正
-
 ** 実データによる例 
 - 東京の8月の気候 (気温,降雨,日射,降雪,風速,気圧,湿度,雲量)
   に関するデータ(の一部)
@@ -295,6 +271,29 @@
 #+ATTR_HTML: height 100%
 #+ATTR_LATEX: :width 0.6\linewidth
 [[file:figs/05_models.png]]
+** 寄与率
+- *決定係数* (R-squared):
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      R^2
+      =
+      1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
+    \end{equation}
+  #+end_src
+  #+end_quote
+- *自由度調整済み決定係数* (adjusted R-squared):
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \bar{R}^2
+      =
+      1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
+      {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
+    \end{equation}
+  #+end_src
+  #+end_quote
+  - 不偏分散で補正
 ** モデルの評価
 - 決定係数
   - モデル1: 気温 = F(気圧)
@@ -1467,7 +1466,7 @@
     summary(lm(sales ~ TV + radio, data=Adv.data))
     summary(lm(sales ~ TV + radio + newspaper, data=Adv.data))
     summary(init <- lm(sales ~ TV * radio * newspaper, data=Adv.data))
-    opt <- step(init)
+    opt <- step(init) # step関数による探索 (最大のモデルから削減増加を行う)
     summary(opt)
   #+end_src
   - 最適とは限らないので注意は必要
