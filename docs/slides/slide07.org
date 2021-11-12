@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-11-08 18:29:52 mura>
+# Time-stamp: <2021-11-09 08:32:20 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -279,7 +279,7 @@
     を
     \(X\)と\(\boldsymbol{a}_{k}\)で表せ
     
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -767,7 +767,7 @@
     と書くとき，
     \(X'^{\mathsf{T}}X'\)の対角成分を求めよ
     
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1008,7 +1008,7 @@
   - 行列\(X\)の主成分負荷量を求めなさい
   - それぞれの負荷量に対応する主成分得点を求めなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:

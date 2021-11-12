@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-11-02 17:02:20 mura>
+# Time-stamp: <2021-11-12 15:44:26 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -191,7 +191,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- [[color:darkgreen][連続な確率変数の場合は確率密度関数を用いる]]
+- [[color:gray][連続な確率変数の場合は確率密度関数を用いる]]
 
 ** 条件付確率の表現
 - \(Y\)の条件付確率 \(p_k(\boldsymbol{x})\) のモデル化の方針: 
@@ -214,15 +214,17 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
-  - \(X,Y\)を離散確率変数とする．
+- 以下の問に答えなさい
+  - \(X,Y\)を離散確率変数とするとき，
     \(P(X=x|Y=k)\)から
-    \(P(Y=k|X=x)\)を計算する式を導け．
-** 解答例
+    \(P(Y=k|X=x)\)を計算する式を導け
+
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -232,7 +234,7 @@
   #+begin_src latex
     \begin{equation}
       P(A|B)
-      =\frac{P(A)P(B|A)}{P(B)}.
+      =\frac{P(A)P(B|A)}{P(B)}
     \end{equation}
   #+end_src
   離散変数の場合は
@@ -252,7 +254,7 @@
   #+begin_quote
   *原因 \(X=\boldsymbol{x}\) から結果 \(Y=k\) が生じる確率*
   を
-  *結果 \(Y=k\) が生じたときの原因が \(X=\boldsymbol{x}\) である確率*
+  *結果 \(Y=k\) が生じた原因が \(X=\boldsymbol{x}\) である確率*
   から計算する方法
   #+end_quote
 - Bayes の公式 (Bayes' formula)
@@ -281,8 +283,6 @@
     \end{equation}
   #+end_src
   #+end_quote
-
-#+reveal: split
 - 求める条件付確率:
   #+begin_quote
   #+begin_src latex
@@ -327,8 +327,8 @@
       \cdot\pi_k
     \end{equation}
   #+end_src
-  事前確率が説明変数の条件付確率の重みで変更される
   #+end_quote
+  - 事前確率が説明変数の条件付確率の重みで変更される
 
 ** 事前確率の決め方
 - 事前に特別な情報がない場合:
@@ -342,9 +342,9 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 事前に情報がある場合: 
+- 事前に情報がある場合 ([[color:darkgreen][例]]): 
   #+begin_quote
-  例: 食事・運動・飲酒・ストレスなどの生活の特徴から生活習慣病か否かを判別
+  食事・運動・飲酒・ストレスなどの生活の特徴から生活習慣病か否かを判別
   - 健常者の食事・運動・飲酒・ストレスなどの特徴量を収集
   - 罹患者の食事・運動・飲酒・ストレスなどの特徴量を収集
   - 事前確率は *別の調査の日本人の罹患率* を利用
@@ -370,8 +370,8 @@
       \delta_l(\boldsymbol{x})
     \end{equation}
   #+end_src
-  事後確率の順序を保存する計算しやすい関数
   #+end_quote
+  - 事後確率の順序を保存する計算しやすい関数
 - 判別関数 \(\delta_k(\boldsymbol{x})\) を最大化するクラス \(k\) に分類
 
 ** 線形判別
@@ -405,6 +405,7 @@
   #+end_quote
 
 ** COMMENT 同値性の確認
+# 東京大学
 - 事後確率と判別関数の関係
   #+begin_quote
   #+begin_src latex
@@ -436,8 +437,8 @@
       \frac{1}{n_k}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
     \end{equation}
   #+end_src
-  ただし \(n_k\) は \(y_{i}=k\) であるようなデータの総数
   #+end_quote
+  - ただし \(n_k\) は \(y_{i}=k\) であるようなデータの総数
 - 分散の推定 (まとめて行う)
   #+begin_quote
   #+begin_src latex
@@ -456,11 +457,12 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - \(X\)の条件付確率 \(f_k(\boldsymbol{x})\) に関する仮定:
     - \(q\) 変量正規分布の密度関数
     - 平均ベクトル \(\boldsymbol{\mu}_k\): クラスごとに異なる
@@ -476,9 +478,9 @@
       \end{equation}
     #+end_src
     #+end_quote
-    を示しなさい．
+    を示しなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -504,8 +506,15 @@
   #+end_quote
 
 
-* 実習   
-** R: 線形判別関数 ~MASS::lda()~ 
+* COMMENT 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+** R: 線形判別関数 ~MASS::lda()~
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - データフレームに対する分析:
   #+begin_src R :eval no
     library(MASS) # または require(MASS) 
@@ -560,9 +569,10 @@
     #+end_src
     
 #+begin_src R :eval no :exports none :tangle yes
-  ### 練習1
-  ### 線形判別
-
+  ### 
+  ### 練習問題 線形判別
+  ###
+  
   ### 東京の気象データによる判別分析
   library(MASS)
   ## データの整理
@@ -643,6 +653,7 @@
   #+end_quote
 
 ** COMMENT 同値性の確認
+# 東京大学
 - 事後確率と判別関数の関係
   #+begin_quote
   #+begin_src latex
@@ -664,7 +675,7 @@
 	\Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
 	+\log\pi_l\\
       &\Leftrightarrow
-	\delta_k(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+	\delta_k(\boldsymbol{x}) < \delta_l(\boldsymbol{x})\\
       &\qquad\text{(2次の項は右辺と左辺で共通)}
     \end{align}
   #+end_src
@@ -704,7 +715,7 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - \(X\)の条件付確率 \(f_k(\boldsymbol{x})\) に関する仮定:
     - \(q\) 変量正規分布の密度関数
     - 平均ベクトル \(\boldsymbol{\mu}_k\): クラスごとに異なる
@@ -720,9 +731,9 @@
       \end{equation}
     #+end_src
     #+end_quote
-    を示しなさい．
+    を示しなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -747,15 +758,22 @@
 	\Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
 	+\log\pi_l\\
       &\Leftrightarrow
-	\delta_k(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+	\delta_k(\boldsymbol{x}) < \delta_l(\boldsymbol{x})\\
       &\qquad\text{(2次の項は右辺と左辺で共通)}
     \end{align}
   #+end_src
   #+end_quote
 
 
-* 実習   
+* COMMENT 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
 ** R: 2次判別関数 ~MASS::qda()~
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - データフレームに対する分析:
   #+begin_src R :eval no
     library(MASS) # または require(MASS) 
@@ -867,9 +885,9 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
-  - 全変動が群内・群間変動に分解されることを示しなさい．
-  - 説明変数の線形結合で新たな特徴量を構成する．
+- 以下の問に答えなさい
+  - 全変動が群内・群間変動に分解されることを示しなさい
+  - 説明変数の線形結合で新たな特徴量を構成する
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -877,9 +895,9 @@
       \end{equation}
     #+end_src
     #+end_quote
-    このとき\(Z\)の群内変動と群間変動を求めなさい．
+    このとき\(Z\)の群内変動と群間変動を求めなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -968,6 +986,7 @@
   #+end_src
   #+end_quote
 
+
 * Fisher の判別分析
 ** Fisherの線形判別
 - 判別のための特徴量 \(Z=\boldsymbol{\alpha}^{\mathsf{T}} X\)
@@ -1003,7 +1022,11 @@
   2. 最小の \(d_{k}\) となるクラス \(k\) に判別
 
 
-* 実習   
+* COMMENT 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
 ** COMMENT 演習: 3値判別の例
 :PROPERTIES:
 :reveal_background: #EEEEFF
@@ -1089,6 +1112,7 @@
 
 
 * 解析の事例
+# 早稲田大学
 ** データについて
 - 気象庁より取得した東京の気候データ \\
   - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
@@ -1099,14 +1123,14 @@
 
 ** 気温と湿度による月の判別
 - 10,11月のデータの散布図
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/08_pairs.png :exports results :results graphics :tangle yes
     ### 東京の気象データによる判別分析
     library(MASS)
     myCol <- rainbow(12)[c(2,5,8)]
     ## データの整理
     target <- c(10,11)
-    TW.data <- transform(read.csv("data/tokyo_weather.csv"),
-			 month=as.numeric(substr(as.Date(date),6,7))) 
+    TW.data <- read.csv("data/tokyo_weather.csv")
     TW.subset  <- subset(TW.data,
 			 subset= month %in% target,
 			 select=c(temp,humid,month))
@@ -1129,6 +1153,7 @@
 
 #+reveal: split
 - 線形判別
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/08_lda.png :exports results :results graphics :tangle yes
     ## 線形判別関数を作成
     TW.lda <- lda(month ~ temp + humid, data=TW.subset)
@@ -1160,6 +1185,7 @@
 
 #+reveal: split
 - 2次判別
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/08_qda.png :exports results :results graphics :tangle yes
     ## 2次判別関数を作成
     TW.qda <- qda(month ~ temp + humid, data=TW.subset)
@@ -1185,6 +1211,7 @@
 
 #+reveal: split
 - 9,10,11月の多値判別
+  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/08_multi.png :exports results :results graphics :tangle yes
     ### 多値判別
     target <- c(9,10,11)

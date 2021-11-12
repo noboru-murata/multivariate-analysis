@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-11-01 17:51:04 mura>
+# Time-stamp: <2021-11-12 13:42:03 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -269,7 +269,7 @@
   ## 主成分負荷量の推定
   est <- prcomp(myData)
   ahat <- est$rotation[,1]
-  ## 第１主成分負荷量がaに非常に近い (符号は反対)
+  ## 第１主成分負荷量がaに非常に近い (乱数によっては符号が反対になることもある)
   abline(0, ahat[2]/ahat[1],
          col="orange", lty="dotted", lwd=2)
   ## 主成分得点の計算
