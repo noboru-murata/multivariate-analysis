@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-11-02 17:07:06 mura>
+# Time-stamp: <2021-11-12 15:58:46 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -454,25 +454,25 @@
 [[file:figs/09_qda.png]]
 
 ** 判別結果の比較
-   - 線形判別の混同行列
-     #+begin_src R :exports results :tangle yes
-       confusionMatrix(TW.lest$class, factor(TW.subset$month))$table
-     #+end_src
-   - 2次判別の混同行列
-     #+begin_src R :exports results :tangle yes
-       confusionMatrix(TW.qest$class, factor(TW.subset$month))$table
-     #+end_src
-   #+reveal: split
-   - 線形判別の評価指標
-     #+begin_src R :exports results :tangle yes
-       confusionMatrix(TW.lest$class, factor(TW.subset$month))$overall[1:2]
-       confusionMatrix(TW.lest$class, factor(TW.subset$month))$byClass[c(1,2,5,6,7)]
-     #+end_src
-   - 2次判別の評価指標
-     #+begin_src R :exports results :tangle yes
-       confusionMatrix(TW.qest$class, factor(TW.subset$month))$overall[1:2]
-       confusionMatrix(TW.qest$class, factor(TW.subset$month))$byClass[c(1,2,5,6,7)]
-     #+end_src
+- 線形判別の混同行列
+  #+begin_src R :exports results :tangle yes
+    confusionMatrix(TW.lest$class, factor(TW.subset$month))$table
+  #+end_src
+- 2次判別の混同行列
+  #+begin_src R :exports results :tangle yes
+    confusionMatrix(TW.qest$class, factor(TW.subset$month))$table
+  #+end_src
+  #+reveal: split
+  - 線形判別の評価指標
+    #+begin_src R :exports results :tangle yes
+      confusionMatrix(TW.lest$class, factor(TW.subset$month))$overall[1:2]
+      confusionMatrix(TW.lest$class, factor(TW.subset$month))$byClass[c(1,2,5,6,7)]
+    #+end_src
+  - 2次判別の評価指標
+    #+begin_src R :exports results :tangle yes
+      confusionMatrix(TW.qest$class, factor(TW.subset$month))$overall[1:2]
+      confusionMatrix(TW.qest$class, factor(TW.subset$month))$byClass[c(1,2,5,6,7)]
+    #+end_src
    
    
 * 演習
@@ -585,7 +585,11 @@
   #+end_quote
 
 
-* COMMENT 実習
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
 ** データセットの準備
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -608,6 +612,9 @@
     #+end_src
 
 ** R: 混同行列 ~caret::confusionMatrix()~
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - ~caret~: 評価のためのパッケージ
 - 判別結果の評価
   #+begin_src R :eval no
@@ -646,8 +653,9 @@
   - 全てデータを用いて2次判別関数を構成し，評価を行う
 
 #+begin_src R :eval no :exports none :tangle yes
-  ### 練習1
-  ### 判別結果の評価
+  ### 
+  ### 練習問題 判別結果の評価
+  ###
 
   ### 東京の気象データによる線形判別分析
   library(MASS)
@@ -739,8 +747,15 @@
   - \(k=n\) として上記を実行
 
 
-* COMMENT 実習
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
 ** R: LOO交叉検証法
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - 関数 ~lda()~ と ~qda()~ はオプションで LOO交叉検証を行うことができる
 - オプションの指定方法
   #+begin_src R :eval no
@@ -753,6 +768,9 @@
   #+end_src
 
 ** R: k-重交叉検証法 ~caret::train()~
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
 - ~caret~ パッケージの関数 ~train()~ で実行可能
   #+begin_src R :eval no
     train(formula, data,
@@ -777,8 +795,9 @@
   - k-重交叉検証法を用いて予測誤差の評価を行いなさい
 
 #+begin_src R :eval no :exports none :tangle yes
-  ### 練習2
-  ### 予測誤差の評価
+  ### 
+  ### 練習問題 予測誤差の評価
+  ###
 
   ### Wine Quality Data Set による誤差の評価
   library(MASS)  # 既に読み込んでいれば不要
@@ -844,6 +863,7 @@
 
 
 * 解析の事例
+# 早稲田大学
 ** データについて
 - UC Irvine Machine Learning Repository の公開データ
   - [[https://archive.ics.uci.edu/ml/datasets/Wine+Quality]]
