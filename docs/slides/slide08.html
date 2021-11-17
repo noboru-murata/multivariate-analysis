@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>判別分析</title>
-<meta name="author" content="村田 昇"/>
+<title>    </title>
+<meta name="author" content="    "/>
 <style type="text/css">
 .underline { text-decoration: underline; }
 </style>
@@ -31,27 +31,27 @@
 <!-- Embed logos as necessary. -->
 <!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
 <div class="talk-title">
-    <h1 class="no-toc-progress">判別分析</h1>
+    <h1 class="no-toc-progress">    </h1>
 </div>
 <div class="talk-subtitle">
-    <p>基本的な考え方</p>
+    <p>       </p>
 </div>
 <div class="keyboard-usage">
     <p>(Press <code>?</code> for help, <code>n</code> and <code>p</code> for next and previous slide)</p>
 </div>
 <div class="talk-author">
-  <p>村田 昇<br />
+  <p>    <br />
   </p>
 </div>
 
 </section>
 
 <section>
-<section id="slide-orga854610">
-<h2 id="orga854610">講義の内容</h2>
+<section id="slide-org9bcf5fb">
+<h2 id="org9bcf5fb">     </h2>
 <ul>
-<li><b>第1日: 判別分析の考え方</b></li>
-<li>第2日: 分析の評価</li>
+<li><b> 1 :         </b></li>
+<li> 2 :      </li>
 
 </ul>
 <div class="slide-footer"><br></div>
@@ -59,60 +59,34 @@
 </section>
 </section>
 <section>
-<section id="slide-orge0d7c4e">
-<h2 id="orge0d7c4e">判別分析の考え方</h2>
-<div class="outline-text-2" id="text-orge0d7c4e">
+<section id="slide-org5e2bb87">
+<h2 id="org5e2bb87">        </h2>
+<div class="outline-text-2" id="text-org5e2bb87">
 </div>
 </section>
-<section id="slide-orgb4610d1">
-<h3 id="orgb4610d1">判別分析</h3>
+<section id="slide-orgad03d08">
+<h3 id="orgad03d08">    </h3>
 <ul>
 <li><p>
 <b>discriminant analysis</b>
 </p>
 <blockquote>
 <p>
-個体の特徴量からその個体の属する
-<b>クラス</b>
-を予測する関係式を構成する方法
+                
+<b>   </b>
+               
 </p>
 </blockquote></li>
-<li>関係式: <b>判別関数</b> (discriminant function)
+<li>   : <b>    </b> (discriminant function)
 <ul>
-<li>説明変数: \(X=(X_{1},\dots,X_{q})\)</li>
-<li>目的変数: \(Y\) (\(K(\geq2)\) 個のクラスラベル)</li>
+<li>    : \(X=(X_{1},\dots,X_{q})\)</li>
+<li>    : \(Y\) (\(K(\geq2)\)         )</li>
 
 </ul></li>
-<li>判別関数による分類:
+<li>         :
 <ul>
-<li>1次式の場合: <b>線形判別分析</b> (linear discriminant analysis)</li>
-<li>2次式の場合: <b>2次判別分析</b> (quadratic discriminant analysis)</li>
-
-</ul></li>
-
-</ul>
-<div class="slide-footer"><br></div>
-
-</section>
-<section id="slide-orgcbdc8ca">
-<h3 id="orgcbdc8ca">判別分析の例</h3>
-<ul>
-<li>検査結果から患者が病気を罹患しているか判定する
-<ul>
-<li>\(X=\) 検査結果</li>
-<li>\(Y=\) 病気・健康</li>
-
-</ul></li>
-<li>今日の経済指標から明日株価が上昇するか予測する
-<ul>
-<li>\(X=\) 今日の経済指標</li>
-<li>\(Y=\) 明日株価の上昇・下降</li>
-
-</ul></li>
-<li>今日の大気の状態から, 明日の天気を予測する
-<ul>
-<li>\(X=\) 今日の大気の状態</li>
-<li>\(Y=\) 晴・くもり・雨・雪</li>
+<li>1     : <b>      </b> (linear discriminant analysis)</li>
+<li>2     : <b>2     </b> (quadratic discriminant analysis)</li>
 
 </ul></li>
 
@@ -120,27 +94,53 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org1123d1f">
-<h3 id="org1123d1f">判別分析の考え方</h3>
+<section id="slide-org17e9140">
+<h3 id="org17e9140">      </h3>
 <ul>
-<li>確率による定式化
+<li>                       
+<ul>
+<li>\(X=\)     </li>
+<li>\(Y=\)      </li>
+
+</ul></li>
+<li>                       
+<ul>
+<li>\(X=\)        </li>
+<li>\(Y=\)           </li>
+
+</ul></li>
+<li>          ,           
+<ul>
+<li>\(X=\)         </li>
+<li>\(Y=\)          </li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+</section>
+<section id="slide-org3658789">
+<h3 id="org3658789">        </h3>
+<ul>
+<li>        
 <ol>
 <li><p>
-\(X=\boldsymbol{x}\) の下で \(Y=k\) となる <b>条件付確率</b> を計算
+\(X=\boldsymbol{x}\)     \(Y=k\)     <b>     </b>    
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  p_k(\boldsymbol{x})=P(Y=k|X=\boldsymbol{x})
+  p_{k}(\boldsymbol{x})=P(Y=k|X=\boldsymbol{x})
 \end{equation}
 
 </div>
 </blockquote></li>
-<li>所属する確率が最も高いクラスに個体を分類</li>
+<li>                    </li>
 
 </ol></li>
 <li><p>
-観測データ: \(n\) 個の \((Y,X_{1},\dots,X_{q})\) の組
+     : \(n\)    \((Y,X_{1},\dots,X_{q})\)   
 </p>
 <blockquote>
 <div>
@@ -150,24 +150,24 @@
 
 </div>
 </blockquote></li>
-<li>観測データから\(Y\)の条件付確率 \(p_k(\boldsymbol{x})\) を構成</li>
+<li>       \(Y\)       \(p_{k}(\boldsymbol{x})\)    </li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org04a6051">
-<h3 id="org04a6051">条件付確率</h3>
+<section id="slide-orgf37006b">
+<h3 id="orgf37006b">     </h3>
 <ul>
-<li>以下では \(X\) は離散型の \(q\) 次元確率変数として説明</li>
+<li>     \(X\)       \(q\)            </li>
 <li><p>
-事象 \(X=\boldsymbol{x}\) が起きたという条件の下で
-事象 \(Y=k\) が起きる条件付確率
+   \(X=\boldsymbol{x}\)             
+   \(Y=k\)          
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  p_k(\boldsymbol{x})
+  p_{k}(\boldsymbol{x})
   =
   P(Y=k|X=\boldsymbol{x})
   =
@@ -176,25 +176,25 @@
 
 </div>
 </blockquote></li>
-<li><span style="color:gray;">連続な確率変数の場合は確率密度関数を用いる</span></li>
+<li><span style="color:gray;">                     </span></li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org666556c">
-<h3 id="org666556c">条件付確率の表現</h3>
+<section id="slide-org6fcd1c3">
+<h3 id="org6fcd1c3">        </h3>
 <ul>
-<li>\(Y\)の条件付確率 \(p_k(\boldsymbol{x})\) のモデル化の方針: 
+<li>\(Y\)       \(p_{k}(\boldsymbol{x})\)         : 
 <ul>
-<li>\(p_k(\boldsymbol{x})\) を直接モデル化する (例:ロジスティック回帰)</li>
+<li>\(p_{k}(\boldsymbol{x})\)           ( :         )</li>
 <li><p>
-\(Y=k\) の下での \(X\) の条件付き確率質量関数
+\(Y=k\)      \(X\)            
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  f_k(\boldsymbol{x})
+  f_{k}(\boldsymbol{x})
   =
   P(X=\boldsymbol{x}|Y=k)=\frac{P(X=\boldsymbol{x},Y=k)}{P(Y=k)}
 \end{equation}
@@ -202,11 +202,11 @@
 </div>
 </blockquote>
 <p>
-のモデル化を通じて \(p_k(\boldsymbol{x})\) をモデル化する
+          \(p_{k}(\boldsymbol{x})\)        
 </p></li>
 
 </ul></li>
-<li>本講義では <b>後者</b> について説明</li>
+<li>      <b>  </b>       </li>
 
 </ul>
 <div class="slide-footer"><br></div>
@@ -215,18 +215,18 @@
 </section>
 </section>
 <section>
-<section id="slide-org55bd29c" data-background="#fef4f4">
-<h2 id="org55bd29c">演習</h2>
+<section id="slide-org74fee41" data-background="#fef4f4">
+<h2 id="org74fee41">  </h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orge25cfef" data-background="#fef4f4">
-<h3 id="orge25cfef">問題</h3>
+<section id="slide-orgf81c81d" data-background="#fef4f4">
+<h3 id="orgf81c81d">  </h3>
 <ul>
-<li>以下の問に答えなさい
+<li>          
 <ul>
-<li>\(X,Y\)を離散確率変数とするとき，
-\(P(X=x|Y=k)\)から
-\(P(Y=k|X=x)\)を計算する式を導け</li>
+<li>\(X,Y\)             
+\(P(X=x|Y=k)\)  
+\(P(Y=k|X=x)\)         </li>
 
 </ul></li>
 
@@ -234,38 +234,77 @@
 <div class="slide-footer"><br></div>
 
 </section>
-</section>
-<section>
-<section id="slide-org7df0bc5">
-<h2 id="org7df0bc5">事後確率による判別</h2>
-<div class="outline-text-2" id="text-org7df0bc5">
-</div>
-</section>
-<section id="slide-org622dc3c">
-<h3 id="org622dc3c">Bayes の公式</h3>
+<section id="slide-org58e3e69" data-background="#fef4f4">
+<h3 id="org58e3e69">   </h3>
 <ul>
 <li><p>
-\(f_k(\boldsymbol{x})\) から \(p_k(\boldsymbol{x})\) を得る数学的原理
+Bayes          
 </p>
 <blockquote>
 <p>
-<b>原因 \(X=\boldsymbol{x}\) から結果 \(Y=k\) が生じる確率</b>
-を
-<b>結果 \(Y=k\) が生じた原因が \(X=\boldsymbol{x}\) である確率</b>
-から計算する方法
+              
+</p>
+<div>
+\begin{equation}
+  P(A|B)
+  =\frac{P(A)P(B|A)}{P(B)}
+\end{equation}
+
+</div>
+
+<p>
+        
+</p>
+<div>
+\begin{equation}
+  P(Y=k|X=x)
+  =\frac{P(Y=k)P(X=x|Y=k)}{P(X=x)}
+\end{equation}
+
+</div>
+
+<p>
+         
+</p>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org2943e53">
+<h2 id="org2943e53">         </h2>
+<div class="outline-text-2" id="text-org2943e53">
+</div>
+</section>
+<section id="slide-org64d49ff">
+<h3 id="org64d49ff">Bayes    </h3>
+<ul>
+<li><p>
+\(f_{k}(\boldsymbol{x})\)    \(p_{k}(\boldsymbol{x})\)         
+</p>
+<blockquote>
+<p>
+<b>   \(X=\boldsymbol{x}\)      \(Y=k\)       </b>
+ 
+<b>   \(Y=k\)         \(X=\boldsymbol{x}\)      </b>
+        
 </p>
 </blockquote></li>
 <li><p>
-Bayes の公式 (Bayes&rsquo; formula)
+Bayes     (Bayes&rsquo; formula)
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  p_k(\boldsymbol{x})
+  p_{k}(\boldsymbol{x})
   =
   P(Y=k|X=\boldsymbol{x})
   =
-  \frac{f_k(\boldsymbol{x})P(Y=k)}{\sum_{l=1}^{k}f_l(\boldsymbol{x})P(Y=l)}
+  \frac{f_{k}(\boldsymbol{x})P(Y=k)}{\sum_{l=1}^{k}f_l(\boldsymbol{x})P(Y=l)}
 \end{equation}
 
 </div>
@@ -275,16 +314,16 @@ Bayes の公式 (Bayes&rsquo; formula)
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgad0b62e">
-<h3 id="orgad0b62e">Bayes の公式の略証</h3>
+<section id="slide-org4681dda">
+<h3 id="org4681dda">Bayes       </h3>
 <ul>
 <li><p>
-定義より
+    
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  f_k(\boldsymbol{x})
+  f_{k}(\boldsymbol{x})
   =
   P(X=\boldsymbol{x}|Y=k)
   =
@@ -294,16 +333,16 @@ Bayes の公式 (Bayes&rsquo; formula)
 </div>
 </blockquote></li>
 <li><p>
-求める条件付確率:
+        :
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  p_k(\boldsymbol{x})
+  p_{k}(\boldsymbol{x})
   =
   P(Y=k|X=\boldsymbol{x})
   =
-  \frac{f_k(\boldsymbol{x})P(Y=k)}{P(X=\boldsymbol{x})}
+  \frac{f_{k}(\boldsymbol{x})P(Y=k)}{P(X=\boldsymbol{x})}
 \end{equation}
 
 </div>
@@ -316,7 +355,7 @@ Bayes の公式 (Bayes&rsquo; formula)
 <section>
 <ul>
 <li><p>
-分母の展開:
+     :
 </p>
 <blockquote>
 <div>
@@ -335,37 +374,37 @@ Bayes の公式 (Bayes&rsquo; formula)
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgbef3616">
-<h3 id="orgbef3616">事前確率と事後確率</h3>
+<section id="slide-org81d28e5">
+<h3 id="org81d28e5">         </h3>
 <ul>
-<li><b>事前確率</b>: \(\pi_k=P(Y=k)\) (prior probability)
+<li><b>    </b>: \(\pi_{k}=P(Y=k)\) (prior probability)
 <ul>
-<li>\(X=\boldsymbol{x}\) が与えられる前に予測されるクラス確率</li>
+<li>\(X=\boldsymbol{x}\)                   </li>
 
 </ul></li>
-<li><b>事後確率</b>: \(p_k(\boldsymbol{x})\) (posterior probability)
+<li><b>    </b>: \(p_{k}(\boldsymbol{x})\) (posterior probability)
 <ul>
-<li>\(X=\boldsymbol{x}\) が与えられた後に予測されるクラス確率</li>
+<li>\(X=\boldsymbol{x}\)                   </li>
 
 </ul></li>
 <li><p>
-Bayes の公式による書き換え:
+Bayes           :
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  p_k(\boldsymbol{x})
+  p_{k}(\boldsymbol{x})
   =
-  \frac{f_k(\boldsymbol{x})\pi_k}{\sum_{l=1}^{k}f_l(\boldsymbol{x})\pi_l}
+  \frac{f_{k}(\boldsymbol{x})\pi_{k}}{\sum_{l=1}^{k}f_l(\boldsymbol{x})\pi_l}
   =
-  \frac{f_k(\boldsymbol{x})}{\sum_{l=1}^{k}f_l(\boldsymbol{x})\pi_l}
-  \cdot\pi_k
+  \frac{f_{k}(\boldsymbol{x})}{\sum_{l=1}^{k}f_l(\boldsymbol{x})\pi_l}
+  \cdot\pi_{k}
 \end{equation}
 
 </div>
 </blockquote>
 <ul>
-<li>事前確率が説明変数の条件付確率の重みで変更される</li>
+<li>                        </li>
 
 </ul></li>
 
@@ -373,36 +412,36 @@ Bayes の公式による書き換え:
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org3c96a8e">
-<h3 id="org3c96a8e">事前確率の決め方</h3>
+<section id="slide-org2a8eb31">
+<h3 id="org2a8eb31">        </h3>
 <ul>
 <li><p>
-事前に特別な情報がない場合:
+             :
 </p>
 <blockquote>
 <p>
-データから自然に決まる確率
+             
 </p>
 <div>
 \begin{equation}
-  \pi_k
+  \pi_{k}
   =
-  \frac{\text{\(Y=k\)のサンプル数}}{\text{全サンプル数}}
+  \frac{\text{\(Y=k\)      }}{\text{      }}
 \end{equation}
 
 </div>
 </blockquote></li>
 <li><p>
-事前に情報がある場合 (<span style="color:darkgreen;">例</span>): 
+           (<span style="color:darkgreen;"> </span>): 
 </p>
 <blockquote>
 <p>
-食事・運動・飲酒・ストレスなどの生活の特徴から生活習慣病か否かを判別
+                                  
 </p>
 <ul>
-<li>健常者の食事・運動・飲酒・ストレスなどの特徴量を収集</li>
-<li>罹患者の食事・運動・飲酒・ストレスなどの特徴量を収集</li>
-<li>事前確率は <b>別の調査の日本人の罹患率</b> を利用</li>
+<li>                          </li>
+<li>                          </li>
+<li>      <b>            </b>    </li>
 
 </ul>
 </blockquote></li>
@@ -414,32 +453,32 @@ Bayes の公式による書き換え:
 </section>
 </section>
 <section>
-<section id="slide-org3fcb41b">
-<h2 id="org3fcb41b">線形判別分析</h2>
-<div class="outline-text-2" id="text-org3fcb41b">
+<section id="slide-org9abc4bc">
+<h2 id="org9abc4bc">      </h2>
+<div class="outline-text-2" id="text-org9abc4bc">
 </div>
 </section>
-<section id="slide-org77f854d">
-<h3 id="org77f854d">判別関数</h3>
+<section id="slide-org0e36ce6">
+<h3 id="org0e36ce6">    </h3>
 <ul>
-<li>判別の手続き
+<li>      
 <ol>
-<li>説明変数 \(X=\boldsymbol{x}\) の取得</li>
-<li>事後確率 \(p_k(\boldsymbol{x})\) の計算</li>
-<li>事後確率最大のクラスにデータを分類</li>
+<li>     \(X=\boldsymbol{x}\)    </li>
+<li>     \(p_{k}(\boldsymbol{x})\)    </li>
+<li>                 </li>
 
 </ol></li>
 <li><p>
-<b>判別関数</b>: \(\delta_k(\boldsymbol{x})\) (\(k=1,\dots,K\))
+<b>    </b>: \(\delta_{k}(\boldsymbol{x})\) (\(k=1,\dots,K\))
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  p_k(\boldsymbol{x}) 
+  p_{k}(\boldsymbol{x}) 
   < 
   p_l(\boldsymbol{x})
   \Leftrightarrow
-  \delta_k(\boldsymbol{x})
+  \delta_{k}(\boldsymbol{x})
   <
   \delta_l(\boldsymbol{x})
 \end{equation}
@@ -447,33 +486,33 @@ Bayes の公式による書き換え:
 </div>
 </blockquote>
 <ul>
-<li>事後確率の順序を保存する計算しやすい関数</li>
+<li>                    </li>
 
 </ul></li>
-<li>判別関数 \(\delta_k(\boldsymbol{x})\) を最大化するクラス \(k\) に分類</li>
+<li>     \(\delta_{k}(\boldsymbol{x})\)           \(k\)    </li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org137c00d">
-<h3 id="org137c00d">線形判別</h3>
+<section id="slide-org7f716f3">
+<h3 id="org7f716f3">    </h3>
 <ul>
-<li>\(f_k(\boldsymbol{x})\) の仮定:
+<li>\(f_{k}(\boldsymbol{x})\)    :
 <ul>
-<li>\(q\) 変量正規分布の密度関数</li>
-<li>平均ベクトル \(\boldsymbol{\mu}_k\): クラスごとに異なる</li>
+<li>\(q\)            </li>
+<li>       \(\boldsymbol{\mu}_{k}\):          </li>
 <li><p>
-共分散行列 \(\Sigma\): すべてのクラスで共通
+      \(\Sigma\):           
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  f_k(\boldsymbol{x})
+  f_{k}(\boldsymbol{x})
   =
   \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma}}
-  \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
-    \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
+  \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+    \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})\right)
 \end{equation}
 
 </div>
@@ -481,17 +520,17 @@ Bayes の公式による書き換え:
 
 </ul></li>
 <li><p>
-線形判別関数: \(\boldsymbol{x}\) の1次式
+      : \(\boldsymbol{x}\)  1  
 </p>
 
 <blockquote>
 <div>
 \begin{equation}
-  \delta_k(\boldsymbol{x})
+  \delta_{k}(\boldsymbol{x})
   =
-  \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
-  -\frac{1}{2}\boldsymbol{\mu}_k^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
-  +\log\pi_k
+  \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_{k}
+  -\frac{1}{2}\boldsymbol{\mu}_{k}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_{k}
+  +\log\pi_{k}
 \end{equation}
 
 </div>
@@ -501,37 +540,37 @@ Bayes の公式による書き換え:
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgefb75a7">
-<h3 id="orgefb75a7">平均・分散の推定</h3>
+<section id="slide-org5140585">
+<h3 id="org5140585">        </h3>
 <ul>
 <li><p>
-平均の推定 (クラスごとに行う)
+      (        )
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  \hat{\boldsymbol{\mu}}_k
+  \hat{\boldsymbol{\mu}}_{k}
   =
-  \frac{1}{n_k}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
+  \frac{1}{n_{k}}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
 \end{equation}
 
 </div>
 </blockquote>
 <ul>
-<li>ただし \(n_k\) は \(y_{i}=k\) であるようなデータの総数</li>
+<li>    \(n_{k}\)   \(y_{i}=k\)             </li>
 
 </ul></li>
 <li><p>
-分散の推定 (まとめて行う)
+      (      )
 </p>
 <blockquote>
 <div>
 \begin{equation}
   \hat{\Sigma}
   =
-  \frac{1}{n-K}\sum_{k=1}^{k}\sum_{i:y_{i}=k}
-  (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_k)
-  (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_k)^{\mathsf{T}}  
+  \frac{1}{n{-}K}\sum_{k=1}^{K}\sum_{i:y_{i}=k}
+  (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})
+  (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})^{\mathsf{T}}  
 \end{equation}
 
 </div>
@@ -544,40 +583,40 @@ Bayes の公式による書き換え:
 </section>
 </section>
 <section>
-<section id="slide-org656a5fe" data-background="#fef4f4">
-<h2 id="org656a5fe">演習</h2>
+<section id="slide-org87bbd70" data-background="#fef4f4">
+<h2 id="org87bbd70">  </h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org164e0f8" data-background="#fef4f4">
-<h3 id="org164e0f8">問題</h3>
+<section id="slide-org12b5abb" data-background="#fef4f4">
+<h3 id="org12b5abb">  </h3>
 <ul>
-<li>以下の問に答えなさい
+<li>          
 <ul>
 <li><p>
-\(X\)の条件付確率 \(f_k(\boldsymbol{x})\) に関する仮定:
+\(X\)       \(f_{k}(\boldsymbol{x})\)       :
 </p>
 <ul>
-<li>\(q\) 変量正規分布の密度関数</li>
-<li>平均ベクトル \(\boldsymbol{\mu}_k\): クラスごとに異なる</li>
-<li>共分散行列 \(\Sigma\): すべてのクラスで共通</li>
+<li>\(q\)            </li>
+<li>       \(\boldsymbol{\mu}_{k}\):          </li>
+<li>      \(\Sigma\):           </li>
 
 </ul>
 <p>
-のもとで
-事後確率と線形判別関数の同値性
+    
+               
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  p_k(\boldsymbol{x}) < p_l(\boldsymbol{x})
+  p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})
   \Leftrightarrow
-  \delta_k(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+  \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
 \end{equation}
 
 </div>
 </blockquote>
 <p>
-を示しなさい
+      
 </p></li>
 
 </ul></li>
@@ -586,31 +625,65 @@ Bayes の公式による書き換え:
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-org6113644" data-background="#fef4f4">
+<h3 id="org6113644">   </h3>
+<ul>
+<li><p>
+              
+</p>
+<blockquote>
+<div>
+\begin{align}
+  &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
+  &\Leftrightarrow
+    f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
+  &\qquad\text{(     )}\\
+  &\Leftrightarrow
+    \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
+  &\Leftrightarrow
+    -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+    \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})+\log\pi_{k}\\
+  &\phantom{\Leftrightarrow}\quad < 
+    -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
+    \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)+\log\pi_l\\
+  &\qquad\text{(2            )}\\
+  &\Leftrightarrow
+    \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-org94fcd76">
-<h2 id="org94fcd76">2次判別分析</h2>
-<div class="outline-text-2" id="text-org94fcd76">
+<section id="slide-org831d899">
+<h2 id="org831d899">2     </h2>
+<div class="outline-text-2" id="text-org831d899">
 </div>
 </section>
-<section id="slide-org5e53152">
-<h3 id="org5e53152">2次判別</h3>
+<section id="slide-orga003a7f">
+<h3 id="orga003a7f">2   </h3>
 <ul>
-<li>\(f_k(\boldsymbol{x})\) の仮定:
+<li>\(f_{k}(\boldsymbol{x})\)    :
 <ul>
-<li>\(q\) 変量正規分布の密度関数</li>
-<li>平均ベクトル \(\boldsymbol{\mu}_k\): クラスごとに異なる</li>
+<li>\(q\)            </li>
+<li>       \(\boldsymbol{\mu}_{k}\):          </li>
 <li><p>
-共分散行列 \(\Sigma_k\): <b>クラスごとに異なる</b>
+      \(\Sigma_{k}\): <b>         </b>
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  f_k(\boldsymbol{x})
+  f_{k}(\boldsymbol{x})
   =
-  \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_k}}
-  \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
-    \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
+  \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_{k}}}
+  \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+    \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})\right)
 \end{equation}
 
 </div>
@@ -618,17 +691,17 @@ Bayes の公式による書き換え:
 
 </ul></li>
 <li><p>
-2次判別関数: \(\boldsymbol{x}\) の2次式
+2     : \(\boldsymbol{x}\)  2  
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  \delta_k(\boldsymbol{x})
+  \delta_{k}(\boldsymbol{x})
   =
-  -\frac{1}{2}\det\Sigma_k
-  -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
-  \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)
-  +\log\pi_k
+  -\frac{1}{2}\det\Sigma_{k}
+  -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+  \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
+  +\log\pi_{k}
 \end{equation}
 
 </div>
@@ -638,37 +711,37 @@ Bayes の公式による書き換え:
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org056ab52">
-<h3 id="org056ab52">平均・分散の推定</h3>
+<section id="slide-org45a1b03">
+<h3 id="org45a1b03">        </h3>
 <ul>
 <li><p>
-平均の推定 (クラスごとに行う)
+      (        )
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  \hat{\boldsymbol{\mu}}_k
+  \hat{\boldsymbol{\mu}}_{k}
   =
-  \frac{1}{n_k}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
+  \frac{1}{n_{k}}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
 \end{equation}
 
 </div>
+</blockquote>
+<ul>
+<li>    \(n_{k}\)   \(y_{i}=k\)             </li>
 
-<p>
-だたし \(n_k\) は \(y_{i}=k\) であるようなデータの総数
-</p>
-</blockquote></li>
+</ul></li>
 <li><p>
-分散の推定 (クラスごとに行う)
+      (        )
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  \hat{\Sigma}_k
+  \hat{\Sigma}_{k}
   =
-  \frac{1}{n_k-1}\sum_{i:y_{i}=k}
-  (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_k)
-  (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_k)^{\mathsf{T}}
+  \frac{1}{n_{k}-1}\sum_{i:y_{i}=k}
+  (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})
+  (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})^{\mathsf{T}}
 \end{equation}
 
 </div>
@@ -681,40 +754,40 @@ Bayes の公式による書き換え:
 </section>
 </section>
 <section>
-<section id="slide-org170c9b9" data-background="#fef4f4">
-<h2 id="org170c9b9">演習</h2>
+<section id="slide-orge0f29c9" data-background="#fef4f4">
+<h2 id="orge0f29c9">  </h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org32b6d71" data-background="#fef4f4">
-<h3 id="org32b6d71">問題</h3>
+<section id="slide-org5bd5769" data-background="#fef4f4">
+<h3 id="org5bd5769">  </h3>
 <ul>
-<li>以下の問に答えなさい
+<li>          
 <ul>
 <li><p>
-\(X\)の条件付確率 \(f_k(\boldsymbol{x})\) に関する仮定:
+\(X\)       \(f_{k}(\boldsymbol{x})\)       :
 </p>
 <ul>
-<li>\(q\) 変量正規分布の密度関数</li>
-<li>平均ベクトル \(\boldsymbol{\mu}_k\): クラスごとに異なる</li>
-<li>共分散行列 \(\Sigma_k\): クラスごとに異なる</li>
+<li>\(q\)            </li>
+<li>       \(\boldsymbol{\mu}_{k}\):          </li>
+<li>      \(\Sigma_{k}\):          </li>
 
 </ul>
 <p>
-のもとで
-事後確率と2次判別関数の同値性
+    
+     2         
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  p_k(\boldsymbol{x}) < p_l(\boldsymbol{x})
+  p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})
   \Leftrightarrow
-  \delta_k(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+  \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
 \end{equation}
 
 </div>
 </blockquote>
 <p>
-を示しなさい
+      
 </p></li>
 
 </ul></li>
@@ -723,32 +796,68 @@ Bayes の公式による書き換え:
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-org136d66a" data-background="#fef4f4">
+<h3 id="org136d66a">   </h3>
+<ul>
+<li><p>
+              
+</p>
+<blockquote>
+<div>
+\begin{align}
+  &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
+  &\Leftrightarrow 
+    f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
+  &\Leftrightarrow
+    \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
+  &\Leftrightarrow
+    -\frac{1}{2}\det\Sigma_{k}
+    -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+    \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
+    +\log\pi_{k}\\
+  &\phantom{\Leftrightarrow}\quad <
+    -\frac{1}{2}\det\Sigma_l
+    -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
+    \Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
+    +\log\pi_l\\
+  &\Leftrightarrow
+    \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-org47db23d">
-<h2 id="org47db23d">多値判別</h2>
-<div class="outline-text-2" id="text-org47db23d">
+<section id="slide-orgc71fe76">
+<h2 id="orgc71fe76">    </h2>
+<div class="outline-text-2" id="text-orgc71fe76">
 </div>
 </section>
-<section id="slide-org90d9edc">
-<h3 id="org90d9edc">多値判別の考え方</h3>
+<section id="slide-org468a925">
+<h3 id="org468a925">         </h3>
 <ul>
-<li>判別関数の比較
+<li>       
 <ul>
-<li>判別関数 \(\delta_k\) を比較</li>
-<li>正規分布を仮定する場合は一般には2次判別</li>
+<li>     \(\delta_{k}\)    </li>
+<li>                2   </li>
 
 </ul></li>
-<li>2値判別の統合
+<li>2      
 <ul>
-<li>クラスでの比較: 最大の組合せ数 \({}_qC_2\)</li>
-<li>グループでの比較: 最大の組合せ数 \(2^{q}-2\)</li>
+<li>2       :         \({}_{K}C_{2}\)</li>
+<li>        :         \(2^{K}-2\)</li>
 
 </ul></li>
-<li>\(K-1\) 個の特徴量への変換
+<li>\(K{-}1\)          
 <ul>
-<li>説明変数の線形結合による特徴量の構成</li>
-<li>Fisher の線形判別</li>
+<li>                  </li>
+<li><b>Fisher      </b></li>
 
 </ul></li>
 
@@ -756,31 +865,31 @@ Bayes の公式による書き換え:
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgbab43cd">
-<h3 id="orgbab43cd">変動の分解</h3>
+<section id="slide-org6e2889d">
+<h3 id="org6e2889d">     </h3>
 <ul>
-<li>3種類の変動
+<li>3     
 <ul>
 <li>\(A=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu})(\boldsymbol{x}_{i}-\boldsymbol{\mu})^{\mathsf{T}}\):
-全変動</li>
+   </li>
 <li>\(W=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}\):
-群内変動</li>
+    </li>
 <li>\(B=\sum_{k=1}^{K}n_{k}(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}\):
-群間変動 <br />
-(\(n_{k}\) はクラス \(k\) のデータ数)</li>
+     <br />
+(\(n_{k}\)      \(k\)      )</li>
 
 </ul></li>
 <li><p>
-変動の関係
+     
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  \text{(全変動)}
+  \text{(   )}
   =
-  \text{(群内変動)}
+  \text{(    )}
   +
-  \text{(群間変動)}
+  \text{(    )}
 \end{equation}
 
 </div>
@@ -799,18 +908,18 @@ Bayes の公式による書き換え:
 </section>
 </section>
 <section>
-<section id="slide-org7ef1f5b" data-background="#fef4f4">
-<h2 id="org7ef1f5b">演習</h2>
+<section id="slide-org8e159da" data-background="#fef4f4">
+<h2 id="org8e159da">  </h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org6c3d263" data-background="#fef4f4">
-<h3 id="org6c3d263">問題</h3>
+<section id="slide-org8fc137e" data-background="#fef4f4">
+<h3 id="org8fc137e">  </h3>
 <ul>
-<li>以下の問に答えなさい
+<li>          
 <ul>
-<li>全変動が群内・群間変動に分解されることを示しなさい</li>
+<li>                         </li>
 <li><p>
-説明変数の線形結合で新たな特徴量を構成する
+                     
 </p>
 <blockquote>
 <div>
@@ -821,7 +930,7 @@ Bayes の公式による書き換え:
 </div>
 </blockquote>
 <p>
-このとき\(Z\)の群内変動と群間変動を求めなさい
+    \(Z\)                
 </p></li>
 
 </ul></li>
@@ -830,25 +939,137 @@ Bayes の公式による書き換え:
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-orgc4f19d9" data-background="#fef4f4">
+<h3 id="orgc4f19d9">   </h3>
+<ul>
+<li><p>
+          
+</p>
+<blockquote>
+<div>
+\begin{align}
+  A
+  &=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu})
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu})^{\mathsf{T}}\\
+  &=
+    \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}}+\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}}+\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}\\
+  &=
+    \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+    +
+    \sum_{i=1}^{n}(\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
+    (\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}\\
+  &\quad
+    +\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+    (\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}
+    +\sum_{i=1}^{n}(\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+          
+</p>
+<blockquote>
+<div>
+\begin{align}
+  &=
+    \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+    +
+    \sum_{k=1}^{K}\sum_{i:y_{i}=k}
+    (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
+    (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}\\
+  &\quad
+    +\sum_{k=1}^{K}\sum_{i:y_{i}=k}
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{k})
+    (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}
+    +\sum_{k=1}^{K}\sum_{i:y_{i}=k}
+    (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{k})^{\mathsf{T}}\\
+  &=
+    \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+    +
+    \sum_{k=1}^{K}n_{k}(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
+    (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}\\
+  &=
+    W+B
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+          
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \sum_{i=1}^{n}
+  (z_{i}-\mu_{y_{i}})^{2}
+  &=
+    \sum_{i=1}^{n}
+    (z_{i}-\mu_{y_{i}})(z_{i}-\mu_{y_{i}})\\
+  &=
+    \sum_{i=1}^{n}(\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{x}_{i}
+    -\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{\mu}_{y_{i}})
+    (\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{x}_{i}
+    -\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}\\
+  &=
+    \boldsymbol{\alpha}^{\mathsf{T}}
+    \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+    (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+    \boldsymbol{\alpha}
+    =
+    \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}\\
+  \sum_{k=1}^{K}n_{k}(\mu_{k}-\mu)^{2}
+  &=
+    \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-org217fa17">
-<h2 id="org217fa17">Fisher の判別分析</h2>
-<div class="outline-text-2" id="text-org217fa17">
+<section id="slide-org3324a8f">
+<h2 id="org3324a8f">Fisher      </h2>
+<div class="outline-text-2" id="text-org3324a8f">
 </div>
 </section>
-<section id="slide-org2053c86">
-<h3 id="org2053c86">Fisherの線形判別</h3>
+<section id="slide-org061fffe">
+<h3 id="org061fffe">Fisher     </h3>
 <ul>
-<li>判別のための特徴量 \(Z=\boldsymbol{\alpha}^{\mathsf{T}} X\)</li>
-<li>良い \(Z\) の基準:
+<li>          \(Z=\boldsymbol{\alpha}^{\mathsf{T}} X\)</li>
+<li>   \(Z\)    :
 <ul>
-<li>クラス内では集まっているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}\)は小)</li>
-<li>クラス間では離れているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}\)は大)</li>
+<li>                 (\(\boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}\)  )</li>
+<li>                (\(\boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}\)  )</li>
 
 </ul></li>
 <li><p>
-Fisherの基準:
+Fisher   :
 </p>
 <blockquote>
 <div>
@@ -860,7 +1081,7 @@ Fisherの基準:
 </div>
 
 <p>
-クラス内変動を一定にしてクラス間変動を最大化する
+                        
 </p>
 </blockquote></li>
 
@@ -868,13 +1089,13 @@ Fisherの基準:
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orge312a46">
-<h3 id="orge312a46">Fisherの線形判別の解</h3>
+<section id="slide-org19fae0d">
+<h3 id="org19fae0d">Fisher       </h3>
 <ul>
-<li>\(\boldsymbol{\alpha}\) は \(W^{-1}B\) の固有値 (主成分分析の導出と同様)
+<li>\(\boldsymbol{\alpha}\)   \(W^{-1}B\)      (           )
 <ul>
 <li><p>
-\(K=2\) の場合: 最大固有値を用いる (線形判別と一致)
+\(K=2\)    :           (       )
 </p>
 <blockquote>
 <div>
@@ -884,15 +1105,15 @@ Fisherの基準:
 
 </div>
 </blockquote></li>
-<li>一般の \(K\) の場合: 第1から第 \(K-1\) 固有値を用いる</li>
+<li>    \(K\)    :  1    \(K{-}1\)        </li>
 
 </ul></li>
-<li>判別の手続き: <br />
-特徴量とクラスの中心までの距離を用いる
+<li>      : <br />
+                   
 <ol>
-<li>\(d_{k}=\sum_{l=1}^{K-1}(\boldsymbol{\alpha}_l^{\mathsf{T}}\boldsymbol{x}-\boldsymbol{\alpha}_l^{\mathsf{T}}\boldsymbol{\mu}_k)^2\) 
-を計算</li>
-<li>最小の \(d_{k}\) となるクラス \(k\) に判別</li>
+<li>\(d_{k}=\sum_{l=1}^{K{-}1}(\boldsymbol{\alpha}_l^{\mathsf{T}}\boldsymbol{x}-\boldsymbol{\alpha}_l^{\mathsf{T}}\boldsymbol{\mu}_{k})^2\) 
+   </li>
+<li>    \(d_{k}\)        \(k\)    </li>
 
 </ol></li>
 
@@ -903,17 +1124,17 @@ Fisherの基準:
 </section>
 </section>
 <section>
-<section id="slide-org9c7ae4e">
-<h2 id="org9c7ae4e">解析の事例</h2>
+<section id="slide-org95064f5">
+<h2 id="org95064f5">     </h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0bc4702">
-<h3 id="org0bc4702">データについて</h3>
+<section id="slide-org8a1c6ef">
+<h3 id="org8a1c6ef">       </h3>
 <ul>
-<li>気象庁より取得した東京の気候データ <br />
+<li>                  <br />
 <ul>
-<li>気象庁 <a href="https://www.data.jma.go.jp/gmd/risk/obsdl/index.php">https://www.data.jma.go.jp/gmd/risk/obsdl/index.php</a></li>
-<li>データ <a href="https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather_reg.csv">https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather_reg.csv</a></li>
+<li>    <a href="https://www.data.jma.go.jp/gmd/risk/obsdl/index.php">https://www.data.jma.go.jp/gmd/risk/obsdl/index.php</a></li>
+<li>    <a href="https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv">https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv</a></li>
 
 </ul></li>
 
@@ -921,21 +1142,21 @@ Fisherの基準:
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orge0a17b5">
-<h3 id="orge0a17b5">気温と湿度による月の判別</h3>
+<section id="slide-orgf037eed">
+<h3 id="orgf037eed">            </h3>
 <ul>
 <li><p>
-10,11月のデータの散布図
+10,11         
 </p></li>
 
 </ul>
 
 
 
-<div id="org99a55cc" class="figure">
+<div id="org6c2f069" class="figure">
 <p><img src="figs/08_pairs.png" alt="08_pairs.png" />
 </p>
-<p><span class="figure-number">Figure 1: </span>散布図</p>
+<p><span class="figure-number">Figure 1: </span>   </p>
 </div>
 
 <div class="slide-footer"><br></div>
@@ -943,17 +1164,17 @@ Fisherの基準:
 <section>
 <ul>
 <li><p>
-線形判別
+     (2 )
 </p></li>
 
 </ul>
 
 
 
-<div id="orgf968d9e" class="figure">
+<div id="org8b183f1" class="figure">
 <p><img src="figs/08_lda.png" alt="08_lda.png" />
 </p>
-<p><span class="figure-number">Figure 2: </span>線形判別</p>
+<p><span class="figure-number">Figure 2: </span>     (      )</p>
 </div>
 
 <div class="slide-footer"><br></div>
@@ -961,16 +1182,16 @@ Fisherの基準:
 <section>
 <ul>
 <li><p>
-2次判別
+2    (2 )
 </p></li>
 
 </ul>
 
 
-<div id="org303e932" class="figure">
+<div id="org2d1ff24" class="figure">
 <p><img src="figs/08_qda.png" alt="08_qda.png" />
 </p>
-<p><span class="figure-number">Figure 3: </span>2次判別</p>
+<p><span class="figure-number">Figure 3: </span>2   </p>
 </div>
 
 <div class="slide-footer"><br></div>
@@ -978,16 +1199,16 @@ Fisherの基準:
 <section>
 <ul>
 <li><p>
-9,10,11月の多値判別
+Fisher      (  )
 </p></li>
 
 </ul>
 
 
-<div id="org9a0a05a" class="figure">
+<div id="orgb24a804" class="figure">
 <p><img src="figs/08_multi.png" alt="08_multi.png" />
 </p>
-<p><span class="figure-number">Figure 4: </span>多値判別</p>
+<p><span class="figure-number">Figure 4: </span>    </p>
 </div>
 <div class="slide-footer"><br></div>
 
@@ -995,11 +1216,11 @@ Fisherの基準:
 </section>
 </section>
 <section>
-<section id="slide-org9da7a41">
-<h2 id="org9da7a41">次週の予定</h2>
+<section id="slide-org36f95a6">
+<h2 id="org36f95a6">     </h2>
 <ul>
-<li>第1日: 判別分析の考え方</li>
-<li><b>第2日: 分析の評価</b></li>
+<li> 1 :         </li>
+<li><b> 2 :      </b></li>
 
 </ul>
 <div class="slide-footer"><br></div>

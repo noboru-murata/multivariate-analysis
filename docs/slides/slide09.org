@@ -1,9 +1,9 @@
 #+TITLE: 判別分析 
-#+SUBTITLE: 評価
+#+SUBTITLE: 分析の評価
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-11-12 15:58:46 mura>
+# Time-stamp: <2021-11-17 11:48:01 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -342,8 +342,8 @@
       F_{\beta}&=\frac{\beta^{2}+1}{{\beta^{2}}/{\text{((再現率)}}+{1}/{\text{(適合率)}}}
     \end{align}
   #+end_src
-  再現率(真陽性率)と適合率の(重み付き)調和平均
   #+end_quote
+  - 再現率(真陽性率)と適合率の(重み付き)調和平均
 
 ** Cohen の kappa 値
 - Cohen's *kappa measure*
@@ -364,27 +364,27 @@
 	1-\frac{1-p_{o}}{1-p_{e}}
     \end{align}
   #+end_src
-  観測された精度と偶然の精度の比較
   #+end_quote
+  - 観測された精度と偶然の精度の比較
 
 
 * 解析の事例
+# 早稲田大学
 ** データについて
 - 気象庁より取得した東京の気候データ \\
   - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
-  - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather_reg.csv
+  - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
 
 ** 気温と湿度による月の判別
 - 温度と湿度による9/10月の線形判別
   #+begin_src R :file figs/09_lda.png :exports results :results graphics :tangle yes
-    ### 東京の気象データによる判別分析v
+    ### 東京の気象データによる判別分析
     library(MASS)
     library(caret)
     myCol <- rainbow(12)[c(2,5,8)]
     ## データの整理
     target <- c(9,10)
-    TW.data <- transform(read.csv("data/tokyo_weather.csv"),
-			 month=as.numeric(substr(as.Date(date),6,7))) 
+    TW.data <- read.csv("data/tokyo_weather.csv")
     TW.subset  <- subset(TW.data,
                          subset= month %in% target,
                          select=c(temp,humid,month))
@@ -479,18 +479,19 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
-  - F-値，再現率，適合率の大小関係はどのようになるか論ぜよ．
+- 以下の問に答えなさい
+  - F-値，再現率，適合率の大小関係はどのようになるか
   - 2値判別(\(P=1,N=0\)とする)において
     正解ラベル\(Y\)と予測ラベル\(\hat{Y}\)の相関係数を
     \(TP,FP,TN,FN\)およびデータ数\(N\)
-    を用いて表せ．
+    を用いて表せ
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -547,8 +548,8 @@
 	\frac{TP\cdot TN - FP\cdot FN}{N^{2}}
     \end{align}
   #+end_src
-  平均は標本平均で置き換えた
   #+end_quote
+  - 平均は標本平均で置き換えた
 
 #+reveal: split
 - 同様に分母の分散は以下のようになる
@@ -579,13 +580,12 @@
       {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
     \end{equation}
   #+end_src
-  これは
-  Matthews correlation coefficient (MCC)
-  と呼ばれる評価指標の一つである
   #+end_quote
+  - これは Matthews correlation coefficient (MCC)
+    と呼ばれる評価指標の一つである
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -633,8 +633,7 @@
   以下を確認しなさい
   - 10月と11月の気温と湿度のデータを抽出する
     #+begin_src R :eval no
-      TW.data <- transform(read.csv("data/tokyo_weather_reg.csv"),
-			   month=substr(as.Date(date),6,7)) # 月を切り出し
+      TW.data <- read.csv("data/tokyo_weather.csv")
       TW.subset  <- transform(subset(TW.data,
 				     subset= month %in% c("10","11"),
 				     select=c(temp,humid,month)),
@@ -663,8 +662,7 @@
 
   ## 10月と11月の判別の例
   ## データの整理
-  TW.data <- transform(read.csv("data/tokyo_weather_reg.csv"),
-                       month=substr(as.Date(date),6,7)) # 月を切り出し
+  TW.data <- read.csv("data/tokyo_weather.csv")
   TW.subset  <- transform(subset(TW.data,
                                  subset= month %in% c("10","11"),
                                  select=c(temp,humid,month)),
@@ -747,7 +745,7 @@
   - \(k=n\) として上記を実行
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -896,8 +894,8 @@
   - 目的変数  (based on sensory data)
     #+begin_quote
     12 - quality (score between 0 and 10) \\
-    (ただし解析では A,B,C の3値に集計)
     #+end_quote
+    - ただし解析では A,B,C の3値に集計
 
 #+reveal: split
 - 実際のデータの一部
@@ -932,9 +930,7 @@
     confusionMatrix(predict(WQ.lda)$class, WQ.data$quality)$table
     confusionMatrix(WQ.ldloo$class, WQ.data$quality)$table
   #+end_src
-  #+begin_quote
-  線形判別の過学習は微小
-  #+end_quote
+  - 線形判別の過学習は微小
 
 #+reveal: split
 - 2次判別 (訓練誤差/予測誤差)
@@ -944,9 +940,7 @@
     confusionMatrix(predict(WQ.qda)$class, WQ.data$quality)$table
     confusionMatrix(WQ.qdloo$class, WQ.data$quality)$table
   #+end_src
-  #+begin_quote
-  2次判別は若干過学習している
-  #+end_quote
+  - 2次判別は若干過学習している
 
 #+reveal: split
 - 予測誤差の比較 (線形/2次)
@@ -958,9 +952,7 @@
     confusionMatrix(WQ.qdloo$class, WQ.data$quality)$overall[1:2]
     confusionMatrix(WQ.qdloo$class, WQ.data$quality)$byClass[,c(1,2,5,6,7)]
   #+end_src
-  #+begin_quote
-  予測誤差の観点からは線形判別の方が良さそう
-  #+end_quote
+  - 予測誤差の観点からは線形判別の方が良さそう
 
 
 * 次週の予定
