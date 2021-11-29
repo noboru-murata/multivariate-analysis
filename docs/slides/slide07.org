@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-11-09 08:32:20 mura>
+# Time-stamp: <2021-11-19 15:34:50 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -419,7 +419,7 @@
 #  - 第1から第 \(k\) までの寄与率の総和
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -462,12 +462,73 @@
       help(UScereal) # 変数名などの詳細はヘルプを参照のこと
     #+end_src
 
+** 各変数の分布 (~japan_social.csv~)
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 変数間の散布図
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/07_pairs_raw.png :exports results :results graphics :tangle yes
+    ## 散布図 (正規化なし)
+    JS.data <- read.csv("data/japan_social.csv", row.names=1)
+    pairs(JS.data, col="orchid") # 座標に注意
+  #+end_src
+
+#+CAPTION: データの散布図
+#+NAME: fig:07_pairs_raw
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_pairs_raw.png]]
+  
+#+reveal: split
+- 変数のばらつきに大きな違いがある
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/07_boxplot_raw.png :exports results :results graphics :tangle yes
+    boxplot(JS.data, col="orchid") # 箱ひげ図．変数のばらつきに大きな違いがある
+  #+end_src
+
+#+CAPTION: 各変数の箱ひげ図
+#+NAME: fig:07_boxplot_raw
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_boxplot_raw.png]]
+   
+** データの正規化
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 各変数の標本平均を0，不偏分散を1に規格化する
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/07_pairs.png :exports results :results graphics :tangle yes
+    ## データの視覚化
+    pairs(scale(JS.data), col="blue") # いくつかの変数は相関が強い
+  #+end_src
+
+#+CAPTION: 正規化したデータの散布図
+#+NAME: fig:07_pairs
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_pairs.png]]
+
+#+reveal: split
+- 変数のばらつきをそろえる
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/07_boxplot.png :exports results :results graphics :tangle yes
+    boxplot(scale(JS.data), col="blue") # 箱ひげ図．変数のばらつきに大きな違いがある
+  #+end_src
+
+#+CAPTION: 各変数の箱ひげ図
+#+NAME: fig:07_boxplot
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/07_boxplot.png]]
+   
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- それぞれのデータにおいて，
-  正規化の有無の違いで寄与率・累積寄与率がどのように異なるか確認しなさい．
+- それぞれのデータにおいて
+  正規化の有無の違いで寄与率・累積寄与率がどのように異なるか確認しなさい
   #+begin_src R :eval no
     prcomp(データフレーム) # 正規化を行わない場合
     prcomp(データフレーム, scale.=TRUE) # 正規化を行う場合
@@ -543,6 +604,7 @@
   - datasets::USArrests
   - MASS::Cars93
   - MASS::UScereal
+
 
 
 * 解析の事例
