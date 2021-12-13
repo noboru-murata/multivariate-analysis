@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-12-06 14:38:50 mura>
+# Time-stamp: <2021-12-13 11:57:30 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -31,7 +31,7 @@
 
 #+begin_src R :eval no :exports none :tangle yes
   ### 
-  ### 第9講 サンプルコード
+  ### 第10講 サンプルコード
   ###
 #+end_src
 #+begin_src R :exports none
@@ -383,11 +383,11 @@
   #+end_quote
 - 距離 : \(d(\boldsymbol{x},\boldsymbol{y})\)
 - 代表的なデータ間の距離 :
-  - ユークリッド距離 (Euclidean distance)
-  - マンハッタン距離 (Manhattan distance)
-  - ミンコフスキー距離 (Minkowski distance)
+  - Euclid 距離 (ユークリッド ; Euclidean distance)
+  - Manhattan 距離 (マンハッタン ; Manhattan distance)
+  - Minkowski 距離 (ミンコフスキー ; Minkowski distance)
 
-** ユークリッド距離
+** Euclide 距離
 - 最も一般的な距離
 - 各成分の差の2乗和の平方根 (2ノルム)
   #+begin_quote
@@ -399,8 +399,8 @@
   #+end_src
   #+end_quote
 
-** マンハッタン距離
-- 後述するミンコフスキー距離の \(p=1\) の場合
+** Manhattan 距離
+- 後述する Minkowski 距離の \(p=1\) の場合
 - 格子状に引かれた路に沿って移動するときの距離
   #+begin_quote
   #+begin_src latex
@@ -411,8 +411,8 @@
   #+end_src
   #+end_quote
 
-** ミンコフスキー距離
-- ユークリッド距離を \(p\) 乗に一般化した距離
+** Minkowski 距離
+- Euclid 距離を \(p\) 乗に一般化した距離
 - 各成分の差の \(p\) 乗和の \(p\) 乗根(\(p\)-ノルム)
   #+begin_quote
   #+begin_src latex
@@ -439,9 +439,9 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - 距離の定義を述べなさい
-  - ミンコフスキー距離において
+  - Minkowski 距離において
     \(p\to\infty\)
     とするとどのような距離となるか答えなさい
     #+begin_quote
@@ -453,7 +453,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -522,7 +522,8 @@
     \end{align}
   #+end_src
   #+end_quote
-  - チェビシェフ距離(最大距離，チェス盤距離)という
+  - Chebyshev 距離(最大距離，チェス盤距離)という
+    # Čebyšëv
 
 #+reveal: split
 - \(p\to-\infty\) の場合は以下となることを確認せよ
@@ -634,6 +635,10 @@
   attr(dsy.euc, "Labels") # 県名を確認 (rownames(JS.data)でも良い)
   as.matrix(dsy.euc)[8:14, 8:14]
   as.matrix(dsy.man)[8:14, 8:14]
+  ## dist/dissimilarity オブジェクトは距離以外の様々な属性 (attributes) を持つ
+  ## str(obj) : オブジェクトの構造(structure)を見る
+  ## attributes(obj) : 属性を表示(変更)する
+  ## attr(obj,属性名) : 特定の属性を表示(変更)する
 
   ## 大阪と四国の間の距離
   as.matrix(dsy.euc)[27, 36:39, drop=FALSE] # 行列として表示
@@ -775,7 +780,7 @@
     #+end_quote
     を導け
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -896,23 +901,32 @@
   JS.clst <- cutree(JS.est, k=k) # デンドログラムを分割
   JS.pref <- rownames(JS.data) # 県名の取得
   for(i in 1:k){
-      cat("<<cluster ",i,">>\n")
+      cat("=== cluster",i,"===\n")
       print(JS.pref[JS.clst==i])
   }
 
   ## 主成分分析を併用して表示 (参考)
   JS.pca <- prcomp(JS.data, scale.=TRUE) # データを正規化      
   plot(predict(JS.pca),
-       pch=JS.clst, col=JS.clst) # クラスタ毎に色と形を変える
-  text(predict(JS.pca),
-       labels=rownames(JS.data), col="orchid", cex=0.8) # 県名を表示
+       pch=JS.clst, # クラスタ毎に形を変える
+       col="gray") 
+  text(predict(JS.pca), 
+       labels=paste0("  ",rownames(JS.data)), # 空白を加えて県名を表示
+       adj=c(0,0.5), # ラベルの位置をxは右寄せ(0)，yは真中(0.5)に指定
+       col=JS.clst, # クラスタ毎に色を変える
+       cex=0.8) # 文字の大きさを調整
   ## 最大クラスタを再評価
   table(JS.clst) # 最大を確認
   m <- which.max(table(JS.clst)) # 最大クラスタの番号を取り出す
-  JS.pca <- prcomp(JS.data[JS.clst==m,], scale.=TRUE) 
-  plot(predict(JS.pca), col=m)
+  JS.pca <- prcomp(JS.data[JS.clst==m,], scale.=TRUE) # 最大クラスタのみ処理
+  plot(predict(JS.pca),
+       pch=m, # クラスタの形を指定
+       col="gray") 
   text(predict(JS.pca),
-       labels=rownames(JS.data[JS.clst==m,]), col="orchid", cex=0.8) 
+       labels=paste0("  ",rownames(JS.data[JS.clst==m,])),
+       adj=c(0,0.5), 
+       col=m, # クラスタの色を指定
+       cex=0.8) 
 #+end_src
 
 ** R: 関数 ~cluster::agnes()~ 
