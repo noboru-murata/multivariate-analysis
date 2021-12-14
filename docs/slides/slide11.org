@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-12-13 11:46:37 mura>
+# Time-stamp: <2021-12-14 10:06:34 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content
@@ -136,19 +136,19 @@
   *集まり=クラスタ*
   を個体間の"距離"にもとづいて発見する方法
   #+end_quote
-- 個体間の類似度・距離(非類似度)を定義:
+- 個体間の類似度・距離(非類似度)を定義 :
   - 同じクラスタに属する個体どうしは似通った性質
   - 異なるクラスタに属する個体どうしは異なる性質
 - さらなるデータ解析やデータの可視化に利用
 - 教師なし学習の代表的な手法の一つ
 
 ** クラスタ分析の考え方
-- 階層的方法:
+- 階層的方法 :
   - データ点およびクラスタの間に *距離* を定義
   - 距離に基づいてグループ化:
     - 近いものから順にクラスタを *凝集*
     - 近いものが同じクラスタに残るように *分割*
-- 非階層的方法:
+- 非階層的方法 :
   - クラスタの数を事前に指定
   - クラスタの *集まりの良さ* を評価する損失関数を定義
   - 損失関数を最小化するようにクラスタを形成
@@ -227,8 +227,8 @@
    
 * 非階層的方法
 ** 非階層的方法の手続き
-- 対象の変数: \(\boldsymbol{X}=(X_1,X_2,\dotsc,X_{d})^{\mathsf{T}}\) (\(d\)次元)
-- 観測データ: \(n\) 個の個体の組
+- 対象の変数 : \(\boldsymbol{X}=(X_1,X_2,\dotsc,X_{d})^{\mathsf{T}}\) (\(d\)次元)
+- 観測データ : \(n\) 個の個体の組
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -238,7 +238,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 個体とクラスタの対応 \(C\) を推定:
+- 個体とクラスタの対応 \(C\) を推定 :
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -265,7 +265,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 損失関数 \(W(C)\): クラスタ内の平均の近さを評価
+- 損失関数 \(W(C)\) : クラスタ内の平均の近さを評価
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -278,7 +278,7 @@
   # (\(n_l\) はクラスタ \(l\) に属する個体の総数)
 
 ** \(k\)-平均法の性質
-- クラスタ \(l\) に属する個体の平均:
+- クラスタ \(l\) に属する個体の平均 :
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -288,7 +288,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 損失関数 \(W(C)\) の等価な表現:
+- 損失関数 \(W(C)\) の等価な表現 :
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -298,7 +298,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 最適な対応 \(C\): クラスタ内変動の総和が最小
+- 最適な対応 \(C\) : クラスタ内変動の総和が最小
 
 
 * 演習
@@ -310,7 +310,7 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - 損失関数 \(W(C)\) の等価な表現を示しなさい
     #+begin_quote
     #+begin_src latex
@@ -334,7 +334,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -985,7 +985,7 @@
 - banner plot: \((1-{d_i}/{D})\) をデータ毎に並べた棒グラフ
 - banner plot の面積比として視覚化 
 
-** COMMENT 非階層的方法の評価
+** 非階層的方法の評価
 - 評価の対象
   - \(\boldsymbol{x}_i\) を含むクラスタ \(C^1\) と \(\boldsymbol{x}_i\) の距離:
     #+begin_quote
@@ -1052,7 +1052,7 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下の問に答えなさい．
+- 以下の問に答えなさい
   - 群平均法において凝集係数が以下を満たすことを示しなさい
     #+begin_quote
     #+begin_src latex
@@ -1070,7 +1070,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
