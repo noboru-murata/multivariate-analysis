@@ -5,7 +5,7 @@
 #+LINK: github https://noboru-murata.github.io/multivariate-analysis/
 #+STARTUP: hidestars content indent
 
-# Time-stamp: <2021-12-14 14:58:21 mura>
+# Time-stamp: <2021-12-17 16:24:46 mura>
 # C-c C-e H A (generate MDs for all subtrees)
 
 * 概要
