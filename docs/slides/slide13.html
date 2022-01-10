@@ -34,40 +34,38 @@
     <h1 class="no-toc-progress">時系列解析</h1>
 </div>
 <div class="talk-subtitle">
-    <p>推定と予測</p>
+    <p>モデルの推定と予測</p>
 </div>
 <div class="keyboard-usage">
     <p>(Press <code>?</code> for help, <code>n</code> and <code>p</code> for next and previous slide)</p>
 </div>
 <div class="talk-author">
   <p>村田 昇<br />
-  2021.01.12</p>
+  </p>
 </div>
 
 </section>
 
 <section>
-<section id="slide-orgd7c5b6f">
-<h2 id="orgd7c5b6f">今週の内容</h2>
+<section id="slide-org4196acd">
+<h2 id="org4196acd">講義の内容</h2>
 <ul>
-<li>第1日: 時系列のモデル</li>
+<li>第1日: 時系列の基本モデル</li>
 <li><b>第2日: モデルの推定と予測</b></li>
 
 </ul>
-
-
 <div class="slide-footer"><br></div>
+
 </section>
 </section>
 <section>
-<section id="slide-orgd36dae9">
-<h2 id="orgd36dae9">時系列解析の復習</h2>
-<div class="outline-text-2" id="text-orgd36dae9">
+<section id="slide-orgd0aebb7">
+<h2 id="orgd0aebb7">時系列解析の復習</h2>
+<div class="outline-text-2" id="text-orgd0aebb7">
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5f12100">
-<h3 id="org5f12100">時系列解析とは</h3>
+<section id="slide-org30a4403">
+<h3 id="org30a4403">時系列解析とは</h3>
 <ul>
 <li>時系列データ
 <ul>
@@ -86,11 +84,11 @@
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org51a383d">
-<h3 id="org51a383d">時系列モデルと定常性</h3>
+<section id="slide-orge55f6f3">
+<h3 id="orge55f6f3">時系列モデルと定常性</h3>
 <ul>
 <li><p>
 <b>確率過程</b>
@@ -106,7 +104,7 @@
 
 </div>
 </blockquote></li>
-<li><b>弱定常過程</b>: 以下の性質をもつ確率過程 \(X_t\)
+<li><b>弱定常過程</b> : 以下の性質をもつ確率過程 \(X_t\)
 <ul>
 <li>\(X_{t}\)の平均は時点\(t\)によらない</li>
 <li>\(X_{t}\)と\(X_{t+h}\)の共分散は時点\(t\)によらず時差\(h\)のみで定まる</li>
@@ -118,11 +116,11 @@
 <li>定常でない確率過程は <b>非定常</b> であるという</li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-orgaef45e4">
-<h3 id="orgaef45e4">ホワイトノイズ</h3>
+<section id="slide-org655b8ad">
+<h3 id="org655b8ad">ホワイトノイズ</h3>
 <ul>
 <li><p>
 定義
@@ -154,9 +152,10 @@
 
 </ul>
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-orgbf87948">
-<h3 id="orgbf87948">トレンドのあるホワイトノイズ</h3>
+<section id="slide-orge92eb7b">
+<h3 id="orge92eb7b">トレンドのあるホワイトノイズ</h3>
 <ul>
 <li><p>
 定義
@@ -182,15 +181,16 @@
 </blockquote>
 <ul>
 <li><b>非定常</b> な確率過程</li>
+<li><span style="color:gray;">トレンド項(平均値の変化)は現象に応じて一般化される</span></li>
 
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org35b339f">
-<h3 id="org35b339f">ランダムウォーク</h3>
+<section id="slide-org2a30e16">
+<h3 id="org2a30e16">ランダムウォーク</h3>
 <ul>
 <li><p>
 定義
@@ -221,11 +221,11 @@
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-orgbc6be79">
-<h3 id="orgbc6be79">自己回帰過程</h3>
+<section id="slide-org16df253">
+<h3 id="org16df253">自己回帰過程</h3>
 <ul>
 <li><p>
 定義 (次数\(p\)のARモデル)
@@ -258,11 +258,11 @@
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-orgfd595b3">
-<h3 id="orgfd595b3">移動平均過程</h3>
+<section id="slide-org879ecf2">
+<h3 id="org879ecf2">移動平均過程</h3>
 <ul>
 <li><p>
 定義 (次数\(q\) のMAモデル)
@@ -296,11 +296,11 @@
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-orgcb978bd">
-<h3 id="orgcb978bd">自己回帰移動平均過程</h3>
+<section id="slide-orgb97c731">
+<h3 id="orgb97c731">自己回帰移動平均過程</h3>
 <ul>
 <li><p>
 定義 (次数\((p,q)\)のARMAモデル)
@@ -337,13 +337,13 @@
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-orgf26797a">
-<h3 id="orgf26797a">自己共分散・自己相関</h3>
+<section id="slide-org95a7589">
+<h3 id="org95a7589">自己共分散・自己相関</h3>
 <ul>
-<li>弱定常な確率過程: \(X_{t},\;t=1,\dotsc,T\)
+<li>弱定常な確率過程 : \(X_{t},\;t=1,\dotsc,T\)
 <ul>
 <li><p>
 \(X_{t}\) と \(X_{t+h}\) の共分散は時点\(t\)によらずラグ\(h\)のみで定まる
@@ -388,7 +388,7 @@
 </section>
 <section>
 
-<div id="org3b3b721" class="figure">
+<div id="org11ae0bf" class="figure">
 <p><img src="figs/13_ar.png" alt="13_ar.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>同じモデルに従うAR過程の例</p>
@@ -398,7 +398,7 @@
 </section>
 <section>
 
-<div id="orgb5974ec" class="figure">
+<div id="orgc3eef20" class="figure">
 <p><img src="figs/13_aracf.png" alt="13_aracf.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>AR過程の自己相関</p>
@@ -408,7 +408,7 @@
 </section>
 <section>
 
-<div id="orgf404993" class="figure">
+<div id="org0d68c46" class="figure">
 <p><img src="figs/13_ma.png" alt="13_ma.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>同じモデルに従うMA過程の例</p>
@@ -418,7 +418,7 @@
 </section>
 <section>
 
-<div id="org6a35852" class="figure">
+<div id="org063c47f" class="figure">
 <p><img src="figs/13_maacf.png" alt="13_maacf.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>MA過程の自己相関</p>
@@ -428,7 +428,7 @@
 </section>
 <section>
 
-<div id="orgd796937" class="figure">
+<div id="org7aa3881" class="figure">
 <p><img src="figs/13_arma.png" alt="13_arma.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>同じモデルに従うARMA過程の例</p>
@@ -438,25 +438,24 @@
 </section>
 <section>
 
-<div id="orgcf5963f" class="figure">
+<div id="org941a34e" class="figure">
 <p><img src="figs/13_armaacf.png" alt="13_armaacf.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>ARMA過程の自己相関</p>
 </div>
-
-
 <div class="slide-footer"><br></div>
+
+
 </section>
 </section>
 <section>
-<section id="slide-org1f334ea">
-<h2 id="org1f334ea">ARモデルの推定</h2>
-<div class="outline-text-2" id="text-org1f334ea">
+<section id="slide-orgebda92c">
+<h2 id="orgebda92c">ARモデルの推定</h2>
+<div class="outline-text-2" id="text-orgebda92c">
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgb51fd84">
-<h3 id="orgb51fd84">自己共分散・自己相関</h3>
+<section id="slide-org3ea0983">
+<h3 id="org3ea0983">自己共分散・自己相関</h3>
 <ul>
 <li>平均\(0\)の弱定常な確率過程: \(X_{t},\;t=1,\dotsc,T\)
 <ul>
@@ -498,11 +497,11 @@
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org9903a0c">
-<h3 id="org9903a0c">自己共分散とARモデル</h3>
+<section id="slide-org3e1f921">
+<h3 id="org3e1f921">自己共分散とARモデル</h3>
 <ul>
 <li><p>
 AR(p)モデル: 
@@ -545,9 +544,10 @@ AR(p)モデル:
 
 </ul>
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org31cfe6e">
-<h3 id="org31cfe6e">Yule-Walker方程式</h3>
+<section id="slide-orgc90e057">
+<h3 id="orgc90e057">Yule-Walker方程式</h3>
 <ul>
 <li><p>
 \(1\le h\le p\) を考えると以下の関係が成り立つ
@@ -585,14 +585,14 @@ AR(p)モデル:
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org235a478">
-<h3 id="org235a478">偏自己相関</h3>
+<section id="slide-org14ca870">
+<h3 id="org14ca870">偏自己相関</h3>
 <ul>
 <li><p>
-AR(p)モデル: 
+AR(p)モデル : 
 </p>
 <blockquote>
 <div>
@@ -606,11 +606,11 @@ AR(p)モデル:
 </blockquote>
 <ul>
 <li><p>
-ラグ\(p\)の <b>自己相関係数</b> (特殊な解釈)
+ラグ\(p\)の <b>自己相関係数</b> 
 </p>
 <blockquote>
 <p>
-\(a_{1}=a_{2}=\dotsb=a_{p-1}=0\)のときの\(a_{p}\)
+\(a_{1}=a_{2}=\dotsb=a_{p-1}=0\)のときの\(a_{p}\) (<b>特殊な解釈</b>)
 </p>
 <div>
 \begin{equation}
@@ -639,7 +639,7 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 <section>
 
-<div id="org54d2553" class="figure">
+<div id="org3392697" class="figure">
 <p><img src="figs/13_arpacf.png" alt="13_arpacf.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>AR過程の偏自己相関</p>
@@ -649,7 +649,7 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 <section>
 
-<div id="org687922b" class="figure">
+<div id="orgbd799cb" class="figure">
 <p><img src="figs/13_mapacf.png" alt="13_mapacf.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>MA過程の偏自己相関</p>
@@ -659,16 +659,16 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 <section>
 
-<div id="org2a18f0a" class="figure">
+<div id="orgc465fb7" class="figure">
 <p><img src="figs/13_armapacf.png" alt="13_armapacf.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>ARMA過程の偏自己相関</p>
 </div>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org5d287aa">
-<h3 id="org5d287aa">モデルの推定に関する補足</h3>
+<section id="slide-orge2cbf90">
+<h3 id="orge2cbf90">モデルの推定に関する補足</h3>
 <ul>
 <li>ARMAモデルの推定方法は主に以下の3つ
 <ul>
@@ -690,20 +690,18 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 <li>一般にモデルは近似なので，どの推定が良いかは問題による</li>
 
 </ul>
-
-
 <div class="slide-footer"><br></div>
+
+
 </section>
 </section>
 <section>
-<section id="slide-orgf22ed6e">
-<h2 id="orgf22ed6e">演習</h2>
-<div class="outline-text-2" id="text-orgf22ed6e">
-</div>
+<section id="slide-orgf7e8bfa" data-background="#fef4f4">
+<h2 id="orgf7e8bfa">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5a350f6" data-background="#fef4f4">
-<h3 id="org5a350f6">問題</h3>
+<section id="slide-org4738da5" data-background="#fef4f4">
+<h3 id="org4738da5">問題</h3>
 <ul>
 <li><p>
 以下で定義されるMA(1)について問に答えなさい
@@ -723,16 +721,16 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 
 <ul>
 <li>ラグ2までの自己共分散係数を求めなさい</li>
-<li>パラメタ\(b_{1}\)が満すべき方程式を求めなさい</li>
+<li>自己相関係数とパラメタ\(b_{1}\)が満すべき方程式を求めなさい</li>
 
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org3ee0dd8" data-background="#fef4f4">
-<h3 id="org3ee0dd8">解答例</h3>
+<section id="slide-org1b9781c" data-background="#fef4f4">
+<h3 id="org1b9781c">解答例</h3>
 <ul>
 <li><p>
 平均0であることに注意して定義通り計算する
@@ -781,6 +779,7 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </blockquote></li>
 
 </ul>
+
 <div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
@@ -825,26 +824,25 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </blockquote></li>
 
 </ul>
-
-
 <div class="slide-footer"><br></div>
+
+
 </section>
 </section>
 <section>
-<section id="slide-org389b272">
-<h2 id="org389b272">モデルによる予測</h2>
-<div class="outline-text-2" id="text-org389b272">
+<section id="slide-org3ac6603">
+<h2 id="org3ac6603">モデルによる予測</h2>
+<div class="outline-text-2" id="text-org3ac6603">
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org20e55eb">
-<h3 id="org20e55eb">モデルによる予測</h3>
+<section id="slide-org0c077ea">
+<h3 id="org0c077ea">モデルによる予測</h3>
 <ul>
 <li>推定したモデルを用いて\(n\)期先を予測
 <ul>
-<li>ARモデル: 観測時点までの観測値を用いて回帰</li>
-<li>MAモデル: 観測時点までのホワイトノイズで回帰</li>
-<li>ARMAモデル: 上記の複合</li>
+<li>ARモデル : 観測時点までの観測値を用いて回帰</li>
+<li>MAモデル : 観測時点までのホワイトノイズで回帰</li>
+<li>ARMAモデル : 上記の複合</li>
 
 </ul></li>
 <li>いずれも \(n\)が大きいと不確定性が増大</li>
@@ -852,9 +850,10 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 
 </ul>
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org754dea7">
-<h3 id="org754dea7">分解による予測</h3>
+<section id="slide-org534cc8f">
+<h3 id="org534cc8f">分解による予測</h3>
 <ul>
 <li><p>
 トレンド成分+季節成分+ランダム成分への分解
@@ -868,37 +867,17 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </div>
 </blockquote>
 <ul>
-<li>トレンド成分: 時間の関数やランダムウォークなどを想定</li>
-<li>季節成分: 周期的な関数を想定</li>
-<li>ランダム成分: ARMAモデルなどを想定</li>
+<li>トレンド成分 : 時間の関数やランダムウォークなどを想定</li>
+<li>季節成分 : 周期的な関数を想定</li>
+<li>ランダム成分 : ARMAモデルなどを想定</li>
 
 </ul></li>
 <li>分解の考え方
 <ul>
-<li>ランダム成分: 適切な幅の移動平均が0</li>
-<li>季節成分: 1周期の平均が0</li>
+<li>ランダム成分 : 適切な幅の移動平均が0</li>
+<li>季節成分 : 1周期の平均が0</li>
 
 </ul></li>
-
-</ul>
-
-
-<div class="slide-footer"><br></div>
-</section>
-</section>
-<section>
-<section id="slide-orgb33ce06">
-<h2 id="orgb33ce06">解析事例</h2>
-
-<div class="slide-footer"><br></div>
-</section>
-</section>
-<section>
-<section id="slide-org80d2843">
-<h2 id="org80d2843">次回</h2>
-<ul>
-<li>自習 (レポート作成)</li>
-<li>質問などある人は Zoom にて受付 (9:30-10:30)</li>
 
 </ul>
 <div class="slide-footer"><br></div>
@@ -927,7 +906,6 @@ mouseWheel: false,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
-
 overview: true,
 
 transition: 'fade',
