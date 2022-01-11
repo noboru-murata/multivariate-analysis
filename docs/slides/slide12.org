@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-01-10 14:51:50 mura>
+# Time-stamp: <2022-01-11 09:34:52 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -712,7 +712,7 @@
   - AR(1)の平均と分散を求めなさい
   - MA(1)の平均と分散を求めなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1128,7 +1128,7 @@
     \(\mathbb{E}[X_{t}]=0\) であるとき，
     AR過程の係数と自己共分散の間に成り立つ関係を考えなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
