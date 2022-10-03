@@ -21,4 +21,4 @@ weight = 1004
 
 ## 付録 {#付録}
 
--   [東京の気候データ](https://noboru-murata.github.io/multivariate-analysis/data/tokyo%5Fweather.csv)
+-   [東京の気候データ](https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv)

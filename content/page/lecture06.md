@@ -21,4 +21,4 @@ weight = 1007
 
 ## 付録 {#付録}
 
--   [都道府県別の社会生活統計指標データ](https://noboru-murata.github.io/multivariate-analysis/data/japan%5Fsocial.csv)
+-   [都道府県別の社会生活統計指標データ](https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv)
