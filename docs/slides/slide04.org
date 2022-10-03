@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-10-18 21:22:54 mura>
+# Time-stamp: <2022-09-19 21:43:58 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -11,6 +11,11 @@
 # <m C-i でlatex block (math env用)
 # C-c '
 :END:
+
+* COMMENT メモ
+- 第3講以降は同じファイルを使うように整理する
+- 同じタイトルの項目にはメモを入れる
+- 演習の内容が異なるので演習は2つ作る形で対応
 
 * 講義の内容
 # 早稲田大学
@@ -39,11 +44,6 @@
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
 #+end_src
-* COMMENT メモ
-- 第3講以降は同じファイルを使うように整理する
-- 同じタイトルの項目にはメモを入れる
-- 演習の内容が異なるので演習は2つ作る形で対応
-
 * COMMENT 演習 (早稲田大学雛型)
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -527,7 +527,7 @@
     #+end_src
     #+end_quote
 
-** ヒント
+** COMMENT ヒント
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -772,7 +772,7 @@
   - 平均は \(\boldsymbol{\beta}\) (真の母数)となる
   - 共分散行列は \(\sigma^{2}(X^{\mathsf{T}}X)^{-1}\) となる
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1024,7 +1024,7 @@
     #+end_src
     #+end_quote
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1080,7 +1080,7 @@
 
 
 * 係数の評価   
-** \(t\)-統計量
+** @@latex:@@\(t\)-統計量
 - *回帰係数の分布* に関する定理:
   #+begin_quote
   *\(t\)-統計量*
@@ -1098,7 +1098,7 @@
   - \((n{-}p{-}1)\hat{\sigma}^2/\sigma^2=S(\boldsymbol{\hat{\beta}})/\sigma^2\) 
     は自由度 \(n{-}p{-}1\) の \(\chi^{2}\)-分布に従う
 
-** \(t\)-統計量による検定
+** @@latex:@@\(t\)-統計量による検定
 - 回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定:
   - 帰無仮説 \(H_{0}\): \(\beta_j=0\) (\(t\)-統計量が計算できる)
   - 対立仮説 \(H_{1}\): \(\beta_j\neq0\)
@@ -1220,7 +1220,7 @@
 
 
 * モデルの評価
-** \(F\)-統計量
+** @@latex:@@\(F\)-統計量
 - *ばらつきの比* に関する定理: 
   #+begin_quote
   \(\beta_1=\dotsb=\beta_p=0\) ならば
@@ -1242,7 +1242,7 @@
   - \(S_{r}/\sigma^2\) は自由度 \(p\) の \(\chi^{2}\)-分布に従う
   - \(S/\sigma^2\) は自由度 \(n{-}p{-}1\) の \(\chi^{2}\)-分布に従う
 
-** \(F\)-統計量を用いた検定
+** @@latex:@@\(F\)-統計量を用いた検定
 - 説明変数のうち1つでも役に立つか否かを検定:
   - 帰無仮説 \(H_{0}\): \(\beta_1=\dotsb=\beta_p=0\) 
     (\(S_r\) が \(\chi^2\) 分布になる)
@@ -1541,6 +1541,7 @@
 - *第3回: モデルによる予測と発展的なモデル*
 
 
+* Footnotes
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted

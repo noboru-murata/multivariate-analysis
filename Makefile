@@ -1,4 +1,4 @@
-MSG = debug
+MSG = "2022 version"
 
 all: html
 

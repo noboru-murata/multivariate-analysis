@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-09-03 17:36:05 mura>
+# Time-stamp: <2022-10-03 18:44:06 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -12,10 +12,15 @@
 # C-c '
 :END:
 
+* COMMENT メモ
+- 校正に関して記述
+  - 日本語での hyphnation はしない
+  - colon は空白を入れる
+
 * 講義について
 ** 講義の概要
-- 講義題目: 多変量解析
-- 担当: 村田 昇
+- 講義題目 : 多変量解析
+- 担当 : 村田 昇
 - 授業の目標 
   - 統計解析手法である *多変量解析*
     の基本的な解析法に習熟する
@@ -25,11 +30,11 @@
   - 実データに多変量解析を適用する
 ** 多変量解析とは
 複数の変量からなるデータを分析する手法の総称
-- *回帰分析*: 複数の変数から注目する変数の値を説明
-- *主成分分析*: 全体を説明する少数の特徴量を構成
-- *判別分析*: 特徴量の違いでカテゴリ分けを実行
-- *クラスタ分析*: 特徴量の違いに着目してクラスタ(データのグループ)を構成
-- *時系列解析*: 時間とともに変化する現象を記述
+- *回帰分析* : 複数の変数から注目する変数の値を説明
+- *主成分分析* : 全体を説明する少数の特徴量を構成
+- *判別分析* : 特徴量の違いでカテゴリ分けを実行
+- *クラスタ分析* : 特徴量の違いに着目してクラスタ(データのグループ)を構成
+- *時系列解析* : 時間とともに変化する現象を記述
 
 ** 受講にあたっての注意
 - 微分積分学と線形代数学を復習しておく
@@ -48,30 +53,30 @@
 - 判別分析 (2回)
 - クラスタ分析 (2回)
 - 時系列解析入門 (2回)
-- 第2回レポート (1月末日締切，自由課題)
+- 第2回レポート (1月末締切，自由課題)
 
 
 * 多変量解析
-** 多変量解析とは  
+** 多変量解析とは
 - 複数の変量からなるデータを分析する手法の総称
-  - 回帰分析: 複数の量を用いて注目する変数の値を説明する
-  - 主成分分析: 全体を説明する少数の特徴量を構成する
-  - 判別分析: 特徴量の違いでカテゴリ分けを行う
-  - クラスタ分析: 特徴量の違いに着目してクラスタを構成する
-  - 時系列解析: 時間とともに変化する現象を記述する
+  - 回帰分析 : 複数の量を用いて注目する変数の値を説明する
+  - 主成分分析 : 全体を説明する少数の特徴量を構成する
+  - 判別分析 : 特徴量の違いでカテゴリ分けを行う
+  - クラスタ分析 : 特徴量の違いに着目してクラスタを構成する
+  - 時系列解析 : 時間とともに変化する現象を記述する
 
 ** 回帰分析の考え方
 - ある変数を別の変数によって説明・予測するための関係式を構成する
-  - 単回帰: 一つの変数で目的変数を説明する
-  - 重回帰: 複数の変数で目的変数を説明する
-- [[color:darkgreen][分析の事例]]:
+  - 単回帰 : 一つの変数で目的変数を説明する
+  - 重回帰 : 複数の変数で目的変数を説明する
+- [[color:green][分析の事例]]
   - 身長から体重を予測する式を作り，ある身長の人がある体重だったときに，それが普通かどうか判定する
   - 築年数・駅からの距離・広さ・間取りで家賃を説明する式を作り，新規に家賃を設定する際に利用する
 
     # ある1種類の変数/データを別の変数/データ(1種類もしくは複数)によって説明もしくは予測するための関係式(回帰方程式)を構成することを目的とする分析法
     # ある量(説明変数)を用いて注目する量(目的変数)を説明する
 
-** 単回帰の例 
+** 単回帰の例
 #+CAPTION: 体重と脳の重さ 
 #+NAME:   tbl:brainbody
 | species         | body [kg] | brain [g] |
@@ -87,10 +92,24 @@
 | ...             |        .. |        .. |
 
 #+REVEAL: split
+#+CAPTION: 体重と脳の重さの関係
+#+NAME:   fig:r-brainbody01
+#+ATTR_HTML: :width 50% :height 50%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:./figs/r-brainbody01.png]]
+
+#+REVEAL: split
+#+CAPTION: 体重と脳の重さの関係 (両対数)
+#+NAME:   fig:r-brainbody02
+#+ATTR_HTML: :width 50% :height 50%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:./figs/r-brainbody02.png]]
+
+#+REVEAL: split
 #+CAPTION: 体重と脳の重さの関係 (単回帰)
 #+NAME:   fig:r-brainbody05
 #+ATTR_HTML: :width 50% :height 50%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/r-brainbody05.png]]
 
 ** 重回帰の例
@@ -112,19 +131,19 @@
 #+CAPTION: ワインの価格と生産環境の関係
 #+NAME:   fig:r-wine01
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/r-wine01.png]]
 
 #+REVEAL: split
 #+CAPTION: 生産環境によるワイン価格の予測 (重回帰)
 #+NAME:   fig:r-wine05
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/r-wine05.png]]
 
 ** 主成分分析の考え方
 - 多数の変数が与えられたときに，変数のもつ構造を効率的に記述できる少数個の特徴量を構成する
-- [[color:darkgreen][分析の事例]]:
+- [[color:green][分析の事例]]
   - 野球選手の打撃成績(打率，本塁打数，打点など)から，打者としての特徴を記述する指標を作成する
   - 複数銘柄からなる株価の時系列データから，市場全体の変動を記述する総合指標を作成する
     # 全体を説明する少数の特徴量を構成する
@@ -148,33 +167,33 @@
 #+CAPTION: 県別の生活環境(人口動態)の散布図 
 #+NAME:   fig:p-jpamenity01
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/p-jpamenity01.png]]
 
 #+REVEAL: split
 #+CAPTION: 県別の生活環境(教育・労働)の散布図 
 #+NAME:   fig:p-jpamenity02
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/p-jpamenity02.png]]
 
 #+REVEAL: split
 #+CAPTION: 県別の生活環境(貯蓄・余暇)の散布図 
 #+NAME:   fig:p-jpamenity03
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/p-jpamenity03.png]]
 
 #+REVEAL: split
 #+CAPTION: 県別の生活環境の主成分分析
 #+NAME:   fig:p-jpamenity06
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/p-jpamenity06.png]]
 
 ** 判別分析の考え方
 - ある個体が複数のクラスのいずれかに属するとき，その個体の特徴量からどのクラスに属するか予測するモデルを構築する
-- [[color:darkgreen][分析の事例]]:
+- [[color:green][分析の事例]]
   - 花の種類を，その花の花弁の幅・長さおよび萼片(がくへん)の幅・長さから判別する
   - 食道がんを患っている人とそうでない人を，年齢・飲酒量・喫煙度から判別する
     # 特徴量の違いでカテゴリ分けを行う
@@ -197,28 +216,28 @@
 #+CAPTION: 乳癌患者(良性・悪性)の生研検査の散布図
 #+NAME:   fig:d-biopsy01
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/d-biopsy01.png]]
 
 #+REVEAL: split
 #+CAPTION: 生研検査の主成分分析
 #+NAME:   fig:d-biopsy02
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/d-biopsy02.png]]
 
 #+REVEAL: split
 #+CAPTION: 生研検査による乳癌患者の判別分析
 #+NAME:   fig:d-biopsy03
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/d-biopsy03.png]]
 
 ** クラスタ分析の考え方
 - 特徴量の違いに着目して，妥当な個体のグループ(クラスタ)を構成する
-  - 階層的な方法: 系統樹を作成する
-  - 非階層的な方法: グループの代表値を推定する
-- [[color:darkgreen][分析の事例]]:
+  - 階層的な方法 : 系統樹を作成する
+  - 非階層的な方法 : グループの代表値を推定する
+- [[color:green][分析の事例]]
   - 映画に関するアンケート調査から潜在的なジャンル(グループ)を抽出する
   - 顧客の購買履歴から，嗜好の異なる顧客グループに分類し，グループごとの販売戦略を立てる
 
@@ -241,21 +260,21 @@
 #+CAPTION: おむすびの具に関するアンケート分析 (県別の集計)
 #+NAME:   fig:c-omusubi01
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/c-omusubi01.png]]
 
 #+REVEAL: split
 #+CAPTION: アンケート結果にもとづく県のクラスタ分析
 #+NAME:   fig:c-omusubi02
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/c-omusubi02.png]]
 
 ** 時系列解析の考え方
 - 時間とともに変化する現象を記述するために，未来の値を過去の値で近似する式を構成する
-  - 自己回帰 (ARモデル): 過去の影響の記述
-  - 移動平均 (MAモデル): 記憶のある不確定性
-- [[color:darkgreen][分析の事例]]:
+  - 自己回帰 (ARモデル) : 過去の影響の記述
+  - 移動平均 (MAモデル) : 記憶のある不確定性
+- [[color:green][分析の事例]]
   - 市町村の過去の年齢別の人口変動から将来の人口比率を予測する
   - 食品・飲料の季節ごとの販売履歴から将来の需要量を予測する
 ** 時系列解析の例
@@ -287,37 +306,39 @@
 #+CAPTION: 航空機旅客量の変遷
 #+NAME:   fig:t-airpass01
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/t-airpass01.png]]
 
 #+REVEAL: split
 #+CAPTION: 階差時系列の自己相関分析
 #+NAME:   fig:t-airpass04
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/t-airpass04.png]]
 
 #+REVEAL: split
 #+CAPTION: 航空機旅客量の予測 (SARIMAモデルによる)
 #+NAME:   fig:t-airpass12
 #+ATTR_HTML: :width 55% :height 55%
-#+ATTR_LATEX: :width 0.7\linewidth
+#+ATTR_LATEX: :width 0.6\linewidth
 [[file:./figs/t-airpass12.png]]
 
 
-* 数学的準備
-** 確率
-- 確率分布
-- 確率密度関数・確率質量関数
-- 正規分布 (\(\chi^{2}\)-分布，\(t\)-分布，\(F\)-分布)
-- 最尤法 (尤度関数)
-- 統計量 (標本平均，不偏分散・共分散，相関係数)
-- ベイズの定理
-** 関数の微分
-- ベクトルによる微分
-- 行列による微分
+* 次週の予定
+- 数学的準備
+- 確率
+  - 確率分布
+  - 確率密度関数・確率質量関数
+  - 正規分布 (\(\chi^{2}\)分布，\(t\)分布，\(F\)分布)
+  - 最尤法 (尤度関数)
+  - 統計量 (標本平均，不偏分散・共分散，相関係数)
+  - ベイズの定理
+- 関数の微分
+  - ベクトルによる微分
+  - 行列による微分
 
 
+* Footnotes
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted

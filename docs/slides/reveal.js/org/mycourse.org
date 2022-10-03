@@ -106,10 +106,10 @@
 # #+LATEX_HEADER: \newunicodechar{⋮}{\vdots}
 # #+LATEX_HEADER: \newunicodechar{ }{~}
 # #+LATEX_HEADER: \usepackage{xcolor}
-#+LATEX_HEADER: \definecolor{darkred}{named}{myDarkRed}
-#+LATEX_HEADER: \definecolor{darkgreen}{named}{myDarkGreen}
-#+LATEX_HEADER: \definecolor{darkblue}{named}{myDarkBlue}
-#+LATEX_HEADER: \definecolor{darkorange}{named}{myDarkOrange}
+#+LATEX_HEADER: \definecolor{red}{named}{myDarkRed}
+#+LATEX_HEADER: \definecolor{green}{named}{myDarkGreen}
+#+LATEX_HEADER: \definecolor{blue}{named}{myDarkBlue}
+#+LATEX_HEADER: \definecolor{orange}{named}{myDarkOrange}
 # #+LATEX_HEADER: \definecolor{darkred}{rgb}{0.3, 0.0, 0.0}
 # #+LATEX_HEADER: \definecolor{darkgreen}{rgb}{0.0, 0.3, 0.1}
 # #+LATEX_HEADER: \definecolor{darkblue}{rgb}{0.0, 0.1, 0.3}
@@ -161,5 +161,6 @@
 #+OPTIONS: skip:nil d:nil todo:t pri:nil tags:not-in-toc
 #+PROPERTY: header-args:R :session *R* :cache yes 
 #+PROPERTY: header-args:R+ :exports both :results output
+#+PROPERTY: header-args:R+ :width 800 :height 800 :res 100
 #+PROPERTY: header-args:R+ :tangle no
 #+PROPERTY: header-args:latex :exports results :results raw
