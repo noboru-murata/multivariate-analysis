@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-03 18:44:06 mura>
+# Time-stamp: <2022-10-03 18:56:49 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -325,14 +325,14 @@
 
 
 * 次週の予定
-- 数学的準備
 - 確率
   - 確率分布
-  - 確率密度関数・確率質量関数
-  - 正規分布 (\(\chi^{2}\)分布，\(t\)分布，\(F\)分布)
-  - 最尤法 (尤度関数)
+  - 確率質量関数・確率密度関数
+  - 正規分布 (\(\chi^2\)分布，\(t\)分布，\(F\)分布 )
+- 統計
   - 統計量 (標本平均，不偏分散・共分散，相関係数)
-  - ベイズの定理
+  - 最尤法 (尤度関数)
+  - Bayes の定理
 - 関数の微分
   - ベクトルによる微分
   - 行列による微分
