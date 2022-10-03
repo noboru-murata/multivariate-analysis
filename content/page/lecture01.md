@@ -6,12 +6,12 @@ draft = false
 weight = 1002
 +++
 
-<span class="timestamp-wrapper"><span class="timestamp">&lt;2021-09-03 Fri&gt; </span></span> 更新
+<span class="timestamp-wrapper"><span class="timestamp">&lt;2022-10-03 Mon&gt; </span></span> 更新
 
 
 ## スライド {#スライド}
 
-{{< myslide base="multivariate-analysis" name="slide01" >}}
+{{&lt; myslide base="multivariate-analysis" name="slide01" &gt;}}
 
 
 ## ハンドアウト {#ハンドアウト}
