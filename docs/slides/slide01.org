@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-03 18:56:49 mura>
+# Time-stamp: <2022-10-04 10:32:49 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -324,7 +324,7 @@
 [[file:./figs/t-airpass12.png]]
 
 
-* 次週の予定
+* 次回の予定
 - 確率
   - 確率分布
   - 確率質量関数・確率密度関数
