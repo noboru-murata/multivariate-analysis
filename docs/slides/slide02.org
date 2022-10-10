@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-04 15:55:18 mura>
+# Time-stamp: <2022-10-10 10:36:48 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -246,7 +246,7 @@
 - 密度関数 :
   #+begin_src latex
     \begin{equation}
-      f(x)
+      p(x)
       =
       \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^{2}}{2\sigma^{2}}}
     \end{equation}
@@ -263,7 +263,7 @@
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      f(\boldsymbol{x})
+      p(\boldsymbol{x})
       =\frac{1}{\sqrt{(2\pi)^p|\Sigma|}}
       e^{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^{\mathsf{T}}
         \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})}
@@ -331,7 +331,7 @@
 - 密度関数:
   #+begin_src latex
     \begin{equation}
-      f(x)=
+      p(x)=
       \frac{1}{\pi\sigma}\left(1+\frac{(x-\mu)^{2}}{\sigma^{2}}\right)^{-1}
     \end{equation}
   #+end_src
@@ -367,7 +367,7 @@
 - 密度関数 :
   #+begin_src latex
     \begin{align}
-      f(x)
+      p(x)
       &=
         \frac{1}{2^{\nu/2}\Gamma(\frac{\nu}{2})}x^{\nu/2-1}e^{-x/2}\\
       &\qquad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
@@ -418,7 +418,7 @@
 - 密度関数 :
   #+begin_src latex
     \begin{equation}
-      f(x)=
+      p(x)=
       \frac{\Gamma\left(\frac{\nu+1}{2}\right)}
       {\sqrt{\nu\pi}\Gamma\left(\frac{\nu}{2}\right)}
       \left(1+\frac{x^{2}}{\nu}\right)^{-\frac{1}{2}(\nu+1)}
@@ -472,7 +472,7 @@
 - 密度関数 :
   #+begin_src latex
     \begin{equation}
-      f(x)
+      p(x)
       =
       \frac{(\nu_{1}/\nu_{2})^{\nu_{1}/2}}{B(\nu_{1}/2,\nu_{2}/2)}
       \frac{x^{\nu_{1}/2-1}}{(1+\nu_{1}x/\nu_{2})^{(\nu_{1}+\nu_{2})/2}}
@@ -523,7 +523,7 @@
 - 密度関数:
   #+begin_src latex
     \begin{equation}
-      f(x)=
+      p(x)=
       \frac{1}{\lambda}e^{-\frac{x}{\lambda}}
     \end{equation}
   #+end_src
@@ -546,7 +546,7 @@
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      f(x)
+      p(x)
       =
       \frac{1}{\sqrt{2\pi}}e^{-\frac{x^{2}}{2}}
     \end{equation}
@@ -1219,7 +1219,7 @@
 #+reveal: split
 - 注意1
   #+begin_quote
-  上の行列のトレースの性質から
+  行列のトレースの性質から
   #+begin_src latex
     \begin{align}
       &\frac{\partial}{\partial A}\mathrm{tr} AB=B^{\mathsf{T}}\\
