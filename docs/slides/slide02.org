@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-10 10:36:48 mura>
+# Time-stamp: <2022-10-10 11:42:01 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -14,6 +14,8 @@
 
 * COMMENT メモ
 - 修正すべき箇所を記載する
+- このスライドは早稲田大学専用
+
 * 講義の内容
 - 確率
   - 確率分布
@@ -31,7 +33,7 @@
   ### 第02回 資料
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 
 * COMMENT 演習 (早稲田大学雛型)
@@ -69,7 +71,7 @@
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/mva/slide")
 #+end_src
-* COMMENT 演習 (東京大学雛型)
+* COMMENT 実習 (東京大学雛型)
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
