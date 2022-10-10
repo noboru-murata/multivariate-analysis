@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-10 11:34:29 mura>
+# Time-stamp: <2022-10-10 12:35:16 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -1332,23 +1332,26 @@
     
     ### モデル式
     TW.model1 <- temp ~ press
-    TW.model2 <- temp ~ press + solar
-    TW.model3 <- temp ~ press + solar + humid
-    TW.model4 <- temp ~ press + solar + cloud
+    TW.model2 <- temp ~ solar
+    TW.model3 <- temp ~ press + solar
+    TW.model4 <- temp ~ press + solar + humid
+    TW.model5 <- temp ~ press + solar + cloud
     
     ## 推定
     TW.est1 <- lm(TW.model1, data=TW.subset, y=TRUE)
     TW.est2 <- lm(TW.model2, data=TW.subset, y=TRUE)
     TW.est3 <- lm(TW.model3, data=TW.subset, y=TRUE)
     TW.est4 <- lm(TW.model4, data=TW.subset, y=TRUE)
+    TW.est5 <- lm(TW.model5, data=TW.subset, y=TRUE)
   #+end_src
 
 #+reveal: split
-- 気温を説明する4つの線形回帰モデルを検討する
+- 気温を説明する 5 つの線形回帰モデルを検討する
   - モデル1: 気温 = F(気圧)
-  - モデル2: 気温 = F(気圧, 日射)
-  - モデル3: 気温 = F(気圧, 日射, 湿度)
-  - モデル4: 気温 = F(気圧, 日射, 雲量)
+  - モデル2: 気温 = F(日射)
+  - モデル3: 気温 = F(気圧, 日射)
+  - モデル4: 気温 = F(気圧, 日射, 湿度)
+  - モデル5: 気温 = F(気圧, 日射, 雲量)
 
 #+reveal: split
 - 関連するデータの散布図
@@ -1385,12 +1388,30 @@
 #+ATTR_HTML: height 100%
 #+ATTR_LATEX: :width 0.6\linewidth
 [[file:figs/03_model1.png]]
-  
+
 #+reveal: split
 - モデル2の推定結果
   #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/03_model2.png :exports results :results graphics :tangle yes
-    ## モデル2の推定結果
+    ## モデル1の推定結果
+    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+    plot(temp ~ solar, data=TW.subset,
+         xlab="日射", ylab="気温",
+         col="brown", pch=20)
+    abline(TW.est2, col="blue", lwd=3)
+  #+end_src
+
+#+CAPTION: モデル2
+#+NAME: fig:
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/03_model2.png]]
+  
+#+reveal: split
+- モデル3の推定結果
+  #+header: :width 720 :height 720 :res 100
+  #+begin_src R :file figs/03_model3.png :exports results :results graphics :tangle yes
+    ## モデル3の推定結果
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
     library(scatterplot3d) # パッケージの読み込み
     s3d <- scatterplot3d( 
@@ -1403,16 +1424,16 @@
         xlab="気圧", ylab="日射", zlab="気温",
         ##    highlight.3d=TRUE # 高さ(z)ごとに色を変える
         )
-    s3d$plane3d(TW.est2, col="blue", # 回帰式の定める平面の追加
+    s3d$plane3d(TW.est3, col="blue", # 回帰式の定める平面の追加
                 draw_polygon=TRUE, # 平面の塗り潰しの設定
                 polygon_args=list(col=rgb(0,0,1,0.1))) 
   #+end_src
 
-#+CAPTION: モデル2
-#+NAME: fig:03_model2
+#+CAPTION: モデル3
+#+NAME: fig:03_model3
 #+ATTR_HTML: height 100%
 #+ATTR_LATEX: :width 0.6\linewidth
-[[file:figs/03_model2.png]]
+[[file:figs/03_model3.png]]
 
 #+reveal: split
 - 観測値とあてはめ値の比較
@@ -1431,9 +1452,11 @@
          points(y,fitted.values,col="blue",pch=21))  # 丸
     with(TW.est4,
          points(y,fitted.values,col="brown",pch=23))  # 菱形
+    with(TW.est5,
+         points(y,fitted.values,col="cyan",pch=17))  # 三角
     legend("bottomright",inset=.05, # 凡例の作成
-           col=c("orange","green","blue","brown"), pch=c(17,15,21,23), 
-           legend=c("モデル1","モデル2","モデル3","モデル4"))
+           col=c("orange","green","blue","brown","cyan"), pch=c(17,15,21,23,17), 
+           legend=c("モデル1","モデル2","モデル3","モデル4","モデル5"))
   #+end_src
 #+CAPTION: モデルの比較
 #+NAME: fig:03_models
@@ -1452,7 +1475,7 @@
                 "; adj. R2:",
                 signif(summary(TW.est1)$adj.r.squared,digits=3)))
     #+end_src
-  - モデル2: 気温 = F(気圧, 日射)
+  - モデル2: 気温 = F(日射)
     #+begin_src R :exports results :tangle yes
       ## モデル2
       print(
@@ -1461,7 +1484,7 @@
                 "; adj. R2:",
                 signif(summary(TW.est2)$adj.r.squared,digits=3)))
     #+end_src
-  - モデル3: 気温 = F(気圧, 日射, 湿度)
+  - モデル3: 気温 = F(気圧, 日射)
     #+begin_src R :exports results :tangle yes
       ## モデル3
       print(
@@ -1470,7 +1493,7 @@
                 "; adj. R2:",
                 signif(summary(TW.est3)$adj.r.squared,digits=3)))
     #+end_src
-  - モデル4: 気温 = F(気圧, 日射, 雲量)
+  - モデル4: 気温 = F(気圧, 日射, 湿度)
     #+begin_src R :exports results :tangle yes
       ## モデル4
       print(
@@ -1478,6 +1501,15 @@
                 signif(summary(TW.est4)$r.squared,digits=3),
                 "; adj. R2:",
                 signif(summary(TW.est4)$adj.r.squared,digits=3)))
+    #+end_src
+  - モデル5: 気温 = F(気圧, 日射, 雲量)
+    #+begin_src R :exports results :tangle yes
+      ## モデル5
+      print(
+          paste("R2:",
+                signif(summary(TW.est5)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(TW.est5)$adj.r.squared,digits=3)))
     #+end_src
   
 
