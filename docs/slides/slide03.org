@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-10 12:35:16 mura>
+# Time-stamp: <2022-10-18 10:33:49 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -391,7 +391,7 @@
   \(\boldsymbol{\beta}\)
   で微分して解の条件を求めなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -453,7 +453,7 @@
   #+end_src
   #+end_quote
 
-** COMMENT 補足
+** 補足
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -876,7 +876,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -919,7 +919,7 @@
   #+end_src
   #+end_quote
 - したがって以下が成立する
-  #+begin_quote
+   #+begin_quote
   #+begin_src latex
     \begin{align}
       n(1,\boldsymbol{\bar{x}}^{\mathsf{T}})\boldsymbol{\hat{\beta}}
@@ -1096,7 +1096,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1346,14 +1346,6 @@
   #+end_src
 
 #+reveal: split
-- 気温を説明する 5 つの線形回帰モデルを検討する
-  - モデル1: 気温 = F(気圧)
-  - モデル2: 気温 = F(日射)
-  - モデル3: 気温 = F(気圧, 日射)
-  - モデル4: 気温 = F(気圧, 日射, 湿度)
-  - モデル5: 気温 = F(気圧, 日射, 雲量)
-
-#+reveal: split
 - 関連するデータの散布図
   #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/03_pairs.png :exports results :results graphics :tangle yes
@@ -1370,6 +1362,14 @@
 #+ATTR_HTML: height 100%
 #+ATTR_LATEX: :width 0.6\linewidth
 [[file:figs/03_pairs.png]]
+
+#+reveal: split
+- 気温を説明する 5 つの線形回帰モデルを検討する
+  - モデル1: 気温 = F(気圧)
+  - モデル2: 気温 = F(日射)
+  - モデル3: 気温 = F(気圧, 日射)
+  - モデル4: 気温 = F(気圧, 日射, 湿度)
+  - モデル5: 気温 = F(気圧, 日射, 雲量)
 
 #+reveal: split
 - モデル1の推定結果

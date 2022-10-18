@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-10 11:42:01 mura>
+# Time-stamp: <2022-10-11 08:48:22 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -561,7 +561,7 @@
   0付近の値をとる確率と
   1付近の値をとる確率の比を求めよ
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -948,7 +948,7 @@
   - A先生が機嫌が良いときに球団Hが勝った確率は？
   - A先生が機嫌が悪いときに球団Hが負けた確率は？
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1283,7 +1283,7 @@
   行列 \(A\) による行列式 \(|A|\) の微分を求めよ
   - ヒント : 余因子展開を利用すると容易に求められる
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
