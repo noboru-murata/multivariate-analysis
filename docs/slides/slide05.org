@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-11-05 15:57:35 mura>
+# Time-stamp: <2022-10-21 14:50:29 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -11,6 +11,11 @@
 # <m C-i でlatex block (math env用)
 # C-c '
 :END:
+
+* COMMENT メモ
+- 第3講以降は同じファイルを使うように整理する
+- 同じタイトルの項目にはメモを入れる
+- 演習の内容が異なるので演習は2つ作る形で対応
 
 * 講義の内容
 # 早稲田大学
@@ -37,13 +42,8 @@
   ###
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+  setwd("~/Desktop/lectures/u-tokyo/autumn/course")
 #+end_src
-
-* COMMENT メモ
-- 第3講以降は同じファイルを使うように整理する
-- 同じタイトルの項目にはメモを入れる
-- 演習の内容が異なるので演習は2つ作る形で対応
 
 * COMMENT 演習 (早稲田大学雛型)
 :PROPERTIES:
@@ -76,15 +76,15 @@
   ### 第05回 資料
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 
-* COMMENT 演習 (東京大学雛型)
+* COMMENT 実習 (東京大学雛型)
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R: 概要
+** R : 概要
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -131,10 +131,10 @@
 
 * 回帰分析の復習
 ** 線形回帰モデル
-- *目的変数* を *説明変数* で説明する関係式を構成:
+- *目的変数* を *説明変数* で説明する関係式を構成
   - 説明変数: \(x_1,\dotsc,x_p\) (p次元)
   - 目的変数: \(y\) (1次元)
-- *回帰係数* \(\beta_0,\beta_1,\dotsc,\beta_p\) を用いた一次式:
+- *回帰係数* \(\beta_0,\beta_1,\dotsc,\beta_p\) を用いた一次式
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -142,7 +142,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- *誤差項* を含む確率モデルで観測データを表現:
+- *誤差項* を含む確率モデルで観測データを表現
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -153,7 +153,7 @@
   #+end_quote
 
 ** 問題設定
-- 確率モデル:
+- 確率モデル
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -162,7 +162,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 式の評価: *残差平方和* の最小化による推定
+- 式の評価 : *残差平方和* の最小化による推定
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -174,7 +174,7 @@
   #+end_quote
 
 ** 解
-- 解の条件: *正規方程式*
+- 解の条件 : *正規方程式*
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -183,7 +183,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 解の一意性: *Gram 行列* \(X^{\mathsf{T}}X\) が正則
+- 解の一意性 : *Gram 行列* \(X^{\mathsf{T}}X\) が正則
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -200,24 +200,24 @@
   に関するデータ(の一部)
   #+begin_src R :exports results :tangle yes
     ## データの読み込み
-    TW.data <- read.csv("data/tokyo_weather.csv")
-    TW.subset <- subset(TW.data, # 8月のデータの抽出
+    tw_data <- read.csv("data/tokyo_weather.csv")
+    tw_subset <- subset(tw_data, # 8月のデータの抽出
                         subset= month==8)
-    head(TW.subset[,-1], 14) # 2週間分を表示
+    head(tw_subset[,-1], 14) # 2週間分を表示
 
     ### モデル式
-    TW.model0 <- temp ~ press + solar + humid + cloud
-    TW.model1 <- temp ~ press
-    TW.model2 <- temp ~ press + solar
-    TW.model3 <- temp ~ press + solar + humid
-    TW.model4 <- temp ~ press + solar + cloud
+    tw_model0 <- temp ~ press + solar + humid + cloud
+    tw_model1 <- temp ~ press
+    tw_model2 <- temp ~ press + solar
+    tw_model3 <- temp ~ press + solar + humid
+    tw_model4 <- temp ~ press + solar + cloud
 
     ## 推定
-    TW.est0 <- lm(TW.model0, data=TW.subset, y=TRUE)
-    TW.est1 <- lm(TW.model1, data=TW.subset, y=TRUE)
-    TW.est2 <- lm(TW.model2, data=TW.subset, y=TRUE)
-    TW.est3 <- lm(TW.model3, data=TW.subset, y=TRUE)
-    TW.est4 <- lm(TW.model4, data=TW.subset, y=TRUE)
+    tw_est0 <- lm(tw_model0, data=tw_subset, y=TRUE)
+    tw_est1 <- lm(tw_model1, data=tw_subset, y=TRUE)
+    tw_est2 <- lm(tw_model2, data=tw_subset, y=TRUE)
+    tw_est3 <- lm(tw_model3, data=tw_subset, y=TRUE)
+    tw_est4 <- lm(tw_model4, data=tw_subset, y=TRUE)
   #+end_src
   
 #+reveal: split
@@ -233,7 +233,7 @@
   #+begin_src R :file figs/05_variables.png :exports results :results graphics :tangle yes
     ## 説明変数と目的変数の散布図
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    plot(model.frame(TW.est0),
+    plot(model.frame(tw_est0),
          labels=c("気温","気圧","日射","湿度","雲量"),
          col="blue", pch=20)
   #+end_src
@@ -250,16 +250,16 @@
   #+begin_src R :file figs/05_models.png :exports results :results graphics :tangle yes
     ## 観測値とあてはめ値の比較
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    with(TW.est1,
+    with(tw_est1,
          plot(y,fitted.values,col="orange",pch=17, # 三角
               xlab="気温",
               ylab="あてはめ値",ylim=range(y)))   
     abline(0,1,col="red",lwd=2)
-    with(TW.est2,
+    with(tw_est2,
          points(y,fitted.values,col="green",pch=15)) # 四角
-    with(TW.est3,
+    with(tw_est3,
          points(y,fitted.values,col="blue",pch=21))  # 丸
-    with(TW.est4,
+    with(tw_est4,
          points(y,fitted.values,col="brown",pch=23))  # 菱形
     legend("bottomright",inset=.05, # 凡例の作成
            col=c("orange","green","blue","brown"), pch=c(17,15,21,23), 
@@ -272,7 +272,7 @@
 #+ATTR_LATEX: :width 0.6\linewidth
 [[file:figs/05_models.png]]
 ** 寄与率
-- *決定係数* (R-squared):
+- *決定係数* (R-squared)
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -282,7 +282,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- *自由度調整済み決定係数* (adjusted R-squared):
+- *自由度調整済み決定係数* (adjusted R-squared)
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -301,9 +301,9 @@
       ## モデル1
       print(
           paste("R2:",
-                signif(summary(TW.est1)$r.squared,digits=3),
+                signif(summary(tw_est1)$r.squared,digits=3),
                 "; adj. R2:",
-                signif(summary(TW.est1)$adj.r.squared,digits=3)
+                signif(summary(tw_est1)$adj.r.squared,digits=3)
                 ))
     #+end_src
   - モデル2: 気温 = F(気圧, 日射)
@@ -311,9 +311,9 @@
       ## モデル2
       print(
           paste("R2:",
-                signif(summary(TW.est2)$r.squared,digits=3),
+                signif(summary(tw_est2)$r.squared,digits=3),
                 "; adj. R2:",
-                signif(summary(TW.est2)$adj.r.squared,digits=3)
+                signif(summary(tw_est2)$adj.r.squared,digits=3)
                 ))
     #+end_src
   - モデル3: 気温 = F(気圧, 日射, 湿度) (2より改善している)
@@ -321,9 +321,9 @@
       ## モデル3
       print(
           paste("R2:",
-                signif(summary(TW.est3)$r.squared,digits=3),
+                signif(summary(tw_est3)$r.squared,digits=3),
                 "; adj. R2:",
-                signif(summary(TW.est3)$adj.r.squared,digits=3)
+                signif(summary(tw_est3)$adj.r.squared,digits=3)
                 ))
     #+end_src
   - モデル4: 気温 = F(気圧, 日射, 雲量) (2より改善していない)
@@ -331,17 +331,17 @@
       ## モデル4
       print(
           paste("R2:",
-                signif(summary(TW.est4)$r.squared,digits=3),
+                signif(summary(tw_est4)$r.squared,digits=3),
                 "; adj. R2:",
-                signif(summary(TW.est4)$adj.r.squared,digits=3)
+                signif(summary(tw_est4)$adj.r.squared,digits=3)
                 ))
     #+end_src
 
-** \(F\)-統計量による検定
+** \(F\)統計量による検定
 - 説明変数のうち1つでも役に立つか否かを検定する
   - 帰無仮説 \(H_{0}\): \(\beta_1=\dotsb=\beta_p=0\)
   - 対立仮説 \(H_{1}\): \(\exists j\;\beta_j\neq0\) (少なくとも1つは役に立つ)
-- \(F\)-統計量: 決定係数(または残差)を用いて計算
+- \(F\)統計量: 決定係数(または残差)を用いて計算
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -350,95 +350,95 @@
     \end{equation}
   #+end_src
   #+end_quote
-- \(p\)-値: 自由度 \(p,n{-}p{-}1\) の \(F\)-分布で計算
+- \(p\)値: 自由度 \(p,n{-}p{-}1\) の \(F\)分布で計算
   # #+begin_src latex
   #   \begin{equation}
-  #     \text{(\(p\)-値)}
+  #     \text{(\(p\)値)}
   #     =
   #     \int_{F}^\infty f(x)dx,
   #   \end{equation}
   # #+end_src
 
 ** モデルの評価
-- 決定係数と\(F\)-統計量
+- 決定係数と\(F\)統計量
   - モデル1: 気温 = F(気圧)
     #+begin_src R :exports results :tangle yes
       ## モデル1
-      TW.sum <- summary(TW.est1)
-      TW.r2 <- TW.sum$r.squared
-      TW.ar2 <- TW.sum$adj.r.squared
-      TW.fstat <- TW.sum$fstat
+      tw_sum <- summary(tw_est1)
+      tw_r2 <- tw_sum$r.squared
+      tw_ar2 <- tw_sum$adj.r.squared
+      tw_fstat <- tw_sum$fstat
       print(
           paste("R2:",
-                signif(TW.r2,digits=3),
+                signif(tw_r2,digits=3),
                 "; adj. R2:",
-                signif(TW.ar2,digits=3),
+                signif(tw_ar2,digits=3),
                 "; F-stat:",
-                signif(TW.fstat[1],digits=3),
+                signif(tw_fstat[1],digits=3),
                 "; p-val:",
-                signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
                 ))
     #+end_src
   - モデル2: 気温 = F(気圧, 日射)
     #+begin_src R :exports results :tangle yes
       ## モデル2
-      TW.sum <- summary(TW.est2)
-      TW.r2 <- TW.sum$r.squared
-      TW.ar2 <- TW.sum$adj.r.squared
-      TW.fstat <- TW.sum$fstat
+      tw_sum <- summary(tw_est2)
+      tw_r2 <- tw_sum$r.squared
+      tw_ar2 <- tw_sum$adj.r.squared
+      tw_fstat <- tw_sum$fstat
       print(
           paste("R2:",
-                signif(TW.r2,digits=3),
+                signif(tw_r2,digits=3),
                 "; adj. R2:",
-                signif(TW.ar2,digits=3),
+                signif(tw_ar2,digits=3),
                 "; F-stat:",
-                signif(TW.fstat[1],digits=3),
+                signif(tw_fstat[1],digits=3),
                 "; p-val:",
-                signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
                 ))
     #+end_src
   - モデル3: 気温 = F(気圧, 日射, 湿度)
     #+begin_src R :exports results :tangle yes
       ## モデル3
-      TW.sum <- summary(TW.est3)
-      TW.r2 <- TW.sum$r.squared
-      TW.ar2 <- TW.sum$adj.r.squared
-      TW.fstat <- TW.sum$fstat
+      tw_sum <- summary(tw_est3)
+      tw_r2 <- tw_sum$r.squared
+      tw_ar2 <- tw_sum$adj.r.squared
+      tw_fstat <- tw_sum$fstat
       print(
           paste("R2:",
-                signif(TW.r2,digits=3),
+                signif(tw_r2,digits=3),
                 "; adj. R2:",
-                signif(TW.ar2,digits=3),
+                signif(tw_ar2,digits=3),
                 "; F-stat:",
-                signif(TW.fstat[1],digits=3),
+                signif(tw_fstat[1],digits=3),
                 "; p-val:",
-                signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
                 ))
     #+end_src
   - モデル4: 気温 = F(気圧, 日射, 雲量)
     #+begin_src R :exports results :tangle yes
       ## モデル4
-      TW.sum <- summary(TW.est4)
-      TW.r2 <- TW.sum$r.squared
-      TW.ar2 <- TW.sum$adj.r.squared
-      TW.fstat <- TW.sum$fstat
+      tw_sum <- summary(tw_est4)
+      tw_r2 <- tw_sum$r.squared
+      tw_ar2 <- tw_sum$adj.r.squared
+      tw_fstat <- tw_sum$fstat
       print(
           paste("R2:",
-                signif(TW.r2,digits=3),
+                signif(tw_r2,digits=3),
                 "; adj. R2:",
-                signif(TW.ar2,digits=3),
+                signif(tw_ar2,digits=3),
                 "; F-stat:",
-                signif(TW.fstat[1],digits=3),
+                signif(tw_fstat[1],digits=3),
                 "; p-val:",
-                signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+                signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
                 ))
     #+end_src
 
-** \(t\)-統計量による検定
+** \(t\)統計量による検定
 - 回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定する
   - 帰無仮説 \(H_{0}\): \(\beta_j=0\)
   - 対立仮説 \(H_{1}\): \(\beta_j\neq0\) (\(\beta_j\) は役に立つ)
-- \(t\)-統計量: 各係数ごと，\(\zeta\) は \((X^{\mathsf{T}} X)^{-1}\) の対角成分
+- \(t\)統計量: 各係数ごと，\(\zeta\) は \((X^{\mathsf{T}} X)^{-1}\) の対角成分
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -446,41 +446,41 @@
     \end{equation}
   #+end_src
   #+end_quote
-- \(p\)-値: 自由度 \(n{-}p{-}1\) の \(t\)-分布を用いて計算
+- \(p\)値: 自由度 \(n{-}p{-}1\) の \(t\)分布を用いて計算
   # #+begin_src latex
   # \begin{equation}
-  #   \text{(\(p\)-値)}
+  #   \text{(\(p\)値)}
   #   =
   #   2\int_{|t|}^\infty f(x)dx
   # \end{equation}
   # #+end_src
 
 ** モデルの評価
-- 回帰係数の推定量と\(t\)-統計量
+- 回帰係数の推定量と\(t\)統計量
   - モデル1: 気温 = F(気圧)
     #+begin_src R :exports results :tangle yes
       ## モデル1
-      signif(summary(TW.est1)$coef,digits=3)
+      signif(summary(tw_est1)$coef,digits=3)
     #+end_src
     - 気圧単体では回帰係数は有意ではない
   - モデル2: 気温 = F(気圧, 日射)
     #+begin_src R :exports results :tangle yes
       ## モデル2
-      signif(summary(TW.est2)$coef,digits=3)
+      signif(summary(tw_est2)$coef,digits=3)
     #+end_src
     - 日射と組み合わせることで有意となる
 
 #+reveal: split     
-- 回帰係数の推定量と\(t\)-統計量 (つづき)
+- 回帰係数の推定量と\(t\)統計量 (つづき)
   - モデル3: 気温 = F(気圧, 日射, 湿度)
     #+begin_src R :exports results :tangle yes
       ## モデル3
-      signif(summary(TW.est3)$coef,digits=3)
+      signif(summary(tw_est3)$coef,digits=3)
     #+end_src
   - モデル4: 気温 = F(気圧, 日射, 雲量) 
     #+begin_src R :exports results :tangle yes
       ## モデル4
-      signif(summary(TW.est4)$coef,digits=3)
+      signif(summary(tw_est4)$coef,digits=3)
     #+end_src
     - このモデルでは雲量は有用でないことが示唆される
 
@@ -514,9 +514,8 @@
     \begin{equation}
       \hat{y}
       =
-      \boldsymbol{w}(\boldsymbol{x})^{\mathsf{T}}\boldsymbol{y}
-    \end{equation}
-    \begin{equation}
+      \boldsymbol{w}(\boldsymbol{x})^{\mathsf{T}}\boldsymbol{y},
+      \qquad
       \boldsymbol{w}(\boldsymbol{x})^{\mathsf{T}}
       =
       (1,\boldsymbol{x}^{\mathsf{T}})
@@ -568,7 +567,7 @@
   以下の問に答えなさい
   - 予測値 \(\hat{y}\) の平均を求めよ
   - 予測値 \(\hat{y}\) の分散を求めよ
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -657,7 +656,7 @@
       Z=
       \frac{\tilde{y}-\hat{y}}{\hat{\sigma}\gamma_{c}(\boldsymbol{x})}
       \sim \mathcal{T}(n{-}p{-}1) 
-      \quad (\text{\(t\)-分布})
+      \quad (\text{\(t\)分布})
     \end{equation}
   #+end_src
   #+end_quote
@@ -706,7 +705,7 @@
     #+end_quote
   - 観測値と予測値の差 \(y-\hat{y}\) の平均と分散を求めよ
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -812,7 +811,7 @@
       Z=
       \frac{y-\hat{y}}{\hat{\sigma}\gamma_{p}(\boldsymbol{x})}
       \sim \mathcal{T}(n{-}p{-}1) 
-      \quad (\text{\(t\)-分布})
+      \quad (\text{\(t\)分布})
     \end{equation}
   #+end_src
   #+end_quote
@@ -842,12 +841,12 @@
 
 
 
-* COMMENT 演習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R: 予測値と区間推定
+** R : 予測値と区間推定
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -868,25 +867,25 @@
     ## 信頼区間，予測区間の水準の既定値は0.95
   #+end_src
 
-** R: モデルからの予測
+** R : モデルからの予測
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - 東京の気候データによる例
   #+begin_src R :eval no :tangle yes
     ### 9,10月のデータでモデルを構築し，8,11月のデータを予測
-    TW.data <- read.csv("data/tokyo_weather.csv")
-    TW.train <- subset(TW.data, # モデル推定用データ
+    tw_data <- read.csv("data/tokyo_weather.csv")
+    tw_train <- subset(tw_data, # モデル推定用データ
                        subset= month %in% c(9,10)) # %in% は集合に含むか
-    TW.test  <- subset(TW.data, # 予測用データ
+    tw_test  <- subset(tw_data, # 予測用データ
                        subset= month %in% c(8,11))
 
-    TW.model <- temp ~ solar + press # モデルの定義 
-    TW.est <- lm(TW.model, data=TW.train) # モデルの推定
-    summary(TW.est) # モデルの評価
-    TW.fit  <- predict(TW.est) # データのあてはめ値
-    TW.pred <- predict(TW.est, # 新規データの予測値
-                       newdata=TW.test) 
+    tw_model <- temp ~ solar + press # モデルの定義 
+    tw_est <- lm(tw_model, data=tw_train) # モデルの推定
+    summary(tw_est) # モデルの評価
+    tw_fit  <- predict(tw_est) # データのあてはめ値
+    tw_pred <- predict(tw_est, # 新規データの予測値
+                       newdata=tw_test) 
   #+end_src
 
 #+reveal: split
@@ -895,11 +894,11 @@
     ## 予測結果を図示
     myColor <- rep("black",12) 
     myColor[8:11] <- c("red","orange","violet","blue") # 色の定義
-    with(TW.train,
-         plot(temp ~ TW.fit, pch=1, col=myColor[month],
+    with(tw_train,
+         plot(temp ~ tw_fit, pch=1, col=myColor[month],
               xlab="fitted", ylab="observed"))
-    with(TW.test,
-         points(temp ~ TW.pred, pch=4, col=myColor[month]))
+    with(tw_test,
+         points(temp ~ tw_pred, pch=4, col=myColor[month]))
     abline(0,1,col="gray") # 予測が完全に正しい場合のガイド線
     legend("bottomright",inset=.05, pch=15, # 凡例の作成
            legend=c("Aug","Sep","Oct","Nov"), col=myColor[8:11])
@@ -914,9 +913,9 @@
   - 上記のモデルで9月のデータを予測する
   #+begin_src R :eval no
     ## 8月と9月のデータを取り出すには，例えば以下のようにすればよい
-    TW.data <- read.csv("data/tokyo_weather.csv")
-    TW.train <- subset(TW.data, subset= month==8) # 推定用データ
-    TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
+    tw_data <- read.csv("data/tokyo_weather.csv")
+    tw_train <- subset(tw_data, subset= month==8) # 推定用データ
+    tw_test  <- subset(tw_data, subset= month %in% 9) # 予測用データ
   #+end_src
   
 #+begin_src R :eval no :exports none :tangle yes
@@ -928,27 +927,27 @@
   
   ## 信頼区間と予測区間の計算
   library(plotrix) # 区間付きのグラフを利用するため
-  TW.data <- read.csv("data/tokyo_weather.csv")
-  TW.train <- subset(TW.data, subset= month %in% 8) # 推定用データ
-  TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
-  TW.model <- temp ~ solar + press + cloud # モデルの定義 
-  TW.est <- lm(TW.model, data=TW.train) # モデルの推定
+  tw_data <- read.csv("data/tokyo_weather.csv")
+  tw_train <- subset(tw_data, subset= month %in% 8) # 推定用データ
+  tw_test  <- subset(tw_data, subset= month %in% 9) # 予測用データ
+  tw_model <- temp ~ solar + press + cloud # モデルの定義 
+  tw_est <- lm(tw_model, data=tw_train) # モデルの推定
   
   ## 信頼区間
-  TW.fit <- data.frame(TW.train,
-                       predict(TW.est, # 回帰式によるあてはめ値を付加
+  tw_fit <- data.frame(tw_train,
+                       predict(tw_est, # 回帰式によるあてはめ値を付加
                                interval="confidence")) 
-  TW.cint <- data.frame(TW.test,
-                        predict(TW.est, newdata=TW.test,
+  tw_cint <- data.frame(tw_test,
+                        predict(tw_est, newdata=tw_test,
                                 interval="confidence"))
   
   ## 予測区間
-  TW.pint <- data.frame(TW.test,
-                        predict(TW.est, newdata=TW.test,
+  tw_pint <- data.frame(tw_test,
+                        predict(tw_est, newdata=tw_test,
                                 interval="prediction"))
   
   ## 8月のデータで推定したモデルで8月をあてはめた信頼区間
-  with(TW.fit, { # 2つのプロットをまとめて実行
+  with(tw_fit, { # 2つのプロットをまとめて実行
       plotCI(day, fit, ui=upr, li=lwr, # それぞれの列名に注意
              col="blue", scol="steelblue", lwd=2,
              xlab="August", ylab="temperature")
@@ -956,7 +955,7 @@
   })
   
   ## 8月のモデルで9月をあてはめた信頼区間
-  with(TW.cint, {
+  with(tw_cint, {
       plotCI(day, fit, ui=upr, li=lwr, ylim=c(20,32), 
              col="blue", scol="steelblue", lwd=2,
              xlab="September", ylab="temperature")
@@ -964,7 +963,7 @@
   })
   
   ## 8月のモデルで9月をあてはめた予測区間
-  with(TW.pint, {
+  with(tw_pint, {
       plotCI(day, fit, ui=upr, li=lwr, ylim=c(20,32),
              col="blue", scol="lightblue", lwd=2,
              xlab="September", ylab="temperature")
@@ -1049,21 +1048,21 @@
   ### 東京の気候データによる分析
   ## 信頼区間と予測区間の計算
   require(plotrix) # 区間付きのグラフを利用するため
-  TW.data <- read.csv("data/tokyo_weather.csv")
-  TW.model <- temp ~ solar + press + humid # モデルの定義 
-  TW.train <- subset(TW.data, subset= month %in% 8) # 推定用データ
-  TW.test  <- subset(TW.data, subset= month %in% 9) # 予測用データ
-  TW.est <- lm(TW.model, data=TW.train) # モデルの推定
+  tw_data <- read.csv("data/tokyo_weather.csv")
+  tw_model <- temp ~ solar + press + humid # モデルの定義 
+  tw_train <- subset(tw_data, subset= month %in% 8) # 推定用データ
+  tw_test  <- subset(tw_data, subset= month %in% 9) # 予測用データ
+  tw_est <- lm(tw_model, data=tw_train) # モデルの推定
   ## 信頼区間
-  TW.fit <- data.frame(TW.train,
-                       predict(TW.est, # 回帰式によるあてはめ値を付加
+  tw_fit <- data.frame(tw_train,
+                       predict(tw_est, # 回帰式によるあてはめ値を付加
                                interval="confidence")) 
-  TW.cint <- data.frame(TW.test,
-                        predict(TW.est, newdata=TW.test,
+  tw_cint <- data.frame(tw_test,
+                        predict(tw_est, newdata=tw_test,
                                 interval="confidence"))
   ## 予測区間
-  TW.pint <- data.frame(TW.test,
-                        predict(TW.est, newdata=TW.test,
+  tw_pint <- data.frame(tw_test,
+                        predict(tw_est, newdata=tw_test,
                                 interval="prediction"))
 #+end_src
      
@@ -1071,7 +1070,7 @@
 #+begin_src R :file figs/05_aug_cint.png :exports results :results graphics :tangle yes
   ## 8月のデータで推定したモデルで8月をあてはめた場合の信頼区間
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-  with(TW.fit, { # 2つのプロットをまとめて実行
+  with(tw_fit, { # 2つのプロットをまとめて実行
       plotCI(day, fit, ui=upr, li=lwr, # それぞれの列名に注意
              col="blue", scol="steelblue", lwd=2,
              xlab="8月", ylab="気温")
@@ -1090,7 +1089,7 @@
 #+begin_src R :file figs/05_sep_cint.png :exports results :results graphics :tangle yes
   ## 8月のモデルで9月を予測した場合の信頼区間
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-  with(TW.cint, {
+  with(tw_cint, {
       plotCI(day, fit, ui=upr, li=lwr, ylim=range(temp), 
              col="blue", scol="steelblue", lwd=2,
              xlab="9月", ylab="気温")
@@ -1109,7 +1108,7 @@
 #+begin_src R :file figs/05_sep_pint.png :exports results :results graphics :tangle yes
   ## 8月のモデルで9月を予測した場合の予測区間
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-  with(TW.pint, {
+  with(tw_pint, {
       plotCI(day, fit, ui=upr, li=lwr, ylim=range(temp),
              col="blue", scol="lightblue", lwd=2,
              xlab="9月", ylab="気温")
@@ -1129,22 +1128,22 @@
 - 目的変数 \(Y\)
 - 説明変数 \(X_1,\dotsc,X_p\)
 - 説明変数の追加で対応可能
-  - 交互作用 (交差項): \(X_iX_j\) のような説明変数の積
-  - 非線形変換: \(\log(X_k)\) のような関数による変換
+  - 交互作用 (交差項) : \(X_iX_j\) のような説明変数の積
+  - 非線形変換 : \(\log(X_k)\) のような関数による変換
 
 ** カテゴリカル変数を含むモデル
 - 数値ではないデータ
-  - [[color:darkgreen][悪性良性]]
-  - [[color:darkgreen][血液型]]
+  - [[color:green][悪性良性]]
+  - [[color:green][血液型]]
 - 適切な方法で数値に変換して対応:
   - 2値の場合は 1,0 (真，偽) を割り当てる
-    - 悪性: 1
-    - 良性: 0
+    - 悪性 : 1
+    - 良性 : 0
   - 3値以上の場合は *ダミー変数* を利用する (カテゴリ数-1個)
-    - A型: (1,0,0)
-    - B型: (0,1,0)
-    - O型: (0,0,1)
-    - AB型: (0,0,0)
+    - A型 : (1,0,0)
+    - B型 : (0,1,0)
+    - O型 : (0,0,1)
+    - AB型 : (0,0,0)
 
 
 * 解析の事例
@@ -1226,22 +1225,22 @@
 - 日射量，気圧の線形回帰モデル
   #+begin_src R :exports results :tangle yes
     ## 日射量，気圧の線形回帰モデル
-    TW.est <- lm(temp ~ solar + press, data=TW.subset)
-    TW.sum <- summary(TW.est)
-    TW.r2 <- TW.sum$r.squared
-    TW.ar2 <- TW.sum$adj.r.squared
-    TW.fstat <- TW.sum$fstat
-    signif(TW.sum$coef,digits=3)
+    tw_est <- lm(temp ~ solar + press, data=tw_subset)
+    tw_sum <- summary(tw_est)
+    tw_r2 <- tw_sum$r.squared
+    tw_ar2 <- tw_sum$adj.r.squared
+    tw_fstat <- tw_sum$fstat
+    signif(tw_sum$coef,digits=3)
     cat("\n")
     print(
         paste("R2:",
-              signif(TW.r2,digits=3),
+              signif(tw_r2,digits=3),
               "; adj. R2:",
-              signif(TW.ar2,digits=3),
+              signif(tw_ar2,digits=3),
               "; F-stat:",
-              signif(TW.fstat[1],digits=3),
+              signif(tw_fstat[1],digits=3),
               "; p-val:",
-              signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+              signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
               ))
   #+end_src
   - 係数の正負から
@@ -1253,22 +1252,22 @@
 - 交互作用を加えた線形回帰モデル
   #+begin_src R :exports results :tangle yes
     ## 湿度と雲量の交互作用を加えた線形回帰モデル
-    TW.est <- lm(temp ~ solar * press, data=TW.subset)
-    TW.sum <- summary(TW.est)
-    TW.r2 <- TW.sum$r.squared
-    TW.ar2 <- TW.sum$adj.r.squared
-    TW.fstat <- TW.sum$fstat
-    signif(TW.sum$coef,digits=3)
+    tw_est <- lm(temp ~ solar * press, data=tw_subset)
+    tw_sum <- summary(tw_est)
+    tw_r2 <- tw_sum$r.squared
+    tw_ar2 <- tw_sum$adj.r.squared
+    tw_fstat <- tw_sum$fstat
+    signif(tw_sum$coef,digits=3)
     cat("\n")
     print(
         paste("R2:",
-              signif(TW.r2,digits=3),
+              signif(tw_r2,digits=3),
               "; adj. R2:",
-              signif(TW.ar2,digits=3),
+              signif(tw_ar2,digits=3),
               "; F-stat:",
-              signif(TW.fstat[1],digits=3),
+              signif(tw_fstat[1],digits=3),
               "; p-val:",
-              signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+              signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
               ))
   #+end_src
   - 2次式を整理すると
@@ -1277,7 +1276,6 @@
     気温が高くなることが示唆される
   - [[color:gray][係数の有意性は低いのでより多くのデータでの分析が必要]]
 
-    
 ** カテゴリカル変数の利用
 - 東京の気候データを用いて
   気温を回帰するモデルを検討する
@@ -1290,23 +1288,23 @@
 - 降水の有無を表すカテゴリカル変数を用いたモデル
   #+begin_src R :exports results :tangle yes
     ## 雨と気温の関係を分析
-    TW.data <- transform(TW.data,
+    tw_data <- transform(tw_data,
                          rain=factor(rain > 0)) 
-    TW.sum <- summary(lm(temp ~ rain, data=TW.data))
-    TW.r2 <- TW.sum$r.squared
-    TW.ar2 <- TW.sum$adj.r.squared
-    TW.fstat <- TW.sum$fstat
-    signif(TW.sum$coef,digits=3)
+    tw_sum <- summary(lm(temp ~ rain, data=tw_data))
+    tw_r2 <- tw_sum$r.squared
+    tw_ar2 <- tw_sum$adj.r.squared
+    tw_fstat <- tw_sum$fstat
+    signif(tw_sum$coef,digits=3)
     cat("\n")
     print(
         paste("R2:",
-              signif(TW.r2,digits=3),
+              signif(tw_r2,digits=3),
               "; adj. R2:",
-              signif(TW.ar2,digits=3),
+              signif(tw_ar2,digits=3),
               "; F-stat:",
-              signif(TW.fstat[1],digits=3),
+              signif(tw_fstat[1],digits=3),
               "; p-val:",
-              signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+              signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
               ))
     ## 通年では雨と気温の関係は積極的に支持されない
   #+end_src
@@ -1317,34 +1315,34 @@
 - 月をカテゴリカル変数として加えたモデル
   #+begin_src R :exports results :tangle yes
     ## 月毎の気温の差を考慮して月を表す変数をダミー化する
-    TW.data <- transform(TW.data,
+    tw_data <- transform(tw_data,
                          month=factor(month))
-    TW.sum <- summary(lm(temp ~ rain + month, data=TW.data))
-    TW.r2 <- TW.sum$r.squared
-    TW.ar2 <- TW.sum$adj.r.squared
-    TW.fstat <- TW.sum$fstat
-    signif(TW.sum$coef,digits=3)
+    tw_sum <- summary(lm(temp ~ rain + month, data=tw_data))
+    tw_r2 <- tw_sum$r.squared
+    tw_ar2 <- tw_sum$adj.r.squared
+    tw_fstat <- tw_sum$fstat
+    signif(tw_sum$coef,digits=3)
     cat("\n")
     print(
         paste("R2:",
-              signif(TW.r2,digits=3),
+              signif(tw_r2,digits=3),
               "; adj. R2:",
-              signif(TW.ar2,digits=3),
+              signif(tw_ar2,digits=3),
               "; F-stat:",
-              signif(TW.fstat[1],digits=3),
+              signif(tw_fstat[1],digits=3),
               "; p-val:",
-              signif(1-pf(TW.fstat[1],TW.fstat[2],TW.fstat[3]),digits=3)
+              signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
               ))
   #+end_src
   - 月毎に比較すると雨の日の方が気温が低いことが支持される
 
 
-* COMMENT 演習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R: 線形でないモデル式の書き方
+** R : 線形でないモデル式の書き方
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1361,7 +1359,7 @@
     Y ~ f(X1)            # f(X1) (fは任意の関数)
     Y ~ X1 + I(X2^2)     # X1 + X2^2
   #+end_src
-** R: カテゴリカル変数の取り扱い
+** R : カテゴリカル変数の取り扱い
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1407,34 +1405,34 @@
   ### 9月から11月のデータによる分析 (交互作用と非線形性)
 
   ## データの整形
-  TW.subset <- subset(TW.data, subset= month %in% 9:11)
+  tw_subset <- subset(tw_data, subset= month %in% 9:11)
   
   ## 日射量，気圧，湿度の線形回帰モデル
-  summary(lm(temp ~ solar + press + humid, data=TW.subset))
+  summary(lm(temp ~ solar + press + humid, data=tw_subset))
   ## 湿度の対数を考えた線形回帰モデル
-  summary(lm(temp ~ solar + press + log(humid), data=TW.subset))
+  summary(lm(temp ~ solar + press + log(humid), data=tw_subset))
   ## 最初のモデルにそれぞれの交互作用を加えたモデル (書き方はいろいろある)
-  summary(lm(temp ~ (solar + press + humid)^2, data=TW.subset))
+  summary(lm(temp ~ (solar + press + humid)^2, data=tw_subset))
   ## 更に3つの変数の積を加えたモデル
-  summary(lm(temp ~ solar * press * humid, data=TW.subset))
+  summary(lm(temp ~ solar * press * humid, data=tw_subset))
   
   ## 用いた変数の散布図
-  plot(~ temp + solar + press + humid, data=TW.subset)
+  plot(~ temp + solar + press + humid, data=tw_subset)
   ## 最後のモデルの視覚的な評価 (診断プロット)
-  plot(lm(temp ~ solar * press * humid, data=TW.subset))
+  plot(lm(temp ~ solar * press * humid, data=tw_subset))
 
   ### 雨と気温の関係の分析 (カテゴリカル変数)
 
   ## 雨の有無をダミー化(因子化)する
-  TW.data <- transform(TW.data,
+  tw_data <- transform(tw_data,
                        rain=factor(rain > 0)) 
-  summary(lm(temp ~ rain, data=TW.data))
+  summary(lm(temp ~ rain, data=tw_data))
   ## 通年では雨と気温の関係は積極的に支持されない
   
   ## 月毎の気温の差を考慮して月を表す変数(整数値)をダミー化する
-  TW.data <- transform(TW.data, 
+  tw_data <- transform(tw_data, 
                        month=factor(month))
-  summary(lm(temp ~ rain + month, data=TW.data))
+  summary(lm(temp ~ rain + month, data=tw_data))
   ## 月毎に比較すると雨の日の方が気温が低いことが支持される
 #+end_src
 
@@ -1443,8 +1441,6 @@
 :reveal_background: #EEEEFF
 :END:
 - [[./code/06-cross.r][06-cross.r]] を確認してみよう
-
-
 
 ** COMMENT 講義資料: ダミー変数
    :PROPERTIES:
@@ -1455,23 +1451,23 @@
 
 * COMMENT 補足
 # 東京大学
-** R: モデルの探索
+** R : モデルの探索
 - 変数が増えるとモデルの比較が困難
 - 関数 ~step()~ を用いて自動化することができる
   #+begin_src R :eval no :tangle yes
     ## モデルの探索
-    Adv.data <- read.csv('https://www.statlearning.com/s/Advertising.csv',
+    adv_data <- read.csv('https://www.statlearning.com/s/Advertising.csv',
                          row.names=1) 
-    summary(lm(sales ~ radio, data=Adv.data))
-    summary(lm(sales ~ TV + radio, data=Adv.data))
-    summary(lm(sales ~ TV + radio + newspaper, data=Adv.data))
-    summary(init <- lm(sales ~ TV * radio * newspaper, data=Adv.data))
+    summary(lm(sales ~ radio, data=adv_data))
+    summary(lm(sales ~ TV + radio, data=adv_data))
+    summary(lm(sales ~ TV + radio + newspaper, data=adv_data))
+    summary(init <- lm(sales ~ TV * radio * newspaper, data=adv_data))
     opt <- step(init) # step関数による探索 (最大のモデルから削減増加を行う)
     summary(opt)
   #+end_src
   - 最適とは限らないので注意は必要
 
-** R: car package
+** R : car package
 - 回帰モデルの評価
   - 与えられたデータの再現
   - 新しいデータの予測
@@ -1493,7 +1489,7 @@
 - これまでに用いたデータでモデルを更新して評価してみよう
   - 変数間の線形回帰の関係について仮説を立てる 
   - モデルのあてはめを行い評価する
-    - 説明力があるのか? (\(F\)-統計量，\(t\)-統計量，決定係数)
+    - 説明力があるのか? (\(F\)統計量，\(t\)統計量，決定係数)
     - 残差に偏りはないか? (様々な診断プロット)
     - 変数間の線形関係は妥当か? (様々な診断プロット)
   - 検討結果を踏まえてモデルを更新する (評価の繰り返し)
@@ -1505,11 +1501,12 @@
 - [[./code/06-car.r][06-car.r]] を確認してみよう
 
 
-* 次週の予定
+* 次回の予定
 - *第1回: 主成分分析の考え方*
 - 第2回: 分析の評価と視覚化
   
 
+* Footnotes
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted
