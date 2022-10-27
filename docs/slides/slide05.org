@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-26 13:50:45 mura>
+# Time-stamp: <2022-10-27 16:23:51 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -27,7 +27,7 @@
   ### 第5講 資料
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 
 * COMMENT 講義概要
