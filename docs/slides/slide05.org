@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-21 14:58:04 mura>
+# Time-stamp: <2022-10-26 13:50:45 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -204,32 +204,34 @@
     tw_subset <- subset(tw_data, # 8月のデータの抽出
                         subset= month==8)
     head(tw_subset[,-1], 14) # 2週間分を表示
-
+    
     ### モデル式
     tw_model0 <- temp ~ press + solar + humid + cloud
     tw_model1 <- temp ~ press
-    tw_model2 <- temp ~ press + solar
-    tw_model3 <- temp ~ press + solar + humid
-    tw_model4 <- temp ~ press + solar + cloud
-
+    tw_model2 <- temp ~ solar
+    tw_model3 <- temp ~ press + solar
+    tw_model4 <- temp ~ press + solar + humid
+    tw_model5 <- temp ~ press + solar + cloud
+    
     ## 推定
     tw_est0 <- lm(tw_model0, data=tw_subset, y=TRUE)
     tw_est1 <- lm(tw_model1, data=tw_subset, y=TRUE)
     tw_est2 <- lm(tw_model2, data=tw_subset, y=TRUE)
     tw_est3 <- lm(tw_model3, data=tw_subset, y=TRUE)
     tw_est4 <- lm(tw_model4, data=tw_subset, y=TRUE)
+    tw_est5 <- lm(tw_model5, data=tw_subset, y=TRUE)
   #+end_src
   
 #+reveal: split
 - 作成した線形回帰モデルを検討する
-  - モデル1: 気温 = F(気圧)
-  - モデル2: 気温 = F(気圧, 日射)
-  - モデル3: 気温 = F(気圧, 日射, 湿度)
-  - モデル4: 気温 = F(気圧, 日射, 雲量)
+  - モデル1 : 気温 = F(気圧)
+  - モデル2 : 気温 = F(日射)
+  - モデル3 : 気温 = F(気圧, 日射)
+  - モデル4 : 気温 = F(気圧, 日射, 湿度)
+  - モデル5 : 気温 = F(気圧, 日射, 雲量)
 
 #+reveal: split
 - 説明変数と目的変数の関係
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/05_variables.png :exports results :results graphics :tangle yes
     ## 説明変数と目的変数の散布図
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
@@ -246,7 +248,6 @@
 
 #+reveal: split
 - 観測値とあてはめ値の比較
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/05_models.png :exports results :results graphics :tangle yes
     ## 観測値とあてはめ値の比較
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
@@ -261,13 +262,15 @@
          points(y,fitted.values,col="blue",pch=21))  # 丸
     with(tw_est4,
          points(y,fitted.values,col="brown",pch=23))  # 菱形
+    with(tw_est5,
+         points(y,fitted.values,col="cyan",pch=25))  # 三角
     legend("bottomright",inset=.05, # 凡例の作成
-           col=c("orange","green","blue","brown"), pch=c(17,15,21,23), 
-           legend=c("モデル1","モデル2","モデル3","モデル4"))
+           col=c("orange","green","blue","brown","cyan"), pch=c(17,15,21,23,25), 
+           legend=c("モデル1","モデル2","モデル3","モデル4","モデル5"))
   #+end_src
 
 #+CAPTION: モデルの比較
-#+NAME: fig:04_models
+#+NAME: fig:05_models
 #+ATTR_HTML: height 100%
 #+ATTR_LATEX: :width 0.6\linewidth
 [[file:figs/05_models.png]]
@@ -296,7 +299,7 @@
   - 不偏分散で補正
 ** モデルの評価
 - 決定係数
-  - モデル1: 気温 = F(気圧)
+  - モデル1 : 気温 = F(気圧)
     #+begin_src R :exports results :tangle yes
       ## モデル1
       print(
@@ -306,9 +309,9 @@
                 signif(summary(tw_est1)$adj.r.squared,digits=3)
                 ))
     #+end_src
-  - モデル2: 気温 = F(気圧, 日射)
+  - モデル2 : 気温 = F(日射)
     #+begin_src R :exports results :tangle yes
-      ## モデル2
+      ## モデル1
       print(
           paste("R2:",
                 signif(summary(tw_est2)$r.squared,digits=3),
@@ -316,7 +319,7 @@
                 signif(summary(tw_est2)$adj.r.squared,digits=3)
                 ))
     #+end_src
-  - モデル3: 気温 = F(気圧, 日射, 湿度) (2より改善している)
+  - モデル3 : 気温 = F(気圧, 日射)
     #+begin_src R :exports results :tangle yes
       ## モデル3
       print(
@@ -326,7 +329,7 @@
                 signif(summary(tw_est3)$adj.r.squared,digits=3)
                 ))
     #+end_src
-  - モデル4: 気温 = F(気圧, 日射, 雲量) (2より改善していない)
+  - モデル4 : 気温 = F(気圧, 日射, 湿度) (3より改善している)
     #+begin_src R :exports results :tangle yes
       ## モデル4
       print(
@@ -334,6 +337,16 @@
                 signif(summary(tw_est4)$r.squared,digits=3),
                 "; adj. R2:",
                 signif(summary(tw_est4)$adj.r.squared,digits=3)
+                ))
+    #+end_src
+  - モデル5 : 気温 = F(気圧, 日射, 雲量) (3より改善していない)
+    #+begin_src R :exports results :tangle yes
+      ## モデル4
+      print(
+          paste("R2:",
+                signif(summary(tw_est5)$r.squared,digits=3),
+                "; adj. R2:",
+                signif(summary(tw_est5)$adj.r.squared,digits=3)
                 ))
     #+end_src
 
@@ -361,7 +374,7 @@
 
 ** モデルの評価
 - 決定係数と\(F\)統計量
-  - モデル1: 気温 = F(気圧)
+  - モデル1 : 気温 = F(気圧)
     #+begin_src R :exports results :tangle yes
       ## モデル1
       tw_sum <- summary(tw_est1)
@@ -379,7 +392,7 @@
                 signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
                 ))
     #+end_src
-  - モデル2: 気温 = F(気圧, 日射)
+  - モデル2 : 気温 = F(日射)
     #+begin_src R :exports results :tangle yes
       ## モデル2
       tw_sum <- summary(tw_est2)
@@ -397,7 +410,7 @@
                 signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
                 ))
     #+end_src
-  - モデル3: 気温 = F(気圧, 日射, 湿度)
+  - モデル3 : 気温 = F(気圧, 日射)
     #+begin_src R :exports results :tangle yes
       ## モデル3
       tw_sum <- summary(tw_est3)
@@ -415,10 +428,28 @@
                 signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
                 ))
     #+end_src
-  - モデル4: 気温 = F(気圧, 日射, 雲量)
+  - モデル4 : 気温 = F(気圧, 日射, 湿度)
     #+begin_src R :exports results :tangle yes
       ## モデル4
       tw_sum <- summary(tw_est4)
+      tw_r2 <- tw_sum$r.squared
+      tw_ar2 <- tw_sum$adj.r.squared
+      tw_fstat <- tw_sum$fstat
+      print(
+          paste("R2:",
+                signif(tw_r2,digits=3),
+                "; adj. R2:",
+                signif(tw_ar2,digits=3),
+                "; F-stat:",
+                signif(tw_fstat[1],digits=3),
+                "; p-val:",
+                signif(1-pf(tw_fstat[1],tw_fstat[2],tw_fstat[3]),digits=3)
+                ))
+    #+end_src
+  - モデル5 : 気温 = F(気圧, 日射, 雲量)
+    #+begin_src R :exports results :tangle yes
+      ## モデル5
+      tw_sum <- summary(tw_est5)
       tw_r2 <- tw_sum$r.squared
       tw_ar2 <- tw_sum$adj.r.squared
       tw_fstat <- tw_sum$fstat
@@ -457,32 +488,51 @@
 
 ** モデルの評価
 - 回帰係数の推定値と\(t\)統計量
-  - モデル1: 気温 = F(気圧)
+  - モデル1 : 気温 = F(気圧)
     #+begin_src R :exports results :tangle yes
       ## モデル1
       signif(summary(tw_est1)$coef,digits=3)
     #+end_src
     - 気圧単体では回帰係数は有意ではない
-  - モデル2: 気温 = F(気圧, 日射)
+  - モデル2 : 気温 = F(日射)
     #+begin_src R :exports results :tangle yes
       ## モデル2
       signif(summary(tw_est2)$coef,digits=3)
     #+end_src
-    - 日射と組み合わせることで有意となる
-
-#+reveal: split     
-- 回帰係数の推定値と\(t\)統計量 (つづき)
-  - モデル3: 気温 = F(気圧, 日射, 湿度)
+    - 日射単体の回帰係数は有意となる
+  - モデル3 : 気温 = F(気圧, 日射)
     #+begin_src R :exports results :tangle yes
       ## モデル3
       signif(summary(tw_est3)$coef,digits=3)
     #+end_src
-  - モデル4: 気温 = F(気圧, 日射, 雲量) 
+    - 気圧は日射と組み合わせることで有意となる
+
+#+reveal: split     
+- 回帰係数の推定値と\(t\)統計量 (つづき)
+  - モデル4: 気温 = F(気圧, 日射, 湿度)
     #+begin_src R :exports results :tangle yes
       ## モデル4
       signif(summary(tw_est4)$coef,digits=3)
     #+end_src
+  - モデル5: 気温 = F(気圧, 日射, 雲量) 
+    #+begin_src R :exports results :tangle yes
+      ## モデル5
+      signif(summary(tw_est5)$coef,digits=3)
+    #+end_src
     - このモデルでは雲量は有用でないことが示唆される
+
+** モデルの診断 (参考)
+#+begin_src R :file figs/05_diag.png :exports results :results graphics :tangle yes
+  ## 診断プロット
+  library(tidyverse)
+  library(ggfortify)
+  autoplot(tw_est4)
+#+end_src
+#+CAPTION: モデル4の診断プロット
+#+NAME: fig:05_diag
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/05_diag.png]]
 
 ** COMMENT 講義資料: 回帰分析とその評価
 :PROPERTIES:
@@ -1066,7 +1116,6 @@
                                 interval="prediction"))
 #+end_src
      
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/05_aug_cint.png :exports results :results graphics :tangle yes
   ## 8月のデータで推定したモデルで8月をあてはめた場合の信頼区間
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
@@ -1085,7 +1134,6 @@
 [[file:figs/05_aug_cint.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/05_sep_cint.png :exports results :results graphics :tangle yes
   ## 8月のモデルで9月を予測した場合の信頼区間
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
@@ -1104,7 +1152,6 @@
 [[file:figs/05_sep_cint.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/05_sep_pint.png :exports results :results graphics :tangle yes
   ## 8月のモデルで9月を予測した場合の予測区間
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
@@ -1159,7 +1206,6 @@
   
 #+reveal: split
 - 散布図 (変換なし)
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/05_animals1.png :exports results :results graphics :tangle yes
     ## 散布図 (normal plot)
     ggplot(Animals, aes(body, brain)) +
@@ -1177,7 +1223,6 @@
 
 #+reveal: split
 - 散布図 (x軸を対数変換)
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/05_animals2.png :exports results :results graphics :tangle yes
     ## 散布図 (normal plot)
     ggplot(Animals, aes(body, brain)) +
@@ -1196,7 +1241,6 @@
 
 #+reveal: split
 - 散布図 (xy軸を対数変換)
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/05_animals3.png :exports results :results graphics :tangle yes
     ## 散布図 (normal plot)
     ggplot(Animals, aes(body, brain)) +
