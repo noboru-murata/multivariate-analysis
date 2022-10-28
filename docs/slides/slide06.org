@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2021-11-12 13:42:03 mura>
+# Time-stamp: <2022-10-28 12:02:05 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -12,22 +12,27 @@
 # C-c '
 :END:
 
+* COMMENT メモ
+- 第3講以降は同じファイルを使うように整理する
+- 同じタイトルの項目にはメモを入れる
+- 演習の内容が異なるので演習は2つ作る形で対応
+
 * 講義の内容
 # 早稲田大学
-- *第1日: 主成分分析の考え方*
-- 第2日: 分析の評価と視覚化
+- *第1日 : 主成分分析の考え方*
+- 第2日 : 分析の評価と視覚化
 
 #+begin_src R :eval no :exports none :tangle yes
   ### 第6講 資料
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 
 * COMMENT 講義概要
 # 東京大学
-- *第1日: 主成分分析の考え方*
-- 第2日: 分析の評価と視覚化
+- *第1日 : 主成分分析の考え方*
+- 第2日 : 分析の評価と視覚化
 
 #+begin_src R :eval no :exports none :tangle yes
   ### 
@@ -35,13 +40,8 @@
   ###
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+  setwd("~/Desktop/lectures/u-tokyo/autumn/course")
 #+end_src
-
-* COMMENT メモ
-- 第3講以降は同じファイルを使うように整理する
-- 同じタイトルの項目にはメモを入れる
-- 演習の内容が異なるので演習は2つ作る形で対応
 
 * COMMENT 演習 (早稲田大学雛型)
 :PROPERTIES:
@@ -74,7 +74,7 @@
   ### 第05回 資料
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 
 * COMMENT 演習 (東京大学雛型)
@@ -131,23 +131,23 @@
   ### 第06回 資料
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 
 
 
 * 主成分分析の考え方
 ** 主成分分析
-- 多数の変量のもつ情報の分析・視覚化:
+- 多数の変量のもつ情報の分析・視覚化
   - 変量を効率的に縮約して少数の特徴量を構成する
   - 特徴量に関与する変量間の関係を明らかにする
 - *PCA* (Principal Component Analysis)
-  - 構成する特徴量: *主成分* (princial component)
+  - 構成する特徴量 : *主成分* (princial component)
 
 ** 分析の枠組み
-- \(X_{1},\dotsc,X_{p}\): *変数*
-- \(Z_{1},\dotsc,Z_{d}\): *特徴量* ( \(d\leq p\) )
-- 変数と特徴量の関係: (線形結合)
+- \(X_{1},\dotsc,X_{p}\) : *変数* (確率変数として扱っている)
+- \(Z_{1},\dotsc,Z_{d}\) : *特徴量* ( \(d\leq p\) )
+- 変数と特徴量の関係 (線形結合)
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -155,7 +155,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-  - 特徴量は定数倍の任意性があるので以下を仮定:
+  - 特徴量は定数倍の任意性があるので以下を仮定
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -165,15 +165,15 @@
     #+end_quote
 
 ** 主成分分析の用語
-- 特徴量 \(Z_k\):
+- 特徴量 \(Z_k\)
   - 第 \(k\) *主成分*
   - 第 \(k\) *主成分得点* (principal component score) 
-- 係数ベクトル \(\boldsymbol{a}_k\): 
+- 係数ベクトル \(\boldsymbol{a}_k\)
   - 第 \(k\) *主成分負荷量* (principal component loading)
   - 第 \(k\) *主成分方向* (principal component direction)
 
 ** 分析の目的
-- 目的:
+- 目的
   #+begin_quote
   主成分得点
   \(Z_{1},\dots,Z_{d}\)
@@ -183,24 +183,24 @@
   \(\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{d}\)
   を観測データから *うまく* 決定する
   #+end_quote
-- 分析の方針: (以下は同値)
+- 分析の方針 (以下は同値)
   - データの情報を最も保持する変量の *線形結合を構成*
   - データの情報を最も反映する *座標軸を探索*
-- *教師なし学習* の代表的手法の1つ: 
-  - 次元縮約: 入力をできるだけ少ない変数で表現
-  - 特徴抽出: 情報処理に重要な特性を変数に凝集
+- *教師なし学習* の代表的手法の1つ
+  - 次元縮約 : 入力をできるだけ少ない変数で表現
+  - 特徴抽出 : 情報処理に重要な特性を変数に凝集
 
 
-* COMMENT 演習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R: 主成分分析を実行する関数
+** R : 主成分分析を実行する関数
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- Rの標準的な関数:
+- Rの標準的な関数
   - ~prcomp()~
   - ~princomp()~
 - 計算法に若干の違いがある
@@ -208,16 +208,16 @@
   - ~princomp()~ はS言語(商用)との互換性を重視した実装
 - 本講義では ~prcomp()~ を利用
 
-** R: 関数 ~prcomp()~ の使い方
+** R : 関数 ~prcomp()~ の使い方
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- データフレームの全ての列を用いる場合:
+- データフレームの全ての列を用いる場合
   #+begin_src R :eval no
     prcomp(x = データフレーム)
     ## x: 必要な変数を含むデータフレーム
   #+end_src
-- 列名を指定する(formulaを用いる)場合:
+- 列名を指定する(formulaを用いる)場合
   #+begin_src R :eval no
     prcomp(formula = ~ x1の変数名 + ... + xpの変数名,
 	   data = データフレーム)
@@ -304,9 +304,9 @@
 
 
 * 第1主成分の計算
-** 記号の準備 
-- 変数: \(x_{1},\dotsc,x_{p}\) (p次元)
-- 観測データ: \(n\) 個の \((x_{1},\dotsc,x_{p})\) の組
+** 記号の準備
+- 変数 : \(x_{1},\dotsc,x_{p}\) (p次元)
+- 観測データ : \(n\) 個の \((x_{1},\dotsc,x_{p})\) の組
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -321,7 +321,7 @@
     長さ1の \(p\) 次元ベクトル
 
 ** 係数ベクトルによる射影
-- データ \(\boldsymbol{x}_{i}\) の \(\boldsymbol{a}\) 方向成分の長さ:
+- データ \(\boldsymbol{x}_{i}\) の \(\boldsymbol{a}\) 方向成分の長さ
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -354,7 +354,7 @@
   #+begin_quote
   ベクトル \(\boldsymbol{a}\) を *うまく* 選んで
   観測データ \(\boldsymbol{x}_{1},\dots,\boldsymbol{x}_n\)
-  の情報を最も保持する1変量データを構成:
+  の情報を最も保持する1変量データを構成
   #+begin_src latex
     \begin{equation}
       \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{1},
@@ -367,7 +367,7 @@
 - 特徴量のばらつきの最大化
   #+begin_quote
   観測データの *ばらつき*
-  を最も反映するベクトル \(\boldsymbol{a}\) を選択:
+  を最も反映するベクトル \(\boldsymbol{a}\) を選択
   #+begin_src latex
     \begin{equation}
       \arg\max_{\boldsymbol{a}}
@@ -385,7 +385,7 @@
 - 最適化問題
   #+begin_quote
   制約条件 \(\|\boldsymbol{a}\|=1\) の下で
-  以下の関数を最大化せよ:
+  以下の関数を最大化せよ
   #+begin_src latex
     \begin{equation}
       f(\boldsymbol{a})
@@ -395,7 +395,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- この最大化問題は必ず解をもつ:
+- この最大化問題は必ず解をもつ
   - \(f(\boldsymbol{a})\) は連続関数
   - 集合 \(\{\boldsymbol{a}\in\mathbb{R}^p:\|\boldsymbol{a}\|=1\}\) はコンパクト(有界閉集合)
 
@@ -443,7 +443,7 @@
     #+end_src
     #+end_quote
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -496,7 +496,7 @@
 * 第1主成分の解
 ** COMMENT 行列による表現
 # 東京大学
-- 中心化したデータ行列:
+- 中心化したデータ行列
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -518,7 +518,7 @@
   (回帰分析のデザイン行列を参照)
   #+end_quote
 - 評価関数 \(f(\boldsymbol{a})\) は行列 \(X^{\mathsf{T}}X\) 
-  の二次形式:
+  の二次形式
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -572,8 +572,8 @@
   #+end_quote
 - 求める \(\boldsymbol{a}\)
   は行列 \(X^{\mathsf{T}}X\) の最大固有ベクトル (長さ1)
-- *第1主成分負荷量*: ベクトル \(\boldsymbol{a}\)
-- *第1主成分得点*:
+- *第1主成分負荷量* : ベクトル \(\boldsymbol{a}\)
+- *第1主成分得点* :
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -586,7 +586,7 @@
   #+end_quote
 
 
-* COMMENT 演習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -677,7 +677,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 行列 \(X^{\mathsf{T}}X\) (非負定値対称行列) のスペクトル分解:
+- 行列 \(X^{\mathsf{T}}X\) (非負定値対称行列) のスペクトル分解
   #+begin_quote
   #+begin_src latex
     \begin{align}
@@ -737,7 +737,7 @@
     #+end_src
     #+end_quote
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -770,10 +770,10 @@
 
 * 第2主成分以降の計算
 ** 第2主成分の考え方
-- 第1主成分:
-  - 主成分負荷量: ベクトル \(\boldsymbol{a}_{1}\)
-  - 主成分得点: \(\boldsymbol{a}_{1}^{\mathsf{T}}\boldsymbol{x}_{i}\) (\(i=1,\dotsc,n\))
-- 第1主成分負荷量に関してデータが有する情報:
+- 第1主成分
+  - 主成分負荷量 : ベクトル \(\boldsymbol{a}_{1}\)
+  - 主成分得点 : \(\boldsymbol{a}_{1}^{\mathsf{T}}\boldsymbol{x}_{i}\) (\(i=1,\dotsc,n\))
+- 第1主成分負荷量に関してデータが有する情報
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -782,7 +782,7 @@
     \end{equation}
   #+end_src
   #+end_quote
-- 第1主成分を取り除いた観測データ: (分析対象)
+- 第1主成分を取り除いた観測データ (分析対象)
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -799,7 +799,7 @@
 - 最適化問題
   #+begin_quote
   制約条件 \(\|\boldsymbol{a}\|=1\) の下で
-  以下の関数を最大化せよ:
+  以下の関数を最大化せよ
   #+begin_src latex
     \begin{equation}
       \tilde{f}(\boldsymbol{a})
@@ -854,7 +854,7 @@
     #+end_src
     #+end_quote
     
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -904,7 +904,7 @@
 * 第2主成分以降の解
 ** COMMENT 行列による表現
 # 東京大学
-- 中心化したデータ行列:
+- 中心化したデータ行列
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -939,6 +939,14 @@
 ** 第2主成分
 - Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
   の固有ベクトル \(\boldsymbol{a}_{1}\) の固有値は 0
+  #+begin_quote
+  #+begin_src latex
+    \begin{equation}
+      \tilde{X}^{\mathsf{T}}\tilde{X}\boldsymbol{a}_{1}
+      = 0
+    \end{equation}
+  #+end_src
+  #+end_quote
 - Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
   の最大固有値は
   \(\lambda_2\)
@@ -949,7 +957,7 @@
   に対応する固有ベクトル \(\boldsymbol{a}_k\)
 
 
-* COMMENT 演習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -962,12 +970,12 @@
   - ~japan_social.csv~
     #+begin_quote
     総務省統計局より取得した都道府県別の社会生活統計指標の一部
-    - Pref: 都道府県名
-    - Forest: 森林面積割合 (%) 2014年
-    - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-    - Ratio: 全国総人口に占める人口割合 (%) 2015年
-    - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-    - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+    - Pref : 都道府県名
+    - Forest : 森林面積割合 (%) 2014年
+    - Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+    - Ratio : 全国総人口に占める人口割合 (%) 2015年
+    - Land : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+    - Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
     #+end_quote
     [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
 
@@ -978,13 +986,13 @@
 - 前掲のデータを用いて主成分分析を行いなさい
   - 都道府県名を行名としてデータを読み込む
     #+begin_src R :eval no
-      JS.data <- read.csv("data/japan_social.csv", row.names=1)
+      js_data <- read.csv("data/japan_social.csv", row.names=1)
     #+end_src
   - データの散布図行列を描く
   - 各データの箱ひげ図を描き，変数の大きさを確認する
   - 主成分負荷量を計算する
     #+begin_src R :eval no
-      JS.pca <- prcomp(JS.data, scale=TRUE)
+      js_pca <- prcomp(js_data, scale=TRUE)
       ## scale=TRUE とすると変数を正規化してから解析する
     #+end_src
     
@@ -995,22 +1003,22 @@
   
   ### 実データによる確認
   ## データの読み込み
-  JS.data <- read.csv("data/japan_social.csv", row.names=1)
+  js_data <- read.csv("data/japan_social.csv", row.names=1)
   ## データの視覚化
-  plot(JS.data, col="blue") # いくつかの変数は相関強い
-  boxplot(JS.data, col="green") # 箱ひげ図．変数のばらつきに大きな違いがある
-  (JS.pca <- prcomp(JS.data, scale=TRUE))
+  plot(js_data, col="blue") # いくつかの変数は相関強い
+  boxplot(js_data, col="green") # 箱ひげ図．変数のばらつきに大きな違いがある
+  (js_pca <- prcomp(js_data, scale=TRUE))
   ## 主成分方向から読み取れること:
   ## 第1: 人の多さに関する成分(正の向きほど人が多い)
   ## 第2: 農業生産力に関する成分(正の向きほど高い)
-  summary(JS.pca) # 寄与率の表示．来週詳しく説明する
+  summary(js_pca) # 寄与率の表示．来週詳しく説明する
   ## 2変数での解析例 (AgriとLandを取り上げる，その他の組み合わせでも試みよ)
   ## 多変数での視覚化は来週詳しく説明する
-  JS.subset <- scale(subset(JS.data, select=c(Agri,Land))) # 正規化
-  JS.pca2 <- prcomp(JS.subset)
-  ahat <- JS.pca2$rotation[,1]
-  pc1 <- predict(JS.pca2)[,1] 
-  plot(JS.subset, asp=1, pch=4, col="blue") 
+  js_subset <- scale(subset(js_data, select=c(Agri,Land))) # 正規化
+  js_pca2 <- prcomp(js_subset)
+  ahat <- js_pca2$rotation[,1]
+  pc1 <- predict(js_pca2)[,1] 
+  plot(js_subset, asp=1, pch=4, col="blue") 
   abline(0, ahat[2]/ahat[1], col="orange", lty="dotted", lwd=2)
   points(pc1 %o% ahat, pch=18, col="purple")
 #+end_src
@@ -1037,29 +1045,27 @@
   - 総務省 [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
   - データ https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv
     #+begin_quote
-    - Pref: 都道府県名
-    - Forest: 森林面積割合 (%) 2014年
-    - Agri: 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-    - Ratio: 全国総人口に占める人口割合 (%) 2015年
-    - Land: 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-    - Goods: 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+    - Pref : 都道府県名
+    - Forest : 森林面積割合 (%) 2014年
+    - Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+    - Ratio : 全国総人口に占める人口割合 (%) 2015年
+    - Land : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+    - Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
     #+end_quote
 
 ** 社会生活統計指標の分析
 - データ(の一部)の内容
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :exports results :tangle yes
     ## データの読み込み
-    JS.data <- read.csv("data/japan_social.csv", row.names=1)
-    head(JS.data, 18)
+    js_data <- read.csv("data/japan_social.csv", row.names=1)
+    head(js_data, 18)
   #+end_src
 
 #+reveal: split
 - データの散布図
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/06_pairs.png :exports results :results graphics :tangle yes
     ## データの視覚化
-    plot(JS.data, col="blue") # いくつかの変数は相関強い
+    plot(js_data, col="blue") # いくつかの変数は相関強い
   #+end_src
 
 #+CAPTION: 散布図
@@ -1070,9 +1076,8 @@
 
 #+reveal: split
 - データの箱ひげ図
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/06_boxplot.png :exports results :results graphics :tangle yes
-    boxplot(JS.data, col="green") # 箱ひげ図．変数のばらつきに大きな違いがある
+    boxplot(js_data, col="green") # 箱ひげ図．変数のばらつきに大きな違いがある
   #+end_src
 
 #+CAPTION: 箱ひげ図
@@ -1083,23 +1088,21 @@
 
 #+reveal: split
 - 主成分負荷量を計算 (正規化後)
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :exports results :tangle yes
-    JS.pca <- prcomp(JS.data, scale=TRUE)
-    JS.pca$rot
+    js_pca <- prcomp(js_data, scale=TRUE)
+    js_pca$rot
   #+end_src
-- 主成分方向から読み取れること:
-  - 第1: 人の多さに関する成分(正の向きほど人が多い)
-  - 第2: 農業生産力に関する成分(正の向きほど高い)
+- 主成分方向から読み取れること
+  - 第1 : 人の多さに関する成分(正の向きほど人が多い)
+  - 第2 : 農業生産力に関する成分(正の向きほど高い)
 
 #+reveal: split
 - 主成分得点の表示
-  #+header: :width 720 :height 720 :res 100
   #+begin_src R :file figs/06_pcaplot.png :exports results :results graphics :tangle yes
-    plot(PC2 ~ PC1, data=predict(JS.pca),
+    plot(PC2 ~ PC1, data=predict(js_pca),
 	 type="n")
-    text(PC2 ~ PC1, data=predict(JS.pca),
-	 labels=row.names(JS.data),
+    text(PC2 ~ PC1, data=predict(js_pca),
+	 labels=row.names(js_data),
 	 col="blue", cex=1.0)
   #+end_src
 
@@ -1110,11 +1113,11 @@
 [[file:figs/06_pcaplot.png]]
 
 
-* 次週の予定
+* 次回の予定
 - 第1日: 主成分分析の考え方
 - *第2日: 分析の評価と視覚化*
 
-
+* Footnotes
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted
