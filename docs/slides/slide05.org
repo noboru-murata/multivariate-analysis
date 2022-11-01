@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-11-01 16:14:00 mura>
+# Time-stamp: <2022-11-01 16:27:10 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -645,7 +645,7 @@
   #+begin_src latex
     \begin{align}
       \mathrm{Var}(\hat{y})
-      &=\mathbb{E}[(\hat{y}-y)^{2}]
+      &=\mathbb{E}[(\hat{y}-y)^{2}]\\
       &=
         \mathrm{Var}((1,\boldsymbol{x}^{\mathsf{T}})
         (\hat{\boldsymbol{\beta}}-\boldsymbol{\beta}))\\
