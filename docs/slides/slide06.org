@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-10-28 12:02:05 mura>
+# Time-stamp: <2022-11-08 08:48:21 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -305,7 +305,7 @@
 
 * 第1主成分の計算
 ** 記号の準備
-- 変数 : \(x_{1},\dotsc,x_{p}\) (p次元)
+- 変数 : \(x_{1},\dotsc,x_{p}\) (\(p\)次元)
 - 観測データ : \(n\) 個の \((x_{1},\dotsc,x_{p})\) の組
   #+begin_quote
   #+begin_src latex
@@ -443,7 +443,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -737,7 +737,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -854,7 +854,7 @@
     #+end_src
     #+end_quote
     
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1085,6 +1085,24 @@
 #+ATTR_HTML: height 100%
 #+ATTR_LATEX: :width 0.6\linewidth
 [[file:figs/06_boxplot.png]]
+
+#+reveal: split
+- 正規化したデータ(の一部)
+  #+begin_src R :exports results :tangle yes
+    head(scale(js_data), 18)
+  #+end_src
+
+#+reveal: split
+- 正規化したデータの箱ひげ図
+  #+begin_src R :file figs/06_normalized_boxplot.png :exports results :results graphics :tangle yes
+    boxplot(scale(js_data), col="green") # 箱ひげ図．変数のばらつきがない
+  #+end_src
+
+#+CAPTION: 箱ひげ図 (データを正規化)
+#+NAME: fig:06_normalized_boxplot
+#+ATTR_HTML: height 100%
+#+ATTR_LATEX: :width 0.6\linewidth
+[[file:figs/06_normalized_boxplot.png]]
 
 #+reveal: split
 - 主成分負荷量を計算 (正規化後)
