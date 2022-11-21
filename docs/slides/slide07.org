@@ -3,9 +3,14 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-11-11 14:33:23 mura>
+# Time-stamp: <2022-11-21 12:44:55 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
+#+PROPERTY: header-args:R :cache yes 
+#+PROPERTY: header-args:R+ :exports both :results output
+#+PROPERTY: header-args:R+ :width 800 :height 800 :res 100
+#+PROPERTY: header-args:R+ :tangle no
+#+PROPERTY: header-args:latex :exports results :results raw
 #+STARTUP: hidestars content indent
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
@@ -296,7 +301,7 @@
     を
     \(X\)と\(\boldsymbol{a}_{k}\)で表せ
     
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -846,7 +851,7 @@
     と書くとき，
     \(X'^{\mathsf{T}}X'\)の対角成分を求めよ
     
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1087,7 +1092,7 @@
   - 行列\(X\)の主成分負荷量を求めなさい
   - それぞれの負荷量に対応する主成分得点を求めなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
