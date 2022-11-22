@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-11-21 14:50:32 mura>
+# Time-stamp: <2022-11-22 10:31:41 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -221,7 +221,7 @@
     \(P(X=x|Y=k)\)から
     \(P(Y=k|X=x)\)を計算する式を導け
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -262,7 +262,7 @@
       =
       P(Y=k|X=\boldsymbol{x})
       =
-      \frac{f_{k}(\boldsymbol{x})P(Y=k)}{\sum_{l=1}^{k}f_l(\boldsymbol{x})P(Y=l)}
+      \frac{f_{k}(\boldsymbol{x})P(Y=k)}{\sum_{l=1}^{K}f_l(\boldsymbol{x})P(Y=l)}
     \end{equation}
   #+end_src
   #+end_quote
@@ -300,9 +300,9 @@
     \begin{align}
       P(X=\boldsymbol{x})
       &=
-	\sum_{l=1}^{k}P(X=\boldsymbol{x},Y=l)\\
+        \sum_{l=1}^{K}P(X=\boldsymbol{x},Y=l)\\
       &=
-	\sum_{l=1}^{k}f_l(\boldsymbol{x})P(Y=l)
+        \sum_{l=1}^{K}f_l(\boldsymbol{x})P(Y=l)
     \end{align}
   #+end_src
   #+end_quote
@@ -312,15 +312,15 @@
   - \(X=\boldsymbol{x}\) が与えられる前に予測されるクラス確率
 - *事後確率* : \(p_{k}(\boldsymbol{x})\) (posterior probability)
   - \(X=\boldsymbol{x}\) が与えられた後に予測されるクラス確率
-- Bayes の公式による書き換え:
+- Bayes の公式による書き換え
   #+begin_quote
   #+begin_src latex
     \begin{equation}
       p_{k}(\boldsymbol{x})
       =
-      \frac{f_{k}(\boldsymbol{x})\pi_{k}}{\sum_{l=1}^{k}f_l(\boldsymbol{x})\pi_l}
+      \frac{f_{k}(\boldsymbol{x})\pi_{k}}{\sum_{l=1}^{K}f_l(\boldsymbol{x})\pi_l}
       =
-      \frac{f_{k}(\boldsymbol{x})}{\sum_{l=1}^{k}f_l(\boldsymbol{x})\pi_l}
+      \frac{f_{k}(\boldsymbol{x})}{\sum_{l=1}^{K}f_l(\boldsymbol{x})\pi_l}
       \cdot\pi_{k}
     \end{equation}
   #+end_src
@@ -477,7 +477,7 @@
     #+end_quote
     を示しなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -725,7 +725,7 @@
     #+end_quote
     を示しなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -882,7 +882,7 @@
     #+end_quote
     このとき\(Z\)の群内変動と群間変動を求めなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
