@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-11-21 17:48:19 mura>
+# Time-stamp: <2022-11-24 13:25:35 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -491,14 +491,6 @@
     matrix(c(names(foo),signif(foo,digits=3)),2,length(foo),byrow=TRUE)
   #+end_src
 
-#+reveal: split
-- テスト
-  #+begin_src R :exports results :results html :tangle yes
-    library(xtable)
-    print(xtable(confusionMatrix(tw_qest$class, factor(tw_subset$month))$table),type="html")
-  #+end_src
-
-   
    
 * 演習
 :PROPERTIES:
@@ -516,7 +508,7 @@
     \(TP,FP,TN,FN\)およびデータ数\(N\)
     を用いて表せ
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -610,7 +602,7 @@
     と呼ばれる評価指標の一つである
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -739,9 +731,9 @@
 
 * 予測誤差
 ** 訓練誤差と予測誤差
-- *訓練誤差*:
+- *訓練誤差* :
   既知データに対する誤り (training error)
-- *予測誤差*:
+- *予測誤差* :
   未知データに対する誤り (predictive error)
 - 訓練誤差は予測誤差より良くなることが多い 
 - 既知データの判別に特化している可能性がある
@@ -750,9 +742,9 @@
 
 ** 交叉検証
 - データを訓練データと試験データに分割して用いる
-  - *訓練データ*:
+  - *訓練データ* :
     判別関数を構成する (training data)
-  - *試験データ*:
+  - *試験データ* :
     予測精度を評価する (test data)
 - データの分割に依存して予測誤差の評価が偏る
 - 偏りを避けるために複数回分割を行ない評価する
@@ -770,7 +762,7 @@
   - \(k=n\) として上記を実行
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -927,24 +919,24 @@
   #+begin_src R :exports results :tangle yes
     ## データの整理 (既に整理してあれば不要)
     wq_org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-		       sep=";")
+                       sep=";")
     wq_data <- transform(wq_org,
-			 quality=as.factor(
-			     ifelse(quality %in% 7:10, "A",
-			     ifelse(quality %in% 5:6, "B" ,"C"))))
-    head(wq_data[,1:4], 16)
+                         quality=as.factor(
+                             ifelse(quality %in% 7:10, "A",
+                             ifelse(quality %in% 5:6, "B" ,"C"))))
+    rbind(names(wq_data)[1:4],data.frame(head(wq_data[,1:4], 10)))
   #+end_src
 
 #+reveal: split
 - 実際のデータの一部 (続き)
   #+begin_src R :exports results :tangle yes
-    head(wq_data[,5:8], 16)
+    rbind(names(wq_data)[5:8],data.frame(head(wq_data[,5:8], 10)))
   #+end_src
 
 #+reveal: split
 - 実際のデータの一部 (続き) 
   #+begin_src R :exports results :tangle yes
-    head(wq_data[,9:ncol(wq_data)], 16)
+    rbind(names(wq_data)[9:ncol(wq_data)],data.frame(head(wq_data[,9:ncol(wq_data)], 10)))
   #+end_src
 
 ** LOO交叉検証による予測誤差の評価
@@ -952,34 +944,74 @@
   #+begin_src R :exports results :tangle yes
     wq_lda <- lda(quality ~ ., data=wq_data) 
     wq_ldloo <- lda(quality ~ ., data=wq_data, CV=TRUE)
-    confusionMatrix(predict(wq_lda)$class, wq_data$quality)$table
-    confusionMatrix(wq_ldloo$class, wq_data$quality)$table
+    foo <- confusionMatrix(predict(wq_lda)$class, wq_data$quality)$table
+    bar <- matrix(0,4,4)
+    bar[1,1] <- "予測値＼真値"
+    bar[2:4,1] <- rownames(foo);bar[1,2:4] <- colnames(foo)
+    bar[2:4,2:4] <- foo
+    print(bar)
+  #+end_src
+  #+begin_src R :exports results :tangle yes
+    foo <- confusionMatrix(wq_ldloo$class, wq_data$quality)$table
+    bar <- matrix(0,4,4)
+    bar[1,1] <- "予測値＼真値"
+    bar[2:4,1] <- rownames(foo);bar[1,2:4] <- colnames(foo)
+    bar[2:4,2:4] <- foo
+    print(bar)
   #+end_src
   - 線形判別の過学習は微小
+
 
 #+reveal: split
 - 2次判別 (訓練誤差/予測誤差)
   #+begin_src R :exports results :tangle yes
     wq_qda <- qda(quality ~ ., data=wq_data) 
     wq_qdloo <- qda(quality ~ ., data=wq_data, CV=TRUE)
-    confusionMatrix(predict(wq_qda)$class, wq_data$quality)$table
-    confusionMatrix(wq_qdloo$class, wq_data$quality)$table
+    foo <- confusionMatrix(predict(wq_qda)$class, wq_data$quality)$table
+    bar <- matrix(0,4,4)
+    bar[1,1] <- "予測値＼真値"
+    bar[2:4,1] <- rownames(foo);bar[1,2:4] <- colnames(foo)
+    bar[2:4,2:4] <- foo
+    print(bar)
+  #+end_src
+  #+begin_src R :exports results :tangle yes
+    foo <- confusionMatrix(wq_qdloo$class, wq_data$quality)$table
+    bar <- matrix(0,4,4)
+    bar[1,1] <- "予測値＼真値"
+    bar[2:4,1] <- rownames(foo);bar[1,2:4] <- colnames(foo)
+    bar[2:4,2:4] <- foo
+    print(bar)
   #+end_src
   - 2次判別は若干過学習している
 
 #+reveal: split
-- 予測誤差の比較 (線形/2次)
+- 予測誤差の比較 (線形)
   #+begin_src R :exports results :tangle yes
-    confusionMatrix(wq_ldloo$class, wq_data$quality)$overall[1:2]
-    confusionMatrix(wq_ldloo$class, wq_data$quality)$byClass[,c(1,2,5,6,7)]
+    foo <- confusionMatrix(wq_ldloo$class, wq_data$quality)$overall[1:2]
+    matrix(c(names(foo),signif(foo,digits=3)),2,length(foo),byrow=TRUE)
   #+end_src
   #+begin_src R :exports results :tangle yes
-    confusionMatrix(wq_qdloo$class, wq_data$quality)$overall[1:2]
-    confusionMatrix(wq_qdloo$class, wq_data$quality)$byClass[,c(1,2,5,6,7)]
+    foo <- confusionMatrix(wq_ldloo$class, wq_data$quality)$byClass[,c(1,2,5,6,7)]
+    bar <- matrix(c(colnames(foo),signif(foo,digits=3)),nrow(foo)+1,ncol(foo),byrow=TRUE)
+    bar <- cbind(c("",rownames(foo)),bar)
+    print(bar)
+  #+end_src
+
+#+reveal: split
+- 予測誤差の比較 (2次)
+  #+begin_src R :exports results :tangle yes
+    foo <- confusionMatrix(wq_qdloo$class, wq_data$quality)$overall[1:2]
+    matrix(c(names(foo),signif(foo,digits=3)),2,length(foo),byrow=TRUE)
+  #+end_src
+  #+begin_src R :exports results :tangle yes
+    foo <- confusionMatrix(wq_qdloo$class, wq_data$quality)$byClass[,c(1,2,5,6,7)]
+    bar <- matrix(c(colnames(foo),signif(foo,digits=3)),nrow(foo)+1,ncol(foo),byrow=TRUE)
+    bar <- cbind(c("",rownames(foo)),bar)
+    print(bar)
   #+end_src
   - 予測誤差の観点からは線形判別の方が良さそう
 
-
+    
 * 次週の予定
 - *第1日 : クラスタ分析の考え方と階層的方法*
 - 第2日 : 非階層的方法と分析の評価
