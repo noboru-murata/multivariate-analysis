@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-11-24 13:25:35 mura>
+# Time-stamp: <2022-11-29 10:30:30 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -23,7 +23,7 @@
 - 同じタイトルの項目にはメモを入れる
 - 演習の内容が異なるので演習は2つ作る形で対応
 
-* COMMENT 講義の内容
+* 講義の内容
 # 早稲田大学
 - 第1日 : 判別分析の考え方
 - *第2日 : 分析の評価*
@@ -32,7 +32,7 @@
   ### 第9講 資料
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 
 * COMMENT 講義概要
@@ -46,7 +46,7 @@
   ###
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+  setwd("~/Desktop/lectures/u-tokyo/autumn/course")
 #+end_src
 
 * COMMENT 演習 (早稲田大学雛型)
@@ -503,12 +503,12 @@
 :END:
 - 以下の問に答えなさい
   - F-値，再現率，適合率の大小関係はどのようになるか
-  - 2値判別(\(P=1,N=0\)とする)において
+  - 2値判別(陽性 \(=1\),陰性 \(=0\) とする)において
     正解ラベル\(Y\)と予測ラベル\(\hat{Y}\)の相関係数を
     \(TP,FP,TN,FN\)およびデータ数\(N\)
     を用いて表せ
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -552,17 +552,17 @@
     \begin{align}
       \mathrm{Cov}(Y,\hat{Y})
       &=
-	\mathbb{E}[(Y-\mathbb{E}[Y])(\hat{Y}-\mathbb{E}[\hat{Y}])]\\
+        \mathbb{E}[(Y-\mathbb{E}[Y])(\hat{Y}-\mathbb{E}[\hat{Y}])]\\
       &=
-	\mathbb{E}[Y\hat{Y}]-\mathbb{E}[Y]\mathbb{E}[\hat{Y}]\\
+        \mathbb{E}[Y\hat{Y}]-\mathbb{E}[Y]\mathbb{E}[\hat{Y}]\\
       &=
-	\frac{TP}{N}-\frac{TP+FN}{N}\frac{TP+FP}{N}\\
+        \frac{TP}{N}-\frac{TP+FN}{N}\frac{TP+FP}{N}\\
       &=
-	\frac{TP(TP+FN+FP+TN)}{N^{2}}\\
+        \frac{TP(TP+FN+FP+TN)}{N^{2}}\\
       &\qquad-
-	\frac{(TP+FN)(TP+FP)}{N^{2}}\\
+        \frac{(TP+FN)(TP+FP)}{N^{2}}\\
       &=
-	\frac{TP\cdot TN - FP\cdot FN}{N^{2}}
+        \frac{TP\cdot TN - FP\cdot FN}{N^{2}}
     \end{align}
   #+end_src
   #+end_quote
@@ -575,14 +575,14 @@
     \begin{align}
       \mathrm{Var}(Y)
       &=
-	\mathbb{E}[Y^{2}]-\mathbb{E}[Y]^{2}\\
+        \mathbb{E}[Y^{2}]-\mathbb{E}[Y]^{2}\\
       &=
-	\frac{(TP+FN)(TN+FP)}{N^{2}}\\
+        \frac{(TP+FN)(TN+FP)}{N^{2}}\\
       \mathrm{Var}(\hat{Y})
       &=
-	\mathbb{E}[\hat{Y}^{2}]-\mathbb{E}[\hat{Y}]^{2}\\
+        \mathbb{E}[\hat{Y}^{2}]-\mathbb{E}[\hat{Y}]^{2}\\
       &=
-	\frac{(TP+FP)(TN+FN)}{N^{2}}
+        \frac{(TP+FP)(TN+FN)}{N^{2}}
     \end{align}
   #+end_src
   #+end_quote
@@ -592,7 +592,8 @@
   #+begin_quote
   #+begin_src latex
     \begin{equation}
-      \rho=
+      \rho
+      =
       \frac{TP\cdot TN-FP\cdot FN}
       {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
     \end{equation}
