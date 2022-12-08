@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-11-29 13:53:13 mura>
+# Time-stamp: <2022-12-08 18:20:05 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -434,7 +434,7 @@
     #+end_src
     #+end_quote
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -761,7 +761,7 @@
     #+end_quote
     を導け
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1218,7 +1218,7 @@
 [[file:figs/10_omclst.png]]
    
 
-* 次週の予定
+* 次回の予定
   - 第1日 : 基本的な考え方と階層的方法
   - *第2日 : 非階層的方法と分析の評価*
 
