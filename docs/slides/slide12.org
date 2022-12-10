@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-01-11 17:32:01 mura>
+# Time-stamp: <2022-12-10 18:27:43 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -12,22 +12,27 @@
 # C-c '
 :END:
 
+* COMMENT メモ
+- 第3講以降は同じファイルを使うように整理する
+- 同じタイトルの項目にはメモを入れる
+- 演習の内容が異なるので演習は2つ作る形で対応
+
 * 講義の内容
 # 早稲田大学
-- *第1日: 時系列の基本モデル*
-- 第2日: モデルの推定と予測
+- *第1日 : 時系列の基本モデル*
+- 第2日 : モデルの推定と予測
 
 #+begin_src R :eval no :exports none :tangle yes
   ### 第12講 資料
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 
 * COMMENT 講義概要
 # 東京大学
-- *第1日: 時系列の基本モデル*
-- 第2日: モデルの推定と予測
+- *第1日 : 時系列の基本モデル*
+- 第2日 : モデルの推定と予測
 
 #+begin_src R :eval no :exports none :tangle yes
   ### 
@@ -35,13 +40,8 @@
   ###
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
+  setwd("~/Desktop/lectures/u-tokyo/autumn/course")
 #+end_src
-
-* COMMENT メモ
-- 第3講以降は同じファイルを使うように整理する
-- 同じタイトルの項目にはメモを入れる
-- 演習の内容が異なるので演習は2つ作る形で対応
 
 * COMMENT 演習 (早稲田大学雛型)
 :PROPERTIES:
@@ -119,15 +119,6 @@
 :END:
 - [[./code/bar.r][bar.r]] を確認してみよう
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 第06回 資料
-#+end_src
-#+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
-#+end_src
-
-
-
 
 
 * 時系列解析の概要
@@ -165,9 +156,9 @@
 ** ホワイトノイズ
 - 定義
   #+begin_quote
-  平均\(0\)，分散\(\sigma^2\)
+  平均 \(0\) 分散 \(\sigma^2\)
   である確率変数の
-  確率分布\(P\)からの
+  確率分布 \(P\) からの
   独立かつ同分布な確率変数列
   #+begin_src latex
     \begin{equation}
@@ -240,7 +231,6 @@
   - ランダムウォーク
   
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_wn.png :exports results :results graphics :tangle no
   ### ホワイトノイズの生成
   library(RColorBrewer)
@@ -269,7 +259,6 @@
 [[file:figs/12_wn.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_trwn.png :exports results :results graphics :tangle no
   ### トレンドのあるホワイトノイズ
   set.seed(123)
@@ -290,7 +279,6 @@
 [[file:figs/12_trwn.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_rw.png :exports results :results graphics :tangle no
   ### ランダムウォーク
   set.seed(123)
@@ -327,7 +315,7 @@
     を求めなさい
   - ランダムウォークの平均と分散を求めなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -385,10 +373,7 @@
 :reveal_background: #f4fef4
 :END:
 # 東京大学
-** R: 時系列データの扱い
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 時系列データの扱い
 - 時系列のためのクラス : ~ts~ クラス
   - ベクトル(1次元)データに時間に関する情報が付加される
   - 関数 ~ts()~ を用いてベクトルから変換
@@ -399,10 +384,7 @@
   - 通常は時間情報を利用して適切に処理してくれる
 - より複雑な時系列を記述するためには ~zoo~ や ~xts~ などのパッケージがある
 
-** R: 関数 ~ts()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 関数 ~ts()~
 - 時系列クラス ~ts~ を作成する関数
   #+begin_src R :eval no
     ts(data = NA, start = 1, end = numeric(), frequency = 1)
@@ -416,10 +398,7 @@
   #+end_src
   - その他の詳細は ~?ts~ を参照
 
-** R: 関数 ~plot()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 関数 ~plot()~
 - 時系列クラスの描画
   #+begin_src R :eval no :tangle yes
     ## 基本的なplotの使い方
@@ -621,7 +600,6 @@
   - 自己回帰移動平均過程 (ARMA過程)
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_ar.png :exports results :results graphics :tangle no
   ### AR(2)モデルのシミュレーション
   set.seed(123)
@@ -647,7 +625,6 @@
 [[file:figs/12_ar.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_ma.png :exports results :results graphics :tangle no
   ### MA(2)モデルのシミュレーション
   set.seed(123)
@@ -673,7 +650,6 @@
 [[file:figs/12_ma.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_arma.png :exports results :results graphics :tangle no
   ### ARMA(2,1)モデルのシミュレーション
   set.seed(123)
@@ -712,7 +688,7 @@
   - AR(1)の平均と分散を求めなさい
   - MA(1)の平均と分散を求めなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -793,7 +769,7 @@
 :reveal_background: #f4fef4
 :END:
 - 平均0，分散1のホワイトノイズを用いて，
-  以下の指定された確率過程を生成し，図示を行いなさい
+  以下の指定された確率過程を生成し，図示しなさい
   - 係数\(a_{1}=0.67,a_{2}=0.26\)を持つAR(2)過程
   - 係数\(b_{1}=0.44,b_{2}=0.08\)を持つMA(2)過程
   - 係数\(a_{1}=0.8,a_{2}=-0.64,b_{1}=-0.5\)を持つARMA(2,1)過程
@@ -903,7 +879,7 @@
 
 * 定常過程と非定常過程
 ** 弱定常性
-- 確率過程\(X_{t},\;t=1,\dotsc,T\)が次の性質をもつ :
+- 確率過程\(X_{t},\;t=1,\dotsc,T\)が次の性質をもつ 
   - \(X_{t}\)の平均は時点\(t\)によらない
     #+begin_quote
     #+begin_src latex
@@ -1035,13 +1011,12 @@
     #+end_quote
 
 ** 数値例
-- 同じモデルに従うパス(系列)の自己相関を比較してみる
+- 同じモデルに従うパス(系列)の自己相関を比較する
   - 自己回帰過程 (AR過程)
   - 移動平均過程 (MA過程)
   - 自己回帰移動平均過程 (ARMA過程)
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_aracf.png :exports results :results graphics :tangle no
   ### AR(2)モデルの自己相関
   set.seed(123)
@@ -1065,7 +1040,6 @@
 [[file:figs/12_aracf.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_maacf.png :exports results :results graphics :tangle no
   ### MA(2)モデルの自己相関
   set.seed(123)
@@ -1089,7 +1063,6 @@
 [[file:figs/12_maacf.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/12_armaacf.png :exports results :results graphics :tangle no
   ### ARMA(2,1)モデルの自己相関
   set.seed(123)
@@ -1128,7 +1101,7 @@
     \(\mathbb{E}[X_{t}]=0\) であるとき，
     AR過程の係数と自己共分散の間に成り立つ関係を考えなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1197,15 +1170,13 @@
 :PROPERTIES:
 :reveal_background: #f4fef4
 :END:
-** R: 関数 ~acf()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+# 東京大学
+** R : 関数 ~acf()~
 - 自己相関・自己共分散の計算
   #+begin_src R :eval no
     acf(x, lag.max = NULL,
-	type = c("correlation", "covariance", "partial"),
-	plot = TRUE, na.action = na.fail, demean = TRUE, ...)
+        type = c("correlation", "covariance", "partial"),
+        plot = TRUE, na.action = na.fail, demean = TRUE, ...)
     ## x: 時系列データ
     ## lag.max: 計算するラグの最大値
     ## type: 標準は相関, 共分散と偏相関を選ぶこともできる
@@ -1214,7 +1185,7 @@
     ## demean: 共分散の計算において平均を引くか否か
   #+end_src
   - 詳細は ~?acf~ を参照
-
+    
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #f4fef4
@@ -1264,11 +1235,11 @@
 - [[./code/13-eustock.r][13-eustock.r]] 
 
 
-* 次週の内容
-- 第1日: 時系列の基本モデル
-- *第2日: モデルの推定と予測*
+* 次回の内容
+- 第1日 : 時系列の基本モデル
+- *第2日 : モデルの推定と予測*
 
-
+* Footnotes
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted
