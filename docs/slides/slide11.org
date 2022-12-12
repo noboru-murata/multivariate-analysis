@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-12-08 18:25:32 mura>
+# Time-stamp: <2022-12-12 13:28:55 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -866,7 +866,7 @@
     }
   #+end_src
   
-# #+reveal: split
+#+reveal: split
 #+begin_src R :file figs/11_jskmeans.png :exports results :results graphics :tangle yes
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
   clusplot(x=js_data,
@@ -898,7 +898,7 @@
     }
   #+end_src
 
-# #+reveal: split
+#+reveal: split
 #+begin_src R :file figs/11_jspam.png :exports results :results graphics :tangle yes
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
   clusplot(x=js_data,
@@ -960,7 +960,7 @@
     }
   #+end_src
 
-# #+reveal: split
+#+reveal: split
 #+begin_src R :file figs/11_ompam.png :exports results :results graphics :tangle yes
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
   clusplot(x=om_data,
@@ -1363,7 +1363,7 @@
 #+end_src
 
 
-* COMMENT 解析事例
+* 解析事例
 # 早稲田大学
 ** 都道府県別の社会生活統計指標
 - 凝集係数を用いて階層的方法の距離を検討
@@ -1468,7 +1468,7 @@ file:figs/11_jsdendroman.png
     }
   #+end_src
 
-# #+reveal: split
+#+reveal: split
 #+begin_src R :file figs/11_omsil7.png :exports results :results graphics :tangle yes
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
   plot(pam(om_dsy,k=7), which.plot=2,
