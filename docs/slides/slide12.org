@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-12-10 18:27:43 mura>
+# Time-stamp: <2022-12-12 14:45:39 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -120,7 +120,6 @@
 - [[./code/bar.r][bar.r]] を確認してみよう
 
 
-
 * 時系列解析の概要
 ** 時系列解析とは
 - 時系列データ
@@ -235,7 +234,7 @@
   ### ホワイトノイズの生成
   library(RColorBrewer)
   k <- 4 # 系列の数
-  myCol <- brewer.pal(k,"Dark2")
+  my_col <- brewer.pal(k,"Dark2")
   
   n <- 200 # 時系列の長さ
   
@@ -248,11 +247,11 @@
   for(i in 1:k) {
     x <- rnorm(n)
     ## x <- ts(rt(n, df=4)) # 自由度4のt分布の場合
-    lines(x, col=myCol[i])
+    lines(x, col=my_col[i])
   }
 #+end_src
 
-#+CAPTION: ホワイトノイズ
+#+CAPTION: ホワイトノイズ (標準正規分布)
 #+NAME: fig:12_wn
 #+ATTR_HTML: height 100%
 #+ATTR_LATEX: :width 0.6\linewidth
@@ -268,7 +267,7 @@
        type="n")
   for(i in 1:k) {
       x <- rnorm(n) -1 + 0.05*(1:n)
-      lines(x, col=myCol[i])
+      lines(x, col=my_col[i])
   }
 #+end_src
   
@@ -288,7 +287,7 @@
        type="n")
   for(i in 1:k) {
     x <- cumsum(rnorm(n))
-    lines(x, col=myCol[i])
+    lines(x, col=my_col[i])
   }
 #+end_src
 
@@ -460,9 +459,9 @@
   ## 右下ペインの package タブから RColorBrewer をインストール
   ## install.packages("RColorBrewer") 
   library(RColorBrewer)
-  myCol <- brewer.pal(K,"Dark2") # 暗めの色合いのパレットを利用
+  my_col <- brewer.pal(K,"Dark2") # 暗めの色合いのパレットを利用
   ## 色合いの例は関数 display.brewer.all()
-  ## myCol <- rainbow(K) # いわゆるレインボーカラーを使う場合
+  ## my_col <- rainbow(K) # いわゆるレインボーカラーを使う場合
   ## 黄色などが見えにくい場合もあるので，スライドなどに使う場合は注意が必要
 
   ## set.seed(123) # 必要なら乱数のシードを指定する
@@ -478,7 +477,7 @@
        type="n") # 枠だけ作図
   for(i in 1:K) {
       x <- ts(rnorm(Tmax, sd=2))
-      lines(x, col=myCol[i])
+      lines(x, col=my_col[i])
   }
 
   ## データフレーム化して表示する場合
@@ -491,7 +490,7 @@
 
   ## まとめて一枚
   plot(x=z, plot.type="single",
-       ylab="value", col=myCol,
+       ylab="value", col=my_col,
        main=expression(X[t] == epsilon[t]))
 
   ### トレンドのあるホワイトノイズ
@@ -502,7 +501,7 @@
   z <- ts(replicate(K,
                     rnorm(Tmax, sd=2) -1 + 0.05*(1:Tmax)))
   plot(x=z, plot.type="single",
-       ylab="value", col=myCol,
+       ylab="value", col=my_col,
        main=expression(X[t] == -1 + 0.05 * t + epsilon[t]))
 
   ### ランダムウォーク
@@ -522,7 +521,7 @@
   z <- ts(replicate(K,
                     cumsum(rnorm(Tmax, sd=2))))
   plot(x=z, plot.type="single",
-       ylab="value", col=myCol,
+       ylab="value", col=my_col,
        main=expression(X[t] == X[t-1] + epsilon[t]))
 #+end_src
 
@@ -606,7 +605,7 @@
   a <- c(0.669, 0.263) # ARの係数
   plot(x=ts(1:n),
        ylim=c(-5,5), ylab="value",
-       main="AR(2)",
+       main=expression(X[t] == 0.67*X[t-1] + 0.26*X[t-2] + epsilon[t]),
        type="n")
   for(i in 1:k) {
     epsilon <- rnorm(n)
@@ -614,7 +613,7 @@
     x <- ts(double(n))
     x[1:2] <- x0
     for(j in 3:n) x[j] <- a%*%x[j-1:2] + epsilon[j]
-    lines(x, col=myCol[i])
+    lines(x, col=my_col[i])
   }
 #+end_src
 
@@ -631,7 +630,7 @@
   b <- c(0.438, 0.078) # MAの係数
   plot(x=ts(1:n),
 	 ylim=c(-5,5), ylab="value",
-	 main="MA(2)",
+     main=expression(X[t] == 0.44*epsilon[t-1] + 0.08*epsilon[t-2] + epsilon[t]),
 	 type="n")
   for(i in 1:k) {
     epsilon <- rnorm(n)
@@ -639,7 +638,7 @@
     x <- ts(double(n))
     x[1:2] <- x0
     for(j in 3:n) x[j] <- b %*% epsilon[j-1:2] + epsilon[j]
-    lines(x, col=myCol[i])
+    lines(x, col=my_col[i])
   }
 #+end_src
 
@@ -657,7 +656,7 @@
   b <- -0.5          # MAの係数
   plot(x=ts(1:n),
 	 ylim=c(-5,5), ylab="value",
-	 main="ARMA(2,1)",
+     main=expression(X[t] == 0.8*X[t-1] - 0.64*X[t-2] - 0.5*epsilon[t-1] + epsilon[t]),
 	 type="n")
   for(i in 1:k) {
     epsilon <- rnorm(n)
@@ -665,7 +664,7 @@
     x <- ts(double(n))
     x[1:2] <- x0
     for(j in 3:n) x[j] <- a%*%x[j-1:2] + b*epsilon[j-1] + epsilon[j]
-    lines(x, col=myCol[i])
+    lines(x, col=my_col[i])
   }
 #+end_src
 #+CAPTION: ARMA過程
@@ -782,7 +781,7 @@
   ## 設定は前の練習問題と同じ
   Tmax <- 200 # 時系列の長さ t=1,..,Tmax
   K <- 5 # 生成する時系列の数
-  myCol <- brewer.pal(K,"Dark2") 
+  my_col <- brewer.pal(K,"Dark2") 
   ## 書き方は以下に示したもの以外にもいろいろあるので考えてみて下さい
 
   ### AR(2)モデルのシミュレーション
@@ -815,7 +814,7 @@
   ## データフレームを作成して表示
   df.ar <- ts(replicate(K, myAR(a=a, epsilon=rnorm(Tmax))))
   plot(x=df.ar, plot.type="single",
-       ylab="value", col=myCol,
+       ylab="value", col=my_col,
        main="AR(2)")
 
   ### MA(2)モデルのシミュレーション
@@ -841,7 +840,7 @@
   }
   df.ma <- ts(replicate(K, myMA(b=b, epsilon=rnorm(Tmax))))
   plot(x=df.ma, plot.type="single",
-       ylab="value", col=myCol,
+       ylab="value", col=my_col,
        main="MA(2)")
 
   ### ARMA(2,1)モデルのシミュレーション
@@ -871,7 +870,7 @@
   }
   df.arma <- ts(replicate(K, myARMA(a=a, b=b, epsilon=rnorm(Tmax))))
   plot(x=df.arma, plot.type="single",
-       ylab="value", col=myCol,
+       ylab="value", col=my_col,
        main="ARMA(2,1)")
   ## 関数 filter や arima.sim などを利用することもできる
 #+end_src
@@ -927,7 +926,7 @@
 - 擬似相関の問題
   - 独立な時系列にも関わらず見掛けの相関が現れることがある
   - 2つの独立なランダムウォークは高い確率で"相関"を持つ
-  - https://tylervigen.com/spurious-correlations
+  - http://tylervigen.com/spurious-correlations
 
 ** 非定常過程の取り扱い
 - 定常過程とみなせるように変換して分析を実行
@@ -1028,7 +1027,7 @@
       x <- ts(double(n))
       x[1:2] <- x0
       for(j in 3:n) x[j] <- a%*%x[j-1:2] + epsilon[j]
-      acf(x, col=myCol[i])
+      acf(x, col=my_col[i])
   }
   par(orgpar)
 #+end_src
@@ -1051,7 +1050,7 @@
       x <- ts(double(n))
       x[1:2] <- x0
       for(j in 3:n) x[j] <- b %*% epsilon[j-1:2] + epsilon[j]
-      acf(x, col=myCol[i])
+      acf(x, col=my_col[i])
   }
   par(orgpar)
 #+end_src
@@ -1075,7 +1074,7 @@
       x <- ts(double(n))
       x[1:2] <- x0
       for(j in 3:n) x[j] <- a%*%x[j-1:2] + b*epsilon[j-1] + epsilon[j]
-      acf(x, col=myCol[i])
+      acf(x, col=my_col[i])
   }
   par(orgpar)
 #+end_src
@@ -1170,8 +1169,8 @@
 :PROPERTIES:
 :reveal_background: #f4fef4
 :END:
-# 東京大学
 ** R : 関数 ~acf()~
+# 東京大学
 - 自己相関・自己共分散の計算
   #+begin_src R :eval no
     acf(x, lag.max = NULL,
@@ -1202,26 +1201,26 @@
   ### 
 
   K <- 4 # 表示する時系列の数 (4つを並べて比較する)
-  ## myCol K=5 で作ったものをそのまま利用，別途作成してもよい
+  ## my_col K=5 で作ったものをそのまま利用，別途作成してもよい
 
   ### AR(2)モデルの自己相関
   orgpar <- par(mfrow=c(2,2)) # グラフを2x2(行方向の順)に並べる
   for(i in 1:K) {
-      acf(df.ar[,i], col=myCol[i], main=paste("AR series",i))
+      acf(df.ar[,i], col=my_col[i], main=paste("AR series",i))
   }
   par(orgpar) # もとのparの内容に戻す
 
   ### MA(2)モデルの自己相関
   orgpar <- par(mfrow=c(2,2))
   for(i in 1:K) {
-      acf(df.ma[,i], col=myCol[i], main=paste("MA series",i))
+      acf(df.ma[,i], col=my_col[i], main=paste("MA series",i))
   }
   par(orgpar) # もとのparの内容に戻す
 
   ### ARMA(2,1)モデルの自己相関
   orgpar <- par(mfrow=c(2,2))
   for(i in 1:K) {
-      acf(df.arma[,i], col=myCol[i], main=paste("ARMA series",i))
+      acf(df.arma[,i], col=my_col[i], main=paste("ARMA series",i))
   }
   par(orgpar) # もとのparの内容に戻す
 #+end_src

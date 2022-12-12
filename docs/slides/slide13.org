@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-01-18 09:43:18 mura>
+# Time-stamp: <2022-12-12 14:48:55 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -12,7 +12,12 @@
 # C-c '
 :END:
 
-* 講義の内容
+* COMMENT メモ
+- 第3講以降は同じファイルを使うように整理する
+- 同じタイトルの項目にはメモを入れる
+- 演習の内容が異なるので演習は2つ作る形で対応
+
+* COMMENT 講義の内容
 # 早稲田大学
 - 第1日: 時系列の基本モデル
 - *第2日: モデルの推定と予測*
@@ -37,11 +42,6 @@
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/u-tokyo/autumn/slide")
 #+end_src
-
-* COMMENT メモ
-- 第3講以降は同じファイルを使うように整理する
-- 同じタイトルの項目にはメモを入れる
-- 演習の内容が異なるので演習は2つ作る形で対応
 
 * COMMENT 演習 (早稲田大学雛型)
 :PROPERTIES:
@@ -119,17 +119,6 @@
 :END:
 - [[./code/bar.r][bar.r]] を確認してみよう
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 第06回 資料
-#+end_src
-#+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
-#+end_src
-
-
-
-
-
 
 * 時系列解析の復習
 ** 時系列解析とは
@@ -137,8 +126,8 @@
   - 時間軸に沿って観測されたデータ
   - 観測の順序に意味がある
   - 異なる時点間での観測データの従属関係が重要
-  - 独立性にもとづく解析は行えない \\
-    (そのままでは大数の法則や中心極限定理は使えない)
+  - 独立性にもとづく解析は行えない 
+    - *そのままでは大数の法則や中心極限定理は使えない*
 - 時系列解析の目的
   - 時系列データの特徴を効果的に記述すること
   - 時系列モデルの推定と評価
@@ -311,7 +300,6 @@
 - 異なる時点間での観測データの従属関係を要約するための最も基本的な統計量
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_ar.png :exports results :results graphics :tangle yes
   ## ARMA過程を生成する関数
   myARMA <- function(a, b, epsilon){
@@ -331,7 +319,7 @@
   Tmax <- 500 # 時系列の長さ t=1,..,Tmax
   K <- 4 # 表示する時系列の数 (4つを並べて比較する)
   library(RColorBrewer)
-  myCol <- brewer.pal(K,"Dark2")
+  my_col <- brewer.pal(K,"Dark2")
   df.ar <- ts(replicate(K, myARMA(a=c(0.67, 0.26), b=c(0),
 				  epsilon=rnorm(Tmax))))
   df.ma <- ts(replicate(K, myARMA(a=c(0), b=c(0.44, 0.08),
@@ -340,8 +328,8 @@
 				    epsilon=rnorm(Tmax))))
   
   plot(x=df.ar, plot.type="single",
-       ylab="value", col=myCol,
-       main="AR(2)")
+       ylab="value", col=my_col,
+       main=expression(X[t] == 0.67*X[t-1] + 0.26*X[t-2] + epsilon[t]))
 #+end_src
    
 #+CAPTION: 同じモデルに従うAR過程の例
@@ -351,12 +339,11 @@
 [[file:figs/13_ar.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_aracf.png :exports results :results graphics :tangle yes
   ### AR(2)モデルの自己相関
   orgpar <- par(mfrow=c(2,2)) # グラフを2x2(行方向の順)に並べる
   for(i in 1:K) {
-    acf(df.ar[,i], col=myCol[i], main=paste("AR series",i))
+    acf(df.ar[,i], col=my_col[i], main=paste("AR series",i))
   }
   par(orgpar)
 #+end_src
@@ -368,11 +355,10 @@
 [[file:figs/13_aracf.png]]
    
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_ma.png :exports results :results graphics :tangle yes
   plot(x=df.ma, plot.type="single",
-       ylab="value", col=myCol,
-       main="MA(2)")
+       ylab="value", col=my_col,
+       main=expression(X[t] == 0.44*epsilon[t-1] + 0.08*epsilon[t-2] + epsilon[t]))
 #+end_src
 
 #+CAPTION: 同じモデルに従うMA過程の例
@@ -382,12 +368,11 @@
 [[file:figs/13_ma.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_maacf.png :exports results :results graphics :tangle yes
   ### MA(2)モデルの自己相関
   orgpar <- par(mfrow=c(2,2))
   for(i in 1:K) {
-      acf(df.ma[,i], col=myCol[i], main=paste("MA series",i))
+      acf(df.ma[,i], col=my_col[i], main=paste("MA series",i))
   }
   par(orgpar)
 #+end_src
@@ -399,11 +384,10 @@
 [[file:figs/13_maacf.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_arma.png :exports results :results graphics :tangle yes
   plot(x=df.arma, plot.type="single",
-       ylab="value", col=myCol,
-       main="ARMA(2,1)")
+       ylab="value", col=my_col,
+       main=expression(X[t] == 0.8*X[t-1] - 0.64*X[t-2] - 0.5*epsilon[t-1] + epsilon[t]))
 #+end_src
 
 #+CAPTION: 同じモデルに従うARMA過程の例
@@ -413,12 +397,11 @@
 [[file:figs/13_arma.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_armaacf.png :exports results :results graphics :tangle yes
   ### ARMA(2,1)モデルの自己相関
   orgpar <- par(mfrow=c(2,2))
   for(i in 1:K) {
-      acf(df.arma[,i], col=myCol[i], main=paste("ARMA series",i))
+      acf(df.arma[,i], col=my_col[i], main=paste("ARMA series",i))
   }
   par(orgpar)
 #+end_src
@@ -435,10 +418,7 @@
 :reveal_background: #f4fef4
 :END:
 # 東京大学
-** R: 関数 ~acf()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 関数 ~acf()~
 - 自己相関・自己共分散の計算
   #+begin_src R :eval no
     acf(x, lag.max = NULL,
@@ -485,7 +465,7 @@
   Tmax <- 200 # 時系列の長さ t=1,..,Tmax
   K <- 4 # 表示する時系列の数 (4つを並べて比較する)
   library(RColorBrewer)
-  myCol <- brewer.pal(K,"Dark2") 
+  my_col <- brewer.pal(K,"Dark2") 
   df.ar <- ts(replicate(K, myARMA(a=c(0.67, 0.26), b=c(0),
                                   epsilon=rnorm(Tmax))))
   df.ma <- ts(replicate(K, myARMA(a=c(0), b=c(0.44, 0.08),
@@ -496,21 +476,21 @@
   ### AR(2)モデルの自己相関
   orgpar <- par(mfrow=c(2,2)) # グラフを2x2(行方向の順)に並べる
   for(i in 1:K) {
-      acf(df.ar[,i], col=myCol[i], main=paste("AR series",i))
+      acf(df.ar[,i], col=my_col[i], main=paste("AR series",i))
   }
   par(orgpar) # もとのparの内容に戻す
   
   ### MA(2)モデルの自己相関
   orgpar <- par(mfrow=c(2,2))
   for(i in 1:K) {
-      acf(df.ma[,i], col=myCol[i], main=paste("MA series",i))
+      acf(df.ma[,i], col=my_col[i], main=paste("MA series",i))
   }
   par(orgpar) # もとのparの内容に戻す
   
   ### ARMA(2,1)モデルの自己相関
   orgpar <- par(mfrow=c(2,2))
   for(i in 1:K) {
-      acf(df.arma[,i], col=myCol[i], main=paste("ARMA series",i))
+      acf(df.arma[,i], col=my_col[i], main=paste("ARMA series",i))
   }
   par(orgpar) # もとのparの内容に戻す
 #+end_src
@@ -609,7 +589,7 @@
   - 行列が正則ならばARの係数は一意に求まる
 
 ** 偏自己相関
-- AR(p)モデル : 
+- AR(p)モデル
   #+begin_quote
   #+begin_src latex
     \begin{equation}
@@ -619,9 +599,9 @@
     \end{equation}
   #+end_src
   #+end_quote
-  - ラグ\(p\)の *自己相関係数* 
+  - ラグ\(p\)の特別な *自己相関係数* 
     #+begin_quote
-    \(a_{1}=a_{2}=\dotsb=a_{p-1}=0\)のときの\(a_{p}\) (*特殊な解釈*)
+    \(a_{1}=a_{2}=\dotsb=a_{p-1}=0\)のときの\(a_{p}\) (*特殊なモデルにおける解釈*)
     #+begin_src latex
       \begin{equation}
 	\mathbb{E}[X_{t}X_{t+p}]=a_{p}\mathbb{E}[X_{t}X_{t}]
@@ -637,12 +617,11 @@
     #+end_quote
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_arpacf.png :exports results :results graphics :tangle yes
   ### AR(2)モデルの偏自己相関
   orgpar <- par(mfrow=c(2,2)) # グラフを2x2(行方向の順)に並べる
   for(i in 1:K) {
-      pacf(df.ar[,i], col=myCol[i], main=paste("AR series",i))
+      pacf(df.ar[,i], col=my_col[i], main=paste("AR series",i))
   }
   par(orgpar)
 #+end_src
@@ -654,12 +633,11 @@
 [[file:figs/13_arpacf.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_mapacf.png :exports results :results graphics :tangle yes
   ### MA(2)モデルの偏自己相関
   orgpar <- par(mfrow=c(2,2))
   for(i in 1:K) {
-      pacf(df.ma[,i], col=myCol[i], main=paste("MA series",i))
+      pacf(df.ma[,i], col=my_col[i], main=paste("MA series",i))
   }
   par(orgpar)
 #+end_src
@@ -671,12 +649,11 @@
 [[file:figs/13_mapacf.png]]
 
 #+reveal: split
-#+header: :width 720 :height 720 :res 100
 #+begin_src R :file figs/13_armapacf.png :exports results :results graphics :tangle yes
   ### ARMA(2,1)モデルの偏自己相関
   orgpar <- par(mfrow=c(2,2))
   for(i in 1:K) {
-      pacf(df.arma[,i], col=myCol[i], main=paste("ARMA series",i))
+      pacf(df.arma[,i], col=my_col[i], main=paste("ARMA series",i))
   }
   par(orgpar)
 #+end_src
@@ -723,7 +700,7 @@
   - ラグ2までの自己共分散係数を求めなさい
   - 自己相関係数とパラメタ\(b_{1}\)が満すべき方程式を求めなさい
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -803,10 +780,7 @@
 :reveal_background: #f4fef4
 :END:
 # 東京大学
-** R: ARモデルの推定 ~ar()~ 
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : ARモデルの推定 ~ar()~ 
 - 定常ARモデルのあてはめ
   #+begin_src R :eval no
     ar(x, aic = TRUE, order.max = NULL, method = "yule-walker")
@@ -825,10 +799,7 @@
 :END:
 - [[./code/14-arest.r][14-arest.r]] を確認してみよう
 
-** R: ARIMAモデルの推定 ~arima()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : ARIMAモデルの推定 ~arima()~
 - 階差系列への定常ARMAモデルのあてはめ: ~stats::arima()~
   #+begin_src R :eval no
     arima(x, order = c(0L, 0L, 0L),
@@ -840,10 +811,7 @@
   - 関数 ~arima()~ には次数の決定機能はない
   - 試行錯誤による次数の決定が必要
 
-** R: ARIMAモデルの推定 ~forecast::auto.arima()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : ARIMAモデルの推定 ~forecast::auto.arima()~
 - パッケージ ~forecast~ の利用
   #+begin_src R :eval no
     ## 右下ペインの package タブから forecast をインストール
@@ -931,9 +899,6 @@
 #+end_src
 
 ** 非定常過程の変換
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
 - 定常過程とみなせるように変換して分析
   - 階差の利用
     #+begin_quote
@@ -961,10 +926,7 @@
     #+end_quote
     - 対数変換と階差で微小な比率の変動を抽出
 
-** R: 関数 ~zoo()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 関数 ~zoo()~
 - 時系列クラス ~zoo~ を作成する関数
   #+begin_src R :eval no
     library(zoo) # forecast を利用すると自動的に読み込まれる
@@ -980,10 +942,7 @@
   #+end_src
   - その他の詳細は ~?zoo~ を参照
 
-** R: 関数 ~window()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 関数 ~window()~
 - 時系列から部分系列を切り出す関数
   #+begin_src R :eval no
     window(x, start = NULL, end = NULL)
@@ -1068,16 +1027,12 @@
 
 * COMMENT 解析事例
 
-
 * COMMENT 実習
 :PROPERTIES:
 :reveal_background: #f4fef4
 :END:
 # 東京大学
-** R: 時系列の予測 ~predict()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 時系列の予測 ~predict()~
 - 推定されたモデルによる予測
   #+begin_src R :eval no
     predict(object, newdata, n.ahead = 1, se.fit = TRUE, ...)
@@ -1092,10 +1047,7 @@
   #+end_src
   - 詳細は ~?predict.ar, ?precidt.Arima~ を参照
 
-** R: 時系列の予測 ~forecast()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 時系列の予測 ~forecast()~
 - パッケージ ~forecast~ の利用
   #+begin_src R :eval no
     forecast(object, h)
@@ -1108,10 +1060,7 @@
   #+end_src
   - 詳細は ~?forecast~ を参照
 
-** R: 時系列の分解 ~StructTS()~
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
+** R : 時系列の分解 ~StructTS()~
 - トレンドの構造を仮定して分解する関数
   #+begin_src R :eval no
     StructTS(x, type = "level", fixed = NULL, ...)
@@ -1428,9 +1377,9 @@
 
 * COMMENT 次回
   - 自習 (レポート作成)
-  - 質問などある人は Zoom にて受付 (9:30-10:30)
+  - 質問などある人は Zoom にて受付 (9:30-10:00)
    
-
+* Footnotes
 * COMMENT ローカル変数
 # Local Variables:
 # org-latex-listings: minted
