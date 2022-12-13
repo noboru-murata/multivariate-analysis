@@ -47,8 +47,8 @@
 </section>
 
 <section>
-<section id="slide-org06f2b3c">
-<h2 id="org06f2b3c">講義の内容</h2>
+<section id="slide-orgb875512">
+<h2 id="orgb875512">講義の内容</h2>
 <ul>
 <li>第1日 : クラスタ分析の考え方と階層的方法</li>
 <li><b>第2日 : 非階層的方法と分析の評価</b></li>
@@ -59,13 +59,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org165b3fb">
-<h2 id="org165b3fb">クラスタ分析の復習</h2>
-<div class="outline-text-2" id="text-org165b3fb">
+<section id="slide-org53a299b">
+<h2 id="org53a299b">クラスタ分析の復習</h2>
+<div class="outline-text-2" id="text-org53a299b">
 </div>
 </section>
-<section id="slide-org3b47b40">
-<h3 id="org3b47b40">クラスタ分析</h3>
+<section id="slide-org7a32a98">
+<h3 id="org7a32a98">クラスタ分析</h3>
 <ul>
 <li><p>
 クラスタ分析 (<b>cluster analysis</b>) の目的
@@ -90,8 +90,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org858950b">
-<h3 id="org858950b">クラスタ分析の考え方</h3>
+<section id="slide-orgbe64ca3">
+<h3 id="orgbe64ca3">クラスタ分析の考え方</h3>
 <ul>
 <li>階層的方法
 <ul>
@@ -116,9 +116,9 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org3242016">
-<h3 id="org3242016">階層的クラスタリング</h3>
-<div class="leftcol" id="org844108d">
+<section id="slide-org16184d8">
+<h3 id="org16184d8">階層的クラスタリング</h3>
+<div class="leftcol" id="org56a128e">
 <ul>
 <li>凝集的手続き
 <ol>
@@ -137,9 +137,9 @@
 </ul>
 
 </div>
-<div class="rightcol" id="org42b570a">
+<div class="rightcol" id="org62a126b">
 
-<div id="orgad46eb3" class="figure">
+<div id="org807f60e" class="figure">
 <p><img src="figs/11_hclst.png" alt="11_hclst.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>凝集的手続きの例</p>
@@ -152,13 +152,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orgd51aa8e">
-<h2 id="orgd51aa8e">非階層的方法</h2>
-<div class="outline-text-2" id="text-orgd51aa8e">
+<section id="slide-orgc7402cc">
+<h2 id="orgc7402cc">非階層的方法</h2>
+<div class="outline-text-2" id="text-orgc7402cc">
 </div>
 </section>
-<section id="slide-org7d83bf4">
-<h3 id="org7d83bf4">非階層的方法の手続き</h3>
+<section id="slide-orgd43d29b">
+<h3 id="orgd43d29b">非階層的方法の手続き</h3>
 <ul>
 <li>対象の変数 : \(\boldsymbol{X}=(X_1,X_2,\dotsc,X_{d})^{\mathsf{T}}\) (\(d\)次元)</li>
 <li><p>
@@ -199,8 +199,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org0464314">
-<h3 id="org0464314">\(k\)-平均法の損失関数</h3>
+<section id="slide-orgc61b581">
+<h3 id="orgc61b581">\(k\)-平均法の損失関数</h3>
 <ul>
 <li>クラスタの個数 \(k\) を指定</li>
 <li><p>
@@ -234,8 +234,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgc804156">
-<h3 id="orgc804156">\(k\)-平均法の性質</h3>
+<section id="slide-org974a611">
+<h3 id="org974a611">\(k\)-平均法の性質</h3>
 <ul>
 <li><p>
 クラスタ \(l\) に属する個体の平均
@@ -272,12 +272,12 @@
 </section>
 </section>
 <section>
-<section id="slide-orgd44b3ce" data-background="#fef4f4">
-<h2 id="orgd44b3ce">演習</h2>
+<section id="slide-org4dd50a6" data-background="#fef4f4">
+<h2 id="org4dd50a6">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgc9fbf47" data-background="#fef4f4">
-<h3 id="orgc9fbf47">問題</h3>
+<section id="slide-orgad08288" data-background="#fef4f4">
+<h3 id="orgad08288">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -316,15 +316,139 @@
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-org9dd6827" data-background="#fef4f4">
+<h3 id="org9dd6827">解答例</h3>
+<ul>
+<li><p>
+対称性に注意して標本平均のまわりで展開
+</p>
+<blockquote>
+<div>
+\begin{align}
+  &\sum_{l=1}^k\frac{1}{n_l}\sum_{i:C(i)=l}\sum_{i':C(i')=l}
+    \|\boldsymbol{x}_i-\boldsymbol{x}_{i'}\|^2\\
+  &=
+    \sum_{l=1}^k\frac{1}{n_l}\sum_{i:C(i)=l}\sum_{i':C(i')=l}
+    \|\boldsymbol{x}_i-\bar{\boldsymbol{x}}_{l}+\bar{\boldsymbol{x}}_{l}-\boldsymbol{x}_{i'}\|^2\\
+  &=
+    \sum_{l=1}^k\frac{2}{n_l}\sum_{i:C(i)=l}\sum_{i':C(i')=l}
+    \|\boldsymbol{x}_i-\bar{\boldsymbol{x}}_{l}\|^2\\
+  &\quad-
+    \sum_{l=1}^k\frac{2}{n_l}\sum_{i:C(i)=l}\sum_{i':C(i')=l}
+    (\boldsymbol{x}_i-\bar{\boldsymbol{x}}_{l})^{\mathsf{T}}
+    (\boldsymbol{x}_{i'}-\bar{\boldsymbol{x}}_{l})
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+中心化したデータの標本平均が0であることを利用
+</p>
+<blockquote>
+<div>
+\begin{align}
+  &=
+    2\sum_{l=1}^k\sum_{i:C(i)=l}
+    \|\boldsymbol{x}_i-\bar{\boldsymbol{x}}_{l}\|^2\\
+  &\quad-
+    \sum_{l=1}^k\frac{2}{n_l}
+    \sum_{i:C(i)=l}(\boldsymbol{x}_i-\bar{\boldsymbol{x}}_{l})^{\mathsf{T}}
+    \sum_{i':C(i')=l}(\boldsymbol{x}_{i'}-\bar{\boldsymbol{x}}_{l})\\
+  &=
+    2\sum_{l=1}^k\sum_{i:C(i)=l}
+    \|\boldsymbol{x}_i-\bar{\boldsymbol{x}}_{l}\|^2
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+以下の不等式が成立
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \sum_{i:C(i)=l}\|\boldsymbol{x}_{i}-\boldsymbol{\mu}\|^{2}
+  &=
+    \sum_{i:C(i)=l}
+    \|\boldsymbol{x}_{i}-\bar{\boldsymbol{x}}_{l}
+    +
+    \bar{\boldsymbol{x}}_{l}-\boldsymbol{\mu}\|^{2}\\
+  &=
+    \sum_{i:C(i)=l}
+    \|\boldsymbol{x}_{i}-\bar{\boldsymbol{x}}_{l}\|^{2}
+    +
+    \sum_{i:C(i)=l}
+    \|\bar{\boldsymbol{x}}_{l}-\boldsymbol{\mu}\|^{2}\\
+  &\quad+
+    2\sum_{i:C(i)=l}
+    (\boldsymbol{x}_{i}-\bar{\boldsymbol{x}}_{l})^{\mathsf{T}}
+    (\bar{\boldsymbol{x}}_{l}-\boldsymbol{\mu})\\
+  &=
+    \sum_{i:C(i)=l}
+    \|\boldsymbol{x}_{i}-\bar{\boldsymbol{x}}_{l}\|^{2}
+    +
+    n_{l}\|\bar{\boldsymbol{x}}_{l}-\boldsymbol{\mu}\|^{2}\\
+  &\ge
+    \sum_{i:C(i)=l}
+    \|\boldsymbol{x}_{i}-\bar{\boldsymbol{x}}_{l}\|^{2}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+等号の成立の条件より
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \hat{\boldsymbol{\mu}}
+  =\arg\min_{\mu}
+  \sum_{i:C(i)=l}\|\boldsymbol{x}_i-\boldsymbol{\mu}\|^2
+  =\bar{\boldsymbol{x}}_{l}
+\end{equation}
+
+</div>
+
+<p>
+クラスタの標本平均を中心とすればよい
+</p>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-orgc42d62b">
-<h2 id="orgc42d62b">近似的な最適化</h2>
-<div class="outline-text-2" id="text-orgc42d62b">
+<section id="slide-org2d6806c">
+<h2 id="org2d6806c">近似的な最適化</h2>
+<div class="outline-text-2" id="text-org2d6806c">
 </div>
 </section>
-<section id="slide-org983d034">
-<h3 id="org983d034">クラスタ対応の最適化</h3>
+<section id="slide-orgf53e792">
+<h3 id="orgf53e792">クラスタ対応の最適化</h3>
 <ul>
 <li>最適化 : 損失関数 \(W(C)\) を最小とする \(C\) を決定</li>
 <li>貪欲な \(C\) の探索
@@ -362,8 +486,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org61018fa">
-<h3 id="org61018fa">Lloyd-Forgyのアルゴリズム</h3>
+<section id="slide-org8e705c4">
+<h3 id="org8e705c4">Lloyd-Forgyのアルゴリズム</h3>
 <ol>
 <li>クラスタ中心の初期値 
 \(\boldsymbol{\mu}_1,\boldsymbol{\mu}_2,\dots,\boldsymbol{\mu}_k\) を与える</li>
@@ -401,8 +525,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org03d3a56">
-<h3 id="org03d3a56">アルゴリズムの性質</h3>
+<section id="slide-org365ec33">
+<h3 id="org365ec33">アルゴリズムの性質</h3>
 <ul>
 <li>結果は <b>確率的</b>
 <ul>
@@ -431,8 +555,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgc718318">
-<h3 id="orgc718318">事例</h3>
+<section id="slide-org7049203">
+<h3 id="org7049203">事例</h3>
 <ul>
 <li><p>
 都道府県別好きなおむすびの具(一部)での例
@@ -441,7 +565,7 @@
 </ul>
 
 
-<div id="orgceddd79" class="figure">
+<div id="orgf2aad62" class="figure">
 <p><img src="figs/11_nhclst0.png" alt="11_nhclst0.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>非階層的クラスタリング</p>
@@ -451,7 +575,7 @@
 </section>
 <section>
 
-<div id="org3d04214" class="figure">
+<div id="org77700c8" class="figure">
 <p><img src="figs/11_nhclst1.png" alt="11_nhclst1.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Lloyd-Forgyのアルゴリズム (その1)</p>
@@ -461,7 +585,7 @@
 </section>
 <section>
 
-<div id="org51d2609" class="figure">
+<div id="orgd60abc4" class="figure">
 <p><img src="figs/11_nhclst2.png" alt="11_nhclst2.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Lloyd-Forgyのアルゴリズム (その2)</p>
@@ -471,7 +595,7 @@
 </section>
 <section>
 
-<div id="org34e3d47" class="figure">
+<div id="org82ec5e6" class="figure">
 <p><img src="figs/11_nhclst3.png" alt="11_nhclst3.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Lloyd-Forgyのアルゴリズム (その3)</p>
@@ -481,7 +605,7 @@
 </section>
 <section>
 
-<div id="org062b05d" class="figure">
+<div id="orgb2c3d47" class="figure">
 <p><img src="figs/11_nhclst4.png" alt="11_nhclst4.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Lloyd-Forgyのアルゴリズム (その4)</p>
@@ -491,7 +615,7 @@
 </section>
 <section>
 
-<div id="orgb20efcd" class="figure">
+<div id="org3070af0" class="figure">
 <p><img src="figs/11_nhclst5.png" alt="11_nhclst5.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Lloyd-Forgyのアルゴリズム (その5)</p>
@@ -501,7 +625,7 @@
 </section>
 <section>
 
-<div id="orgf1d9bb6" class="figure">
+<div id="org047d123" class="figure">
 <p><img src="figs/11_nhclst6.png" alt="11_nhclst6.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Lloyd-Forgyのアルゴリズム (その6)</p>
@@ -511,7 +635,7 @@
 </section>
 <section>
 
-<div id="orgb32bab7" class="figure">
+<div id="orgcd55c75" class="figure">
 <p><img src="figs/11_nhclst.png" alt="11_nhclst.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>クラスタリングの結果</p>
@@ -522,17 +646,17 @@
 </section>
 </section>
 <section>
-<section id="slide-org49d0de9">
-<h2 id="org49d0de9">解析事例</h2>
+<section id="slide-orge8a3d49">
+<h2 id="orge8a3d49">解析事例</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgafc1862">
-<h3 id="orgafc1862">都道府県別の社会生活統計指標</h3>
+<section id="slide-orgdc3199e">
+<h3 id="orgdc3199e">都道府県別の社会生活統計指標</h3>
 <ul>
 <li><p>
 データの属性
 </p>
-<pre class="example" id="org91f3afc">
+<pre class="example" id="org07a3b20">
 Forest : 森林面積割合 (%) 2014年
 Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
 Ratio : 全国総人口に占める人口割合 (%) 2015年
@@ -550,7 +674,7 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 <li><p>
 ユークリッド距離 + k-平均法 
 </p>
-<pre class="example" id="org493d0b1">
+<pre class="example" id="orgf1b21b8">
 === cluster 1 ===
  [1] "岩手県" "宮城県" "秋田県" "山形県" "福島県" "新潟県" "富山県" "石川県"
  [9] "福井県" "三重県" "滋賀県" "兵庫県" "島根県" "岡山県" "広島県" "山口県"
@@ -576,7 +700,7 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 </section>
 <section>
 
-<div id="orgc0861d3" class="figure">
+<div id="orgd41b9d2" class="figure">
 <p><img src="figs/11_jskmeans.png" alt="11_jskmeans.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>ユークリッド距離 + k-平均法</p>
@@ -589,7 +713,7 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 <li><p>
 ユークリッド距離 + k-メドイド法 
 </p>
-<pre class="example" id="orgd55a448">
+<pre class="example" id="org178ce68">
 === cluster 1 ===
 [1] "北海道"
 === cluster 2 ===
@@ -615,7 +739,7 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 </section>
 <section>
 
-<div id="org70e14ff" class="figure">
+<div id="orgf2ec10c" class="figure">
 <p><img src="figs/11_jspam.png" alt="11_jspam.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>ユークリッド距離 + k-メドイド法</p>
@@ -623,13 +747,13 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org7984b8c">
-<h3 id="org7984b8c">都道府県別好きなおむすびの具</h3>
+<section id="slide-org514e214">
+<h3 id="org514e214">都道府県別好きなおむすびの具</h3>
 <ul>
 <li><p>
 データの属性
 </p>
-<pre class="example" id="orgef12fc8">
+<pre class="example" id="org0ae00fa">
 Q2. おむすびの具では何が一番好きですか？
    A.梅 B.鮭 C.昆布 D.かつお E.明太子 F.たらこ Ｇ.ツナ H.その他
 【回答者数】
@@ -668,7 +792,7 @@ Hellinger距離を利用
 <li><p>
 Hellinger距離 + k-メドイド法 
 </p>
-<pre class="example" id="org1436c28">
+<pre class="example" id="orgd86ae13">
 === cluster 1 ===
 [1] "北海道" "青森県" "秋田県"
 === cluster 2 ===
@@ -692,7 +816,7 @@ Hellinger距離 + k-メドイド法
 </section>
 <section>
 
-<div id="orgd6f2d2f" class="figure">
+<div id="orgd8ea97c" class="figure">
 <p><img src="figs/11_ompam.png" alt="11_ompam.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Hellinger距離 + k-メドイド法</p>
@@ -703,13 +827,13 @@ Hellinger距離 + k-メドイド法
 </section>
 </section>
 <section>
-<section id="slide-orgd19d9fc">
-<h2 id="orgd19d9fc">クラスタ構造の評価</h2>
-<div class="outline-text-2" id="text-orgd19d9fc">
+<section id="slide-org81eb857">
+<h2 id="org81eb857">クラスタ構造の評価</h2>
+<div class="outline-text-2" id="text-org81eb857">
 </div>
 </section>
-<section id="slide-org54d111d">
-<h3 id="org54d111d">階層的方法の評価</h3>
+<section id="slide-orga224390">
+<h3 id="orga224390">階層的方法の評価</h3>
 <ul>
 <li>評価の対象
 <ul>
@@ -759,8 +883,8 @@ Hellinger距離 + k-メドイド法
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org039295d">
-<h3 id="org039295d">凝集係数の性質</h3>
+<section id="slide-orgb7b3f2c">
+<h3 id="orgb7b3f2c">凝集係数の性質</h3>
 <ul>
 <li><p>
 定義より
@@ -784,8 +908,8 @@ Hellinger距離 + k-メドイド法
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org390b8f8">
-<h3 id="org390b8f8">非階層的方法の評価</h3>
+<section id="slide-org90853cd">
+<h3 id="org90853cd">非階層的方法の評価</h3>
 <ul>
 <li>評価の対象
 <ul>
@@ -831,8 +955,8 @@ Hellinger距離 + k-メドイド法
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org834afcb">
-<h3 id="org834afcb">シルエット係数の性質</h3>
+<section id="slide-org92c4589">
+<h3 id="org92c4589">シルエット係数の性質</h3>
 <ul>
 <li><p>
 定義より
@@ -859,12 +983,12 @@ Hellinger距離 + k-メドイド法
 </section>
 </section>
 <section>
-<section id="slide-org014c32e" data-background="#fef4f4">
-<h2 id="org014c32e">演習</h2>
+<section id="slide-org9d36129" data-background="#fef4f4">
+<h2 id="org9d36129">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org21528ed" data-background="#fef4f4">
-<h3 id="org21528ed">問題</h3>
+<section id="slide-org24771cc" data-background="#fef4f4">
+<h3 id="org24771cc">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -897,14 +1021,124 @@ Hellinger距離 + k-メドイド法
 <div class="slide-footer"><br></div>
 
 </section>
-</section>
-<section>
-<section id="slide-orgc6e2180">
-<h2 id="orgc6e2180">解析事例</h2>
+<section id="slide-org75453c7" data-background="#fef4f4">
+<h3 id="org75453c7">解答例</h3>
+<ul>
+<li><p>
+2つのクラスタ\(C_{a},C_{b}\)が最も近いとする
+</p>
+<blockquote>
+<div>
+\begin{equation}
+     D(C_{c},C_{d})\ge D(C_{a},C_{b}),
+     \quad\forall c,d
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgb7c745c">
-<h3 id="orgb7c745c">都道府県別の社会生活統計指標</h3>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+統合して計算される距離では下が成立
+</p>
+<blockquote>
+<div>
+\begin{align}
+     D(C_{a}+C_{b}, C_{c})
+     &=
+       \frac{|C_{a}|D(C_{a},C_{c})+|C_{b}|D(C_{b},C_{c})}{|C_{a}|+|C_{b}|}\\
+     &\ge
+       \frac{|C_{a}|D(C_{a},C_{b})+|C_{b}|D(C_{a},C_{b})}{|C_{a}|+|C_{b}|}\\
+     &=D(C_{a},C_{b})
+\end{align}
+
+</div>
+
+<p>
+統合した結果，それより短い距離が現れることはない
+</p>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+以上より
+</p>
+<blockquote>
+<div>
+\begin{equation}
+     0\le d_{i}\le D
+\end{equation}
+
+</div>
+<div>
+\begin{equation}
+     0\le 1-\frac{d_i}{D}\le 1
+\end{equation}
+
+</div>
+
+<p>
+よって
+</p>
+<div>
+\begin{equation}
+     0\le AC\le 1
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+非負値の大小関係に注意する
+</p>
+<blockquote>
+<div>
+\begin{equation}
+     -\max(d^{1}_{i},d^{2}_{i})\le d^{2}_{i}-d^{1}_{i}\le\max(d^{1}_{i},d^{2}_{i})
+\end{equation}
+
+</div>
+
+<p>
+より
+</p>
+<div>
+\begin{equation}
+     -1\le S_i\le 1
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orged4a6df">
+<h2 id="orged4a6df">解析事例</h2>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org827fb36">
+<h3 id="org827fb36">都道府県別の社会生活統計指標</h3>
 <ul>
 <li>凝集係数を用いて階層的方法の距離を検討</li>
 <li>ユークリッド距離とマンハッタン距離を比較
@@ -920,7 +1154,7 @@ Hellinger距離 + k-メドイド法
 </section>
 <section>
 
-<div id="org52b5dc6" class="figure">
+<div id="org21ee1c5" class="figure">
 <p><img src="figs/11_jsbannereuc.png" alt="11_jsbannereuc.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>凝集係数 (ユークリッド距離)</p>
@@ -930,7 +1164,7 @@ Hellinger距離 + k-メドイド法
 </section>
 <section>
 
-<div id="orgb972148" class="figure">
+<div id="org2b38afc" class="figure">
 <p><img src="figs/11_jsdendroeuc.png" alt="11_jsdendroeuc.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>デンドログラム (ユークリッド距離)</p>
@@ -940,7 +1174,7 @@ Hellinger距離 + k-メドイド法
 </section>
 <section>
 
-<div id="orgb997d8d" class="figure">
+<div id="org5501587" class="figure">
 <p><img src="figs/11_jsbannerman.png" alt="11_jsbannerman.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>凝集係数 (マンハッタン距離)</p>
@@ -950,7 +1184,7 @@ Hellinger距離 + k-メドイド法
 </section>
 <section>
 
-<div id="org55a42f3" class="figure">
+<div id="org5869223" class="figure">
 <p><img src="figs/11_jsdendroman.png" alt="11_jsdendroman.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>デンドログラム (マンハッタン距離)</p>
@@ -975,8 +1209,8 @@ Hellinger距離 + k-メドイド法
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgedd54f9">
-<h3 id="orgedd54f9">都道府県別好きなおむすびの具</h3>
+<section id="slide-org48e8e18">
+<h3 id="org48e8e18">都道府県別好きなおむすびの具</h3>
 <ul>
 <li>シルエット係数を用いて非階層的方法のクラスタ数を検討
 <ul>
@@ -1004,7 +1238,7 @@ k = 10  [1] 0.1948242
 </section>
 <section>
 
-<div id="org92fcb7a" class="figure">
+<div id="org64e230f" class="figure">
 <p><img src="figs/11_omsil7.png" alt="11_omsil7.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>シルエット係数 (k=7)</p>
@@ -1014,7 +1248,7 @@ k = 10  [1] 0.1948242
 </section>
 <section>
 
-<div id="org6ed29b8" class="figure">
+<div id="orgb5d71ad" class="figure">
 <p><img src="figs/11_omsil8.png" alt="11_omsil8.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>シルエット係数 (k=8)</p>
@@ -1024,7 +1258,7 @@ k = 10  [1] 0.1948242
 </section>
 <section>
 
-<div id="orge207446" class="figure">
+<div id="org7fde462" class="figure">
 <p><img src="figs/11_omsil9.png" alt="11_omsil9.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>シルエット係数 (k=9)</p>
@@ -1034,7 +1268,7 @@ k = 10  [1] 0.1948242
 </section>
 <section>
 
-<div id="org34319c4" class="figure">
+<div id="org03e7d43" class="figure">
 <p><img src="figs/11_omclusplot8.png" alt="11_omclusplot8.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>非階層的クラスタリング (k=8)</p>
@@ -1045,8 +1279,8 @@ k = 10  [1] 0.1948242
 </section>
 </section>
 <section>
-<section id="slide-org9ce6086">
-<h2 id="org9ce6086">次回の予定</h2>
+<section id="slide-org400b0e5">
+<h2 id="org400b0e5">次回の予定</h2>
 <ul>
 <li><b>第1日 : 時系列の基本モデル</b></li>
 <li>第2日 : モデルの推定と予測</li>

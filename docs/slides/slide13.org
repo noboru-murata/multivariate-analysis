@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-12-12 14:48:55 mura>
+# Time-stamp: <2022-12-13 08:59:17 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -17,10 +17,10 @@
 - 同じタイトルの項目にはメモを入れる
 - 演習の内容が異なるので演習は2つ作る形で対応
 
-* COMMENT 講義の内容
+* 講義の内容
 # 早稲田大学
-- 第1日: 時系列の基本モデル
-- *第2日: モデルの推定と予測*
+- 第1日 : 時系列の基本モデル
+- *第2日 : モデルの推定と予測*
 
 #+begin_src R :eval no :exports none :tangle yes
   ### 第13講 資料
@@ -31,8 +31,8 @@
 
 * COMMENT 講義概要
 # 東京大学
-- 第1日: 時系列の基本モデル
-- *第2日: モデルの推定と予測*
+- 第1日 : 時系列の基本モデル
+- *第2日 : モデルの推定と予測*
 
 #+begin_src R :eval no :exports none :tangle yes
   ### 
