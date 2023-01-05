@@ -3,10 +3,15 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-12-08 18:20:05 mura>
+# Time-stamp: <2022-12-16 12:32:31 mura>
+#+STARTUP: hidestars content indent
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
-#+STARTUP: hidestars content indent
+#+PROPERTY: header-args:R :cache yes :session *R*
+#+PROPERTY: header-args:R+ :exports both :results output
+#+PROPERTY: header-args:R+ :width 800 :height 800 :res 100
+#+PROPERTY: header-args:R+ :tangle no
+#+PROPERTY: header-args:latex :exports results :results raw
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
