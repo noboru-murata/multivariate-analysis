@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@eb.waseda.ac.jp
 #+DATE: 
-# Time-stamp: <2022-12-12 14:45:39 mura>
+# Time-stamp: <2023-01-09 14:52:46 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -126,8 +126,8 @@
   - 時間軸に沿って観測されたデータ
   - 観測の順序に意味がある
   - 異なる時点間での観測データの従属関係が重要
-  - *独立性にもとづく解析は行えない* \\
-    (そのままでは大数の法則や中心極限定理は使えない)
+  - *独立性にもとづく解析は行えない*
+    - そのままでは大数の法則や中心極限定理は使えない
 - 時系列解析の目的
   - 時系列データの特徴を効果的に記述すること
   - 時系列モデルの推定と評価
@@ -171,17 +171,45 @@
   #+end_src
   #+end_quote
   # 平均 \(0\) ，分散 \(\sigma^2\) で互いに無相関な確率変数列
-- 記号 \(\mathrm{WN}(0,\sigma^2)\) で表記することが多い
-  #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      X_{t}
-      \sim
-      \mathrm{WN}(0,\sigma^2)
-    \end{equation}
-  #+end_src
-  #+end_quote
+  - 記号 \(\mathrm{WN}(0,\sigma^2)\) で表記することが多い
+    #+begin_quote
+    #+begin_src latex
+      \begin{equation}
+        X_{t}
+        \sim
+        \mathrm{WN}(0,\sigma^2)
+      \end{equation}
+    #+end_src
+    #+end_quote
 - 独立であるため系列としての予測は不可能
+
+#+reveal: split
+
+#+name: fig:12_wn
+#+begin_src R :file figs/12_wn.png :exports results :results graphics :tangle no
+  ### ホワイトノイズの生成
+  library(RColorBrewer)
+  k <- 4 # 系列の数
+  my_col <- brewer.pal(k,"Dark2")
+  
+  n <- 200 # 時系列の長さ
+  
+  ## 正規分布を利用
+  set.seed(123)
+  plot(x=ts(1:n),
+       ylim=c(-3,3), ylab="value",
+       main=expression(X[t] == epsilon[t]),
+       type="n")
+  for(i in 1:k) {
+    x <- rnorm(n)
+    ## x <- ts(rt(n, df=4)) # 自由度4のt分布の場合
+    lines(x, col=my_col[i])
+  }
+#+end_src
+#+caption: ホワイトノイズ (標準正規分布)
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/12_wn.png]]
 
 ** トレンドのあるホワイトノイズ
 - 定義
@@ -205,6 +233,26 @@
   - 非線形関数(指数関数, 三角関数など)
 - *平均* が時間とともに変動する時系列モデルの1つ
 
+#+reveal: split
+
+#+name: fig:12_trwn
+#+begin_src R :file figs/12_trwn.png :exports results :results graphics :tangle no
+  ### トレンドのあるホワイトノイズ
+  set.seed(123)
+  plot(x=ts(1:n),
+       ylim=c(-3,10), ylab="value",
+       main=expression(X[t] == -1 + 0.05 * t + epsilon[t]),
+       type="n")
+  for(i in 1:k) {
+      x <- rnorm(n) -1 + 0.05*(1:n)
+      lines(x, col=my_col[i])
+  }
+#+end_src
+#+caption: トレンドのあるホワイトノイズ
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/12_trwn.png]]
+
 ** ランダムウォーク
 - 定義
   #+begin_quote
@@ -223,7 +271,27 @@
 - *分散* が時間とともに増加する時系列モデルの1つ
 - 最も単純な *記憶* のあるモデル
 
-** 数値例
+#+reveal: split
+
+#+name: fig:12_rw
+#+begin_src R :file figs/12_rw.png :exports results :results graphics :tangle no
+  ### ランダムウォーク
+  set.seed(123)
+  plot(x=ts(1:n),
+       ylim=c(-15,15), ylab="value",
+       main=expression(X[t] == X[t-1] + epsilon[t]),
+       type="n")
+  for(i in 1:k) {
+    x <- cumsum(rnorm(n))
+    lines(x, col=my_col[i])
+  }
+#+end_src
+#+caption: ランダムウォーク
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/12_rw.png]]
+
+** COMMENT 数値例
 - 同じモデルに従うパス(系列)を複数観測してみる
   - ホワイトノイズ
   - トレンドのあるホワイトノイズ
@@ -314,7 +382,7 @@
     を求めなさい
   - ランダムウォークの平均と分散を求めなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -454,6 +522,31 @@
 
   Tmax <- 200 # 時系列の長さ t=1,..,Tmax
   K <- 5 # 生成する時系列の数
+  ## set.seed(123) # 必要なら乱数のシードを指定する
+
+  ## ホワイトノイズの生成と図示
+  x <- ts(rnorm(Tmax, sd=2)) # 分散4=標準偏差2
+  plot(x)
+  ## x <- ts(rt(n, df=4)) # 正規分布ではなく，例えば自由度4のt分布の場合
+
+  ### トレンドのあるホワイトノイズ
+  x <- ts(rnorm(Tmax, sd=2) -1 + 0.05*(1:Tmax))
+  plot(x)
+
+  ### ランダムウォーク
+  ## 定義に則ってrecursiveに計算する
+  x <- ts(rnorm(Tmax, sd=2)) # はじめは epslion が入っている
+  for(t in 2:Tmax) {
+      x[t] <- x[t-1] + x[t] # 順に足し合わせていく
+  }
+  plot(x)
+
+  ## 同じ演算をする関数が用意されている
+  x <- ts(cumsum(rnorm(Tmax, sd=2))) # 逐次的に加算を行う関数
+  plot(x)
+  ## 書き方はいろいろあるので考えてみて下さい
+
+  ### 複数の系列を表示する場合
 
   ## 系列を異なる色で表示するための準備
   ## 右下ペインの package タブから RColorBrewer をインストール
@@ -464,13 +557,7 @@
   ## my_col <- rainbow(K) # いわゆるレインボーカラーを使う場合
   ## 黄色などが見えにくい場合もあるので，スライドなどに使う場合は注意が必要
 
-  ## set.seed(123) # 必要なら乱数のシードを指定する
   ## ホワイトノイズの生成と図示
-  x <- ts(rnorm(Tmax, sd=2)) # 分散4=標準偏差2
-  plot(x)
-  ## x <- ts(rt(n, df=4)) # 正規分布ではなく，例えば自由度4のt分布の場合
-
-  ## 複数の系列を表示
   plot(x=ts(1:Tmax),
        ylim=c(-5,5), ylab="value", # yの範囲は適宜調整すること
        main=expression(X[t] == epsilon[t]), # 数式で表示
@@ -494,10 +581,6 @@
        main=expression(X[t] == epsilon[t]))
 
   ### トレンドのあるホワイトノイズ
-  x <- ts(rnorm(Tmax, sd=2) -1 + 0.05*(1:Tmax))
-  plot(x)
-
-  ## 複数の系列を表示
   z <- ts(replicate(K,
                     rnorm(Tmax, sd=2) -1 + 0.05*(1:Tmax)))
   plot(x=z, plot.type="single",
@@ -505,19 +588,6 @@
        main=expression(X[t] == -1 + 0.05 * t + epsilon[t]))
 
   ### ランダムウォーク
-  ## 定義に則ってrecursiveに計算する
-  x <- ts(rnorm(Tmax, sd=2)) # はじめは epslion が入っている
-  for(t in 2:Tmax) {
-      x[t] <- x[t-1] + x[t] # 順に足し合わせていく
-  }
-  plot(x)
-
-  ## 同じ演算をする関数が用意されている
-  x <- ts(cumsum(rnorm(Tmax, sd=2))) # 逐次的に加算を行う関数
-  plot(x)
-  ## 書き方はいろいろあるので考えてみて下さい
-
-  ## 複数の系列を表示
   z <- ts(replicate(K,
                     cumsum(rnorm(Tmax, sd=2))))
   plot(x=z, plot.type="single",
@@ -528,7 +598,7 @@
 
 * より一般的なモデル
 ** 自己回帰過程
-- 定義 (次数\(p\); AR(p), auto regressive の略)
+- 定義 (AR(p); 次数 \(p\) の auto regressive の略)
   #+begin_quote
   \(a_1,\dotsc,a_p\)を定数とし
   \(X_1,\dotsc,X_p\)が初期値として与えられたとき
@@ -547,8 +617,33 @@
     - \(p=1, a_1=1\) かつ \(\epsilon_{t}\) が独立同分布ならランダムウォーク
   - *忘却* しながら記憶するモデル (\(|a_i|<1\) などの条件が必要)
 
+#+reveal: split
+
+#+NAME: fig:12_ar
+#+begin_src R :file figs/12_ar.png :exports results :results graphics :tangle no
+  ### AR(2)モデルのシミュレーション
+  set.seed(123)
+  a <- c(0.669, 0.263) # ARの係数
+  plot(x=ts(1:n),
+       ylim=c(-5,5), ylab="value",
+       main=expression(X[t] == 0.67*X[t-1] + 0.26*X[t-2] + epsilon[t]),
+       type="n")
+  for(i in 1:k) {
+    epsilon <- rnorm(n)
+    x0 <- epsilon[1:2]
+    x <- ts(double(n))
+    x[1:2] <- x0
+    for(j in 3:n) x[j] <- a%*%x[j-1:2] + epsilon[j]
+    lines(x, col=my_col[i])
+  }
+#+end_src
+#+caption: AR過程
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/12_ar.png]]
+
 ** 移動平均過程
-- 定義 (次数\(q\); MA(q), moving average の略)
+- 定義 (MA(q); 次数 \(q\) の moving average の略)
   #+begin_quote
   \(b_1,\dotsc,b_q\)を定数とし，
   \(X_1,\dotsc,X_q\)が初期値として与えられたとき
@@ -567,8 +662,33 @@
   #+end_quote
   - 記憶のあるホワイトノイズ (構成する部品を記憶)
 
+#+reveal: split
+
+#+name: fig:12_ma
+#+begin_src R :file figs/12_ma.png :exports results :results graphics :tangle no
+  ### MA(2)モデルのシミュレーション
+  set.seed(123)
+  b <- c(0.438, 0.078) # MAの係数
+  plot(x=ts(1:n),
+	 ylim=c(-5,5), ylab="value",
+     main=expression(X[t] == 0.44*epsilon[t-1] + 0.08*epsilon[t-2] + epsilon[t]),
+	 type="n")
+  for(i in 1:k) {
+    epsilon <- rnorm(n)
+    x0 <- epsilon[1:2]   # 初期値は(epsilon1, epsilon2)
+    x <- ts(double(n))
+    x[1:2] <- x0
+    for(j in 3:n) x[j] <- b %*% epsilon[j-1:2] + epsilon[j]
+    lines(x, col=my_col[i])
+  }
+#+end_src
+#+caption: MA過程
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/12_ma.png]]
+
 ** 自己回帰移動平均過程
-- 定義 (次数\((p,q)\); ARMA(\(p,q\)))
+- 定義 (ARMA(\(p,q\)); 次数 \((p,q)\))
   #+begin_quote
   \(a_1,\dotsc,a_p,b_1,\dotsc,b_q\) を定数とし
   \(X_1,\dotsc,X_{\max\{p,q\}}\) が初期値として与えられたとき
@@ -592,7 +712,33 @@
   - 単純な形ながら異なる時点間の従属構造を柔軟に記述
   - 基本的な時系列モデルとして広く利用されている
 
-** 数値例
+#+reveal: split
+
+#+name: fig:12_arma
+#+begin_src R :file figs/12_arma.png :exports results :results graphics :tangle no
+  ### ARMA(2,1)モデルのシミュレーション
+  set.seed(123)
+  a <- c(0.8, -0.64) # ARの係数
+  b <- -0.5          # MAの係数
+  plot(x=ts(1:n),
+	 ylim=c(-5,5), ylab="value",
+     main=expression(X[t] == 0.8*X[t-1] - 0.64*X[t-2] - 0.5*epsilon[t-1] + epsilon[t]),
+	 type="n")
+  for(i in 1:k) {
+    epsilon <- rnorm(n)
+    x0 <- rnorm(2)     # 初期値
+    x <- ts(double(n))
+    x[1:2] <- x0
+    for(j in 3:n) x[j] <- a%*%x[j-1:2] + b*epsilon[j-1] + epsilon[j]
+    lines(x, col=my_col[i])
+  }
+#+end_src
+#+caption: ARMA過程
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/12_arma.png]]
+
+** COMMENT 数値例
 - 同じモデルに従うパス(系列)を複数観測してみる
   - 自己回帰過程 (AR過程)
   - 移動平均過程 (MA過程)
@@ -687,7 +833,7 @@
   - AR(1)の平均と分散を求めなさい
   - MA(1)の平均と分散を求めなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -924,13 +1070,13 @@
   - 平均や分散などの基本的な統計量が時間によって変動する
   - 1つの時系列から記述統計量の推測は一般にできない
 - 擬似相関の問題
-  - 独立な時系列にも関わらず見掛けの相関が現れることがある
   - 2つの独立なランダムウォークは高い確率で"相関"を持つ
-  - http://tylervigen.com/spurious-correlations
-
+    - 独立な時系列にも関わらず見掛けの相関が現れることがある
+    - http://tylervigen.com/spurious-correlations
+  - [[color:gray][因果推論などの潜伏変数とは異なる問題]]
 ** 非定常過程の取り扱い
 - 定常過程とみなせるように変換して分析を実行
-  - 階差をとる変換
+  - 階差系列
     #+begin_quote
     ランダムウォークは階差をとればホワイトノイズ(定常過程)となる
     #+begin_src latex
@@ -983,11 +1129,11 @@
       \end{equation}
     #+end_src
     #+end_quote
-- 異なる時点間での観測データの従属関係を要約するための最も基本的な統計量
+- 異なる時点間での観測データの従属関係を要約する最も基本的な統計量
 
 ** 標本自己共分散・標本自己相関
 - 観測データ \(X_1,\dotsc,X_{T}\) からの推定
-  - ラグ\(h\)の自己共分散の推定: 標本自己共分散
+  - ラグ\(h\)の自己共分散の推定 : 標本自己共分散
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -998,7 +1144,7 @@
     #+end_src
     #+end_quote
     \(\bar{X}=\frac{1}{T}\sum_{t=1}^TX_{t}\) は標本平均
-  - ラグ\(h\)での自己相関の推定: 標本自己相関
+  - ラグ\(h\)での自己相関の推定 : 標本自己相関
     #+begin_quote
     #+begin_src latex
       \begin{equation}
@@ -1100,7 +1246,7 @@
     \(\mathbb{E}[X_{t}]=0\) であるとき，
     AR過程の係数と自己共分散の間に成り立つ関係を考えなさい
 
-** COMMENT 解答例
+** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1152,15 +1298,15 @@
       \end{pmatrix}
     \end{equation}
   #+end_src
-  Yule-Walker方程式という
   #+end_quote
+  - *Yule-Walker 方程式* という
 
 #+reveal: split
 - Yule-Walker方程式の性質
   - 行列は Toeplitz 行列と呼ばれる
   - \(\gamma(h)=\gamma(-h)\)より行列は対称行列
-  - 共分散の性質から行列が正定値(非負定値)
-  - 行列が正則ならばARの係数は一意に決まる
+  - 共分散の性質から行列は正定値 (非負定値)
+  - 行列が正則ならば AR 過程の係数は一意に決まる
   - 特殊な形を利用した高速な解法としては
     Levinson–Durbin アルゴリズムが知られている
 
@@ -1169,8 +1315,8 @@
 :PROPERTIES:
 :reveal_background: #f4fef4
 :END:
-** R : 関数 ~acf()~
 # 東京大学
+** R : 関数 ~acf()~
 - 自己相関・自己共分散の計算
   #+begin_src R :eval no
     acf(x, lag.max = NULL,
@@ -1194,6 +1340,7 @@
     (前の練習問題を利用すればよい)
   - MA過程についても同様な比較を行いなさい
   - ARMA過程についても同様な比較を行いなさい
+
 
 #+begin_src R :eval no :exports none :tangle yes
   ### 

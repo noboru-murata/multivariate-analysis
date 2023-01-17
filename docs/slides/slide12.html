@@ -47,8 +47,8 @@
 </section>
 
 <section>
-<section id="slide-orgf2ec2bc">
-<h2 id="orgf2ec2bc">講義の内容</h2>
+<section id="slide-orgf918e31">
+<h2 id="orgf918e31">講義の内容</h2>
 <ul>
 <li><b>第1日 : 時系列の基本モデル</b></li>
 <li>第2日 : モデルの推定と予測</li>
@@ -59,21 +59,24 @@
 </section>
 </section>
 <section>
-<section id="slide-orgd86647f">
-<h2 id="orgd86647f">時系列解析の概要</h2>
-<div class="outline-text-2" id="text-orgd86647f">
+<section id="slide-org81b4808">
+<h2 id="org81b4808">時系列解析の概要</h2>
+<div class="outline-text-2" id="text-org81b4808">
 </div>
 </section>
-<section id="slide-org007a712">
-<h3 id="org007a712">時系列解析とは</h3>
+<section id="slide-orga8282a0">
+<h3 id="orga8282a0">時系列解析とは</h3>
 <ul>
 <li>時系列データ
 <ul>
 <li>時間軸に沿って観測されたデータ</li>
 <li>観測の順序に意味がある</li>
 <li>異なる時点間での観測データの従属関係が重要</li>
-<li><b>独立性にもとづく解析は行えない</b> <br />
-(そのままでは大数の法則や中心極限定理は使えない)</li>
+<li><b>独立性にもとづく解析は行えない</b>
+<ul>
+<li>そのままでは大数の法則や中心極限定理は使えない</li>
+
+</ul></li>
 
 </ul></li>
 <li>時系列解析の目的
@@ -87,8 +90,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgf31fa5d">
-<h3 id="orgf31fa5d">時系列データ</h3>
+<section id="slide-org422fe76">
+<h3 id="org422fe76">時系列データ</h3>
 <ul>
 <li><p>
 統計学・確率論における表現 : <b>確率過程</b>
@@ -122,13 +125,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org1968518">
-<h2 id="org1968518">基本的なモデル</h2>
-<div class="outline-text-2" id="text-org1968518">
+<section id="slide-org56d7930">
+<h2 id="org56d7930">基本的なモデル</h2>
+<div class="outline-text-2" id="text-org56d7930">
 </div>
 </section>
-<section id="slide-org9efee67">
-<h3 id="org9efee67">ホワイトノイズ</h3>
+<section id="slide-org278f21c">
+<h3 id="org278f21c">ホワイトノイズ</h3>
 <ul>
 <li><p>
 定義
@@ -151,7 +154,9 @@
 \end{equation}
 
 </div>
-</blockquote></li>
+</blockquote>
+
+<ul>
 <li><p>
 記号 \(\mathrm{WN}(0,\sigma^2)\) で表記することが多い
 </p>
@@ -165,14 +170,27 @@
 
 </div>
 </blockquote></li>
+
+</ul></li>
 <li>独立であるため系列としての予測は不可能</li>
 
 </ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+
+
+<div id="org5c98d55" class="figure">
+<p><img src="figs/12_wn.png" alt="12_wn.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>ホワイトノイズ (標準正規分布)</p>
+</div>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgb4e2337">
-<h3 id="orgb4e2337">トレンドのあるホワイトノイズ</h3>
+<section id="slide-orgce0a3b1">
+<h3 id="orgce0a3b1">トレンドのあるホワイトノイズ</h3>
 <ul>
 <li><p>
 定義
@@ -203,11 +221,22 @@
 <li><b>平均</b> が時間とともに変動する時系列モデルの1つ</li>
 
 </ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+
+
+<div id="orge1cc44d" class="figure">
+<p><img src="figs/12_trwn.png" alt="12_trwn.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>トレンドのあるホワイトノイズ</p>
+</div>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org16abb47">
-<h3 id="org16abb47">ランダムウォーク</h3>
+<section id="slide-orgfa7e278">
+<h3 id="orgfa7e278">ランダムウォーク</h3>
 <ul>
 <li><p>
 定義
@@ -232,63 +261,28 @@
 <li>最も単純な <b>記憶</b> のあるモデル</li>
 
 </ul>
-<div class="slide-footer"><br></div>
-
-</section>
-<section id="slide-org1da883a">
-<h3 id="org1da883a">数値例</h3>
-<ul>
-<li>同じモデルに従うパス(系列)を複数観測してみる
-<ul>
-<li>ホワイトノイズ</li>
-<li>トレンドのあるホワイトノイズ</li>
-<li>ランダムウォーク</li>
-
-</ul></li>
-
-</ul>
 
 <div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org15c5af9" class="figure">
-<p><img src="figs/12_wn.png" alt="12_wn.png" />
-</p>
-<p><span class="figure-number">Figure 1: </span>ホワイトノイズ (標準正規分布)</p>
-</div>
 
-<div class="slide-footer"><br></div>
-</section>
-<section>
-
-<div id="org3fbbe7a" class="figure">
-<p><img src="figs/12_trwn.png" alt="12_trwn.png" />
-</p>
-<p><span class="figure-number">Figure 2: </span>トレンドのあるホワイトノイズ</p>
-</div>
-
-<div class="slide-footer"><br></div>
-</section>
-<section>
-
-<div id="org8f194be" class="figure">
+<div id="orgb4d8780" class="figure">
 <p><img src="figs/12_rw.png" alt="12_rw.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>ランダムウォーク</p>
 </div>
 <div class="slide-footer"><br></div>
 
-
 </section>
 </section>
 <section>
-<section id="slide-org4854fd4" data-background="#fef4f4">
-<h2 id="org4854fd4">演習</h2>
+<section id="slide-orgd5d1d22" data-background="#fef4f4">
+<h2 id="orgd5d1d22">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org3259a09" data-background="#fef4f4">
-<h3 id="org3259a09">問題</h3>
+<section id="slide-org8950bc8" data-background="#fef4f4">
+<h3 id="org8950bc8">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -311,18 +305,85 @@
 <div class="slide-footer"><br></div>
 
 </section>
-</section>
-<section>
-<section id="slide-orgcfad623">
-<h2 id="orgcfad623">より一般的なモデル</h2>
-<div class="outline-text-2" id="text-orgcfad623">
-</div>
-</section>
-<section id="slide-orgc3bc447">
-<h3 id="orgc3bc447">自己回帰過程</h3>
+<section id="slide-org50c0b00" data-background="#fef4f4">
+<h3 id="org50c0b00">解答例</h3>
 <ul>
 <li><p>
-定義 (次数\(p\); AR(p), auto regressive の略)
+定義に従い計算する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathbb{E}[X_{t}]
+  &=
+    \mathbb{E}[\mu+\alpha t+\epsilon_{t}]\\
+  &=
+    \mathbb{E}[\mu]+\mathbb{E}[\alpha t]+\mathbb{E}[\epsilon_{t}]\\
+  &=
+    \mu+\alpha t\\
+  \mathrm{Var}(X_{t})
+  &=
+    \mathrm{Var}(\mu+\alpha t+\epsilon_{t})\\
+  &=
+    \mathrm{Var}(\mu)+\mathrm{Var}(\alpha t)
+    +\mathrm{Var}(\epsilon_{t})\\
+  &=
+    0+0+\sigma^{2}\\
+  &=
+    \sigma^{2}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+定義に従い帰納的に計算する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathbb{E}[X_{t}]
+  &=
+    \mathbb{E}[X_{t-1}+\epsilon_{t}]\\
+  &=
+    \mathbb{E}[X_{t-1}]+\mathbb{E}[\epsilon_{t}]\\
+  &=
+    \mathbb{E}[X_{1}]\\
+  \mathrm{Var}(X_{t})
+  &=
+    \mathrm{Var}(X_{t-1}+\epsilon_{t})\\
+  &=
+    \mathrm{Var}(X_{t-1})+\mathrm{Var}(\epsilon_{t})\\
+  &=
+    \mathrm{Var}(X_{1})+(t-1)\cdot\sigma^{2}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgeda2e0e">
+<h2 id="orgeda2e0e">より一般的なモデル</h2>
+<div class="outline-text-2" id="text-orgeda2e0e">
+</div>
+</section>
+<section id="slide-orgdbe9f43">
+<h3 id="orgdbe9f43">自己回帰過程</h3>
+<ul>
+<li><p>
+定義 (AR(p); 次数 \(p\) の auto regressive の略)
 </p>
 <blockquote>
 <p>
@@ -352,14 +413,25 @@
 </ul></li>
 
 </ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+
+
+<div id="org794848e" class="figure">
+<p><img src="figs/12_ar.png" alt="12_ar.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>AR過程</p>
+</div>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org61b728c">
-<h3 id="org61b728c">移動平均過程</h3>
+<section id="slide-orgacd8b7f">
+<h3 id="orgacd8b7f">移動平均過程</h3>
 <ul>
 <li><p>
-定義 (次数\(q\); MA(q), moving average の略)
+定義 (MA(q); 次数 \(q\) の moving average の略)
 </p>
 <blockquote>
 <p>
@@ -386,14 +458,25 @@
 </ul></li>
 
 </ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section>
+
+
+<div id="org592f994" class="figure">
+<p><img src="figs/12_ma.png" alt="12_ma.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>MA過程</p>
+</div>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org6ed1d6e">
-<h3 id="org6ed1d6e">自己回帰移動平均過程</h3>
+<section id="slide-org3cd3140">
+<h3 id="org3cd3140">自己回帰移動平均過程</h3>
 <ul>
 <li><p>
-定義 (次数\((p,q)\); ARMA(\(p,q\)))
+定義 (ARMA(\(p,q\)); 次数 \((p,q)\))
 </p>
 <blockquote>
 <p>
@@ -425,63 +508,28 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
-
-</section>
-<section id="slide-org0e98dc9">
-<h3 id="org0e98dc9">数値例</h3>
-<ul>
-<li>同じモデルに従うパス(系列)を複数観測してみる
-<ul>
-<li>自己回帰過程 (AR過程)</li>
-<li>移動平均過程 (MA過程)</li>
-<li>自己回帰移動平均過程 (ARMA過程)</li>
-
-</ul></li>
-
-</ul>
 
 <div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org7f31b15" class="figure">
-<p><img src="figs/12_ar.png" alt="12_ar.png" />
-</p>
-<p><span class="figure-number">Figure 1: </span>AR過程</p>
-</div>
 
-<div class="slide-footer"><br></div>
-</section>
-<section>
-
-<div id="orgd6f5a86" class="figure">
-<p><img src="figs/12_ma.png" alt="12_ma.png" />
-</p>
-<p><span class="figure-number">Figure 1: </span>MA過程</p>
-</div>
-
-<div class="slide-footer"><br></div>
-</section>
-<section>
-
-<div id="orgfbe13c0" class="figure">
+<div id="orgc9e77dd" class="figure">
 <p><img src="figs/12_arma.png" alt="12_arma.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>ARMA過程</p>
 </div>
 <div class="slide-footer"><br></div>
 
-
 </section>
 </section>
 <section>
-<section id="slide-org5d126db" data-background="#fef4f4">
-<h2 id="org5d126db">演習</h2>
+<section id="slide-orge37d036" data-background="#fef4f4">
+<h2 id="orge37d036">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org4c6b680" data-background="#fef4f4">
-<h3 id="org4c6b680">問題</h3>
+<section id="slide-orgc417dee" data-background="#fef4f4">
+<h3 id="orgc417dee">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -494,15 +542,82 @@
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-org0f09513" data-background="#fef4f4">
+<h3 id="org0f09513">解答例</h3>
+<ul>
+<li><p>
+定義に従い帰納的に計算する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathbb{E}[X_{t}]
+  &=
+    \mathbb{E}[a_{1}X_{t-1}+\epsilon_{t}]\\
+  &=
+    a_{1}\mathbb{E}[X_{t-1}]+\mathbb{E}[\epsilon_{t}]\\
+  &=
+    a_{1}^{t-1}\mathbb{E}[X_{1}]\\
+  \mathrm{Var}(X_{t})
+  &=
+    \mathrm{Var}(a_{1}X_{t-1}+\epsilon_{t})\\
+  &=
+    a_{1}^{2}\mathrm{Var}(X_{t-1})+\mathrm{Var}(\epsilon_{t})\\
+  &=
+    a_{1}^{2(t-1)}\mathrm{Var}(X_{1})
+    +\frac{1-a_{1}^{2(t-1)}}{1-a_{1}^{2}}\cdot\sigma^{2}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+定義に従い帰納的に計算する
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \mathbb{E}[X_{t}]
+  &=
+    \mathbb{E}[b_{1}\epsilon_{t-1}+\epsilon_{t}]\\
+  &=
+    b_{1}\mathbb{E}[\epsilon_{t-1}]+\mathbb{E}[\epsilon_{t}]\\
+  &=
+    0\\
+  \mathrm{Var}(X_{t})
+  &=
+    \mathrm{Var}(b_{1}\epsilon_{t-1}+\epsilon_{t})\\
+  &=
+    b_{1}^{2}\mathrm{Var}(\epsilon_{t-1})+\mathrm{Var}(\epsilon_{t})\\
+  &=
+    (b_{1}^{2}+1)\cdot\sigma^{2}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-orgd5c5d4a">
-<h2 id="orgd5c5d4a">定常過程と非定常過程</h2>
-<div class="outline-text-2" id="text-orgd5c5d4a">
+<section id="slide-org4dec7ca">
+<h2 id="org4dec7ca">定常過程と非定常過程</h2>
+<div class="outline-text-2" id="text-org4dec7ca">
 </div>
 </section>
-<section id="slide-org0c032bb">
-<h3 id="org0c032bb">弱定常性</h3>
+<section id="slide-orgd0ad8f4">
+<h3 id="orgd0ad8f4">弱定常性</h3>
 <ul>
 <li>確率過程\(X_{t},\;t=1,\dotsc,T\)が次の性質をもつ 
 <ul>
@@ -554,8 +669,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org8f7032b">
-<h3 id="org8f7032b">定常性と非定常性</h3>
+<section id="slide-org9b5c4e5">
+<h3 id="org9b5c4e5">定常性と非定常性</h3>
 <ul>
 <li>定常でない確率過程は <b>非定常</b> であるという</li>
 <li>いろいろな確率過程の定常性
@@ -570,8 +685,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgd9b6454">
-<h3 id="orgd9b6454">非定常過程の難しさ</h3>
+<section id="slide-orgb91b2aa">
+<h3 id="orgb91b2aa">非定常過程の難しさ</h3>
 <ul>
 <li>性質を特徴付ける統計量が観測値から得られない
 <ul>
@@ -581,23 +696,26 @@
 </ul></li>
 <li>擬似相関の問題
 <ul>
+<li>2つの独立なランダムウォークは高い確率で&ldquo;相関&rdquo;を持つ
+<ul>
 <li>独立な時系列にも関わらず見掛けの相関が現れることがある</li>
-<li>2つの独立なランダムウォークは高い確率で&ldquo;相関&rdquo;を持つ</li>
 <li><a href="http://tylervigen.com/spurious-correlations">http://tylervigen.com/spurious-correlations</a></li>
+
+</ul></li>
+<li><span style="color:gray;">因果推論などの潜伏変数の問題とは異なる</span></li>
 
 </ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org168ecd8">
-<h3 id="org168ecd8">非定常過程の取り扱い</h3>
+<section id="slide-orgffe7930">
+<h3 id="orgffe7930">非定常過程の取り扱い</h3>
 <ul>
 <li>定常過程とみなせるように変換して分析を実行
 <ul>
 <li><p>
-階差をとる変換
+階差系列
 </p>
 <blockquote>
 <p>
@@ -648,13 +766,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orgb450502">
-<h2 id="orgb450502">自己共分散・自己相関</h2>
-<div class="outline-text-2" id="text-orgb450502">
+<section id="slide-org775a800">
+<h2 id="org775a800">自己共分散・自己相関</h2>
+<div class="outline-text-2" id="text-org775a800">
 </div>
 </section>
-<section id="slide-org0b0c21e">
-<h3 id="org0b0c21e">自己共分散・自己相関</h3>
+<section id="slide-orga60be97">
+<h3 id="orga60be97">自己共分散・自己相関</h3>
 <ul>
 <li>確率過程\(X_{t}\)が <b>定常過程</b> の場合
 <ul>
@@ -690,19 +808,19 @@
 </blockquote></li>
 
 </ul></li>
-<li>異なる時点間での観測データの従属関係を要約するための最も基本的な統計量</li>
+<li>異なる時点間での観測データの従属関係を要約する最も基本的な統計量</li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org60ac89b">
-<h3 id="org60ac89b">標本自己共分散・標本自己相関</h3>
+<section id="slide-org0ff7763">
+<h3 id="org0ff7763">標本自己共分散・標本自己相関</h3>
 <ul>
 <li>観測データ \(X_1,\dotsc,X_{T}\) からの推定
 <ul>
 <li><p>
-ラグ\(h\)の自己共分散の推定: 標本自己共分散
+ラグ\(h\)の自己共分散の推定 : 標本自己共分散
 </p>
 <blockquote>
 <div>
@@ -718,7 +836,7 @@
 \(\bar{X}=\frac{1}{T}\sum_{t=1}^TX_{t}\) は標本平均
 </p></li>
 <li><p>
-ラグ\(h\)での自己相関の推定: 標本自己相関
+ラグ\(h\)での自己相関の推定 : 標本自己相関
 </p>
 <blockquote>
 <div>
@@ -737,8 +855,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org6096b9e">
-<h3 id="org6096b9e">数値例</h3>
+<section id="slide-org93925d3">
+<h3 id="org93925d3">数値例</h3>
 <ul>
 <li>同じモデルに従うパス(系列)の自己相関を比較する
 <ul>
@@ -754,7 +872,7 @@
 </section>
 <section>
 
-<div id="orgc834ed6" class="figure">
+<div id="org63868f7" class="figure">
 <p><img src="figs/12_aracf.png" alt="12_aracf.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>AR過程の自己相関</p>
@@ -764,7 +882,7 @@
 </section>
 <section>
 
-<div id="org6f813d5" class="figure">
+<div id="org27d88c8" class="figure">
 <p><img src="figs/12_maacf.png" alt="12_maacf.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>MA過程の自己相関</p>
@@ -774,7 +892,7 @@
 </section>
 <section>
 
-<div id="org31e77f1" class="figure">
+<div id="orgde0c53d" class="figure">
 <p><img src="figs/12_armaacf.png" alt="12_armaacf.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>ARMA過程の自己相関</p>
@@ -785,12 +903,12 @@
 </section>
 </section>
 <section>
-<section id="slide-org6b93008" data-background="#fef4f4">
-<h2 id="org6b93008">演習</h2>
+<section id="slide-orge994383" data-background="#fef4f4">
+<h2 id="orge994383">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org1fa02ac" data-background="#fef4f4">
-<h3 id="org1fa02ac">問題</h3>
+<section id="slide-orgc71dfde" data-background="#fef4f4">
+<h3 id="orgc71dfde">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -804,10 +922,100 @@ AR過程の係数と自己共分散の間に成り立つ関係を考えなさい
 <div class="slide-footer"><br></div>
 
 </section>
+<section id="slide-org415f5a6" data-background="#fef4f4">
+<h3 id="org415f5a6">解答例</h3>
+<ul>
+<li><p>
+ラグ\(h>0\)の自己共分散を考える
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \gamma(h)
+  &=
+    \mathbb{E}[X_{t}X_{t+h}]\\
+  &=
+    \mathbb{E}[X_{t}(a_{1}X_{t+h-1}+\dotsb+a_{p}X_{t+h-p}+\epsilon_{t+h})]\\
+  &=
+    a_{1}\mathbb{E}[X_{t}X_{t+h-1}]
+    +\dotsb
+    +a_{p}\mathbb{E}[X_{t}X_{t+h-p}]
+    +\mathbb{E}[X_{t}\epsilon_{t+h}]\\
+  &=
+    a_{1}\gamma(h-1)
+    +\dotsb+
+    a_{p}\gamma(h-p)
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+\(1\le h\le p\) を考えると以下の関係が成り立つ
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \begin{pmatrix}
+    \gamma(1)\\
+    \gamma(2)\\
+    \vdots\\
+    \gamma(p)
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    \gamma(0)&\gamma(-1)&\dots&\gamma(-p+1)\\
+    \gamma(1)&\gamma(0)&\dots&\gamma(-p+2)\\
+    \vdots&\vdots&\ddots&\vdots\\
+    \gamma(p-1)&\gamma(p-2)&\dots&\gamma(0)
+  \end{pmatrix}
+  \begin{pmatrix}
+    a_{1}\\
+    a_{2}\\
+    \vdots\\
+    a_{p}
+  \end{pmatrix}
+\end{equation}
+
+</div>
+
+<p>
+Yule-Walker方程式という
+</p>
+</blockquote></li>
+
+</ul>
+
+<div class="slide-footer"><br></div>
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li>Yule-Walker方程式の性質
+<ul>
+<li>行列は Toeplitz 行列と呼ばれる</li>
+<li>\(\gamma(h)=\gamma(-h)\)より行列は対称行列</li>
+<li>共分散の性質から行列が正定値(非負定値)</li>
+<li>行列が正則ならばARの係数は一意に決まる</li>
+<li>特殊な形を利用した高速な解法としては
+Levinson–Durbin アルゴリズムが知られている</li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+
+
+</section>
 </section>
 <section>
-<section id="slide-org63ac453">
-<h2 id="org63ac453">次回の内容</h2>
+<section id="slide-orgff33bf6">
+<h2 id="orgff33bf6">次回の内容</h2>
 <ul>
 <li>第1日 : 時系列の基本モデル</li>
 <li><b>第2日 : モデルの推定と予測</b></li>
