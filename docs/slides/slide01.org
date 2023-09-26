@@ -1,9 +1,9 @@
 #+TITLE: 講義の概要
 #+SUBTITLE: 多変量解析 - 第1講
 #+AUTHOR: 村田 昇
-#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2023-09-26 13:39:30 mura>
+# Time-stamp: <2023-09-26 15:12:44 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent

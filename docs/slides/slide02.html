@@ -47,8 +47,8 @@
 </section>
 
 <section>
-<section id="slide-org3ec1060">
-<h2 id="org3ec1060">講義の内容</h2>
+<section id="slide-org710fff5">
+<h2 id="org710fff5">講義の内容</h2>
 <ul>
 <li>確率
 <ul>
@@ -77,13 +77,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org17701bd">
-<h2 id="org17701bd">確率</h2>
-<div class="outline-text-2" id="text-org17701bd">
+<section id="slide-org09ab8e3">
+<h2 id="org09ab8e3">確率</h2>
+<div class="outline-text-2" id="text-org09ab8e3">
 </div>
 </section>
-<section id="slide-org095fc23">
-<h3 id="org095fc23">確率分布</h3>
+<section id="slide-orgfbdb3c0">
+<h3 id="orgfbdb3c0">確率分布</h3>
 <ul>
 <li><p>
 定義
@@ -104,7 +104,7 @@
 を <b>確率分布</b> という．
 </p>
 </blockquote></li>
-<li>実用上重要な分布
+<li>応用上重要な分布
 <ul>
 <li>離散分布</li>
 <li>連続分布 (絶対連続な分布)</li>
@@ -115,16 +115,16 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orged0f0e3">
-<h3 id="orged0f0e3">確率質量関数</h3>
+<section id="slide-org45480e4">
+<h3 id="org45480e4">確率質量関数</h3>
 <ul>
 <li><p>
-離散分布の場合
+離散分布を記述する方法
 </p>
 <blockquote>
 <p>
-1つの見本点 \(x\) からなる事象を \(A=\{x\}\) とする．
-事象 \(A\) (根元事象という)の起きる確率
+1つの見本点 \(x\) からなる事象(根元事象という)を \(A=\{x\}\) とする．
+事象 \(A\) の起きる確率
 </p>
 <div>
 \begin{equation}
@@ -142,11 +142,11 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org93205fd">
-<h3 id="org93205fd">確率密度関数</h3>
+<section id="slide-orgec9be64">
+<h3 id="orgec9be64">確率密度関数</h3>
 <ul>
 <li><p>
-連続分布の場合
+連続分布を記述する方法
 </p>
 <blockquote>
 <p>
@@ -179,11 +179,12 @@
 \(A\) に含まれる適当な点を \(x\) とし，
 \(A\) の大きさ(考える空間により体積や面積に相当)を
 \(|A|\) と書くことにすれば，
-事象 \(A\) の起きる確率を
+事象 \(A\) の起きる確率を密度と事象の大きさの積
 </p>
 <div>
 \begin{equation}
-  P(A)=p(x)\cdot|A|
+  P(A)=\int_A p(x)dx
+  \simeq p(x)\cdot|A|
 \end{equation}
 
 </div>
@@ -197,18 +198,18 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgd1d2f30">
-<h3 id="orgd1d2f30">正規分布 (normal/Gaussian distribution)</h3>
-<div class="leftcol" id="orgd25f8b7">
+<section id="slide-orga5c9fc5">
+<h3 id="orga5c9fc5">正規分布 (normal/Gaussian distribution)</h3>
+<div class="leftcol" id="org2686632">
 
-<div id="orgab5f35f" class="figure">
+<div id="orga449f06" class="figure">
 <p><img src="figs/pdf_norm.png" alt="pdf_norm.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 1: </span>正規分布 (平均\(0\),分散\(1\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="orgceac382">
+<div class="rightcol" id="org1093b20">
 <blockquote>
 <ul>
 <li>標本空間 : \((-\infty,\infty)\)</li>
@@ -235,8 +236,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org9d4b968">
-<h3 id="org9d4b968">多次元正規分布</h3>
+<section id="slide-org8a558e2">
+<h3 id="org8a558e2">多次元正規分布</h3>
 <ul>
 <li>標本空間 : \(\mathbb{R}^{p}\)</li>
 <li>母数 : 平均 \(\boldsymbol{\mu}\), 分散共分散行列 \(\Sigma\)</li>
@@ -259,8 +260,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgc2bc235">
-<h3 id="orgc2bc235">正規分布の特徴付け</h3>
+<section id="slide-orgc712595">
+<h3 id="orgc712595">正規分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -270,7 +271,7 @@
 </ul></li>
 <li>用途
 <ul>
-<li>誤差の分布に関する知識がないときには正規分布だと考えておくと安全である</li>
+<li>誤差の分布に関する知識がないときには正規分布だと考えておくと安全なことが多い</li>
 <li>多変量解析の多くの手法は誤差の分布に関して正規性を仮定して導出する</li>
 
 </ul></li>
@@ -279,18 +280,18 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org1fbbd5d">
-<h3 id="org1fbbd5d">\(\chi^{2}\)分布 (\(\chi^{2}\)-distribution)</h3>
-<div class="leftcol" id="orgb19c1d2">
+<section id="slide-orgbb07439">
+<h3 id="orgbb07439">\(\chi^{2}\)分布 (\(\chi^{2}\)-distribution)</h3>
+<div class="leftcol" id="org8e721af">
 
-<div id="orge685555" class="figure">
+<div id="org3acb267" class="figure">
 <p><img src="figs/pdf_chisq.png" alt="pdf_chisq.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 2: </span>\(\chi^{2}\)分布 (自由度\(3\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="orgb9765d8">
+<div class="rightcol" id="org7e7b5d1">
 <blockquote>
 <ul>
 <li>標本空間 : \([0,\infty)\)</li>
@@ -303,7 +304,7 @@
   p(x)
   &=
     \frac{1}{2^{\nu/2}\Gamma(\frac{\nu}{2})}x^{\nu/2-1}e^{-x/2}\\
-  &\qquad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
+  &\quad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
 \end{align}
 
 </div></li>
@@ -317,8 +318,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org771726b">
-<h3 id="org771726b">\(\chi^{2}\)分布の特徴付け</h3>
+<section id="slide-org97c9aa3">
+<h3 id="org97c9aa3">\(\chi^{2}\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -330,7 +331,7 @@
 \begin{align}
   Z&=\sum_{i=1}^{\nu}X_{i}^{2}
      \sim \chi^{2}(\nu)
-     \quad\text{(自由度\(\nu\)の\(\chi^{2}\)-分布)}\\
+     \quad\text{(自由度 \(\nu\) の \(\chi^{2}\) 分布)}\\
    &X_{i}\sim \mathcal{N}(0,1)\;(i=1,\dotsc,\nu)
      \quad\text{(標準正規分布)}
 \end{align}
@@ -344,7 +345,7 @@
 <li>用途
 <ul>
 <li>分散の大きさに関する検定に用いられる</li>
-<li>独立性検定・適合度検定など様々な検定でも用いられる</li>
+<li>独立性検定・適合度検定などの検定でも用いられる</li>
 
 </ul></li>
 
@@ -352,18 +353,18 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org78c093c">
-<h3 id="org78c093c">\(t\)分布 (Student&rsquo;s \(t\)-distribution)</h3>
-<div class="leftcol" id="org80817d8">
+<section id="slide-orgdc13f11">
+<h3 id="orgdc13f11">\(t\)分布 (Student&rsquo;s \(t\)-distribution)</h3>
+<div class="leftcol" id="org2f67a57">
 
-<div id="orga3a8cec" class="figure">
+<div id="org8a418a2" class="figure">
 <p><img src="figs/pdf_t.png" alt="pdf_t.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 3: </span>\(t\)分布 (自由度\(3\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org2605b22">
+<div class="rightcol" id="orgebed905">
 <blockquote>
 <ul>
 <li>標本空間 : \((-\infty,\infty)\)</li>
@@ -392,8 +393,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org7cdc088">
-<h3 id="org7cdc088">\(t\)分布の特徴付け</h3>
+<section id="slide-org1a727c7">
+<h3 id="org1a727c7">\(t\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -405,7 +406,7 @@
 \begin{align}
   Z&=\frac{X}{\sqrt{Y/\nu}}
      \sim \mathcal{T}(\nu)
-     \quad\text{(自由度\(\nu\)の\(t\)分布)}\\
+     \quad\text{(自由度 \(\nu\) の \(t\) 分布)}\\
    &X\sim \mathcal{N}(0,1),
      \quad
      Y\sim \chi^{2}(\nu)
@@ -428,18 +429,18 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgb683bbc">
-<h3 id="orgb683bbc">\(F\)分布 (\(F\)-distribution)</h3>
-<div class="leftcol" id="org05c85b2">
+<section id="slide-org12b6d91">
+<h3 id="org12b6d91">\(F\)分布 (\(F\)-distribution)</h3>
+<div class="leftcol" id="orgc48ba24">
 
-<div id="orgd21f609" class="figure">
+<div id="orgf9a0285" class="figure">
 <p><img src="figs/pdf_F.png" alt="pdf_F.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 4: </span>\(F\)分布 (自由度\(3,5\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org70cb92c">
+<div class="rightcol" id="orgaefc604">
 <blockquote>
 <ul>
 <li>標本空間 : \([0,\infty)\)</li>
@@ -448,16 +449,17 @@
 密度関数 :
 </p>
 <div>
-\begin{equation}
+\begin{align}
   p(x)
-  =
+  &=
   \frac{(\nu_{1}/\nu_{2})^{\nu_{1}/2}}{B(\nu_{1}/2,\nu_{2}/2)}
-  \frac{x^{\nu_{1}/2-1}}{(1+\nu_{1}x/\nu_{2})^{(\nu_{1}+\nu_{2})/2}}
-\end{equation}
+  \frac{x^{\nu_{1}/2-1}}{(1+\nu_{1}x/\nu_{2})^{(\nu_{1}+\nu_{2})/2}}\\
+  &\quad B(x,y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1} dt
+\end{align}
 
 </div></li>
 
-<li>備考: \(\chi^{2}\)分布に従う独立な確率変数の比の分布</li>
+<li>備考 : \(\chi^{2}\)分布に従う独立な確率変数の比の分布</li>
 
 </ul>
 </blockquote>
@@ -466,8 +468,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgabc9807">
-<h3 id="orgabc9807">\(F\)分布の特徴付け</h3>
+<section id="slide-orgbdac2da">
+<h3 id="orgbdac2da">\(F\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -502,12 +504,12 @@
 </section>
 </section>
 <section>
-<section id="slide-org4967b0c" data-background="#fef4f4">
-<h2 id="org4967b0c">演習</h2>
+<section id="slide-orgd2071b1" data-background="#fef4f4">
+<h2 id="orgd2071b1">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgdc549cf" data-background="#fef4f4">
-<h3 id="orgdc549cf">問題</h3>
+<section id="slide-orge6b9100" data-background="#fef4f4">
+<h3 id="orge6b9100">問題</h3>
 <ul>
 <li><p>
 標準正規分布の密度関数
@@ -535,8 +537,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org8bea11b" data-background="#fef4f4">
-<h3 id="org8bea11b">解答例</h3>
+<section id="slide-org09995de" data-background="#fef4f4">
+<h3 id="org09995de">解答例</h3>
 <ul>
 <li><p>
 2つの標準正規分布の積を考えて，
@@ -588,13 +590,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orgc175a07">
-<h2 id="orgc175a07">統計</h2>
-<div class="outline-text-2" id="text-orgc175a07">
+<section id="slide-orgfcf7eef">
+<h2 id="orgfcf7eef">統計</h2>
+<div class="outline-text-2" id="text-orgfcf7eef">
 </div>
 </section>
-<section id="slide-org68dd412">
-<h3 id="org68dd412">記述統計量</h3>
+<section id="slide-org7977206">
+<h3 id="org7977206">記述統計量</h3>
 <ul>
 <li><b>記述統計量</b> : (または要約統計量・基本統計量)
 <ul>
@@ -620,12 +622,12 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org3c0d4ec">
-<h3 id="org3c0d4ec">平均</h3>
+<section id="slide-orgcd074c8">
+<h3 id="orgcd074c8">平均</h3>
 <ul>
 <li>データの代表値を表す記述統計量</li>
 <li><p>
-<b>平均</b> (mean) :
+<b>平均</b> (mean) 
 </p>
 <blockquote>
 <div>
@@ -641,7 +643,7 @@
 </div>
 </blockquote></li>
 <li><p>
-<b>標本平均</b> (sample mean) :
+<b>標本平均</b> (sample mean) 
 </p>
 <blockquote>
 <div>
@@ -659,12 +661,12 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgff0c624">
-<h3 id="orgff0c624">分散</h3>
+<section id="slide-org74f184d">
+<h3 id="org74f184d">分散</h3>
 <ul>
 <li>データのばらつき具合を表す記述統計量</li>
 <li><p>
-<b>分散</b> (variance) :
+<b>分散</b> (variance) 
 </p>
 <blockquote>
 <div>
@@ -675,7 +677,7 @@
 </div>
 </blockquote></li>
 <li><p>
-<b>標本分散</b> (sample variance) :
+<b>標本分散</b> (sample variance) 
 </p>
 <blockquote>
 <div>
@@ -693,11 +695,11 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orge0ef729">
-<h3 id="orge0ef729">標本平均・分散の不偏性</h3>
+<section id="slide-org129f09d">
+<h3 id="org129f09d">標本平均・分散の不偏性</h3>
 <ul>
 <li><p>
-標本平均は \(\mu\) の <b>不偏推定量である</b> :
+標本平均は \(\mu\) の <b>不偏推定量である</b> 
 </p>
 <blockquote>
 <div>
@@ -708,7 +710,7 @@
 </div>
 </blockquote></li>
 <li><p>
-標本分散は \(\sigma^2\) の <b>不偏推定量ではない</b> :
+標本分散は \(\sigma^2\) の <b>不偏推定量ではない</b> 
 </p>
 <blockquote>
 <div>
@@ -727,8 +729,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org1e3c9f1">
-<h3 id="org1e3c9f1">不偏分散</h3>
+<section id="slide-org449e800">
+<h3 id="org449e800">不偏分散</h3>
 <ul>
 <li>不偏性を担保した分散の推定量</li>
 <li><p>
@@ -751,11 +753,11 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org3e77694">
-<h3 id="org3e77694">標準偏差</h3>
+<section id="slide-org02320bc">
+<h3 id="org02320bc">標準偏差</h3>
 <ul>
 <li><p>
-<b>標準偏差</b> (standard deviation) :
+<b>標準偏差</b> (standard deviation) 
 </p>
 <blockquote>
 <div>
@@ -770,7 +772,7 @@
 
 </ul></li>
 <li><p>
-<b>標本標準偏差</b> (sample standard deviation) : 
+<b>標本標準偏差</b> (sample standard deviation) 
 </p>
 <blockquote>
 <div>
@@ -790,12 +792,12 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org7776e09">
-<h3 id="org7776e09">標準化</h3>
+<section id="slide-org4ef6cb9">
+<h3 id="org4ef6cb9">標準化</h3>
 <ul>
 <li>複数データの分析のために単位や基準を揃える方法</li>
 <li><p>
-データ \(X_{1},X_{2},\dotsc,X_{n}\) の標準化
+データ \(X_{1},X_{2},\dotsc,X_{n}\) の標準化 (standardization)
 </p>
 <blockquote>
 <div>
@@ -811,14 +813,14 @@
 </ul></li>
 <li>定義から \(Z_{1},Z_{2},\dotsc,Z_{n}\) の
 標本平均は0, 不偏分散は1 に規格化される</li>
-<li>\(Z_{i}\) : <b>標準得点</b> あるいは <b>Zスコア</b></li>
+<li>\(Z_{i}\) : <b>標準得点</b> (standard score) あるいは <b>Zスコア</b> (Z-score) と呼ばれる</li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org20a80df">
-<h3 id="org20a80df">偏差値</h3>
+<section id="slide-org0bccc6c">
+<h3 id="org0bccc6c">偏差値</h3>
 <ul>
 <li>別の基準での標準化
 <ul>
@@ -826,7 +828,7 @@
 
 </ul></li>
 <li><p>
-標本平均50, 標準偏差10に線形変換
+標本平均50, 標準偏差10への線形変換
 </p>
 <blockquote>
 <div>
@@ -837,18 +839,18 @@
 </div>
 </blockquote></li>
 <li>\(T_{i}\) :
-<b>偏差値得点</b> あるいは <b>Tスコア</b></li>
+<b>偏差値得点</b> あるいは <b>Tスコア</b> (T-score) と呼ばれる</li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgd492c1c">
-<h3 id="orgd492c1c">共分散</h3>
+<section id="slide-org8b20ac6">
+<h3 id="org8b20ac6">共分散</h3>
 <ul>
 <li>複数のデータ間の関係を知るための記述統計量</li>
 <li><p>
-<b>共分散</b> (covariance) :
+<b>共分散</b> (covariance) 
 </p>
 <blockquote>
 <div>
@@ -859,7 +861,7 @@
 </div>
 </blockquote></li>
 <li><p>
-<b>標本共分散</b> (sample covariance) : 
+<b>標本共分散</b> (sample covariance) 
 </p>
 <blockquote>
 <div>
@@ -874,12 +876,12 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgad4f393">
-<h3 id="orgad4f393">相関</h3>
+<section id="slide-orge39d737">
+<h3 id="orge39d737">相関</h3>
 <ul>
 <li>2種類のデータ間の比例関係の大きさ</li>
 <li><p>
-<b>相関</b> (correlation) : 
+<b>相関</b> (correlation) 
 </p>
 <blockquote>
 <div>
@@ -890,7 +892,7 @@
 </div>
 </blockquote></li>
 <li><p>
-<b>標本相関</b> (sample correlation) : 
+<b>標本相関</b> (sample correlation) 
 </p>
 <blockquote>
 <div>
@@ -906,15 +908,15 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org77b3994">
-<h3 id="org77b3994">離散分布の尤度関数</h3>
+<section id="slide-org7149975">
+<h3 id="org7149975">離散分布の尤度関数</h3>
 <ul>
 <li>\(X_1=x_1,X_2=x_2,\dots,X_n=x_n\) の同時確率
 <ul>
 <li>確率質量関数 : \(f_{\boldsymbol{\theta}}(x)\)</li>
 <li>確率質量関数のパラメタ : \(\boldsymbol{\theta}=(\theta_1,\dots,\theta_p)\)</li>
 <li><p>
-独立な確率変数の同時確率 :
+独立な確率変数の同時確率
 </p>
 <blockquote>
 <div>
@@ -975,15 +977,15 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org25513ea">
-<h3 id="org25513ea">連続分布の尤度関数</h3>
+<section id="slide-org35b2072">
+<h3 id="org35b2072">連続分布の尤度関数</h3>
 <ul>
 <li>\(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta\) の同時確率
 <ul>
 <li>確率密度関数 : \(f_{\boldsymbol{\theta}}(x)\)</li>
 <li>確率密度関数のパラメタ : \(\boldsymbol{\theta}=(\theta_1,\dots,\theta_p)\)</li>
 <li><p>
-独立な確率変数の同時確率 :
+独立な確率変数の同時確率
 </p>
 <blockquote>
 <div>
@@ -1030,17 +1032,21 @@
 <b>尤度</b> と言い，
 \(\boldsymbol{\theta}\) の関数 \(L\) を <b>尤度関数</b> と呼ぶ．
 </p>
-</blockquote></li>
+</blockquote>
+<ul>
+<li>確率ではないので1より大きな値となることもある</li>
+
+</ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org5c593cf">
-<h3 id="org5c593cf">最尤法</h3>
+<section id="slide-org2188a16">
+<h3 id="org2188a16">最尤法</h3>
 <ul>
 <li><p>
-最尤法 : 
+最尤法
 </p>
 <blockquote>
 <p>
@@ -1050,7 +1056,7 @@
 </p>
 </blockquote></li>
 <li><p>
-最尤推定量 :
+最尤推定量
 </p>
 <blockquote>
 <p>
@@ -1076,8 +1082,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org4d0f490">
-<h3 id="org4d0f490">Bayes の定理 (基本形)</h3>
+<section id="slide-org53bea58">
+<h3 id="org53bea58">Bayes の定理 (基本形)</h3>
 <ul>
 <li><p>
 定理
@@ -1103,8 +1109,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org1784e0f">
-<h3 id="org1784e0f">Bayes の定理 (一般形)</h3>
+<section id="slide-orgc3b9d45">
+<h3 id="orgc3b9d45">Bayes の定理 (一般形)</h3>
 <ul>
 <li><p>
 定理
@@ -1133,12 +1139,12 @@
 </section>
 </section>
 <section>
-<section id="slide-org88286ae" data-background="#fef4f4">
-<h2 id="org88286ae">演習</h2>
+<section id="slide-org71cc000" data-background="#fef4f4">
+<h2 id="org71cc000">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orga1a6c03" data-background="#fef4f4">
-<h3 id="orga1a6c03">問題</h3>
+<section id="slide-org0cdaa39" data-background="#fef4f4">
+<h3 id="org0cdaa39">問題</h3>
 <ul>
 <li><p>
 以下の問に答えなさい
@@ -1180,8 +1186,8 @@ A先生は大の野球ファンで，
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org25a2296" data-background="#fef4f4">
-<h3 id="org25a2296">解答例</h3>
+<section id="slide-org8cf61e8" data-background="#fef4f4">
+<h3 id="org8cf61e8">解答例</h3>
 <ul>
 <li><p>
 まず事象を定義する
@@ -1267,16 +1273,16 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </section>
 </section>
 <section>
-<section id="slide-org696b80a">
-<h2 id="org696b80a">関数の微分</h2>
-<div class="outline-text-2" id="text-org696b80a">
+<section id="slide-org34cca2b">
+<h2 id="org34cca2b">関数の微分</h2>
+<div class="outline-text-2" id="text-org34cca2b">
 </div>
 </section>
-<section id="slide-org22de0dc">
-<h3 id="org22de0dc">ベクトルによる微分</h3>
+<section id="slide-orgced758e">
+<h3 id="orgced758e">ベクトルによる微分</h3>
 <ul>
 <li><p>
-\(d\) 次元ベクトル:
+\(d\) 次元ベクトル
 </p>
 <blockquote>
 <div>
@@ -1294,7 +1300,7 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </div>
 </blockquote></li>
 <li><p>
-ベクトル \(\boldsymbol{a}\) による関数 \(f(\boldsymbol{a})\) の微分:
+ベクトル \(\boldsymbol{a}\) による関数 \(f(\boldsymbol{a})\) の微分の定義
 </p>
 <blockquote>
 <div>
@@ -1316,8 +1322,8 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org9664afa">
-<h3 id="org9664afa">ベクトルによる微分 (例題)</h3>
+<section id="slide-org169f3c0">
+<h3 id="org169f3c0">ベクトルによる微分 (例題)</h3>
 <ul>
 <li><p>
 問題
@@ -1408,11 +1414,11 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org49c719c">
-<h3 id="org49c719c">行列による微分</h3>
+<section id="slide-org81b0cc1">
+<h3 id="org81b0cc1">行列による微分</h3>
 <ul>
 <li><p>
-\(d\times d\) 行列:
+\(d\times d\) 行列
 </p>
 <blockquote>
 <div>
@@ -1437,7 +1443,7 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 <section>
 <ul>
 <li><p>
-行列 \(A\) による関数 \(f(A)\) の微分:
+行列 \(A\) による関数 \(f(A)\) の微分の定義
 </p>
 <blockquote>
 <div>
@@ -1465,8 +1471,8 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orge08f1e5">
-<h3 id="orge08f1e5">行列による微分 (例題1)</h3>
+<section id="slide-org1675ec8">
+<h3 id="org1675ec8">行列による微分 (例題1)</h3>
 <ul>
 <li><p>
 問題
@@ -1525,18 +1531,22 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
     \vdots&&\ddots&\vdots\\
     b_db_1&b_db_2&\dots&b_db_d
   \end{pmatrix}
-  =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}.
+  =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
 \end{equation}
 
 </div>
+
+<p>
+と書くことができる．
+</p>
 </blockquote></li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgd842f32">
-<h3 id="orgd842f32">行列による微分 (例題2)</h3>
+<section id="slide-orgee960b2">
+<h3 id="orgee960b2">行列による微分 (例題2)</h3>
 <ul>
 <li><p>
 問題
@@ -1593,7 +1603,7 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
     \vdots&&\ddots&\vdots\\
     b_{1d}&b_{2d}&\dots&b_{dd}
   \end{pmatrix}
-  =B^{\mathsf{T}}.
+  =B^{\mathsf{T}}
 \end{equation}
 
 </div>
@@ -1614,15 +1624,36 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </p>
 <blockquote>
 <p>
-行列のトレースの性質から
+行列のトレースの性質
 </p>
 <div>
-\begin{align}
-  &\frac{\partial}{\partial A}\mathrm{tr} AB=B^{\mathsf{T}}\\
-  &\frac{\partial}{\partial A}\mathrm{tr} BA=B^{\mathsf{T}}\\
-  &\frac{\partial}{\partial A}\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}=B^{\mathsf{T}}\\
-  &\frac{\partial}{\partial A}\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}=B^{\mathsf{T}}
-\end{align}
+\begin{equation}
+  \mathrm{tr} AB
+  =
+  \mathrm{tr} BA, \quad
+  \mathrm{tr} AB
+  =
+  \mathrm{tr} (AB)^{\mathsf{T}}
+  =
+  \mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+\end{equation}
+
+</div>
+
+<p>
+より
+</p>
+<div>
+\begin{equation}
+  \frac{\partial}{\partial A}\mathrm{tr} AB
+  =
+  \frac{\partial}{\partial A}\mathrm{tr} BA
+  =
+  \frac{\partial}{\partial A}\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
+  =
+  \frac{\partial}{\partial A}\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+  =B^{\mathsf{T}}
+\end{equation}
 
 </div>
 
@@ -1675,12 +1706,12 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </section>
 </section>
 <section>
-<section id="slide-org3f6b89c" data-background="#fef4f4">
-<h2 id="org3f6b89c">演習</h2>
+<section id="slide-org8895422" data-background="#fef4f4">
+<h2 id="org8895422">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org6f21f7f" data-background="#fef4f4">
-<h3 id="org6f21f7f">問題</h3>
+<section id="slide-orgea3c754" data-background="#fef4f4">
+<h3 id="orgea3c754">問題</h3>
 <ul>
 <li><p>
 行列(正方行列に限らない)のトレースに関して
@@ -1714,8 +1745,8 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org14afaed" data-background="#fef4f4">
-<h3 id="org14afaed">解答例</h3>
+<section id="slide-orgc625c2e" data-background="#fef4f4">
+<h3 id="orgc625c2e">解答例</h3>
 <ul>
 <li><p>
 \(\mathrm{tr}AB\) より，行列 \(A,B\) の積は正方行列になることから，
@@ -1810,8 +1841,8 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </section>
 </section>
 <section>
-<section id="slide-orgf6d6e90">
-<h2 id="orgf6d6e90">次回の予定</h2>
+<section id="slide-orga293abb">
+<h2 id="orga293abb">次回の予定</h2>
 <ul>
 <li><b>第1日 : 回帰モデルの考え方と推定</b></li>
 <li>第2日 : モデルの評価</li>
