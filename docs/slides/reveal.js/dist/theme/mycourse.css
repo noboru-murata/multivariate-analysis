@@ -9,3 +9,8 @@
 .reveal-viewport {
     background: #fafafa;
     background-color: #fafafa; }
+img.middle {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}

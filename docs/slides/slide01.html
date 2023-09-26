@@ -47,23 +47,23 @@
 </section>
 
 <section>
-<section id="slide-orgd34f000">
-<h2 id="orgd34f000">講義について</h2>
-<div class="outline-text-2" id="text-orgd34f000">
+<section id="slide-org5fda0eb">
+<h2 id="org5fda0eb">この講義について</h2>
+<div class="outline-text-2" id="text-org5fda0eb">
 </div>
 </section>
-<section id="slide-org790fa0e">
-<h3 id="org790fa0e">講義の概要</h3>
+<section id="slide-org608f16a">
+<h3 id="org608f16a">講義の概要</h3>
 <ul>
 <li>講義題目 : 多変量解析</li>
 <li>担当 : 村田 昇</li>
 <li>授業の目標 
 <ul>
 <li>統計解析手法である <b>多変量解析</b>
-の基本的な解析法に習熟する
+の基本的な方法に習熟する
 <ul>
-<li>大規模データから効果的に情報を抽出</li>
-<li>データの背後に潜む統計的構造を分析</li>
+<li>大規模データから効果的に情報を抽出する</li>
+<li>データの背後に潜む統計的構造をモデル化して分析する</li>
 
 </ul></li>
 <li>解析法の数理科学的側面を理解する</li>
@@ -74,24 +74,8 @@
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgc2a364c">
-<h3 id="orgc2a364c">多変量解析とは</h3>
-<p>
-複数の変量からなるデータを分析する手法の総称
-</p>
-<ul>
-<li><b>回帰分析</b> : 複数の変数から注目する変数の値を説明</li>
-<li><b>主成分分析</b> : 全体を説明する少数の特徴量を構成</li>
-<li><b>判別分析</b> : 特徴量の違いでカテゴリ分けを実行</li>
-<li><b>クラスタ分析</b> : 特徴量の違いに着目してクラスタ(データのグループ)を構成</li>
-<li><b>時系列解析</b> : 時間とともに変化する現象を記述</li>
-
-</ul>
-<div class="slide-footer"><br></div>
-
-</section>
-<section id="slide-org1a1191e">
-<h3 id="org1a1191e">受講にあたっての注意</h3>
+<section id="slide-org6acf6ae">
+<h3 id="org6acf6ae">受講にあたっての注意</h3>
 <ul>
 <li>微分積分学と線形代数学を復習しておく</li>
 <li>自身で解析するための計算機環境を準備する</li>
@@ -107,8 +91,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgb1f22b1">
-<h3 id="orgb1f22b1">講義計画 (予定)</h3>
+<section id="slide-org8a6f983">
+<h3 id="org8a6f983">講義計画 (予定)</h3>
 <ul>
 <li>オリエンテーション</li>
 <li>数学的準備 (1回)</li>
@@ -127,13 +111,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org851231a">
-<h2 id="org851231a">多変量解析</h2>
-<div class="outline-text-2" id="text-org851231a">
+<section id="slide-orgf3f750b">
+<h2 id="orgf3f750b">多変量解析</h2>
+<div class="outline-text-2" id="text-orgf3f750b">
 </div>
 </section>
-<section id="slide-orgcb518d5">
-<h3 id="orgcb518d5">多変量解析とは</h3>
+<section id="slide-orgc2874d1">
+<h3 id="orgc2874d1">多変量解析とは</h3>
 <ul>
 <li>複数の変量からなるデータを分析する手法の総称
 <ul>
@@ -144,15 +128,21 @@
 <li>時系列解析 : 時間とともに変化する現象を記述する</li>
 
 </ul></li>
+<li>機械学習で使われる手法の基礎
+<ul>
+<li>教師あり問題 : 回帰分析(量的データ)・判別分析(質的データ)</li>
+<li>教師なし問題 : 主成分分析・クラスタ分析</li>
+
+</ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org9338b8b">
-<h3 id="org9338b8b">回帰分析の考え方</h3>
+<section id="slide-orgb4cca61">
+<h3 id="orgb4cca61">回帰分析の考え方</h3>
 <ul>
-<li>ある変数を別の変数によって説明・予測するための関係式を構成する
+<li>ある変数(目的変数)を別の変数によって説明・予測するための関係式(回帰式)を構成する
 <ul>
 <li>単回帰 : 一つの変数で目的変数を説明する</li>
 <li>重回帰 : 複数の変数で目的変数を説明する</li>
@@ -160,8 +150,8 @@
 </ul></li>
 <li><span style="color:green;">分析の事例</span>
 <ul>
-<li>身長から体重を予測する式を作り，ある身長の人がある体重だったときに，それが普通かどうか判定する</li>
-<li>築年数・駅からの距離・広さ・間取りで家賃を説明する式を作り，新規に家賃を設定する際に利用する</li>
+<li>広告宣伝費と商品の売上を予測する式を作り，広告効果があるかどうか判定する</li>
+<li>築年数・駅からの距離・広さ・間取りで家賃を説明する式を作り，新規に家賃を設定する際に利用する</li>
 
 </ul></li>
 
@@ -169,9 +159,9 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgd8f3c14">
-<h3 id="orgd8f3c14">単回帰の例</h3>
-<table id="org2daf89b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-org0d2e80b">
+<h3 id="org0d2e80b">単回帰の例</h3>
+<table id="orga121ec4" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 1:</span> 体重と脳の重さ</caption>
 
 <colgroup>
@@ -239,8 +229,8 @@
 
 <tr>
 <td class="org-left">&#x2026;</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
 </tr>
 </tbody>
 </table>
@@ -249,7 +239,7 @@
 </section>
 <section>
 
-<div id="org098527a" class="figure">
+<div id="org8640a91" class="figure">
 <p><img src="./figs/r-brainbody01.png" alt="r-brainbody01.png" width="50%" height="50%" />
 </p>
 <p><span class="figure-number">Figure 1: </span>体重と脳の重さの関係</p>
@@ -259,7 +249,7 @@
 </section>
 <section>
 
-<div id="org9390713" class="figure">
+<div id="org411c966" class="figure">
 <p><img src="./figs/r-brainbody02.png" alt="r-brainbody02.png" width="50%" height="50%" />
 </p>
 <p><span class="figure-number">Figure 2: </span>体重と脳の重さの関係 (両対数)</p>
@@ -269,7 +259,7 @@
 </section>
 <section>
 
-<div id="org76e69b5" class="figure">
+<div id="org4c1fd30" class="figure">
 <p><img src="./figs/r-brainbody05.png" alt="r-brainbody05.png" width="50%" height="50%" />
 </p>
 <p><span class="figure-number">Figure 3: </span>体重と脳の重さの関係 (単回帰)</p>
@@ -277,9 +267,9 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgbb2e91c">
-<h3 id="orgbb2e91c">重回帰の例</h3>
-<table id="org7da3109" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-org0316d96">
+<h3 id="org0316d96">重回帰の例</h3>
+<table id="org82b1311" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 2:</span> ワインの価格と生産環境</caption>
 
 <colgroup>
@@ -380,11 +370,11 @@
 
 <tr>
 <td class="org-right">&#x2026;</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
 </tr>
 </tbody>
 </table>
@@ -393,7 +383,7 @@
 </section>
 <section>
 
-<div id="org6e5c403" class="figure">
+<div id="org8a54aac" class="figure">
 <p><img src="./figs/r-wine01.png" alt="r-wine01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 4: </span>ワインの価格と生産環境の関係</p>
@@ -403,7 +393,7 @@
 </section>
 <section>
 
-<div id="org9f54e3c" class="figure">
+<div id="orga291be5" class="figure">
 <p><img src="./figs/r-wine05.png" alt="r-wine05.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 5: </span>生産環境によるワイン価格の予測 (重回帰)</p>
@@ -411,14 +401,14 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org6df3526">
-<h3 id="org6df3526">主成分分析の考え方</h3>
+<section id="slide-orgd9b8e40">
+<h3 id="orgd9b8e40">主成分分析の考え方</h3>
 <ul>
-<li>多数の変数が与えられたときに，変数のもつ構造を効率的に記述できる少数個の特徴量を構成する</li>
+<li>多数の変数が与えられたときに，変数のもつ構造を効率的に記述できる少数個の特徴量を構成する</li>
 <li><span style="color:green;">分析の事例</span>
 <ul>
 <li>野球選手の打撃成績(打率，本塁打数，打点など)から，打者としての特徴を記述する指標を作成する</li>
-<li>複数銘柄からなる株価の時系列データから，市場全体の変動を記述する総合指標を作成する</li>
+<li>複数銘柄からなる株価の時系列データから，市場全体の変動を記述する総合指標を作成する</li>
 
 </ul></li>
 
@@ -426,9 +416,9 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org406782a">
-<h3 id="org406782a">主成分分析の例</h3>
-<table id="orgf2e35bd" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-orgab2388c">
+<h3 id="orgab2388c">主成分分析の例</h3>
+<table id="orgba7cd4b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 3:</span> 県別の生活環境(一部)</caption>
 
 <colgroup>
@@ -445,83 +435,83 @@
 <thead>
 <tr>
 <th scope="col" class="org-left">&#xa0;</th>
-<th scope="col" class="org-right">昼夜人口比</th>
-<th scope="col" class="org-right">年少人口比</th>
-<th scope="col" class="org-right">老年人口比</th>
-<th scope="col" class="org-right">人口増減率</th>
+<th scope="col" class="org-right">老年人口割合</th>
+<th scope="col" class="org-right">婚姻率</th>
+<th scope="col" class="org-right">交通事故発生件数</th>
+<th scope="col" class="org-right">住居費割合</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="org-left">北海道</td>
-<td class="org-right">100.0</td>
-<td class="org-right">11.7</td>
 <td class="org-right">26.0</td>
-<td class="org-right">-0.47</td>
+<td class="org-right">4.86</td>
+<td class="org-right">274.2</td>
+<td class="org-right">5.9</td>
 </tr>
 
 <tr>
 <td class="org-left">青森県</td>
-<td class="org-right">100.0</td>
-<td class="org-right">12.1</td>
 <td class="org-right">27.0</td>
-<td class="org-right">-0.95</td>
+<td class="org-right">4.33</td>
+<td class="org-right">386.7</td>
+<td class="org-right">5.4</td>
 </tr>
 
 <tr>
 <td class="org-left">岩手県</td>
-<td class="org-right">99.7</td>
-<td class="org-right">12.4</td>
 <td class="org-right">27.9</td>
-<td class="org-right">-0.84</td>
+<td class="org-right">4.32</td>
+<td class="org-right">261.6</td>
+<td class="org-right">7.1</td>
 </tr>
 
 <tr>
 <td class="org-left">宮城県</td>
-<td class="org-right">100.2</td>
-<td class="org-right">13.0</td>
 <td class="org-right">22.9</td>
-<td class="org-right">-0.09</td>
+<td class="org-right">5.30</td>
+<td class="org-right">447.7</td>
+<td class="org-right">5.0</td>
 </tr>
 
 <tr>
 <td class="org-left">秋田県</td>
-<td class="org-right">99.9</td>
-<td class="org-right">11.1</td>
 <td class="org-right">30.7</td>
-<td class="org-right">-1.12</td>
+<td class="org-right">3.78</td>
+<td class="org-right">266.2</td>
+<td class="org-right">7.9</td>
 </tr>
 
 <tr>
 <td class="org-left">山形県</td>
-<td class="org-right">99.8</td>
-<td class="org-right">12.6</td>
 <td class="org-right">28.3</td>
-<td class="org-right">-0.78</td>
+<td class="org-right">4.24</td>
+<td class="org-right">614.9</td>
+<td class="org-right">6.0</td>
 </tr>
 
 <tr>
 <td class="org-left">福島県</td>
-<td class="org-right">99.6</td>
-<td class="org-right">12.9</td>
 <td class="org-right">26.1</td>
-<td class="org-right">-1.41</td>
+<td class="org-right">4.73</td>
+<td class="org-right">498.9</td>
+<td class="org-right">5.7</td>
 </tr>
 
 <tr>
 <td class="org-left">茨城県</td>
-<td class="org-right">97.2</td>
-<td class="org-right">13.2</td>
 <td class="org-right">23.8</td>
-<td class="org-right">-0.51</td>
+<td class="org-right">4.92</td>
+<td class="org-right">500.6</td>
+<td class="org-right">6.8</td>
 </tr>
 
 <tr>
 <td class="org-left">&#x2026;</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
 </tr>
 </tbody>
 </table>
@@ -530,7 +520,7 @@
 </section>
 <section>
 
-<div id="org189425b" class="figure">
+<div id="orgcb58ee0" class="figure">
 <p><img src="./figs/p-jpamenity01.png" alt="p-jpamenity01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 6: </span>県別の生活環境(人口動態)の散布図</p>
@@ -540,7 +530,7 @@
 </section>
 <section>
 
-<div id="org309ada4" class="figure">
+<div id="org60c0a52" class="figure">
 <p><img src="./figs/p-jpamenity02.png" alt="p-jpamenity02.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 7: </span>県別の生活環境(教育・労働)の散布図</p>
@@ -550,7 +540,7 @@
 </section>
 <section>
 
-<div id="org089133c" class="figure">
+<div id="orgc9b9247" class="figure">
 <p><img src="./figs/p-jpamenity03.png" alt="p-jpamenity03.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 8: </span>県別の生活環境(貯蓄・余暇)の散布図</p>
@@ -560,7 +550,7 @@
 </section>
 <section>
 
-<div id="orgb769635" class="figure">
+<div id="org7e1af1b" class="figure">
 <p><img src="./figs/p-jpamenity06.png" alt="p-jpamenity06.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 9: </span>県別の生活環境の主成分分析</p>
@@ -568,23 +558,24 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-orgf9ff927">
-<h3 id="orgf9ff927">判別分析の考え方</h3>
+<section id="slide-orgaf92c57">
+<h3 id="orgaf92c57">判別分析の考え方</h3>
 <ul>
-<li>ある個体が複数のクラスのいずれかに属するとき，その個体の特徴量からどのクラスに属するか予測するモデルを構築する</li>
+<li>ある個体が複数のクラスのいずれかに属するとき，その個体の特徴量からどのクラスに属するかを予測するモデルを構築する</li>
 <li><span style="color:green;">分析の事例</span>
 <ul>
-<li>花の種類を，その花の花弁の幅・長さおよび萼片(がくへん)の幅・長さから判別する</li>
-<li>食道がんを患っている人とそうでない人を，年齢・飲酒量・喫煙度から判別する</li>
+<li>食道がんを患っている人とそうでない人を，年齢・飲酒量・喫煙度から判別する</li>
+<li>銀行が融資判断をするために，企業の財務データから，その企業が期間内に債務不履行となるか否かを予測する</li>
 
 </ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-org11a6d2d">
-<h3 id="org11a6d2d">判別分析の例</h3>
-<table id="orgd120f76" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-orgadd215f">
+<h3 id="orgadd215f">判別分析の例</h3>
+<table id="org39abbc6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 4:</span> 乳癌患者の生研検査</caption>
 
 <colgroup>
@@ -740,15 +731,15 @@
 
 <tr>
 <td class="org-right">&#x2026;</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
 <td class="org-left">&#x2026;</td>
 </tr>
 </tbody>
@@ -758,7 +749,7 @@
 </section>
 <section>
 
-<div id="org0f350e1" class="figure">
+<div id="orgc0e5277" class="figure">
 <p><img src="./figs/d-biopsy01.png" alt="d-biopsy01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 10: </span>乳癌患者(良性・悪性)の生研検査の散布図</p>
@@ -768,7 +759,7 @@
 </section>
 <section>
 
-<div id="org7647a60" class="figure">
+<div id="org63c5682" class="figure">
 <p><img src="./figs/d-biopsy02.png" alt="d-biopsy02.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 11: </span>生研検査の主成分分析</p>
@@ -778,7 +769,7 @@
 </section>
 <section>
 
-<div id="orge915b72" class="figure">
+<div id="org49236d1" class="figure">
 <p><img src="./figs/d-biopsy03.png" alt="d-biopsy03.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 12: </span>生研検査による乳癌患者の判別分析</p>
@@ -786,8 +777,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org964a876">
-<h3 id="org964a876">クラスタ分析の考え方</h3>
+<section id="slide-orgb1457a3">
+<h3 id="orgb1457a3">クラスタ分析の考え方</h3>
 <ul>
 <li>特徴量の違いに着目して，妥当な個体のグループ(クラスタ)を構成する
 <ul>
@@ -806,9 +797,9 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org0c58b26">
-<h3 id="org0c58b26">クラスタ分析の例</h3>
-<table id="org4912fd8" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-org8ffcd5f">
+<h3 id="org8ffcd5f">クラスタ分析の例</h3>
+<table id="org6f47264" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 5:</span> おむすびの具に関するアンケート</caption>
 
 <colgroup>
@@ -942,14 +933,14 @@
 
 <tr>
 <td class="org-left">&#x2026;</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
 </tr>
 </tbody>
 </table>
@@ -958,7 +949,7 @@
 </section>
 <section>
 
-<div id="orgc80955a" class="figure">
+<div id="org365aad7" class="figure">
 <p><img src="./figs/c-omusubi01.png" alt="c-omusubi01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 13: </span>おむすびの具に関するアンケート分析 (県別の集計)</p>
@@ -968,7 +959,7 @@
 </section>
 <section>
 
-<div id="org22b68de" class="figure">
+<div id="org31370ed" class="figure">
 <p><img src="./figs/c-omusubi02.png" alt="c-omusubi02.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 14: </span>アンケート結果にもとづく県のクラスタ分析</p>
@@ -976,8 +967,8 @@
 <div class="slide-footer"><br></div>
 
 </section>
-<section id="slide-org7d81bb1">
-<h3 id="org7d81bb1">時系列解析の考え方</h3>
+<section id="slide-orgc8f3fc2">
+<h3 id="orgc8f3fc2">時系列解析の考え方</h3>
 <ul>
 <li>時間とともに変化する現象を記述するために，未来の値を過去の値で近似する式を構成する
 <ul>
@@ -987,17 +978,18 @@
 </ul></li>
 <li><span style="color:green;">分析の事例</span>
 <ul>
-<li>市町村の過去の年齢別の人口変動から将来の人口比率を予測する</li>
-<li>食品・飲料の季節ごとの販売履歴から将来の需要量を予測する</li>
+<li>市町村の過去の年齢別の人口変動から将来の人口比率の推移を予測する</li>
+<li>食品・飲料の季節ごとの販売履歴から，将来の需要量を予測して生産計画を立てる</li>
 
 </ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
+
 </section>
-<section id="slide-orga7f19ea">
-<h3 id="orga7f19ea">時系列解析の例</h3>
-<table id="org0c09c68" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-org51b3014">
+<h3 id="org51b3014">時系列解析の例</h3>
+<table id="org7fdcdcd" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 6:</span> 航空機旅客量の変遷</caption>
 
 <colgroup>
@@ -1050,7 +1042,7 @@
 <td class="org-right">148</td>
 <td class="org-right">148</td>
 <td class="org-right">136</td>
-<td class="org-left">..</td>
+<td class="org-left">&#x2026;</td>
 </tr>
 
 <tr>
@@ -1064,7 +1056,7 @@
 <td class="org-right">170</td>
 <td class="org-right">170</td>
 <td class="org-right">158</td>
-<td class="org-left">..</td>
+<td class="org-left">&#x2026;</td>
 </tr>
 
 <tr>
@@ -1078,7 +1070,7 @@
 <td class="org-right">199</td>
 <td class="org-right">199</td>
 <td class="org-right">184</td>
-<td class="org-left">..</td>
+<td class="org-left">&#x2026;</td>
 </tr>
 
 <tr>
@@ -1092,7 +1084,7 @@
 <td class="org-right">230</td>
 <td class="org-right">242</td>
 <td class="org-right">209</td>
-<td class="org-left">..</td>
+<td class="org-left">&#x2026;</td>
 </tr>
 
 <tr>
@@ -1106,7 +1098,7 @@
 <td class="org-right">264</td>
 <td class="org-right">272</td>
 <td class="org-right">237</td>
-<td class="org-left">..</td>
+<td class="org-left">&#x2026;</td>
 </tr>
 
 <tr>
@@ -1120,7 +1112,7 @@
 <td class="org-right">302</td>
 <td class="org-right">293</td>
 <td class="org-right">259</td>
-<td class="org-left">..</td>
+<td class="org-left">&#x2026;</td>
 </tr>
 
 <tr>
@@ -1134,21 +1126,21 @@
 <td class="org-right">364</td>
 <td class="org-right">347</td>
 <td class="org-right">312</td>
-<td class="org-left">..</td>
+<td class="org-left">&#x2026;</td>
 </tr>
 
 <tr>
 <td class="org-right">&#x2026;</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-right">..</td>
-<td class="org-left">..</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-right">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
 </tr>
 </tbody>
 </table>
@@ -1157,7 +1149,7 @@
 </section>
 <section>
 
-<div id="org1c3ba88" class="figure">
+<div id="org9e57d86" class="figure">
 <p><img src="./figs/t-airpass01.png" alt="t-airpass01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 15: </span>航空機旅客量の変遷</p>
@@ -1167,7 +1159,7 @@
 </section>
 <section>
 
-<div id="org82cb647" class="figure">
+<div id="orgd919c1b" class="figure">
 <p><img src="./figs/t-airpass04.png" alt="t-airpass04.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 16: </span>階差時系列の自己相関分析</p>
@@ -1177,7 +1169,7 @@
 </section>
 <section>
 
-<div id="org8d2c899" class="figure">
+<div id="org99b0e08" class="figure">
 <p><img src="./figs/t-airpass12.png" alt="t-airpass12.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 17: </span>航空機旅客量の予測 (SARIMAモデルによる)</p>
@@ -1188,8 +1180,8 @@
 </section>
 </section>
 <section>
-<section id="slide-org757bca1">
-<h2 id="org757bca1">次週の予定</h2>
+<section id="slide-orgd96cb9c">
+<h2 id="orgd96cb9c">次回の予定</h2>
 <ul>
 <li>確率
 <ul>
