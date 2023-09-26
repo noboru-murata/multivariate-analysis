@@ -5,7 +5,7 @@
 #+LINK: github https://noboru-murata.github.io/multivariate-analysis/
 #+STARTUP: hidestars content indent
 
-# Time-stamp: <2023-01-17 12:29:18 mura>
+# Time-stamp: <2023-09-26 14:31:36 mura>
 # C-c C-e H A (generate MDs for all subtrees)
 
 * 概要
@@ -23,11 +23,11 @@
 多数の変量を手掛りにデータを分類するための手法として
 判別分析・クラスタ分析を学びます．
 
-** 講義資料
+** COMMENT 講義資料
 - [[github:pdfs/multivariate-analysis.pdf][多変量解析]]
   随時修正します．
 
-** 参考資料
+** COMMENT 参考資料
 必要な参考書については講義中に指示します．
 
 * 第1講
@@ -35,7 +35,7 @@
 :EXPORT_FILE_NAME: lecture01
 :EXPORT_DATE: <2020-08-26 Wed>
 :END:
-<2022-10-03 Mon> 更新
+<2023-09-26 Tue> 更新
 ** スライド
 #+hugo: {{< myslide base="multivariate-analysis" name="slide01" >}}
 ** ハンドアウト
@@ -189,6 +189,19 @@
 #    #+html: {{< myslide base="multivariate-analysis" name="slide14" >}}
 # ** COMMENT ハンドアウト
 #    - [[github:pdfs/slide14.pdf][PDF file]]
+
+* 講義資料
+:PROPERTIES:
+:EXPORT_FILE_NAME: notes
+:EXPORT_DATE: <2023-09-26 Tue>
+:END:
+<2023-09-26 Tue> 更新
+
+以下は多変量解析の講義資料(随時更新)です．
+- [[github:pdfs/multivariate-analysis.pdf][多変量解析]]
+
+必要な参考書については適宜講義中に指示します．  
+
 
 * COMMENT お知らせの雛形
 :PROPERTIES:
