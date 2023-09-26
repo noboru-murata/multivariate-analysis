@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2023-09-26 16:16:33 mura>
+# Time-stamp: <2023-09-26 16:59:48 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
@@ -34,6 +34,10 @@
 #+end_src
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/mva/course")
+  library(tidyverse)
+  theme_set(theme_gray(base_size = 24))
+  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
+      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
 #+end_src
 
 * COMMENT 演習 (早稲田大学雛型)
@@ -230,11 +234,11 @@
 ** 正規分布 (normal/Gaussian distribution)
 #+begin_leftcol
 #+begin_src R :file figs/pdf_norm.png :exports results :results graphics
-  par(family="HiraginoSans-W4")
-  plot(function(x)dnorm(x,mean=0,sd=1),-4,4,
-       col=3, lwd=3, ylim=c(0,0.4),
-       xlab="x",ylab="確率密度"
-       )
+  ggplot() + 
+    geom_function(fun = function(x) dnorm(x,mean = 0,sd = 1),
+                  colour = 2, linewidth = 2) +
+    xlim(-4, 4) + ylim(0, 0.4) +
+    labs(x = "x", y = "確率密度") 
 #+end_src
 #+CAPTION: 正規分布 (平均\(0\),分散\(1\))
 #+NAME: fig:pdf_norm
@@ -352,10 +356,11 @@
 ** @@latex:@@\(\chi^{2}\)分布 (\(\chi^{2}\)-distribution)
 #+begin_leftcol
 #+begin_src R :file figs/pdf_chisq.png :exports results :results graphics
-  par(family="HiraginoSans-W4") 
-  plot(function(x)dchisq(x,3,ncp=0), -1, 10,
-       col=4, lwd=3,
-       xlab="x",ylab="確率密度")
+  ggplot() + 
+    geom_function(fun = function(x) dchisq(x, 3, ncp = 0),
+                  colour = 3, linewidth = 2) +
+    xlim(-1, 10) + 
+    labs(x = "x", y = "確率密度") 
 #+end_src
 #+CAPTION: \(\chi^{2}\)分布 (自由度\(3\))
 #+NAME: fig:pdf_chisq
@@ -403,10 +408,11 @@
 ** @@latex:@@\(t\)分布 (Student's \(t\)-distribution)
 #+begin_leftcol
 #+begin_src R :file figs/pdf_t.png :exports results :results graphics
-  par(family="HiraginoSans-W4") 
-  plot(function(x)dt(x,df=3,ncp=0), -4, 4,
-       col=5, lwd=3, ylim=c(0,0.4),
-       xlab="x",ylab="確率密度")
+  ggplot() + 
+    geom_function(fun = function(x) dt(x, df = 3, ncp = 0),
+                  colour = 4, linewidth = 2) +
+    xlim(-4, 4) + ylim(0, 0.4) +
+    labs(x = "x", y = "確率密度") 
 #+end_src
 #+CAPTION: \(t\)分布 (自由度\(3\))
 #+NAME: fig:pdf_t
@@ -457,10 +463,11 @@
 ** @@latex:@@\(F\)分布 (\(F\)-distribution)
 #+begin_leftcol
 #+begin_src R :file figs/pdf_F.png :exports results :results graphics
-  par(family="HiraginoSans-W4") 
-  plot(function(x)df(x,df1=3,df2=5,ncp=0), -1, 4,
-       col=6, lwd=3, ylim=c(0,0.8),
-       xlab="x",ylab="確率密度")
+  ggplot() + 
+    geom_function(fun = function(x) df(x, df1 = 3, df2 = 5, ncp = 0),
+                  colour = 6, linewidth = 2) +
+    xlim(-1, 4) + ylim(0, 0.8) +
+    labs(x = "x", y = "確率密度") 
 #+end_src
 #+CAPTION: \(F\)分布 (自由度\(3,5\))
 #+NAME: fig:pdf_t
