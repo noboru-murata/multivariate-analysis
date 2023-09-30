@@ -1,9 +1,9 @@
 #+TITLE: 回帰分析 
 #+SUBTITLE: 回帰モデルの考え方と推定
 #+AUTHOR: 村田 昇
-#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2022-10-18 16:20:25 mura>
+# Time-stamp: <2023-09-27 11:24:22 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
