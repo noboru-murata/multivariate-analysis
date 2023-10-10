@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-09-30 14:20:35 mura>
+# Time-stamp: <2023-09-30 14:52:40 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -268,14 +268,12 @@
 - 標本空間 : \(\mathbb{R}^{p}\)
 - 母数 : 平均 \(\boldsymbol{\mu}\), 分散共分散行列 \(\Sigma\)
 - 密度関数 :
-  #+begin_quote
   \begin{equation}
     p(\boldsymbol{x})
     =\frac{1}{\sqrt{(2\pi)^p|\Sigma|}}
     e^{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^{\mathsf{T}}
       \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})}
   \end{equation}
-  #+end_quote
 
 ** 正規分布の特徴付け
 - 性質
