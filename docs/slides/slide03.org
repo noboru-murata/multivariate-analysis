@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-10 17:53:22 mura>
+# Time-stamp: <2023-10-10 18:03:51 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -1214,7 +1214,7 @@
 :PROPERTIES:
 :ID:       C513A101-EB45-4E7A-A4D3-1A8819EF6183
 :END:
-- 気候に関するデータ(一部)\\
+- 気候に関するデータの一部 \\
   (気温,降雨,日射,降雪,風向,風速,気圧,湿度,雲量)
   #+begin_src R :exports none
     #' データの読み込み
