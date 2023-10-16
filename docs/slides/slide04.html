@@ -45,28 +45,26 @@
 </div>
 
 </section>
-
 <section>
-<section id="slide-org4f0d187">
-<h2 id="org4f0d187">講義の内容</h2>
+<section id="slide-org2b6bd77">
+<h2 id="org2b6bd77">講義の内容</h2>
 <ul>
-<li>第1回: 回帰モデルの考え方と推定</li>
-<li><b>第2回: モデルの評価</b></li>
-<li>第3回: モデルによる予測と発展的なモデル</li>
+<li>第1回 : 回帰モデルの考え方と推定</li>
+<li><b>第2回 : モデルの評価</b></li>
+<li>第3回 : モデルによる予測と発展的なモデル</li>
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
 </section>
 <section>
-<section id="slide-org551a532">
-<h2 id="org551a532">回帰分析の復習</h2>
-<div class="outline-text-2" id="text-org551a532">
+<section id="slide-org6bb4dcf">
+<h2 id="org6bb4dcf">回帰分析の復習</h2>
+<div class="outline-text-2" id="text-org6bb4dcf">
 </div>
 </section>
-<section id="slide-orgd1df465">
-<h3 id="orgd1df465">線形回帰モデル</h3>
+<section id="slide-org33d1c39">
+<h3 id="org33d1c39">線形回帰モデル</h3>
 <ul>
 <li><b>目的変数</b> を <b>説明変数</b> で説明する関係式を構成
 <ul>
@@ -100,10 +98,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org0dbb2e2">
-<h3 id="org0dbb2e2">簡潔な表現のための行列</h3>
+<section id="slide-org9d2bdd3">
+<h3 id="org9d2bdd3">簡潔な表現のための行列</h3>
 <ul>
 <li><p>
 デザイン行列 (説明変数)
@@ -125,10 +122,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-orgf2c2d1e">
-<h3 id="orgf2c2d1e">簡潔な表現のためのベクトル</h3>
+<section id="slide-orgf8b9a67">
+<h3 id="orgf8b9a67">簡潔な表現のためのベクトル</h3>
 <ul>
 <li><p>
 ベクトル (目的変数・誤差・回帰係数)
@@ -164,10 +160,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org3b0a342">
-<h3 id="org3b0a342">問題の記述</h3>
+<section id="slide-org6e3f20a">
+<h3 id="org6e3f20a">問題の記述</h3>
 <ul>
 <li><p>
 確率モデル
@@ -176,7 +171,8 @@
 <div>
 \begin{equation}
   \boldsymbol{y}
-  =X\boldsymbol{\beta}+\boldsymbol{\epsilon}
+  =X\boldsymbol{\beta}+\boldsymbol{\epsilon},
+  \quad\boldsymbol{\epsilon}\sim\text{確率分布}
 \end{equation}
 
 </div>
@@ -197,10 +193,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org0a0e9c4">
-<h3 id="org0a0e9c4">解の表現</h3>
+<section id="slide-org1d1348d">
+<h3 id="org1d1348d">解の表現</h3>
 <ul>
 <li><p>
 解の条件 : <b>正規方程式</b>
@@ -231,10 +226,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org4b151c6">
-<h3 id="org4b151c6">最小二乗推定量の性質</h3>
+<section id="slide-org4b38d89">
+<h3 id="org4b38d89">最小二乗推定量の性質</h3>
 <ul>
 <li><b>あてはめ値</b>
 \(\boldsymbol{\hat{y}}=X\boldsymbol{\hat{\beta}}\)
@@ -275,10 +269,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-orgd5a615a">
-<h3 id="orgd5a615a">寄与率</h3>
+<section id="slide-org4876162">
+<h3 id="org4876162">寄与率</h3>
 <ul>
 <li><p>
 <b>決定係数</b> (R-squared)
@@ -314,31 +307,231 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org9479e23">
-<h3 id="org9479e23">実データによる例</h3>
+</section>
+<section>
+<section id="slide-orgb46efd2">
+<h2 id="orgb46efd2">解析の事例</h2>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-orgeedc4d3">
+<h3 id="orgeedc4d3">実データによる例</h3>
+<ul>
+<li>気象庁より取得した東京の気候データ 
+<ul>
+<li>気象庁 <a href="https://www.data.jma.go.jp/gmd/risk/obsdl/index.php">https://www.data.jma.go.jp/gmd/risk/obsdl/index.php</a></li>
+<li>データ <a href="https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv">https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv</a></li>
+
+</ul></li>
+
+</ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org25d4a39">
+<h3 id="org25d4a39">東京の8月の気候の分析</h3>
 <ul>
 <li><p>
-気象庁より取得した東京の気候データ
+データの一部
 </p>
-<pre class="example" id="orgefb006f">
-    month day day_of_week temp rain solar snow wdir wind  press humid cloud
-213     8   1         Sun 28.7  0.0 26.58    0  SSE  3.2 1000.2    76   2.3
-214     8   2         Mon 28.6  0.5 19.95    0   SE  3.4 1006.1    80   7.0
-215     8   3         Tue 29.0  3.0 19.89    0    S  4.0 1009.9    80   6.3
-216     8   4         Wed 29.5  0.0 26.52    0    S  3.0 1008.2    76   2.8
-217     8   5         Thu 29.1  0.0 26.17    0  SSE  2.8 1005.1    74   5.8
-218     8   6         Fri 29.1  0.0 24.82    0  SSE  2.9 1004.2    75   4.0
-219     8   7         Sat 27.9  2.0 11.43    0   NE  2.5 1003.1    85   9.0
-220     8   8         Sun 25.9 90.5  3.43    0    N  3.0  998.0    97  10.0
-221     8   9         Mon 28.1  2.0 13.34    0    S  6.1  995.4    84   6.0
-222     8  10         Tue 31.0  0.0 22.45    0  SSW  4.7  996.3    58   4.8
-223     8  11         Wed 29.2  0.0 21.12    0   SE  2.9 1008.0    61   9.3
-224     8  12         Thu 26.0  0.5  8.34    0  SSE  2.4 1008.8    84   9.5
-225     8  13         Fri 22.5 20.5  4.36    0   NE  2.7 1008.0    97  10.0
-226     8  14         Sat 22.3 77.0  2.76    0    N  2.7 1003.6   100  10.0
-</pre></li>
+<font size=6>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">日付</th>
+<th scope="col" class="org-right">気温</th>
+<th scope="col" class="org-right">降雨</th>
+<th scope="col" class="org-right">日射</th>
+<th scope="col" class="org-right">降雪</th>
+<th scope="col" class="org-left">風向</th>
+<th scope="col" class="org-right">風速</th>
+<th scope="col" class="org-right">気圧</th>
+<th scope="col" class="org-right">湿度</th>
+<th scope="col" class="org-right">雲量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">2022-08-01</td>
+<td class="org-right">30.60</td>
+<td class="org-right">0.00</td>
+<td class="org-right">24.53</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.80</td>
+<td class="org-right">1010.10</td>
+<td class="org-right">72.00</td>
+<td class="org-right">8.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-02</td>
+<td class="org-right">31.60</td>
+<td class="org-right">0.00</td>
+<td class="org-right">24.78</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.50</td>
+<td class="org-right">1008.80</td>
+<td class="org-right">71.00</td>
+<td class="org-right">9.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-03</td>
+<td class="org-right">31.50</td>
+<td class="org-right">0.00</td>
+<td class="org-right">21.24</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.30</td>
+<td class="org-right">1005.10</td>
+<td class="org-right">75.00</td>
+<td class="org-right">7.30</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-04</td>
+<td class="org-right">24.60</td>
+<td class="org-right">18.00</td>
+<td class="org-right">3.46</td>
+<td class="org-right">0.00</td>
+<td class="org-left">NE</td>
+<td class="org-right">2.70</td>
+<td class="org-right">1006.00</td>
+<td class="org-right">89.00</td>
+<td class="org-right">10.00</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-05</td>
+<td class="org-right">23.80</td>
+<td class="org-right">0.00</td>
+<td class="org-right">7.65</td>
+<td class="org-right">0.00</td>
+<td class="org-left">NE</td>
+<td class="org-right">2.90</td>
+<td class="org-right">1006.10</td>
+<td class="org-right">83.00</td>
+<td class="org-right">9.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-06</td>
+<td class="org-right">25.20</td>
+<td class="org-right">0.00</td>
+<td class="org-right">17.06</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.40</td>
+<td class="org-right">1008.10</td>
+<td class="org-right">73.00</td>
+<td class="org-right">10.00</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-07</td>
+<td class="org-right">27.60</td>
+<td class="org-right">0.00</td>
+<td class="org-right">14.45</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.20</td>
+<td class="org-right">1009.30</td>
+<td class="org-right">80.00</td>
+<td class="org-right">8.30</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-08</td>
+<td class="org-right">29.80</td>
+<td class="org-right">0.00</td>
+<td class="org-right">22.52</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">4.50</td>
+<td class="org-right">1008.50</td>
+<td class="org-right">75.00</td>
+<td class="org-right">4.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-09</td>
+<td class="org-right">30.90</td>
+<td class="org-right">0.00</td>
+<td class="org-right">25.50</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">5.50</td>
+<td class="org-right">1006.90</td>
+<td class="org-right">69.00</td>
+<td class="org-right">6.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-10</td>
+<td class="org-right">30.50</td>
+<td class="org-right">0.00</td>
+<td class="org-right">25.99</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">5.30</td>
+<td class="org-right">1007.20</td>
+<td class="org-right">70.00</td>
+<td class="org-right">6.00</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-11</td>
+<td class="org-right">29.50</td>
+<td class="org-right">0.00</td>
+<td class="org-right">22.90</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">5.40</td>
+<td class="org-right">1007.50</td>
+<td class="org-right">75.00</td>
+<td class="org-right">6.00</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-12</td>
+<td class="org-right">28.30</td>
+<td class="org-right">2.00</td>
+<td class="org-right">15.36</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">5.80</td>
+<td class="org-right">1007.50</td>
+<td class="org-right">81.00</td>
+<td class="org-right">9.80</td>
+</tr>
+</tbody>
+</table>
+
+</font></li>
 
 </ul>
 
@@ -346,24 +539,7 @@
 </section>
 <section>
 <ul>
-<li><p>
-関連するデータの散布図
-</p></li>
-
-</ul>
-
-
-<div id="orgb7a3ef3" class="figure">
-<p><img src="figs/03_pairs.png" alt="03_pairs.png" />
-</p>
-<p><span class="figure-number">Figure 1: </span>散布図</p>
-</div>
-
-<div class="slide-footer"><br></div>
-</section>
-<section>
-<ul>
-<li>気温を説明する 5 つの線形回帰モデルを検討する
+<li>気温を説明する5種類の線形回帰モデルを検討
 <ul>
 <li>モデル1 : 気温 = F(気圧)</li>
 <li>モデル2 : 気温 = F(日射)</li>
@@ -374,6 +550,23 @@
 </ul></li>
 
 </ul>
+<div class="slide-footer"><br></div>
+</section>
+<section id="slide-org600dc4c">
+<h3 id="org600dc4c">分析の視覚化</h3>
+<ul>
+<li><p>
+関連するデータの散布図
+</p></li>
+
+</ul>
+
+
+<div id="org7900adc" class="figure">
+<p><img src="figs/03_pairs.png" alt="03_pairs.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>散布図</p>
+</div>
 
 <div class="slide-footer"><br></div>
 </section>
@@ -386,7 +579,7 @@
 </ul>
 
 
-<div id="org869c279" class="figure">
+<div id="org6f2f3ee" class="figure">
 <p><img src="figs/03_model1.png" alt="03_model1.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>モデル1</p>
@@ -403,7 +596,7 @@
 </ul>
 
 
-<div id="org58e599f" class="figure">
+<div id="orga1c4048" class="figure">
 <p><img src="figs/03_model2.png" alt="03_model2.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>モデル2</p>
@@ -420,7 +613,7 @@
 </ul>
 
 
-<div id="orgc3d4f4d" class="figure">
+<div id="org6faa8c8" class="figure">
 <p><img src="figs/03_model3.png" alt="03_model3.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>モデル3</p>
@@ -437,69 +630,92 @@
 </ul>
 
 
-<div id="org325cd7a" class="figure">
+<div id="orgad61590" class="figure">
 <p><img src="figs/03_models.png" alt="03_models.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>モデルの比較</p>
 </div>
-
 <div class="slide-footer"><br></div>
 </section>
-<section>
+<section id="slide-org842f2a7">
+<h3 id="org842f2a7">モデルの比較</h3>
 <ul>
-<li>決定係数・自由度調整済み決定係数
-<ul>
 <li><p>
-モデル1 : 気温 = F(気圧)
+寄与率による比較
 </p>
-<pre class="example">
-[1] "R2: 0.0483 ; adj. R2: 0.0155"
-</pre></li>
+<font size=6>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
-<li><p>
-モデル2 : 気温 = F(日射)
-</p>
-<pre class="example">
-[1] "R2: 0.663 ; adj. R2: 0.651"
-</pre></li>
 
-<li><p>
-モデル3 : 気温 = F(気圧, 日射)
-</p>
-<pre class="example">
-[1] "R2: 0.703 ; adj. R2: 0.681"
-</pre></li>
+<colgroup>
+<col  class="org-right" />
 
-<li><p>
-モデル4 : 気温 = F(気圧, 日射, 湿度)
-</p>
-<pre class="example">
-[1] "R2: 0.83 ; adj. R2: 0.811"
-</pre></li>
+<col  class="org-left" />
 
-<li><p>
-モデル5 : 気温 = F(気圧, 日射, 雲量)
-</p>
-<pre class="example">
-[1] "R2: 0.703 ; adj. R2: 0.67"
-</pre></li>
+<col  class="org-right" />
 
-</ul></li>
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">&#xa0;</th>
+<th scope="col" class="org-left">モデル</th>
+<th scope="col" class="org-right">決定係数</th>
+<th scope="col" class="org-right">自由度調整済み決定係数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">気温 = F(気圧)</td>
+<td class="org-right">0.064</td>
+<td class="org-right">0.031</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">気温 = F(日射)</td>
+<td class="org-right">0.641</td>
+<td class="org-right">0.628</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">気温 = F(気圧, 日射)</td>
+<td class="org-right">0.741</td>
+<td class="org-right">0.722</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">気温 = F(気圧, 日射, 湿度)</td>
+<td class="org-right">0.758</td>
+<td class="org-right">0.731</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">気温 = F(気圧, 日射, 雲量)</td>
+<td class="org-right">0.760</td>
+<td class="org-right">0.733</td>
+</tr>
+</tbody>
+</table>
+
+</font></li>
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgaee633a">
-<h2 id="orgaee633a">残差の性質</h2>
-<div class="outline-text-2" id="text-orgaee633a">
+<section id="slide-org35b88d2">
+<h2 id="org35b88d2">あてはめ値の性質</h2>
+<div class="outline-text-2" id="text-org35b88d2">
 </div>
 </section>
-<section id="slide-orgb078f9a">
-<h3 id="orgb078f9a">あてはめ値</h3>
+<section id="slide-org6a7f4f2">
+<h3 id="org6a7f4f2">あてはめ値</h3>
 <ul>
 <li><p>
 さまざまな表現
@@ -530,10 +746,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org8fb3447">
-<h3 id="org8fb3447">あてはめ値と誤差</h3>
+<section id="slide-orgc497f60">
+<h3 id="orgc497f60">あてはめ値と誤差</h3>
 <ul>
 <li><p>
 残差と誤差の関係
@@ -562,10 +777,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org57c723a">
-<h3 id="org57c723a">ハット行列</h3>
+<section id="slide-org909df6e">
+<h3 id="org909df6e">ハット行列</h3>
 <ul>
 <li><p>
 定義
@@ -600,10 +814,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-orga195aa0">
-<h3 id="orga195aa0">ハット行列の性質</h3>
+<section id="slide-orgb1a4249">
+<h3 id="orgb1a4249">ハット行列の性質</h3>
 <ul>
 <li>観測データ(デザイン行列)のみで計算される</li>
 <li>観測データと説明変数の関係を表す</li>
@@ -630,17 +843,15 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgd373720" data-background="#fef4f4">
-<h2 id="orgd373720">演習</h2>
+<section id="slide-orgacca386" data-background="#fef4f4">
+<h2 id="orgacca386">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org65d541f" data-background="#fef4f4">
-<h3 id="org65d541f">問題</h3>
+<section id="slide-org573735e" data-background="#fef4f4">
+<h3 id="org573735e">問題</h3>
 <ul>
 <li>ハット行列 \(H\) について以下を示しなさい
 <ul>
@@ -674,51 +885,16 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-</section>
-<section id="slide-orgc6557dc" data-background="#fef4f4">
-<h3 id="orgc6557dc">ヒント</h3>
-<ul>
-<li><p>
-いずれも \(H\) の定義にもとづいて計算すればよい
-</p>
-<blockquote>
-<div>
-\begin{align}
-  H^{\mathsf{T}}
-  &=
-    (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})^{\mathsf{T}}\\
-  H^{2}
-  &=
-    (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})
-    (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\\
-  (I-H)^{2}
-  &=
-    I-2H+H^{2}\\
-  HX
-  &=
-    (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})X\\
-  X^{\mathsf{T}}H
-  &=(HX)^{\mathsf{T}}
-\end{align}
-
-</div>
-</blockquote></li>
-
-</ul>
-<div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-org8582d62">
-<h2 id="org8582d62">推定量の統計的性質</h2>
-<div class="outline-text-2" id="text-org8582d62">
+<section id="slide-org2e06f74">
+<h2 id="org2e06f74">推定量の統計的性質</h2>
+<div class="outline-text-2" id="text-org2e06f74">
 </div>
 </section>
-<section id="slide-org713ef23">
-<h3 id="org713ef23">最小二乗推定量の性質</h3>
+<section id="slide-org8dfe020">
+<h3 id="org8dfe020">最小二乗推定量の性質</h3>
 <ul>
 <li><p>
 推定量と誤差の関係
@@ -738,22 +914,21 @@
 </div>
 </blockquote></li>
 <li><p>
-正規分布の重要な性質
+正規分布の重要な性質 (<b>再生性</b>)
 </p>
 <blockquote>
 <p>
-<b>正規分布に従う独立な確率変数の和は正規分布に従う</b>
+正規分布に従う独立な確率変数の和は正規分布に従う
 </p>
 </blockquote></li>
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org9da62bc">
-<h3 id="org9da62bc">推定量の分布</h3>
+<section id="slide-org2ed5346">
+<h3 id="org2ed5346">推定量の分布</h3>
 <ul>
-<li>誤差の仮定 : 独立，平均0 分散 \(\sigma^{2}\) の正規分布</li>
+<li><b>誤差の仮定</b> : 独立，平均0 分散 \(\sigma^{2}\) の <b>正規分布</b></li>
 <li><p>
 推定量は以下の多変量正規分布に従う
 </p>
@@ -779,16 +954,15 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
 </section>
 <section>
-<section id="slide-org8738057" data-background="#fef4f4">
-<h2 id="org8738057">演習</h2>
+<section id="slide-orga2cf247" data-background="#fef4f4">
+<h2 id="orga2cf247">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgd1ad0cb" data-background="#fef4f4">
-<h3 id="orgd1ad0cb">問題</h3>
+<section id="slide-org2dbb8ff" data-background="#fef4f4">
+<h3 id="org2dbb8ff">問題</h3>
 <ul>
 <li>誤差が独立で，平均0 分散 \(\sigma^{2}\) の正規分布に従うとき，
 最小二乗推定量 \(\boldsymbol{\hat{\beta}}\) について以下を示しなさい
@@ -800,86 +974,58 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org41c6064" data-background="#fef4f4">
-<h3 id="org41c6064">解答例</h3>
+</section>
+<section>
+<section id="slide-org8bab0b8">
+<h2 id="org8bab0b8">誤差の評価</h2>
+<div class="outline-text-2" id="text-org8bab0b8">
+</div>
+</section>
+<section id="slide-orgb8a66fe">
+<h3 id="orgb8a66fe">寄与率 (再掲)</h3>
 <ul>
 <li><p>
-定義にもとづいて計算する
+<b>決定係数 (R-squared)</b>: <br />
+(回帰式で説明できるばらつきの比率)
 </p>
 <blockquote>
 <div>
-\begin{align}
-  \mathbb{E}[\boldsymbol{\hat{\beta}}]
-  &=
-    \mathbb{E}[\boldsymbol{\beta}
-    +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}]\\
-  &=
-    \boldsymbol{\beta}
-    +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\mathbb{E}[\boldsymbol{\epsilon}]\\
-  &=
-    \boldsymbol{\beta}
-\end{align}
+\begin{equation}
+  R^2
+  =
+  1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
+\end{equation}
 
 </div>
-</blockquote>
-<div class="slide-footer"><br></div>
-</section>
-<section data-background="#fef4f4">
-<ul>
+</blockquote></li>
 <li><p>
-定義にもとづいて計算する
+<b>自由度調整済み決定係数 (adjusted R-squared)</b>: <br />
+(決定係数を不偏分散で補正)
 </p>
 <blockquote>
 <div>
-\begin{align}
-  \mathrm{Cov}(\boldsymbol{\hat{\beta}})
-  &=
-    \mathbb{E}[
-    (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})
-    (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})^{\mathsf{T}}]\\
-  &=
-    \mathbb{E}[(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
-    \boldsymbol{\epsilon}^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}]\\
-  &=
-    (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-    \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
-    X(X^{\mathsf{T}}X)^{-1}\\
-  &=
-    (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-    (\sigma^{2}I)
-    X(X^{\mathsf{T}}X)^{-1}\\
-  &=
-    \sigma^{2}
-    (X^{\mathsf{T}}X)^{-1}
-\end{align}
+\begin{equation}
+  \bar{R}^2
+  =
+  1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
+  {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
+\end{equation}
 
 </div>
 </blockquote></li>
 
-</ul></li>
-
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
-</section>
-<section>
-<section id="slide-org10b180f">
-<h2 id="org10b180f">誤差の評価</h2>
-<div class="outline-text-2" id="text-org10b180f">
-</div>
-</section>
-<section id="slide-org957e84c">
-<h3 id="org957e84c">各係数の推定量の分布</h3>
+<section id="slide-org0703714">
+<h3 id="org0703714">各係数の推定量の分布</h3>
 <ul>
 <li>推定された回帰係数の精度を評価
 <ul>
 <li>誤差 \(\epsilon\) の分布は平均0 分散 \(\sigma^2\) の正規分布</li>
 <li><p>
-\(\boldsymbol{\hat{\beta}}\) の分布
+\(\boldsymbol{\hat{\beta}}\) の分布 : \(p{+}1\) 変量正規分布
 </p>
 <blockquote>
 <div>
@@ -890,13 +1036,9 @@
 \end{equation}
 
 </div>
-</blockquote>
-<ul>
-<li>\(p{+}1\) 変量正規分布</li>
-
-</ul></li>
+</blockquote></li>
 <li><p>
-\(\hat{\beta}_j\) の分布
+\(\hat{\beta}_j\) の分布 : 1変量正規分布
 </p>
 <blockquote>
 <div>
@@ -910,7 +1052,6 @@
 </div>
 </blockquote>
 <ul>
-<li>1変量正規分布</li>
 <li>\((A)_{jj}\) は行列 \(A\) の \((j,j)\) (対角)成分</li>
 
 </ul></li>
@@ -919,10 +1060,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org38ec0bc">
-<h3 id="org38ec0bc">標準誤差</h3>
+<section id="slide-orgfaf8d8d">
+<h3 id="orgfaf8d8d">標準誤差</h3>
 <ul>
 <li><p>
 <b>標準誤差</b> (standard error) : 
@@ -931,6 +1071,8 @@
 <blockquote>
 <div>
 \begin{equation}
+  \mathrm{s.e.}(\hat{\beta}_{j})
+  =
   \hat{\sigma}\zeta_j
   =
   \sqrt{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
@@ -948,18 +1090,15 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
-
 </section>
 </section>
 <section>
-<section id="slide-org7f6e5be" data-background="#fef4f4">
-<h2 id="org7f6e5be">演習</h2>
+<section id="slide-orgecd2267" data-background="#fef4f4">
+<h2 id="orgecd2267">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org6224593" data-background="#fef4f4">
-<h3 id="org6224593">問題</h3>
+<section id="slide-org7b8609b" data-background="#fef4f4">
+<h3 id="org7b8609b">問題</h3>
 <ul>
 <li>以下を示しなさい
 <ul>
@@ -984,108 +1123,35 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-</section>
-<section id="slide-orge04fb7c" data-background="#fef4f4">
-<h3 id="orge04fb7c">解答例</h3>
-<ul>
-<li><p>
-ハット行列 \(H\) を用いた表現を利用する
-</p>
-<blockquote>
-<div>
-\begin{align}
-  \boldsymbol{\hat{\epsilon}}
-  &=
-    (I_{n}-H)\boldsymbol{\epsilon}\\
-  \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
-  &=
-    \mathbb{E}[\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}]\\
-  &=
-    \mathbb{E}[\mathrm{tr}
-    (\boldsymbol{\hat{\epsilon}}
-    \boldsymbol{\hat{\epsilon}}^{\mathsf{T}})]\\
-  &=
-    \mathbb{E}[\mathrm{tr}
-    (I_{n}-H)\boldsymbol{\epsilon}
-    \boldsymbol{\epsilon}^{\mathsf{T}}(I_{n}-H)]\\
-  &=
-    \mathrm{tr}(I_{n}-H)
-    \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
-    (I_{n}-H)\\
-  &=
-    \mathrm{tr}
-    (I_{n}-H)(\sigma^{2}I_{n})(I_{n}-H)\\
-  &=
-    \sigma^{2}\mathrm{tr}(I_{n}-H)
-\end{align}
-
-</div>
-</blockquote>
-<ul>
-<li>\(I_{n}\) は \(n\times n\) 単位行列</li>
-
-</ul></li>
-
-</ul>
-
-<div class="slide-footer"><br></div>
-</section>
-<section data-background="#fef4f4">
-<ul>
-<li><p>
-さらに以下が成立する
-</p>
-<blockquote>
-<div>
-\begin{align}
-  \mathrm{tr} H
-  &=
-    \mathrm{tr} X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\\
-  &=
-    \mathrm{tr} (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\\
-  &=
-    \mathrm{tr} I_{p{+}1}\\
-  &=p+1
-\end{align}
-
-</div>
-</blockquote>
-<ul>
-<li>行列のサイズに注意</li>
-
-</ul></li>
-
-</ul>
-<div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-org9d28c90">
-<h2 id="org9d28c90">係数の評価</h2>
-<div class="outline-text-2" id="text-org9d28c90">
+<section id="slide-orgeace206">
+<h2 id="orgeace206">係数の評価</h2>
+<div class="outline-text-2" id="text-orgeace206">
 </div>
 </section>
-<section id="slide-org6829833">
-<h3 id="org6829833">\(t\)統計量</h3>
+<section id="slide-org4cb6242">
+<h3 id="org4cb6242">\(t\)統計量</h3>
 <ul>
 <li><p>
 <b>回帰係数の分布</b> に関する定理
 </p>
 <blockquote>
 <p>
-<b>\(t\)統計量</b>
+<b>\(t\)統計量</b> (\(t\)-statistic)
 </p>
 <div>
 \begin{equation}
-  % \text{(t-統計量)}\quad
-  t=\frac{\hat{\beta}_j-\beta_j}{\hat{\sigma}\zeta_{j}}
+  % \text{(t統計量)}\quad
+  t
+  =
+  \frac{\hat{\beta}_j-\beta_j}{\mathrm{s.e.}(\hat{\beta}_{j})}
+  =
+  \frac{\hat{\beta}_j-\beta_j}{\hat{\sigma}\zeta_{j}}
 \end{equation}
 
 </div>
-
 <p>
 は自由度 \(n{-}p{-}1\) の \(t\)分布に従う
 </p>
@@ -1101,19 +1167,18 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org68a7810">
-<h3 id="org68a7810">\(t\)統計量による検定</h3>
+<section id="slide-orgb2dd394">
+<h3 id="orgb2dd394">\(t\)統計量による検定</h3>
 <ul>
-<li>回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定:
+<li>回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定
 <ul>
 <li>帰無仮説 \(H_{0}\) : \(\beta_j=0\) (\(t\)統計量が計算できる)</li>
 <li>対立仮説 \(H_{1}\) : \(\beta_j\neq0\)</li>
 
 </ul></li>
 <li><p>
-\(p\)値: 確率変数の絶対値が \(|t|\) を超える確率
+\(p\)値 : 確率変数の絶対値が \(|t|\) を超える確率
 </p>
 <blockquote>
 <div>
@@ -1138,18 +1203,16 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgb3c9fae">
-<h2 id="orgb3c9fae">モデルの評価</h2>
-<div class="outline-text-2" id="text-orgb3c9fae">
+<section id="slide-orgb8eefc2">
+<h2 id="orgb8eefc2">モデルの評価</h2>
+<div class="outline-text-2" id="text-orgb8eefc2">
 </div>
 </section>
-<section id="slide-org8a1300e">
-<h3 id="org8a1300e">\(F\)統計量</h3>
+<section id="slide-orgc835aee">
+<h3 id="orgc835aee">\(F\)統計量</h3>
 <ul>
 <li><p>
 <b>ばらつきの比</b> に関する定理: 
@@ -1157,11 +1220,11 @@
 <blockquote>
 <p>
 \(\beta_{1}=\dotsb=\beta_{p}=0\) ならば
-<b>\(F\)統計量</b>
+<b>\(F\)統計量</b> (\(F\)-statistic)
 </p>
 <div>
 \begin{equation}
-  % \text{(F-統計量)}\quad
+  % \text{(F統計量)}\quad
   F=
   \frac{\frac{1}{p}S_{r}}{\frac{1}{n{-}p{-}1}S}
   % =\frac{\frac{1}{p}\sum_{i=1}^n(\hat{y}_i-\bar{y})^2}
@@ -1170,7 +1233,6 @@
 \end{equation}
 
 </div>
-
 <p>
 は自由度 \(p,n{-}p{-}1\) の \(F\)分布に従う
 </p>
@@ -1185,12 +1247,11 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org73e5142">
-<h3 id="org73e5142">\(F\)統計量を用いた検定</h3>
+<section id="slide-orgc961ac1">
+<h3 id="orgc961ac1">\(F\)統計量を用いた検定</h3>
 <ul>
-<li>説明変数のうち1つでも役に立つか否かを検定:
+<li>説明変数のうち1つでも役に立つか否かを検定
 <ul>
 <li>帰無仮説 \(H_{0}\) : \(\beta_{1}=\dotsb=\beta_{p}=0\) 
 (\(S_r\) が \(\chi^2\) 分布になる)</li>
@@ -1198,7 +1259,7 @@
 
 </ul></li>
 <li><p>
-\(p\)値: 確率変数の値が \(F\)を超える確率
+\(p\)値 : 確率変数の値が \(F\)を超える確率
 </p>
 <blockquote>
 <div>
@@ -1223,53 +1284,218 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-org31ee8e3">
-<h2 id="org31ee8e3">解析の事例</h2>
+<section id="slide-org486a019">
+<h2 id="org486a019">解析の事例</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org9d86548">
-<h3 id="org9d86548">データについて</h3>
-<ul>
-<li>気象庁より取得した東京の気候データ <br />
-<ul>
-<li>気象庁 <a href="https://www.data.jma.go.jp/gmd/risk/obsdl/index.php">https://www.data.jma.go.jp/gmd/risk/obsdl/index.php</a></li>
-<li>データ <a href="https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv">https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv</a></li>
-
-</ul></li>
-
-</ul>
-<div class="slide-footer"><br></div>
-
-</section>
-<section id="slide-org7699bd0">
-<h3 id="org7699bd0">東京の8月の気候の分析</h3>
+<section id="slide-org80e0c8c">
+<h3 id="org80e0c8c">東京の8月の気候の分析 (再掲)</h3>
 <ul>
 <li><p>
-気候 (気温,降雨,日射,降雪,風速,気圧,湿度,雲量) <br />
-に関するデータ(の一部)
+データの一部
 </p>
-<pre class="example" id="org3b34553">
-    month day day_of_week temp rain solar snow wdir wind  press humid cloud
-213     8   1         Sun 28.7  0.0 26.58    0  SSE  3.2 1000.2    76   2.3
-214     8   2         Mon 28.6  0.5 19.95    0   SE  3.4 1006.1    80   7.0
-215     8   3         Tue 29.0  3.0 19.89    0    S  4.0 1009.9    80   6.3
-216     8   4         Wed 29.5  0.0 26.52    0    S  3.0 1008.2    76   2.8
-217     8   5         Thu 29.1  0.0 26.17    0  SSE  2.8 1005.1    74   5.8
-218     8   6         Fri 29.1  0.0 24.82    0  SSE  2.9 1004.2    75   4.0
-219     8   7         Sat 27.9  2.0 11.43    0   NE  2.5 1003.1    85   9.0
-220     8   8         Sun 25.9 90.5  3.43    0    N  3.0  998.0    97  10.0
-221     8   9         Mon 28.1  2.0 13.34    0    S  6.1  995.4    84   6.0
-222     8  10         Tue 31.0  0.0 22.45    0  SSW  4.7  996.3    58   4.8
-223     8  11         Wed 29.2  0.0 21.12    0   SE  2.9 1008.0    61   9.3
-224     8  12         Thu 26.0  0.5  8.34    0  SSE  2.4 1008.8    84   9.5
-225     8  13         Fri 22.5 20.5  4.36    0   NE  2.7 1008.0    97  10.0
-226     8  14         Sat 22.3 77.0  2.76    0    N  2.7 1003.6   100  10.0
-</pre></li>
+<font size=6>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">日付</th>
+<th scope="col" class="org-right">気温</th>
+<th scope="col" class="org-right">降雨</th>
+<th scope="col" class="org-right">日射</th>
+<th scope="col" class="org-right">降雪</th>
+<th scope="col" class="org-left">風向</th>
+<th scope="col" class="org-right">風速</th>
+<th scope="col" class="org-right">気圧</th>
+<th scope="col" class="org-right">湿度</th>
+<th scope="col" class="org-right">雲量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">2022-08-01</td>
+<td class="org-right">30.60</td>
+<td class="org-right">0.00</td>
+<td class="org-right">24.53</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.80</td>
+<td class="org-right">1010.10</td>
+<td class="org-right">72.00</td>
+<td class="org-right">8.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-02</td>
+<td class="org-right">31.60</td>
+<td class="org-right">0.00</td>
+<td class="org-right">24.78</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.50</td>
+<td class="org-right">1008.80</td>
+<td class="org-right">71.00</td>
+<td class="org-right">9.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-03</td>
+<td class="org-right">31.50</td>
+<td class="org-right">0.00</td>
+<td class="org-right">21.24</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.30</td>
+<td class="org-right">1005.10</td>
+<td class="org-right">75.00</td>
+<td class="org-right">7.30</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-04</td>
+<td class="org-right">24.60</td>
+<td class="org-right">18.00</td>
+<td class="org-right">3.46</td>
+<td class="org-right">0.00</td>
+<td class="org-left">NE</td>
+<td class="org-right">2.70</td>
+<td class="org-right">1006.00</td>
+<td class="org-right">89.00</td>
+<td class="org-right">10.00</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-05</td>
+<td class="org-right">23.80</td>
+<td class="org-right">0.00</td>
+<td class="org-right">7.65</td>
+<td class="org-right">0.00</td>
+<td class="org-left">NE</td>
+<td class="org-right">2.90</td>
+<td class="org-right">1006.10</td>
+<td class="org-right">83.00</td>
+<td class="org-right">9.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-06</td>
+<td class="org-right">25.20</td>
+<td class="org-right">0.00</td>
+<td class="org-right">17.06</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.40</td>
+<td class="org-right">1008.10</td>
+<td class="org-right">73.00</td>
+<td class="org-right">10.00</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-07</td>
+<td class="org-right">27.60</td>
+<td class="org-right">0.00</td>
+<td class="org-right">14.45</td>
+<td class="org-right">0.00</td>
+<td class="org-left">SSE</td>
+<td class="org-right">2.20</td>
+<td class="org-right">1009.30</td>
+<td class="org-right">80.00</td>
+<td class="org-right">8.30</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-08</td>
+<td class="org-right">29.80</td>
+<td class="org-right">0.00</td>
+<td class="org-right">22.52</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">4.50</td>
+<td class="org-right">1008.50</td>
+<td class="org-right">75.00</td>
+<td class="org-right">4.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-09</td>
+<td class="org-right">30.90</td>
+<td class="org-right">0.00</td>
+<td class="org-right">25.50</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">5.50</td>
+<td class="org-right">1006.90</td>
+<td class="org-right">69.00</td>
+<td class="org-right">6.80</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-10</td>
+<td class="org-right">30.50</td>
+<td class="org-right">0.00</td>
+<td class="org-right">25.99</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">5.30</td>
+<td class="org-right">1007.20</td>
+<td class="org-right">70.00</td>
+<td class="org-right">6.00</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-11</td>
+<td class="org-right">29.50</td>
+<td class="org-right">0.00</td>
+<td class="org-right">22.90</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">5.40</td>
+<td class="org-right">1007.50</td>
+<td class="org-right">75.00</td>
+<td class="org-right">6.00</td>
+</tr>
+
+<tr>
+<td class="org-right">2022-08-12</td>
+<td class="org-right">28.30</td>
+<td class="org-right">2.00</td>
+<td class="org-right">15.36</td>
+<td class="org-right">0.00</td>
+<td class="org-left">S</td>
+<td class="org-right">5.80</td>
+<td class="org-right">1007.50</td>
+<td class="org-right">81.00</td>
+<td class="org-right">9.80</td>
+</tr>
+</tbody>
+</table>
+
+</font></li>
 
 </ul>
 
@@ -1277,7 +1503,7 @@
 </section>
 <section>
 <ul>
-<li>作成した線形回帰モデルを検討する
+<li>気温を説明する5種類の線形回帰モデルを検討
 <ul>
 <li>モデル1 : 気温 = F(気圧)</li>
 <li>モデル2 : 気温 = F(日射)</li>
@@ -1288,10 +1514,10 @@
 </ul></li>
 
 </ul>
-
 <div class="slide-footer"><br></div>
 </section>
-<section>
+<section id="slide-org96863df">
+<h3 id="org96863df">分析の視覚化 (再掲)</h3>
 <ul>
 <li><p>
 観測値とあてはめ値の比較
@@ -1300,221 +1526,89 @@
 </ul>
 
 
-<div id="org8f26ea3" class="figure">
-<p><img src="figs/04_models.png" alt="04_models.png" />
+<div id="orgc58118d" class="figure">
+<p><img src="figs/03_models.png" alt="03_models.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>モデルの比較</p>
 </div>
-
 <div class="slide-footer"><br></div>
 </section>
-<section>
+<section id="slide-orgcb2a8b4">
+<h3 id="orgcb2a8b4">モデルの比較</h3>
 <ul>
 <li><p>
-モデル1 : 係数とモデルの評価
+寄与率・\(t\)統計量・\(F\)統計量
 </p>
-<pre class="example" id="org56f2034">
+<font size=4>
 
-Call:
-lm(formula = tw_model1, data = tw_subset, y = TRUE)
+<table style="text-align:center"><tr><td colspan="6" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"></td><td colspan="5"><em>Dependent variable:</em></td></tr>
+<tr><td></td><td colspan="5" style="border-bottom: 1px solid black"></td></tr>
+<tr><td style="text-align:left"></td><td colspan="5">temp</td></tr>
+<tr><td style="text-align:left"></td><td>(1)</td><td>(2)</td><td>(3)</td><td>(4)</td><td>(5)</td></tr>
+<tr><td colspan="6" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">press</td><td>-0.178 (0.127)</td><td></td><td>-0.223<sup>***</sup> (0.068)</td><td>-0.214<sup>***</sup> (0.067)</td><td>-0.242<sup>***</sup> (0.068)</td></tr>
+<tr><td style="text-align:left">solar</td><td></td><td>0.297<sup>***</sup> (0.041)</td><td>0.306<sup>***</sup> (0.036)</td><td>0.366<sup>***</sup> (0.056)</td><td>0.348<sup>***</sup> (0.045)</td></tr>
+<tr><td style="text-align:left">humid</td><td></td><td></td><td></td><td>0.071 (0.051)</td><td></td></tr>
+<tr><td style="text-align:left">cloud</td><td></td><td></td><td></td><td></td><td>0.238 (0.161)</td></tr>
+<tr><td style="text-align:left">Constant</td><td>206.535 (127.430)</td><td>22.969<sup>***</sup> (0.690)</td><td>247.477<sup>***</sup> (68.433)</td><td>231.843<sup>***</sup> (68.254)</td><td>263.717<sup>***</sup> (67.941)</td></tr>
+<tr><td colspan="6" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Observations</td><td>31</td><td>31</td><td>31</td><td>31</td><td>31</td></tr>
+<tr><td style="text-align:left">R<sup>2</sup></td><td>0.064</td><td>0.641</td><td>0.741</td><td>0.758</td><td>0.760</td></tr>
+<tr><td style="text-align:left">Adjusted R<sup>2</sup></td><td>0.031</td><td>0.628</td><td>0.722</td><td>0.731</td><td>0.733</td></tr>
+<tr><td style="text-align:left">Residual Std. Error</td><td>2.463 (df = 29)</td><td>1.526 (df = 29)</td><td>1.320 (df = 28)</td><td>1.298 (df = 27)</td><td>1.293 (df = 27)</td></tr>
+<tr><td style="text-align:left">F Statistic</td><td>1.973 (df = 1; 29)</td><td>51.743<sup>***</sup> (df = 1; 29)</td><td>39.964<sup>***</sup> (df = 2; 28)</td><td>28.174<sup>***</sup> (df = 3; 27)</td><td>28.484<sup>***</sup> (df = 3; 27)</td></tr>
+<tr><td colspan="6" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"><em>Note:</em></td><td colspan="5" style="text-align:right"><sup>*</sup>p<0.1; <sup>**</sup>p<0.05; <sup>***</sup>p<0.01</td></tr>
+</table>
 
-Residuals:
-   Min     1Q Median     3Q    Max 
--7.858 -0.680  1.183  1.922  3.235 
-
-Coefficients:
-	    Estimate Std. Error t value Pr(&gt;|t|)
-(Intercept) 161.9708   110.9113   1.460    0.155
-press        -0.1336     0.1101  -1.213    0.235
-
-Residual standard error: 2.846 on 29 degrees of freedom
-Multiple R-squared:  0.0483,	Adjusted R-squared:  0.01548 
-F-statistic: 1.472 on 1 and 29 DF,  p-value: 0.2348
-</pre></li>
-
-</ul>
-
-<div class="slide-footer"><br></div>
-</section>
-<section>
+</font></li>
+<li>変数名の対応
 <ul>
-<li><p>
-モデル2 : 係数とモデルの評価
-</p>
-<pre class="example" id="org701be4a">
-
-Call:
-lm(formula = tw_model2, data = tw_subset, y = TRUE)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--4.0385 -1.2347  0.1714  1.1857  3.3124 
-
-Coefficients:
-	    Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 22.47596    0.72144  31.154  &lt; 2e-16 ***
-solar        0.31026    0.04108   7.552 2.52e-08 ***
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 1.694 on 29 degrees of freedom
-Multiple R-squared:  0.6629,	Adjusted R-squared:  0.6513 
-F-statistic: 57.03 on 1 and 29 DF,  p-value: 2.521e-08
-</pre></li>
-
-</ul>
-
-<div class="slide-footer"><br></div>
-</section>
-<section>
-<ul>
-<li><p>
-モデル3 : 係数とモデルの評価
-</p>
-<pre class="example" id="orgb43d46d">
-
-Call:
-lm(formula = tw_model3, data = tw_subset, y = TRUE)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--3.8296 -1.0254  0.2546  1.0629  3.5691 
-
-Coefficients:
-	     Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 144.53120   63.13599   2.289   0.0298 *  
-press        -0.12116    0.06267  -1.933   0.0634 .  
-solar         0.30833    0.03928   7.849  1.5e-08 ***
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 1.619 on 28 degrees of freedom
-Multiple R-squared:  0.7026,	Adjusted R-squared:  0.6814 
-F-statistic: 33.08 on 2 and 28 DF,  p-value: 4.232e-08
-</pre></li>
-
-</ul>
-
-<div class="slide-footer"><br></div>
-</section>
-<section>
-<ul>
-<li><p>
-モデル4 : 係数とモデルの評価
-</p>
-<pre class="example" id="org81c64f0">
-
-Call:
-lm(formula = tw_model4, data = tw_subset, y = TRUE)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--3.0251 -0.6246  0.1873  0.9281  1.8950 
-
-Coefficients:
-	     Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 147.00793   48.67327   3.020 0.005466 ** 
-press        -0.10823    0.04839  -2.236 0.033783 *  
-solar         0.13429    0.04922   2.728 0.011058 *  
-humid        -0.15840    0.03532  -4.485 0.000121 ***
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 1.248 on 27 degrees of freedom
-Multiple R-squared:  0.8296,	Adjusted R-squared:  0.8107 
-F-statistic: 43.81 on 3 and 27 DF,  p-value: 1.649e-10
-</pre></li>
-
-</ul>
-
-<div class="slide-footer"><br></div>
-</section>
-<section>
-<ul>
-<li><p>
-モデル5 : 係数とモデルの評価
-</p>
-<pre class="example" id="orgf4267c9">
-
-Call:
-lm(formula = tw_model5, data = tw_subset, y = TRUE)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--3.8230 -1.0230  0.2534  1.0684  3.5829 
-
-Coefficients:
-	     Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 144.90781   64.97793   2.230   0.0342 *  
-press        -0.12161    0.06481  -1.876   0.0715 .  
-solar         0.31025    0.06243   4.969 3.31e-05 ***
-cloud         0.00686    0.17144   0.040   0.9684    
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 1.649 on 27 degrees of freedom
-Multiple R-squared:  0.7026,	Adjusted R-squared:  0.6696 
-F-statistic: 21.27 on 3 and 27 DF,  p-value: 2.809e-07
-</pre></li>
-
-</ul>
-
-<div class="slide-footer"><br></div>
-</section>
-<section>
-<ul>
-<li>決定係数と\(F\)統計量
-<ul>
-<li><p>
-モデル1
-</p>
-<pre class="example">
-[1] "R2: 0.0483 ; adj. R2: 0.0155 ; F-statistic: 1.47"
-</pre></li>
-
-<li><p>
-モデル2
-</p>
-<pre class="example">
-[1] "R2: 0.663 ; adj. R2: 0.651 ; F-statistic: 57"
-</pre></li>
-
-<li><p>
-モデル3
-</p>
-<pre class="example">
-[1] "R2: 0.703 ; adj. R2: 0.681 ; F-statistic: 33.1"
-</pre></li>
-
-<li><p>
-モデル4
-</p>
-<pre class="example">
-[1] "R2: 0.83 ; adj. R2: 0.811 ; F-statistic: 43.8"
-</pre></li>
-
-<li><p>
-モデル5
-</p>
-<pre class="example">
-[1] "R2: 0.703 ; adj. R2: 0.67 ; F-statistic: 21.3"
-</pre></li>
+<li>気温(temp), 気圧(press), 日射(solar), 湿度(humid), 雲量(cloud)</li>
 
 </ul></li>
 
 </ul>
+
 <div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+診断プロット (モデル4)
+</p></li>
+
+</ul>
 
 
+<div id="org6edbf7c" class="figure">
+<p><img src="figs/04_diag_model4.png" alt="04_diag_model4.png" />
+</p>
+<p><span class="figure-number">Figure 7: </span>モデルの比較</p>
+</div>
+<div class="slide-footer"><br></div>
+</section>
+<section>
+<ul>
+<li><p>
+診断プロット (モデル5)
+</p></li>
+
+</ul>
+
+
+<div id="orge02e9c3" class="figure">
+<p><img src="figs/04_diag_model5.png" alt="04_diag_model5.png" />
+</p>
+<p><span class="figure-number">Figure 8: </span>モデルの比較</p>
+</div>
+<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org76eb232">
-<h2 id="org76eb232">次回の予定</h2>
+<section id="slide-orgaa5b3c4">
+<h2 id="orgaa5b3c4">次回の予定</h2>
 <ul>
-<li>第1回: 回帰モデルの考え方と推定</li>
-<li>第2回: モデルの評価</li>
-<li><b>第3回: モデルによる予測と発展的なモデル</b></li>
+<li>第1回 : 回帰モデルの考え方と推定</li>
+<li>第2回 : モデルの評価</li>
+<li><b>第3回 : モデルによる予測と発展的なモデル</b></li>
 
 </ul>
 <div class="slide-footer"><br></div>

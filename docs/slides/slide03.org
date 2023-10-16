@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-10 18:03:51 mura>
+# Time-stamp: <2023-10-16 18:02:48 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -37,10 +37,6 @@
 #+begin_src R :exports none
   ### 第3講 資料
   library(tidyverse)
-  library(GGally) # パッケージの読み込み
-  library(ascii)
-  options(asciiType = "org")
-  library(scatterplot3d) # パッケージの読み込み
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
@@ -1202,21 +1198,22 @@
 
 * 解析の事例
 # 早稲田大学
-** データについて
-- 気象庁より取得した東京の気候データ \\
-  - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
-  - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
-    # - 広告費(TV,radio,newspaper)と売上データ \\
-    #   - 書籍のサイト https://faculty.marshall.usc.edu/gareth-james/ISL/
-    #   - データ https://faculty.marshall.usc.edu/gareth-james/ISL/Advertising.csv
-
-** 東京の8月の気候の分析
+** 実データによる例
 :PROPERTIES:
 :ID:       C513A101-EB45-4E7A-A4D3-1A8819EF6183
 :END:
-- 気候に関するデータの一部 \\
-  (気温,降雨,日射,降雪,風向,風速,気圧,湿度,雲量)
+- 気象庁より取得した東京の気候データ 
+  - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
+  - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
+
+** 東京の8月の気候の分析
+:PROPERTIES:
+:ID:       A489FC6E-DE7F-40F3-AF84-149780E42205
+:END:
+- データの一部
   #+begin_src R :exports none
+    #' @exercise 東京の気候データを用いた例
+    
     #' データの読み込み
     tw_subset <- read_csv("data/tokyo_weather.csv") |>
       filter(month == 8) |> # 8月のデータの抽出
@@ -1237,27 +1234,45 @@
     tw_lm4 <- lm(tw_model4, data=tw_subset, y=TRUE)
     tw_lm5 <- lm(tw_model5, data=tw_subset, y=TRUE)
   #+end_src
-  #+begin_src R :exports results :results output
+
+  #+begin_src R :exports none
     #' データの表示
-    tw_subset |> head(14) |> ascii(include.rownames = FALSE) # 2週間分を表示
+    #' 列名を日本語にして表示する
+    foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
+                        c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+    (bar <- tw_subset |> rename(all_of(foo)))
   #+end_src
+  #+begin_src R :eval no :exports none
+    View(bar) # 左上ペインに表として表示
+  #+end_src
+  #+html: <font size=6>
+  #+begin_src R :exports results :results output raw :tangle no
+    #' データの表示(reveal用)
+    bar |>
+      head(12) |> # 12日分を表示
+      ascii::ascii(include.rownames = FALSE) |>
+      ascii::print(type = "org")
+  #+end_src
+  #+html: </font>
 
 #+reveal: split
-- 気温を説明する 5 つの線形回帰モデルを検討する
-  - モデル1: 気温 = F(気圧)
-  - モデル2: 気温 = F(日射)
-  - モデル3: 気温 = F(気圧, 日射)
-  - モデル4: 気温 = F(気圧, 日射, 湿度)
-  - モデル5: 気温 = F(気圧, 日射, 雲量)
+- 気温を説明する5種類の線形回帰モデルを検討
+  - モデル1 : 気温 = F(気圧)
+  - モデル2 : 気温 = F(日射)
+  - モデル3 : 気温 = F(気圧, 日射)
+  - モデル4 : 気温 = F(気圧, 日射, 湿度)
+  - モデル5 : 気温 = F(気圧, 日射, 雲量)
 
-#+reveal: split
+** 分析の視覚化
+:PROPERTIES:
+:ID:       E5C084E0-BB7D-4C8B-B289-C1F617CE2B13
+:END:
 - 関連するデータの散布図
   #+begin_src R :file figs/03_pairs.png :exports results :results graphics
     #' 関連データの散布図
-    tw_df <- tw_subset |>
-      select(temp,press,solar,humid,cloud)
-    ggpairs(tw_df,
-            columnLabels=c("気温","気圧","日射","湿度","雲量"))
+    tw_subset |>
+      select(temp,press,solar,humid,cloud) |>
+      GGally::ggpairs(columnLabels=c("気温","気圧","日射","湿度","雲量"))
   #+end_src
 
 #+caption: 散布図
@@ -1302,26 +1317,23 @@
   
 #+reveal: split
 - モデル3の推定結果
-  #+begin_src R :file figs/03_model3.png :exports results :results graphics :tangle yes
+  #+begin_src R :file figs/03_model3.png :exports results :results graphics
     #' モデル3の推定結果
-    if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
-      if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
-        par(family = "BIZUDGothic-Regular")
-      else
-        par(family = "HiraMaruProN-W4")}
-    s3d <- scatterplot3d( 
-      tw_df[c("press","solar","temp")], # x,y,z の順
-      type="p", # plotの種類: "p"点，"l"線，"h"足付き
-      pch=16,# 点の種類 (?points 参照)
-      angle=45, # xy平面の見る方向 (適宜調整)
-      zlim=c(20,35),
-      color="brown",
-      xlab="気圧", ylab="日射", zlab="気温",
-      #'    highlight.3d=TRUE # 高さ(z)ごとに色を変える
-      )
-    s3d$plane3d(tw_lm3, col="blue", # 回帰式の定める平面の追加
-                draw_polygon=TRUE, # 平面の塗り潰しの設定
-                polygon_args=list(col=rgb(0,0,1,0.1))) 
+    if(Sys.info()[["sysname"]] == "Darwin") par(family = "HiraginoSans-W4")
+    s3d <- scatterplot3d::scatterplot3d( 
+                            tw_subset[c("press","solar","temp")], # x,y,z の順
+                            type="p", # plotの種類: "p"点，"l"線，"h"足付き
+                            pch=16,# 点の種類 (?points 参照)
+                            angle=45, # xy平面の見る方向 (適宜調整)
+                            zlim=c(20,35),
+                            color="brown",
+                            xlab="気圧", ylab="日射", zlab="気温",
+                            #'    highlight.3d=TRUE # 高さ(z)ごとに色を変える
+                            )
+    s3d$plane3d(
+          tw_lm3, col="blue", # 回帰式の定める平面の追加
+          draw_polygon=TRUE, # 平面の塗り潰しの設定
+          polygon_args=list(col=rgb(0,0,1,0.1))) 
   #+end_src
 
 #+caption: モデル3
@@ -1355,55 +1367,35 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/03_models.png]]
 
-#+reveal: split
-- 決定係数・自由度調整済み決定係数
-  - モデル1: 気温 = F(気圧)
-    #+begin_src R :exports results :tangle yes
-      #' モデル1
-      print(
-          paste("R2:",
-                signif(summary(tw_lm1)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_lm1)$adj.r.squared,digits=3)))
-    #+end_src
-  - モデル2: 気温 = F(日射)
-    #+begin_src R :exports results :tangle yes
-      #' モデル2
-      print(
-          paste("R2:",
-                signif(summary(tw_lm2)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_lm2)$adj.r.squared,digits=3)))
-    #+end_src
-  - モデル3: 気温 = F(気圧, 日射)
-    #+begin_src R :exports results :tangle yes
-      #' モデル3
-      print(
-          paste("R2:",
-                signif(summary(tw_lm3)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_lm3)$adj.r.squared,digits=3)))
-    #+end_src
-  - モデル4: 気温 = F(気圧, 日射, 湿度)
-    #+begin_src R :exports results :tangle yes
-      #' モデル4
-      print(
-          paste("R2:",
-                signif(summary(tw_lm4)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_lm4)$adj.r.squared,digits=3)))
-    #+end_src
-  - モデル5: 気温 = F(気圧, 日射, 雲量)
-    #+begin_src R :exports results :tangle yes
-      #' モデル5
-      print(
-          paste("R2:",
-                signif(summary(tw_lm5)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_lm5)$adj.r.squared,digits=3)))
-    #+end_src
-  
+** モデルの比較
+:PROPERTIES:
+:ID:       6463C58D-1F34-41FE-8F44-77CE478493C0
+:END:
+- 寄与率による比較
+  #+begin_src R :exports none
+    #' 関数 tibble::tribble() を利用して結果をまとめる
+    #' 行ごとにデータを並べてデータフレームを作ることができる
+    (baz <- tribble(
+       ~モデル, ~決定係数, ~自由度調整済み決定係数,
+       ## 列名は ~ で指定
+       "気温 = F(気圧)", summary(tw_lm1)$r.squared, summary(tw_lm1)$adj.r.squared,
+       "気温 = F(日射)", summary(tw_lm2)$r.squared, summary(tw_lm2)$adj.r.squared,
+       "気温 = F(気圧, 日射)", summary(tw_lm3)$r.squared, summary(tw_lm3)$adj.r.squared,
+       "気温 = F(気圧, 日射, 湿度)", summary(tw_lm4)$r.squared, summary(tw_lm4)$adj.r.squared,
+       "気温 = F(気圧, 日射, 雲量)", summary(tw_lm5)$r.squared, summary(tw_lm5)$adj.r.squared,
+       ))
+  #+end_src
+  #+begin_src R :eval no :exports none
+    View(baz) # 左上ペインに表として表示
+  #+end_src
+  #+html: <font size=6>
+  #+begin_src R :exports results :results output raw :tangle no
+    #' 比較結果の表示 (reveal用)
+    baz |> ascii::ascii(digits=3) |> ascii::print(type = "org")
+  #+end_src
+  #+html: </font>
 
+    
 * 次回の予定
 - 第1回 : 回帰モデルの考え方と推定
 - *第2回 : モデルの評価*

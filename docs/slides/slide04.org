@@ -1,12 +1,13 @@
 #+TITLE: 回帰分析 
 #+SUBTITLE: モデルの評価
 #+AUTHOR: 村田 昇
-#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2022-10-25 08:44:26 mura>
-:REVEAL:
-#+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
+# Time-stamp: <2023-10-16 18:17:39 mura>
+
+:REVEAL:
+#+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
@@ -16,119 +17,54 @@
 - 第3講以降は同じファイルを使うように整理する
 - 同じタイトルの項目にはメモを入れる
 - 演習の内容が異なるので演習は2つ作る形で対応
+- 雛型などは削除
 
 * 講義の内容
+:PROPERTIES:
+:ID:       4763443E-342A-4673-9288-2D1BFC250DEF
+:END:
 # 早稲田大学
-- 第1回: 回帰モデルの考え方と推定
-- *第2回: モデルの評価*
-- 第3回: モデルによる予測と発展的なモデル
+- 第1回 : 回帰モデルの考え方と推定
+- *第2回 : モデルの評価*
+- 第3回 : モデルによる予測と発展的なモデル
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 第4講 資料
-#+end_src
 #+begin_src R :exports none
   setwd("~/Desktop/lectures/mva/course")
 #+end_src
+#+begin_src R :exports none
+  ### 第4講 資料
+  library(tidyverse)
+  library(ggfortify)
+  #' 日本語表示・色の設定 (ggplot)
+  theme_set(theme_gray(base_size = 16))
+  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
+    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
+    else
+      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
+  library(see)
+  options(ggplot2.discrete.colour = function() scale_colour_material(),
+          ggplot2.discrete.fill = function() scale_fill_material())
+#+end_src
 
 * COMMENT 講義概要
+:PROPERTIES:
+:ID:       BF19D0E8-77C9-451E-B520-09244F22C4AF
+:END:
 # 東京大学
-- 第1回: 回帰モデルの考え方と推定
-- *第2回: モデルの評価*
-- 第3回: モデルによる予測と発展的なモデル
+- 第1回 : 回帰モデルの考え方と推定
+- *第2回 : モデルの評価*
+- 第3回 : モデルによる予測と発展的なモデル
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 第4講 サンプルコード
-  ###
-#+end_src
-#+begin_src R :exports none
+#+begin_src R :exports none :tangle no
   setwd("~/Desktop/lectures/u-tokyo/autumn/course")
 #+end_src
-
-* COMMENT 演習 (早稲田大学雛型)
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
-  # 早稲田大学
-** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - について以下を示しなさい．
-     - である．
-       #+begin_quote
-       #+begin_src latex
-       #+end_src
-       #+end_quote
-       
-** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - いずれも定義にもとづいて計算すればよい
-     #+begin_quote
-     #+begin_src latex
-     #+end_src
-     #+end_quote
-
-   
-
-#+OPTIONS: reveal_mousewheel:nil
-#+begin_src R :eval no :exports none :tangle yes
-  ### 第05回 資料
-#+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/slide")
+  ### 第4講 サンプルコード
+  library(tidyverse)
+  if(Sys.info()["sysname"] == "Darwin") { # MacOSか調べて日本語フォントを指定
+    theme_update(text = element_text(family = "HiraginoSans-W4"))}
 #+end_src
-
-* COMMENT 演習 (東京大学雛型)
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-# 東京大学
-** R: 概要
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- ほげほげな方法:
-  #+begin_src R :eval no
-  #+end_src
-** データセット
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- 以下のデータセットを使用します
-  - ~xxx~
-    #+begin_quote
-    データの素性
-    #+end_quote
-    [[https://www.foo.com/]]
-
-** 練習問題
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- 構成しなさい
-  - データ
-    #+begin_quote
-    formulaなどを与える
-    #+end_quote
-
-#+begin_src R :eval no :exports none :tangle yes
-  ###
-  ### 練習問題 
-  ###
-
-  ## 
-  ## 分析
-  ##
-#+end_src
-  
-** COMMENT 講義資料: 概略
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-- [[./code/bar.r][bar.r]] を確認してみよう
 
 
 * 回帰分析の復習
@@ -138,109 +74,94 @@
   - 目的変数 : \(y\) (1次元)
 - *回帰係数* \(\beta_{0},\beta_{1},\dotsc,\beta_{p}\) を用いた一次式
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      y=\beta_{0}+\beta_{1}x_{1}+\dotsb+\beta_{p}x_{p}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    y=\beta_{0}+\beta_{1}x_{1}+\dotsb+\beta_{p}x_{p}
+  \end{equation}
   #+end_quote
 - *誤差項* を含む確率モデルで観測データを表現
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      y_i=\beta_{0}+\beta_{1} x_{i1}+\cdots+\beta_{p}x_{ip}+\epsilon_i
-      \quad (i=1,\dotsc,n)
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    y_i=\beta_{0}+\beta_{1} x_{i1}+\cdots+\beta_{p}x_{ip}+\epsilon_i
+    \quad (i=1,\dotsc,n)
+  \end{equation}
   #+end_quote
 
 ** 簡潔な表現のための行列
 - デザイン行列 (説明変数)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      X=
-      \begin{pmatrix}
-        1 & x_{11} & x_{12} & \cdots & x_{1p} \\
-        1 & x_{21} & x_{22} & \cdots & x_{2p} \\
-        \vdots & \vdots & \vdots & & \vdots \\
-        1 & x_{n1} & x_{n2} & \cdots & x_{np}
-      \end{pmatrix}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X=
+    \begin{pmatrix}
+      1 & x_{11} & x_{12} & \cdots & x_{1p} \\
+      1 & x_{21} & x_{22} & \cdots & x_{2p} \\
+      \vdots & \vdots & \vdots & & \vdots \\
+      1 & x_{n1} & x_{n2} & \cdots & x_{np}
+    \end{pmatrix}
+  \end{equation}
   #+end_quote
 
 ** 簡潔な表現のためのベクトル
 - ベクトル (目的変数・誤差・回帰係数)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \boldsymbol{y}=
-      \begin{pmatrix}
-        y_{1} \\
-        y_2 \\
-        \vdots \\
-        y_n
-      \end{pmatrix},\quad
-      \boldsymbol{\epsilon}=
-      \begin{pmatrix}
-        \epsilon_{1} \\
-        \epsilon_2 \\
-        \vdots \\
-        \epsilon_n
-      \end{pmatrix},\quad
-      \boldsymbol{\beta}=
-      \begin{pmatrix}
-        \beta_{0} \\
-        \beta_{1} \\
-        \vdots \\
-        \beta_{p}
-      \end{pmatrix}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \boldsymbol{y}=
+    \begin{pmatrix}
+      y_{1} \\
+      y_2 \\
+      \vdots \\
+      y_n
+    \end{pmatrix},\quad
+    \boldsymbol{\epsilon}=
+    \begin{pmatrix}
+      \epsilon_{1} \\
+      \epsilon_2 \\
+      \vdots \\
+      \epsilon_n
+    \end{pmatrix},\quad
+    \boldsymbol{\beta}=
+    \begin{pmatrix}
+      \beta_{0} \\
+      \beta_{1} \\
+      \vdots \\
+      \beta_{p}
+    \end{pmatrix}
+  \end{equation}
   #+end_quote
 
 ** 問題の記述
 - 確率モデル
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \boldsymbol{y}
-      =X\boldsymbol{\beta}+\boldsymbol{\epsilon}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \boldsymbol{y}
+    =X\boldsymbol{\beta}+\boldsymbol{\epsilon},
+    \quad\boldsymbol{\epsilon}\sim\text{確率分布}
+  \end{equation}
   #+end_quote
 - 回帰式の推定 : *残差平方和* の最小化
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      S(\boldsymbol{\beta})
-      =(\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
-      (\boldsymbol{y}-X\boldsymbol{\beta})
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    S(\boldsymbol{\beta})
+    =(\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
+    (\boldsymbol{y}-X\boldsymbol{\beta})
+  \end{equation}
   #+end_quote
 
 ** 解の表現
 - 解の条件 : *正規方程式*
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      X^{\mathsf{T}}X\boldsymbol{\beta}
-      =X^{\mathsf{T}}\boldsymbol{y}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X^{\mathsf{T}}X\boldsymbol{\beta}
+    =X^{\mathsf{T}}\boldsymbol{y}
+  \end{equation}
   #+end_quote
 - 解の一意性 : *Gram 行列* \(X^{\mathsf{T}}X\) が正則
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \boldsymbol{\hat{\beta}}
-      =
-      (X^{\mathsf{T}}X)^{-1}
-      X^{\mathsf{T}}\boldsymbol{y}  
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \boldsymbol{\hat{\beta}}
+    =
+    (X^{\mathsf{T}}X)^{-1}
+    X^{\mathsf{T}}\boldsymbol{y}  
+  \end{equation}
   #+end_quote
 
 ** 最小二乗推定量の性質 
@@ -251,267 +172,265 @@
   \(\boldsymbol{\hat{\epsilon}}=\boldsymbol{y}-\boldsymbol{\hat{y}}\)
   はあてはめ値 \(\boldsymbol{\hat{y}}\) と直交
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{y}}
-      =0
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{y}}
+    =0
+  \end{equation}
   #+end_quote
 - 回帰式は説明変数と目的変数の *標本平均* を通過
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \bar{y}
-      =
-      (1,\bar{\boldsymbol{x}}^{\mathsf{T}})\boldsymbol{\hat{\beta}},
-      \quad
-      \bar{\boldsymbol{x}}
-      =\frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i,
-      \quad
-      \bar{y}
-      =\frac{1}{n}\sum_{i=1}^ny_i,
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \bar{y}
+    =
+    (1,\bar{\boldsymbol{x}}^{\mathsf{T}})\boldsymbol{\hat{\beta}},
+    \quad
+    \bar{\boldsymbol{x}}
+    =\frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i,
+    \quad
+    \bar{y}
+    =\frac{1}{n}\sum_{i=1}^ny_i,
+  \end{equation}
   #+end_quote
 
 ** 寄与率
 - *決定係数* (R-squared)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      R^2
-      =
-      1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    R^2
+    =
+    1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
+  \end{equation}
   #+end_quote
 - *自由度調整済み決定係数* (adjusted R-squared)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \bar{R}^2
-      =
-      1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
-      {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \bar{R}^2
+    =
+    1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
+    {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
+  \end{equation}
   #+end_quote
   - 不偏分散で補正
 
-** 実データによる例
+
+* 解析の事例
 # 東京大学 (初)
 # 早稲田大学 (再)
-- 気象庁より取得した東京の気候データ
-  #+begin_src R :exports results :tangle yes
-    ## データの読み込み
-    tw_data <- read.csv("data/tokyo_weather.csv")
-    tw_subset <- subset(tw_data, # 8月のデータの抽出
-                        subset= month==8)
-    head(tw_subset[,-1], 14) # 2週間分を表示
+** 実データによる例
+:PROPERTIES:
+:ID:       C513A101-EB45-4E7A-A4D3-1A8819EF6183
+:END:
+- 気象庁より取得した東京の気候データ 
+  - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
+  - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
+
+** 東京の8月の気候の分析
+:PROPERTIES:
+:ID:       A489FC6E-DE7F-40F3-AF84-149780E42205
+:END:
+- データの一部
+  #+begin_src R :exports none
+    #' @exercise 東京の気候データを用いた例
     
-    ### モデル式
+    #' データの読み込み
+    tw_subset <- read_csv("data/tokyo_weather.csv") |>
+      filter(month == 8) |> # 8月のデータの抽出
+      mutate(date=date(paste(year,month,day,sep="-")), .before = 1) |>
+      select(-c(year,month,day,day_of_week))
+
+    #' モデル式
     tw_model1 <- temp ~ press
     tw_model2 <- temp ~ solar
     tw_model3 <- temp ~ press + solar
     tw_model4 <- temp ~ press + solar + humid
     tw_model5 <- temp ~ press + solar + cloud
-    
-    ## 推定
-    tw_est1 <- lm(tw_model1, data=tw_subset, y=TRUE)
-    tw_est2 <- lm(tw_model2, data=tw_subset, y=TRUE)
-    tw_est3 <- lm(tw_model3, data=tw_subset, y=TRUE)
-    tw_est4 <- lm(tw_model4, data=tw_subset, y=TRUE)
-    tw_est5 <- lm(tw_model5, data=tw_subset, y=TRUE)
+
+    #' 推定
+    tw_lm1 <- lm(tw_model1, data=tw_subset, y=TRUE)
+    tw_lm2 <- lm(tw_model2, data=tw_subset, y=TRUE)
+    tw_lm3 <- lm(tw_model3, data=tw_subset, y=TRUE)
+    tw_lm4 <- lm(tw_model4, data=tw_subset, y=TRUE)
+    tw_lm5 <- lm(tw_model5, data=tw_subset, y=TRUE)
   #+end_src
 
-#+reveal: split
-- 関連するデータの散布図
-  #+header: :width 720 :height 720 :res 100
-  #+begin_src R :file figs/03_pairs.png :exports results :results graphics :tangle yes
-    ## 関連データの散布図
-    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    tw_df <- subset(tw_subset,
-                    select=c(temp,press,solar,humid,cloud))
-    plot(tw_df, labels=c("気温","気圧","日射","湿度","雲量"),
-         col="blue")   # 散布図
+  #+begin_src R :exports none
+    #' データの表示
+    #' 列名を日本語にして表示する
+    foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
+                        c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+    (bar <- tw_subset |> rename(all_of(foo)))
   #+end_src
-
-#+CAPTION: 散布図
-#+NAME: fig:03_pairs
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
-[[file:figs/03_pairs.png]]
+  #+begin_src R :eval no :exports none
+    View(bar) # 左上ペインに表として表示
+  #+end_src
+  #+html: <font size=6>
+  #+begin_src R :exports results :results output raw :tangle no
+    #' データの表示(reveal用)
+    bar |>
+      head(12) |> # 12日分を表示
+      ascii::ascii(include.rownames = FALSE) |>
+      ascii::print(type = "org")
+  #+end_src
+  #+html: </font>
 
 #+reveal: split
-- 気温を説明する 5 つの線形回帰モデルを検討する
+- 気温を説明する5種類の線形回帰モデルを検討
   - モデル1 : 気温 = F(気圧)
   - モデル2 : 気温 = F(日射)
   - モデル3 : 気温 = F(気圧, 日射)
   - モデル4 : 気温 = F(気圧, 日射, 湿度)
   - モデル5 : 気温 = F(気圧, 日射, 雲量)
 
-#+reveal: split
-- モデル1の推定結果
-  #+header: :width 720 :height 720 :res 100
-  #+begin_src R :file figs/03_model1.png :exports results :results graphics :tangle yes
-    ## モデル1の推定結果
-    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    plot(temp ~ press, data=tw_subset,
-         xlab="気圧", ylab="気温",
-         col="brown", pch=20)
-    abline(tw_est1, col="blue", lwd=3)
+** 分析の視覚化
+:PROPERTIES:
+:ID:       E5C084E0-BB7D-4C8B-B289-C1F617CE2B13
+:END:
+- 関連するデータの散布図
+  #+begin_src R :file figs/03_pairs.png :exports results :results graphics
+    #' 関連データの散布図
+    tw_subset |>
+      select(temp,press,solar,humid,cloud) |>
+      GGally::ggpairs(columnLabels=c("気温","気圧","日射","湿度","雲量"))
   #+end_src
 
-#+CAPTION: モデル1
-#+NAME: fig:
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: 散布図
+#+name: fig:03_pairs
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/03_pairs.png]]
+
+#+reveal: split
+- モデル1の推定結果
+  #+begin_src R :file figs/03_model1.png :exports results :results graphics
+    #' モデル1の推定結果
+    tw_subset |>
+      ggplot(aes(x = press, y = temp)) +
+      geom_point(colour = "brown", shape = 20) +
+      geom_smooth(method = lm, se = FALSE, colour = "blue") +
+      labs(x = "気圧", y = "気温")
+  #+end_src
+
+#+caption: モデル1
+#+name: fig:03_model1
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/03_model1.png]]
 
 #+reveal: split
 - モデル2の推定結果
-  #+header: :width 720 :height 720 :res 100
-  #+begin_src R :file figs/03_model2.png :exports results :results graphics :tangle yes
-    ## モデル1の推定結果
-    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    plot(temp ~ solar, data=tw_subset,
-         xlab="日射", ylab="気温",
-         col="brown", pch=20)
-    abline(tw_est2, col="blue", lwd=3)
+  #+begin_src R :file figs/03_model2.png :exports results :results graphics
+    #' モデル2の推定結果
+    tw_subset |>
+      ggplot(aes(x = solar, y = temp)) +
+      geom_point(colour = "brown", shape = 20) +
+      geom_smooth(method = lm, se = FALSE, colour = "blue") +
+      labs(x = "気圧", y = "気温")
   #+end_src
 
-#+CAPTION: モデル2
-#+NAME: fig:
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: モデル2
+#+name: fig:03_model2
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/03_model2.png]]
   
 #+reveal: split
 - モデル3の推定結果
-  #+header: :width 720 :height 720 :res 100
-  #+begin_src R :file figs/03_model3.png :exports results :results graphics :tangle yes
-    ## モデル3の推定結果
-    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    library(scatterplot3d) # パッケージの読み込み
-    s3d <- scatterplot3d( 
-        tw_df[c("press","solar","temp")], # x,y,z の順
-        type="p", # plotの種類: "p"点，"l"線，"h"足付き
-        pch=16,# 点の種類 (?points 参照)
-        angle=45, # xy平面の見る方向 (適宜調整)
-        zlim=c(20,35),
-        color="brown",
-        xlab="気圧", ylab="日射", zlab="気温",
-        ##    highlight.3d=TRUE # 高さ(z)ごとに色を変える
-        )
-    s3d$plane3d(tw_est3, col="blue", # 回帰式の定める平面の追加
-                draw_polygon=TRUE, # 平面の塗り潰しの設定
-                polygon_args=list(col=rgb(0,0,1,0.1))) 
+  #+begin_src R :file figs/03_model3.png :exports results :results graphics
+    #' モデル3の推定結果
+    if(Sys.info()[["sysname"]] == "Darwin") par(family = "HiraginoSans-W4")
+    s3d <- scatterplot3d::scatterplot3d( 
+                            tw_subset[c("press","solar","temp")], # x,y,z の順
+                            type="p", # plotの種類: "p"点，"l"線，"h"足付き
+                            pch=16,# 点の種類 (?points 参照)
+                            angle=45, # xy平面の見る方向 (適宜調整)
+                            zlim=c(20,35),
+                            color="brown",
+                            xlab="気圧", ylab="日射", zlab="気温",
+                            #'    highlight.3d=TRUE # 高さ(z)ごとに色を変える
+                            )
+    s3d$plane3d(
+          tw_lm3, col="blue", # 回帰式の定める平面の追加
+          draw_polygon=TRUE, # 平面の塗り潰しの設定
+          polygon_args=list(col=rgb(0,0,1,0.1))) 
   #+end_src
 
-#+CAPTION: モデル3
-#+NAME: fig:03_model3
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: モデル3
+#+name: fig:03_model3
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/03_model3.png]]
 
 #+reveal: split
 - 観測値とあてはめ値の比較
-  #+header: :width 720 :height 720 :res 100
-  #+begin_src R :file figs/03_models.png :exports results :results graphics :tangle yes
-    ## 観測値とあてはめ値の比較
-    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    with(tw_est1,
-         plot(y,fitted.values,col="orange",pch=17, # 三角
-              xlab="気温",
-              ylab="あてはめ値",ylim=range(y)))   
-    abline(0,1,col="red",lwd=2)
-    with(tw_est2,
-         points(y,fitted.values,col="green",pch=15)) # 四角
-    with(tw_est3,
-         points(y,fitted.values,col="blue",pch=21))  # 丸
-    with(tw_est4,
-         points(y,fitted.values,col="brown",pch=23))  # 菱形
-    with(tw_est5,
-         points(y,fitted.values,col="cyan",pch=25))  # 三角
-    legend("bottomright",inset=.05, # 凡例の作成
-           col=c("orange","green","blue","brown","cyan"), pch=c(17,15,21,23,25), 
-           legend=c("モデル1","モデル2","モデル3","モデル4","モデル5"))
+  #+begin_src R :file figs/03_models.png :exports results :results graphics
+    #' 観測値とあてはめ値の比較
+    tw_subset |>
+      mutate(モデル1 = fitted(tw_lm1),    # モデルごとに予測値をデータフレームに追加
+             モデル2 = fitted(tw_lm2),
+             モデル3 = fitted(tw_lm3),
+             モデル4 = fitted(tw_lm4),
+             モデル5 = fitted(tw_lm5)) |>
+      pivot_longer(starts_with("モデル"), # モデルをラベルとして予測値をまとめる
+                   names_to = "model", values_to = "fitted") |>
+      ggplot(aes(x = temp, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
+      geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
+      geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
+      labs(x = "気温", y = "あてはめ値") +
+      xlim(22,32) + ylim(22,32) + theme(legend.position = c(.88,.15))
   #+end_src
-#+CAPTION: モデルの比較
-#+NAME: fig:03_models
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+
+#+caption: モデルの比較
+#+name: fig:03_models
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/03_models.png]]
 
-#+reveal: split
-- 決定係数・自由度調整済み決定係数
-  - モデル1 : 気温 = F(気圧)
-    #+begin_src R :exports results :tangle yes
-      ## モデル1
-      print(
-          paste("R2:",
-                signif(summary(tw_est1)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_est1)$adj.r.squared,digits=3)))
-    #+end_src
-  - モデル2 : 気温 = F(日射)
-    #+begin_src R :exports results :tangle yes
-      ## モデル2
-      print(
-          paste("R2:",
-                signif(summary(tw_est2)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_est2)$adj.r.squared,digits=3)))
-    #+end_src
-  - モデル3 : 気温 = F(気圧, 日射)
-    #+begin_src R :exports results :tangle yes
-      ## モデル3
-      print(
-          paste("R2:",
-                signif(summary(tw_est3)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_est3)$adj.r.squared,digits=3)))
-    #+end_src
-  - モデル4 : 気温 = F(気圧, 日射, 湿度)
-    #+begin_src R :exports results :tangle yes
-      ## モデル4
-      print(
-          paste("R2:",
-                signif(summary(tw_est4)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_est4)$adj.r.squared,digits=3)))
-    #+end_src
-  - モデル5 : 気温 = F(気圧, 日射, 雲量)
-    #+begin_src R :exports results :tangle yes
-      ## モデル5
-      print(
-          paste("R2:",
-                signif(summary(tw_est5)$r.squared,digits=3),
-                "; adj. R2:",
-                signif(summary(tw_est5)$adj.r.squared,digits=3)))
-    #+end_src
-  
+** モデルの比較
+:PROPERTIES:
+:ID:       6463C58D-1F34-41FE-8F44-77CE478493C0
+:END:
+- 寄与率による比較
+  #+begin_src R :exports none
+    #' 関数 tibble::tribble() を利用して結果をまとめる
+    #' 行ごとにデータを並べてデータフレームを作ることができる
+    (baz <- tribble(
+       ~モデル, ~決定係数, ~自由度調整済み決定係数,
+       ## 列名は ~ で指定
+       "気温 = F(気圧)", summary(tw_lm1)$r.squared, summary(tw_lm1)$adj.r.squared,
+       "気温 = F(日射)", summary(tw_lm2)$r.squared, summary(tw_lm2)$adj.r.squared,
+       "気温 = F(気圧, 日射)", summary(tw_lm3)$r.squared, summary(tw_lm3)$adj.r.squared,
+       "気温 = F(気圧, 日射, 湿度)", summary(tw_lm4)$r.squared, summary(tw_lm4)$adj.r.squared,
+       "気温 = F(気圧, 日射, 雲量)", summary(tw_lm5)$r.squared, summary(tw_lm5)$adj.r.squared,
+       ))
+  #+end_src
+  #+begin_src R :eval no :exports none
+    View(baz) # 左上ペインに表として表示
+  #+end_src
+  #+html: <font size=6>
+  #+begin_src R :exports results :results output raw :tangle no
+    #' 比較結果の表示 (reveal用)
+    baz |> ascii::ascii(digits=3) |> ascii::print(type = "org")
+  #+end_src
+  #+html: </font>
 
-* 残差の性質
+
+* あてはめ値の性質
 ** あてはめ値
 - さまざまな表現
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \boldsymbol{\hat{y}}
-      &=X\boldsymbol{\hat{\beta}}\\
-      &\qquad(\boldsymbol{\hat{\beta}}=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}を代入)\\
-      &=X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}
-      && (A) \\
-      &\qquad(\boldsymbol{y}=X\boldsymbol{\beta}+\boldsymbol{\epsilon}を代入)\\
-      &=X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\boldsymbol{\beta}
-        +X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}\\
-      &=X\boldsymbol{\beta}
-        +X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
-      && (B) \\
-    \end{align}
-  #+end_src
+  \begin{align}
+    \boldsymbol{\hat{y}}
+    &=X\boldsymbol{\hat{\beta}}\\
+    &\qquad(\boldsymbol{\hat{\beta}}=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}を代入)\\
+    &=X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}
+    && (A) \\
+    &\qquad(\boldsymbol{y}=X\boldsymbol{\beta}+\boldsymbol{\epsilon}を代入)\\
+    &=X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\boldsymbol{\beta}
+      +X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}\\
+    &=X\boldsymbol{\beta}
+      +X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
+    && (B) \\
+  \end{align}
   #+end_quote
   - (A) あてはめ値は *観測値の重み付けの和* で表される 
   - (B) あてはめ値と観測値は *誤差項* の寄与のみ異なる
@@ -519,43 +438,37 @@
 ** あてはめ値と誤差
 - 残差と誤差の関係
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \boldsymbol{\hat{\epsilon}}
-      &=\boldsymbol{y}-\boldsymbol{\hat{y}}\\
-      &=\boldsymbol{\epsilon}
-        -X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-        \boldsymbol{\epsilon}\\
-      &=\bigl(I
-        -X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-        \bigr)
-        \boldsymbol{\epsilon}
-      && (C) \\
-    \end{align}
-  #+end_src
+  \begin{align}
+    \boldsymbol{\hat{\epsilon}}
+    &=\boldsymbol{y}-\boldsymbol{\hat{y}}\\
+    &=\boldsymbol{\epsilon}
+      -X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+      \boldsymbol{\epsilon}\\
+    &=\bigl(I
+      -X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+      \bigr)
+      \boldsymbol{\epsilon}
+    && (C) \\
+  \end{align}
   #+end_quote
   - (C) 残差は *誤差の重み付けの和* で表される
 
 ** ハット行列
 - 定義
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      H=
-      X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    H=
+    X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+  \end{equation}
   #+end_quote
 - ハット行列 \(H\) による表現
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \boldsymbol{\hat{y}}
-      &=H\boldsymbol{y}\\
-      \boldsymbol{\hat{\epsilon}}
-      &=(I-H)\boldsymbol{\epsilon}
-    \end{align}
-  #+end_src
+  \begin{align}
+    \boldsymbol{\hat{y}}
+    &=H\boldsymbol{y}\\
+    \boldsymbol{\hat{\epsilon}}
+    &=(I-H)\boldsymbol{\epsilon}
+  \end{align}
   #+end_quote
   - あてはめ値や残差は \(H\) を用いて簡潔に表現される
 
@@ -565,13 +478,11 @@
 - 対角成分 (*テコ比*; leverage)
   は観測データが自身の予測に及ぼす影響の度合を表す
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \hat{y}_{j}
-      =
-      (H)_{jj}y_{j} + \text{(それ以外のデータの寄与)}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \hat{y}_{j}
+    =
+    (H)_{jj}y_{j} + \text{(それ以外のデータの寄与)}
+  \end{equation}
   #+end_quote
   - \((A)_{ij}\) は行列 \(A\) の \((i,j)\) 成分
   - テコ比が小さい : 他のデータでも予測が可能
@@ -591,48 +502,42 @@
   - \(H\) は対称行列であること
   - \(H\) は羃等であること
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-        H^{2}=H,\quad
-        (I-H)^{2}=I-H
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      H^{2}=H,\quad
+      (I-H)^{2}=I-H
+    \end{equation}
     #+end_quote
   - 以下の等式が成り立つこと
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-        HX=X,\quad
-        X^{\mathsf{T}}H=X^{\mathsf{T}}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      HX=X,\quad
+      X^{\mathsf{T}}H=X^{\mathsf{T}}
+    \end{equation}
     #+end_quote
 
-** ヒント
+** COMMENT ヒント
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - いずれも \(H\) の定義にもとづいて計算すればよい
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      H^{\mathsf{T}}
-      &=
-        (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})^{\mathsf{T}}\\
-      H^{2}
-      &=
-        (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})
-        (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\\
-      (I-H)^{2}
-      &=
-        I-2H+H^{2}\\
-      HX
-      &=
-        (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})X\\
-      X^{\mathsf{T}}H
-      &=(HX)^{\mathsf{T}}
-    \end{align}
-  #+end_src
+  \begin{align}
+    H^{\mathsf{T}}
+    &=
+      (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})^{\mathsf{T}}\\
+    H^{2}
+    &=
+      (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})
+      (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\\
+    (I-H)^{2}
+    &=
+      I-2H+H^{2}\\
+    HX
+    &=
+      (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})X\\
+    X^{\mathsf{T}}H
+    &=(HX)^{\mathsf{T}}
+  \end{align}
   #+end_quote
 
 
@@ -640,82 +545,74 @@
 ** 最小二乗推定量の性質
 - 推定量と誤差の関係
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \boldsymbol{\hat{\beta}}
-      &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}\\
-      &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}(X\boldsymbol{\beta}+\boldsymbol{\epsilon}) \\
-      &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\boldsymbol{\beta}
-        +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}\\
-      &=\boldsymbol{\beta}
-        +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
-    \end{align}
-  #+end_src
+  \begin{align}
+    \boldsymbol{\hat{\beta}}
+    &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}\\
+    &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}(X\boldsymbol{\beta}+\boldsymbol{\epsilon}) \\
+    &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\boldsymbol{\beta}
+      +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}\\
+    &=\boldsymbol{\beta}
+      +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
+  \end{align}
   #+end_quote
-- 正規分布の重要な性質
+- 正規分布の重要な性質 (*再生性*)
   #+begin_quote
-  *正規分布に従う独立な確率変数の和は正規分布に従う*
+  正規分布に従う独立な確率変数の和は正規分布に従う
   #+end_quote
   # - 誤差が正規分布に従うならば最小二乗推定量は正規分布に従う
 
 ** 推定量の分布
 # 早稲田大学
-- 誤差の仮定 : 独立，平均0 分散 \(\sigma^{2}\) の正規分布
+- *誤差の仮定* : 独立，平均0 分散 \(\sigma^{2}\) の *正規分布*
 - 推定量は以下の多変量正規分布に従う
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \mathbb{E}[\boldsymbol{\hat{\beta}}]
-      &=\boldsymbol{\beta}\\
-      \mathrm{Cov}(\boldsymbol{\hat{\beta}})
-      &=\sigma^{2}(X^{\mathsf{T}}X)^{-1}
-    \end{align}
-    \begin{equation}
-      \boldsymbol{\hat{\beta}}
-      \sim
-      \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
-    \end{equation}
-  #+end_src
+  \begin{align}
+    \mathbb{E}[\boldsymbol{\hat{\beta}}]
+    &=\boldsymbol{\beta}\\
+    \mathrm{Cov}(\boldsymbol{\hat{\beta}})
+    &=\sigma^{2}(X^{\mathsf{T}}X)^{-1}
+  \end{align}
+  \begin{equation}
+    \boldsymbol{\hat{\beta}}
+    \sim
+    \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
+  \end{equation}
   #+end_quote
 
 ** COMMENT 推定量の分布
 # 東京大学
-- 誤差の仮定 : 独立，平均0 分散 \(\sigma^{2}\) の正規分布
+- *誤差の仮定* : 独立，平均0 分散 \(\sigma^{2}\) の正規分布
 - 推定量は以下の多変量正規分布に従う
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \mathbb{E}[\boldsymbol{\hat{\beta}}]
-      &=\mathbb{E}[\boldsymbol{\beta}
-        +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}]
-        =\boldsymbol{\beta}\\
-      \mathrm{Cov}(\boldsymbol{\hat{\beta}})
-      &=\mathbb{E}[
-        (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})
-         (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})^{\mathsf{T}}]
-        =\sigma^{2}(X^{\mathsf{T}}X)^{-1}
-    \end{align}
-    \begin{equation}
-      \boldsymbol{\hat{\beta}}
-      \sim
-      \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
-    \end{equation}
-  #+end_src
+  \begin{align}
+    \mathbb{E}[\boldsymbol{\hat{\beta}}]
+    &=\mathbb{E}[\boldsymbol{\beta}
+      +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}]
+      =\boldsymbol{\beta}\\
+    \mathrm{Cov}(\boldsymbol{\hat{\beta}})
+    &=\mathbb{E}[
+      (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})
+       (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})^{\mathsf{T}}]
+      =\sigma^{2}(X^{\mathsf{T}}X)^{-1}
+  \end{align}
+  \begin{equation}
+    \boldsymbol{\hat{\beta}}
+    \sim
+    \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
+  \end{equation}
   #+end_quote
 
 #+reveal: split
 - 通常 \(\sigma^{2}\) は未知，必要な場合には不偏分散で代用
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \hat{\sigma^{2}}
-      =\frac{S}{n{-}p{-}1}
-      =\frac{1}{n{-}p{-}1}\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}
-      =\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \hat{\sigma^{2}}
+    =\frac{S}{n{-}p{-}1}
+    =\frac{1}{n{-}p{-}1}\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}
+    =\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2
+  \end{equation}
   #+end_quote
-- この性質を利用してモデルの評価を行う
+- これらの性質を利用してモデルの評価を行う
 
   
 * COMMENT 実習
@@ -726,41 +623,49 @@
 ** R : 乱数を用いた人工データの生成
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       8519B6AE-04EC-4F97-83C7-00F6F2D3A173
 :END:
-- 正規乱数を用いた線形単回帰モデルの例
-  #+begin_src R :eval no :tangle yes
-    ### 人工データによる推定量の性質の確認
-    set.seed(987) # 乱数のシード
-    x.obs <- c(1, 3, 5, 7) # 説明変数の観測値
-    epsilon <- rnorm(length(x.obs),sd=0.5) # 誤差項の生成
-    y.obs <- 2 - 3*x.obs + epsilon # 目的変数の観測値
-    myData <- data.frame(x=x.obs,y=y.obs) # データフレームの作成
-    beta.est <- lm(y ~ x, data=myData) # 回帰係数の推定
-    coef(beta.est) # 回帰係数の取得
-    summary(beta.est) # 分析結果の概要の表示
+- [[color:green][正規乱数を用いた線形単回帰モデル]]
+  #+begin_src R :exports none
+    #' @exercise 人工データによる推定量の性質の確認
+  #+end_src
+  #+begin_src R :exports code
+    set.seed(987) # 乱数のシード値を設定
+    x_obs <- c(1,3,5,7) # 説明変数の観測値
+    epsilon <- rnorm(length(x_obs), sd = 0.5) # 誤差項の生成
+    y_obs <- 2 - 3 * x_obs + epsilon # 目的変数の観測値
+    my_data <- tibble(x = x_obs, y = y_obs) # データフレームの作成
+    beta_lm <- lm(y ~ x, data = my_data) # 回帰係数の推定
+    coef(beta_lm) # 回帰係数の取得
+    summary(beta_lm) # 分析結果の概要の表示
   #+end_src
 
 ** R : 数値実験 (Monte-Carlo法)
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       045FE955-E085-4DD1-ADB4-2C666D77B34D
 :END:
 - 実験のためのコードは以下のようになる
-  #+begin_src R :eval no
+  #+begin_src R :eval no :tangle no
     mc <- 5000 # 実験回数を指定
-    myTrial <- function(){ # 1回の試行を行うプログラム
-                                        # 乱数生成と推定の処理
+    mc_trial <- function() { # 1回の試行を行うプログラム
+        ## 乱数生成と推定の処理
         return(返り値)} 
-    myData <- as.data.frame(t( # 実験結果を転置してデータフレームに変換
-        replicate(mc, myTrial()))) # Monte-Carlo実験
-    ## 適切な統計・視覚化処理 (下記は例)
-    apply(myData,2,var) # 各列の分散の計算
-    plot(myData) # 散布図行列の描画
-    hist(myData[[k]]) # k列目のデータのヒストグラム
+    mc_data <- 
+        replicate(mc, my_trial()) |> # Monte-Carlo実験
+        t() |> as_tibble() # 転置(関数t())してデータフレームに変換
+    #' 適切な統計・視覚化処理 (下記は例)
+    mc_data |>
+      summarise(across(everything(), var)) # 各列の分散の計算
+    ggpairs(mc_data) # 散布図行列の描画
+    tibble(x = mc_data[[k]]) |> # k列目のベクトルで新しいデータフレームを作成
+      ggplot(aes(x = x)) + geom_histogram() # k列目のデータのヒストグラム
   #+end_src
 
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       485E93F0-156B-4912-A9A2-B6984BA56135
 :END:
 - 最小二乗推定量の性質を
   数値実験 (Monte-Carlo法) により
@@ -768,74 +673,100 @@
   - 以下のモデルに従う人工データを生成する
     #+begin_quote
     説明変数の観測データ : 
-    #+begin_src latex
-      \begin{equation}
-        \{1, 20, 13, 9, 5, 15, 19, 8, 3, 4\}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \{1, 20, 13, 9, 5, 15, 19, 8, 3, 4\}
+    \end{equation}
     確率モデル :
-    #+begin_src latex
-      \begin{equation}
-        y=-1+2\times x + \epsilon,
-        \quad \epsilon\sim\mathcal{N}(0,2)
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      y=-1+2\times x + \epsilon,
+      \quad \epsilon\sim\mathcal{N}(0,2)
+    \end{equation}
     #+end_quote
   - 観測データから回帰係数を推定する
   - 実験を複数回繰り返し
     推定値(\(\hat\beta_{0},\hat\beta_{1}\))の分布を調べる
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 推定量の性質
-  ### 
-  
-  ### 人工データによる確認
-  set.seed(2468) # 乱数のシード (適宜変更せよ)
-  
-  ## 試行の設定
-  x.obs <- c(1, 20, 13, 9, 5, 15, 19, 8, 3, 4) # 説明変数の観測値
-  beta0 <- -1 # 切片
-  beta1 <-  2 # xの係数
-  sigma <-  sqrt(2) # 誤差の標準偏差(分散の平方根)
-  myTrial <- function(){ 
-      epsilon <- rnorm(length(x.obs),sd=sigma) # 誤差項の生成
-      y.obs <- beta0 + beta1*x.obs + epsilon # 目的変数の観測値
-      dat <- data.frame(x=x.obs,y=y.obs) # データフレームの作成
-      est <- lm(y ~ x, data=dat) # 回帰係数の推定
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 推定量の性質を調べる数値シミュレーション (Monte-Carlo法)
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 人工データによる確認
+  set.seed(2468) # 乱数のシード値 (適宜変更せよ)
+
+  #' 試行の設定
+  x_obs <- c(1, 20, 13, 9, 5, 15, 19, 8, 3, 4) # 説明変数の観測値
+  beta0 <- -1 # 切片(真値)を指定
+  beta1 <-  2 # xの係数(真値)を指定
+  sigma <-  sqrt(2) # 誤差の標準偏差(分散の平方根)を設定
+  mc_trial <- function(){ 
+      epsilon <- rnorm(length(x_obs), sd = sigma) # 誤差項の生成
+      y_obs <- beta0 + beta1 * x_obs + epsilon # 目的変数の観測値
+      dat <- tibble(x = x_obs, y = y_obs) # データフレームの作成
+      est <- lm(y ~ x, data = dat) # 回帰係数の推定
       return(coef(est)) # 推定された係数だけ返す
   }
-  
-  ## 数値実験 (少数で確認してみる)
+
+  #' 数値実験 (少数で確認してみる)
   mc <- 5 # 実験回数
-  replicate(mc, myTrial())
-  
-  ## 数値実験
+  replicate(mc, mc_trial())
+
+  #' 数値実験
   mc <- 5000 # 実験回数
-  myData <- as.data.frame(t( # 得られる結果を転置してデータフレームにしておく
-      replicate(mc, myTrial()))) # mc回試行を行う
-  names(myData) <- c("beta0.est","beta1.est") # 列名を変更
-  
-  ## 回帰係数の分布(2次元)
-  plot(beta1.est ~ beta0.est, data=myData,
-       col="blue", pch=20) # 推定値の散布図
-  abline(v=beta0, col="orchid")  # beta0の真値 (垂直線)
-  abline(h=beta1, col="orchid")  # beta1の真値 (水平線)
-  
-  ## 各回帰係数の分布
-  X <- cbind(1,x.obs) # デザイン行列
-  beta.cov <- sigma^2*solve(crossprod(X)) # 推定量の共分散行列
-  beta.mean <- c(beta0,beta1)
-  ## beta0 (k=1), beta1 (k=2)
-  for(k in 1:2){ # 同じ処理であればfor文などの利用を推奨
-      hist(myData[[k]], # 実験により得られた分布
-           breaks=30, freq=FALSE, # 密度で表示
-           border="blue", col="lightblue",
-           xlab=names(myData)[k], main="histogram of estimates")
-      abline(v=beta.mean[k], col="orchid", lwd=2) # 真の値
-      curve(dnorm(x,mean=beta.mean[k],sd=sqrt(beta.cov[k,k])),
-            col="orchid", lwd=2, add=TRUE) # 理論分布
+  mc_data <- replicate(mc, mc_trial()) |> # mc回試行を行う
+    t() |> as_tibble() # 得られる結果を転置してデータフレームにする
+  names(mc_data) <- c("beta0","beta1") # 列名を変更(上書き)
+
+  #' 回帰係数の分布(2次元)
+  mc_data |>
+    ggplot(aes(x = beta0, y = beta1)) +
+    geom_point(colour = "blue", shape = 20) + # 推定値の散布図
+    geom_vline(xintercept = beta0, colour = "orchid") + # beta0の真値 (垂直線)
+    geom_hline(yintercept = beta1, colour = "orchid")   # beta1の真値 (水平線)
+
+  #' @notes
+  #' 軸名をギリシャ文字にしたい場合は以下を加えればよい
+  last_plot() + # 直前のプロットを指す
+    labs(x = expression(beta[0]), y = expression(beta[1]))
+  #' 周辺分布のヒストグラムを追加する場合は関数 ggExtra::ggMarginal() が利用できる
+  #' 必要であれば install.packages("ggExtra") を実行
+  ggExtra::ggMarginal(last_plot(), type = "histogram")
+  #' 各回帰係数の周辺分布は以下のようにしても描ける
+  X <- cbind(1, x_obs) # デザイン行列
+  beta_cov <- sigma^2 * solve(crossprod(X)) # 推定量の共分散行列
+  beta_mean <- c(beta0, beta1)
+  #' beta0 (k=1), beta1 (k=2)
+  for(k in 1:2) { # 同じ処理であればfor文などの利用を推奨
+    bar <- tibble(x = mc_data[[k]]) |>
+      ggplot(aes(x = x)) + 
+      geom_histogram(aes(y = after_stat(density)), bins = 30,
+                     fill = "lightblue", colour = "blue") +
+      geom_vline(xintercept = beta_mean[k],
+                 colour = "orchid") + # 真の値
+      geom_function(fun = \(x) dnorm(x,
+                                     mean = beta_mean[k],
+                                     sd = sqrt(beta_cov[k, k])),
+                    colour = "orchid") + # 理論分布
+      labs(x = names(mc_data)[k])
+    print(bar) # for 文などの block 内でのグラフ表示は明示的に print する
   }
+  #' あるいは変数名を評価して列を指定することもできる
+  for(k in 1:2) {
+    foo <- sym(names(mc_data)[k]) # 文字列を扱うための手続き
+    bar <- mc_data |>
+      ggplot(aes(x = !!foo)) + # foo に入った文字列を評価する
+      geom_histogram(aes(y = after_stat(density)), bins = 30,
+                     fill = "lightblue", colour = "blue") +
+      geom_vline(xintercept = beta_mean[k], colour = "orchid") + # 真の値
+      geom_function(fun = \(x) dnorm(x,
+                                     mean = beta_mean[k],
+                                     sd = sqrt(beta_cov[k, k])),
+                    colour = "orchid") # 理論分布
+    print(bar)
+  }
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
@@ -853,123 +784,108 @@
   - 平均は \(\boldsymbol{\beta}\) (真の母数)となること
   - 共分散行列は \(\sigma^{2}(X^{\mathsf{T}}X)^{-1}\) となること
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - 定義にもとづいて計算する
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \mathbb{E}[\boldsymbol{\hat{\beta}}]
-      &=
-        \mathbb{E}[\boldsymbol{\beta}
-        +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}]\\
-      &=
-        \boldsymbol{\beta}
-        +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\mathbb{E}[\boldsymbol{\epsilon}]\\
-      &=
-        \boldsymbol{\beta}
-    \end{align}
-  #+end_src
+  \begin{align}
+    \mathbb{E}[\boldsymbol{\hat{\beta}}]
+    &=
+      \mathbb{E}[\boldsymbol{\beta}
+      +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}]\\
+    &=
+      \boldsymbol{\beta}
+      +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\mathbb{E}[\boldsymbol{\epsilon}]\\
+    &=
+      \boldsymbol{\beta}
+  \end{align}
   #+end_quote
   #+reveal: split
   - 定義にもとづいて計算する
     #+begin_quote
-    #+begin_src latex
-      \begin{align}
-        \mathrm{Cov}(\boldsymbol{\hat{\beta}})
-        &=
-          \mathbb{E}[
-          (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})
-          (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})^{\mathsf{T}}]\\
-        &=
-          \mathbb{E}[(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
-          \boldsymbol{\epsilon}^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}]\\
-        &=
-          (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-          \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
-          X(X^{\mathsf{T}}X)^{-1}\\
-        &=
-          (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-          (\sigma^{2}I)
-          X(X^{\mathsf{T}}X)^{-1}\\
-        &=
-          \sigma^{2}
-          (X^{\mathsf{T}}X)^{-1}
-      \end{align}
-    #+end_src
+    \begin{align}
+      \mathrm{Cov}(\boldsymbol{\hat{\beta}})
+      &=
+        \mathbb{E}[
+        (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})
+        (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})^{\mathsf{T}}]\\
+      &=
+        \mathbb{E}[(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
+        \boldsymbol{\epsilon}^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}]\\
+      &=
+        (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+        \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
+        X(X^{\mathsf{T}}X)^{-1}\\
+      &=
+        (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
+        (\sigma^{2}I)
+        X(X^{\mathsf{T}}X)^{-1}\\
+      &=
+        \sigma^{2}
+        (X^{\mathsf{T}}X)^{-1}
+    \end{align}
     #+end_quote
 
 
 * 誤差の評価
-** COMMENT 寄与率 (再掲)
-# 東京大学 入れる?
+** 寄与率 (再掲)
 - *決定係数 (R-squared)*: \\
   (回帰式で説明できるばらつきの比率)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      R^2
-      =
-      1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    R^2
+    =
+    1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
+  \end{equation}
   #+end_quote
 - *自由度調整済み決定係数 (adjusted R-squared)*: \\ 
   (決定係数を不偏分散で補正)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \bar{R}^2
-      =
-      1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
-      {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \bar{R}^2
+    =
+    1-\frac{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
+    {\frac{1}{n{-}1}\sum_{i=1}^n(y_i-\bar{y})^2}
+  \end{equation}
   #+end_quote
 
 ** 各係数の推定量の分布
 - 推定された回帰係数の精度を評価
   - 誤差 \(\epsilon\) の分布は平均0 分散 \(\sigma^2\) の正規分布
-  - \(\boldsymbol{\hat{\beta}}\) の分布
+  - \(\boldsymbol{\hat{\beta}}\) の分布 : \(p{+}1\) 変量正規分布
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-        \boldsymbol{\hat{\beta}}
-        \sim
-        \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \boldsymbol{\hat{\beta}}
+      \sim
+      \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
+    \end{equation}
     #+end_quote
-    - \(p{+}1\) 変量正規分布
-  - \(\hat{\beta}_j\) の分布
+  - \(\hat{\beta}_j\) の分布 : 1変量正規分布
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-        \hat{\beta}_{j}
-        \sim
-        \mathcal{N}(\beta_{j},\sigma^{2}((X^{\mathsf{T}}X)^{-1})_{jj})
-        =\mathcal{N}(\beta_{j},\sigma^{2}\zeta_{j}^{2})
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \hat{\beta}_{j}
+      \sim
+      \mathcal{N}(\beta_{j},\sigma^{2}((X^{\mathsf{T}}X)^{-1})_{jj})
+      =\mathcal{N}(\beta_{j},\sigma^{2}\zeta_{j}^{2})
+    \end{equation}
     #+end_quote
-    - 1変量正規分布
     - \((A)_{jj}\) は行列 \(A\) の \((j,j)\) (対角)成分 
 
 ** 標準誤差
 - *標準誤差* (standard error) : 
   \(\hat{\beta}_j\) の標準偏差の推定量
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \hat{\sigma}\zeta_j
-      =
-      \sqrt{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
-      \cdot
-      \sqrt{((X^{\mathsf{T}}X)^{-1})_{jj}}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \mathrm{s.e.}(\hat{\beta}_{j})
+    =
+    \hat{\sigma}\zeta_j
+    =
+    \sqrt{\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2}
+    \cdot
+    \sqrt{((X^{\mathsf{T}}X)^{-1})_{jj}}
+  \end{equation}
   #+end_quote
   - 未知母数 \(\sigma^{2}\) は不偏分散 \(\hat{\sigma}^{2}\) で推定
   - \(\hat{\beta}_j\) の精度の評価指標
@@ -984,100 +900,110 @@
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       5D5CB611-713B-4FDA-8DC0-DDCC7DB5F25B
 :END:
 - 数値実験により
   標準誤差の性質を確認しなさい
   - 人工データを用いて標準誤差と真の誤差を比較する
-    #+begin_src R :eval no
-      ### 標準誤差は以下のようにして取り出せる
-      est <- lm(formula, data)
-      summary(est)$coef[,"Std. Error"] # 列名での指定
-      summary(est)$coefficients[,2] # 列番号での指定．coef と省略してもよい
+    #+begin_src R :eval no :tangle no
+      #' 標準誤差は以下のようにして取り出せる
+      data_lm <- lm(formula, data)
+      summary(data_lm)$coefficients # 係数に関する情報はリストの要素として保管されている
+      summary(data_lm)$coefficients[,2]    # 列番号での指定
+      summary(data_lm)$coef[,"Std. Error"] # 列名での指定．coef と省略してもよい
     #+end_src
   - 広告費と売上データを用いて係数の精度を議論する
   - 東京の気候データを用いて係数の精度を議論する
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 標準誤差の性質
-  ###
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 標準誤差の性質
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 人工データによる標準誤差と真の誤差の比較
+  set.seed(1313) # 乱数のシード値 (適宜変更せよ)
 
-  ### 人工データによる標準誤差と真の誤差の比較
-  set.seed(1313) # 乱数のシード (適宜変更せよ)
-
-  ## 試行の設定 (重回帰，以下適宜変更せよ)
-  x.obs1 <- c(1, 20, 13, 9, 5, 15, 19, 8, 3, 4) # 説明変数1
-  x.obs2 <- c(3, 19, 1, 4, 18, 7, 2, 10, 6, 12) # 説明変数2
+  #' 試行の設定 (重回帰，以下適宜変更せよ)
+  x_obs1 <- c(1, 20, 13, 9, 5, 15, 19, 8, 3, 4) # 説明変数1
+  x_obs2 <- c(3, 19, 1, 4, 18, 7, 2, 10, 6, 12) # 説明変数2
   beta0 <- -1 # 切片 
   beta1 <-  2 # xの係数
   beta2 <- -3 # xの係数
   sigma <-  sqrt(2) # 誤差の標準偏差(分散の平方根)
-  myTrial <- function(){ 
-      epsilon <- rnorm(length(x.obs1),sd=sigma) # 誤差項
-      y.obs <- beta0 + beta1*x.obs1 + beta2*x.obs2 + epsilon # 目的変数
-      dat <- data.frame(x1=x.obs1,x2=x.obs2,y=y.obs) # データフレームの作成
-      est <- lm(y ~ x1 + x2, data=dat) # 回帰係数の推定
-      return(summary(est)$coef[,"Std. Error"]) # 標準誤差を返す
+  mc_trial <- function(){ 
+      epsilon <- rnorm(length(x_obs1), sd = sigma) # 誤差項
+      y_obs <- beta0 + beta1*x_obs1 + beta2*x_obs2 + epsilon # 目的変数
+      df <- tibble(x1 = x_obs1, x2 = x_obs2, y = y_obs) # データフレームの作成
+      est <- lm(y ~ x1 + x2, data = df) # 回帰係数の推定
+      return(set_names(summary(est)$coef[,"Std. Error"], # 標準誤差を
+                       c("beta0.se","beta1.se","beta2.se"))) # 名前を付けて返す
   }
 
-  ## 数値実験
+  #' 数値実験
   mc <- 5000 # 実験回数
-  myData <- as.data.frame(t( # データフレームの作成
-      replicate(mc, myTrial()))) # mc回の試行
-  names(myData) <- c("beta0.se","beta1.se","beta2.se") 
+  mc_data <- 
+    replicate(mc, mc_trial()) |> # mc回の試行
+    t() |> as_tibble() # データフレームの作成
 
-  ## 各回帰係数の標準誤差の分布
-  X <- cbind(1,x.obs1,x.obs2) # デザイン行列
-  beta.cov <- sigma^2*solve(crossprod(X)) # 推定量の共分散行列
-  beta.mean <- c(beta0,beta1,beta2)
-  ## beta0 (k=1), beta1 (k=2), beta2 (k=3)
-  for(k in 1:3){
-      hist(myData[[k]], # 実験により得られた分布
-           breaks=30, freq=FALSE, # 密度で表示
-           border="blue", col="lightblue",
-           xlab=names(myData)[k], main="std. errors")
-      abline(v=sqrt(beta.cov[k,k]), col="orchid", lwd=2) # 真の値
+  #' 各回帰係数の標準誤差の分布
+  X <- cbind(1, x_obs1, x_obs2) # デザイン行列
+  beta_cov <- sigma^2*solve(crossprod(X)) # 推定量の共分散行列
+  #' beta0 (k=1), beta1 (k=2), beta2 (k=3)
+  for(k in 1:3) {
+    bar <- tibble(x = mc_data[[k]]) |>
+      ggplot(aes(x = x)) + 
+      geom_histogram(aes(y = after_stat(density)), bins = 30,
+                     fill = "lightblue", colour = "blue") +
+      geom_vline(xintercept = sqrt(beta_cov[k,k]), # 真の値
+                 colour = "orchid") +
+      labs(x = names(mc_data)[k], main = "std. errors")
+    print(bar) 
   }
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 広告費と売上データによる分析
 
-  ### 広告費と売上データによる分析
+  #' データの読み込み
+  adv_data <- read_csv('https://www.statlearning.com/s/Advertising.csv')
 
-  ## データの読み込み
-  Adv.data <- read.csv('https://www.statlearning.com/s/Advertising.csv',
-                       row.names=1) # 1列目を行名として読み込む
+  #' モデルの推定
+  adv_lm1 <- lm(sales ~ TV, data=adv_data)
+  adv_lm2 <- lm(sales ~ radio, data=adv_data)
+  adv_lm3 <- lm(sales ~ TV + radio, data=adv_data)
 
-  ## モデルの推定
-  Adv.est1 <- lm(sales ~ TV, data=Adv.data)
-  Adv.est2 <- lm(sales ~ radio, data=Adv.data)
-  Adv.est3 <- lm(sales ~ TV + radio, data=Adv.data)
+  #' 推定値とその標準誤差
+  summary(adv_lm1)$coef[,1:2] 
+  summary(adv_lm2)$coef[,1:2] 
+  summary(adv_lm3)$coef[,1:2] 
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 東京の気候データによる分析
 
-  ## 推定値とその標準誤差
-  summary(Adv.est1)$coef[,1:2] 
-  summary(Adv.est2)$coef[,1:2] 
-  summary(Adv.est3)$coef[,1:2] 
+  #' データの整理 (8月のデータの抽出)
+  tw_subset <-
+    read_csv("data/tokyo_weather.csv") |>
+    filter(month == 8)
 
-  ### 東京の気候データによる分析
-
-  ## データの整理 (8月のデータの抽出)
-  tw_subset <- subset(read.csv("data/tokyo_weather.csv"),
-                        subset= month==8)
-
-  ## 回帰モデルの設定
+  #' 回帰モデルの設定
   tw_model1 <- temp ~ solar
   tw_model2 <- temp ~ solar + press
   tw_model3 <- temp ~ solar + press + cloud
 
-  ## 回帰モデルの推定
-  tw_est1 <- lm(tw_model1, data=tw_subset, y=TRUE)
-  tw_est2 <- lm(tw_model2, data=tw_subset, y=TRUE)
-  tw_est3 <- lm(tw_model3, data=tw_subset, y=TRUE)
+  #' 回帰モデルの推定
+  tw_lm1 <- lm(tw_model1, data=tw_subset, y=TRUE)
+  tw_lm2 <- lm(tw_model2, data=tw_subset, y=TRUE)
+  tw_lm3 <- lm(tw_model3, data=tw_subset, y=TRUE)
 
-  ## モデルの推定値とその標準誤差は以下のとおり
-  summary(tw_est1)$coef[,c("Estimate","Std. Error")]
-  summary(tw_est2)$coef[,1:2] # 名前ではなく列番号で指定する場合
-  summary(tw_est3)$coef[,1:2] # cloud の標準誤差が大きく精度が悪いことが示唆される
+  #' モデルの推定値とその標準誤差は以下のとおり
+  summary(tw_lm1)$coef[,c("Estimate","Std. Error")]
+  summary(tw_lm2)$coef[,1:2] # 名前ではなく列番号で指定する場合
+  summary(tw_lm3)$coef[,1:2] # cloud の標準誤差が大きく精度が悪いことが示唆される
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
   
-** 講義資料: 標準誤差
+** COMMENT 講義資料: 標準誤差
 :PROPERTIES:
 :reveal_background: #EEEEFF
 :END:
@@ -1098,80 +1024,76 @@
     母数 \(\sigma^{2}\) の不偏な推定量となる
     #+begin_quote
     以下が成り立つことを示せばよい
-    #+begin_src latex
-      \begin{equation}
-        \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
-        =(n{-}p{-}1)\sigma^{2}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
+      =(n{-}p{-}1)\sigma^{2}
+    \end{equation}
     #+end_quote
 
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - ハット行列 \(H\) を用いた表現を利用する
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \boldsymbol{\hat{\epsilon}}
-      &=
-        (I_{n}-H)\boldsymbol{\epsilon}\\
-      \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
-      &=
-        \mathbb{E}[\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}]\\
-      &=
-        \mathbb{E}[\mathrm{tr}
-        (\boldsymbol{\hat{\epsilon}}
-        \boldsymbol{\hat{\epsilon}}^{\mathsf{T}})]\\
-      &=
-        \mathbb{E}[\mathrm{tr}
-        (I_{n}-H)\boldsymbol{\epsilon}
-        \boldsymbol{\epsilon}^{\mathsf{T}}(I_{n}-H)]\\
-      &=
-        \mathrm{tr}(I_{n}-H)
-        \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
-        (I_{n}-H)\\
-      &=
-        \mathrm{tr}
-        (I_{n}-H)(\sigma^{2}I_{n})(I_{n}-H)\\
-      &=
-        \sigma^{2}\mathrm{tr}(I_{n}-H)
-    \end{align}
-  #+end_src
+  \begin{align}
+    \boldsymbol{\hat{\epsilon}}
+    &=
+      (I_{n}-H)\boldsymbol{\epsilon}\\
+    \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
+    &=
+      \mathbb{E}[\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}]\\
+    &=
+      \mathbb{E}[\mathrm{tr}
+      (\boldsymbol{\hat{\epsilon}}
+      \boldsymbol{\hat{\epsilon}}^{\mathsf{T}})]\\
+    &=
+      \mathbb{E}[\mathrm{tr}
+      (I_{n}-H)\boldsymbol{\epsilon}
+      \boldsymbol{\epsilon}^{\mathsf{T}}(I_{n}-H)]\\
+    &=
+      \mathrm{tr}(I_{n}-H)
+      \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
+      (I_{n}-H)\\
+    &=
+      \mathrm{tr}
+      (I_{n}-H)(\sigma^{2}I_{n})(I_{n}-H)\\
+    &=
+      \sigma^{2}\mathrm{tr}(I_{n}-H)
+  \end{align}
   #+end_quote
   - \(I_{n}\) は \(n\times n\) 単位行列
 
 #+reveal: split
 - さらに以下が成立する
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \mathrm{tr} H
-      &=
-        \mathrm{tr} X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\\
-      &=
-        \mathrm{tr} (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\\
-      &=
-        \mathrm{tr} I_{p{+}1}\\
-      &=p+1
-    \end{align}
-  #+end_src
+  \begin{align}
+    \mathrm{tr} H
+    &=
+      \mathrm{tr} X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\\
+    &=
+      \mathrm{tr} (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\\
+    &=
+      \mathrm{tr} I_{p{+}1}\\
+    &=p+1
+  \end{align}
   #+end_quote
   - 行列のサイズに注意
 
 
 * 係数の評価   
-** \(t\)統計量
+** @@latex:@@\(t\)統計量
 - *回帰係数の分布* に関する定理
   #+begin_quote
-  *\(t\)統計量*
-  #+begin_src latex
+  *\(t\)統計量* (\(t\)-statistic)
     \begin{equation}
-      % \text{(t-統計量)}\quad
-      t=\frac{\hat{\beta}_j-\beta_j}{\hat{\sigma}\zeta_{j}}
+      % \text{(t統計量)}\quad
+      t
+      =
+      \frac{\hat{\beta}_j-\beta_j}{\mathrm{s.e.}(\hat{\beta}_{j})}
+      =
+      \frac{\hat{\beta}_j-\beta_j}{\hat{\sigma}\zeta_{j}}
     \end{equation}
-  #+end_src
   は自由度 \(n{-}p{-}1\) の \(t\)分布に従う
   #+end_quote
 - 証明には以下の性質を用いる
@@ -1180,31 +1102,27 @@
   - \((n{-}p{-}1)\hat{\sigma}^2/\sigma^2=S(\boldsymbol{\hat{\beta}})/\sigma^2\) 
     は自由度 \(n{-}p{-}1\) の \(\chi^{2}\) 分布に従う
 
-** \(t\)統計量による検定
-- 回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定:
+** @@latex:@@\(t\)統計量による検定
+- 回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定
   - 帰無仮説 \(H_{0}\) : \(\beta_j=0\) (\(t\)統計量が計算できる)
   - 対立仮説 \(H_{1}\) : \(\beta_j\neq0\)
-- \(p\)値: 確率変数の絶対値が \(|t|\) を超える確率
+- \(p\)値 : 確率変数の絶対値が \(|t|\) を超える確率
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \text{(\(p\)値)}
-      =
-      2\int_{|t|}^\infty f(x)dx
-      \quad\text{(両側検定)}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \text{(\(p\)値)}
+    =
+    2\int_{|t|}^\infty f(x)dx
+    \quad\text{(両側検定)}
+  \end{equation}
   #+end_quote
   - \(f(x)\) は自由度 \(n{-}p{-}1\) の \(t\)分布の確率密度関数
 #  - 帰無仮説 \(\beta_j=0\) が正しければ \(p\)値は小さくならない
 - 帰無仮説 \(H_{0}\) が正しければ \(p\)値は小さくならない
 
 # - \(t\)値および \(p\)値による仮説検証:
-#   #+begin_src latex
 #   \begin{equation}
 #     H_{0}:\beta_j=0\quad\text{vs}\quad H_{1}:\beta_j\neq0
 #   \end{equation}
-#   #+end_src
 #   - \(\beta_j=0\) のとき説明変数 \(X_j\) は回帰式に寄与しない
 #   - 帰無仮説 \(\beta_j=0\) が正しければ \(p\)値は小さくならない
 #   - \(p\)値が小さいときは帰無仮説が誤り結論するのが自然
@@ -1218,80 +1136,89 @@
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       0518B4AE-5E37-4907-AA8D-509ACDA75600
 :END:
 - 数値実験により
   \(t\)統計量の性質を確認しなさい
   - 人工データを用いて\(t\)統計量の分布を確認する
-    #+begin_src R :eval no
-      ### t-統計量とそのp-値は以下のようにして取り出せる
-      est <- lm(formula, data)
-      summary(est)$coef[,c("t value","Pr(>|t|)"] # 列名での指定
-                        summary(est)$coef[,3:4] # 列番号での指定
+    #+begin_src R :eval no :tangle no
+      #' t統計量とそのp値は以下のようにして取り出せる
+      data_lm <- lm(formula, data)
+      summary(data_lm)$coef[,c("t value","Pr(>|t|)")] # 列名での指定
+      summary(data_lm)$coef[,3:4] # 列番号での指定
     #+end_src
   - 広告費と売上データを用いて係数の有意性を議論する
   - 東京の気候データを用いて係数の有意性を議論する
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 t-統計量の性質
-  ###
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice t統計量の性質
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 人工データによる確認
+  set.seed(2525) # 乱数のシード値 (適宜変更せよ)
 
-  ### 人工データによる確認
-  set.seed(2525) # 乱数のシード (適宜変更せよ)
-
-  ## 試行の設定 (重回帰，以下適宜変更せよ)
-  x.obs1 <- c(1, 20, 13, 9, 5, 15, 19, 8, 3, 4) # 説明変数1
-  x.obs2 <- c(3, 19, 1, 4, 18, 7, 2, 10, 6, 12) # 説明変数2
+  #' 試行の設定 (重回帰，以下適宜変更せよ)
+  x_obs1 <- c(1, 20, 13, 9, 5, 15, 19, 8, 3, 4) # 説明変数1
+  x_obs2 <- c(3, 19, 1, 4, 18, 7, 2, 10, 6, 12) # 説明変数2
   beta0 <- -1 # 切片 
   beta1 <-  2 # x1の係数 < 帰無仮説に従わない
   beta2 <-  0 # x2の係数 < 帰無仮説に従う 
   sigma <-  sqrt(2) # 誤差の標準偏差(分散の平方根)
-  myTrial <- function(){ 
-      epsilon <- rnorm(length(x.obs1),sd=sigma) # 誤差項
-      y.obs <- beta0 + beta1*x.obs1 + beta2*x.obs2 + epsilon # 目的変数
-      dat <- data.frame(x1=x.obs1,x2=x.obs2,y=y.obs) # データフレームの作成
-      est <- lm(y ~ x1 + x2, data=dat) # 回帰係数の推定
-      return(summary(est)$coef[,"t value"]) # t-統計量を返す
+  mc_trial <- function(){ 
+      epsilon <- rnorm(length(x_obs1), sd = sigma) # 誤差項
+      y_obs <- beta0 + beta1*x_obs1 + beta2*x_obs2 + epsilon # 目的変数
+      df <- tibble(x1 = x_obs1, x2 = x_obs2, y = y_obs) # データフレームの作成
+      est <- lm(y ~ x1 + x2, data = df) # 回帰係数の推定
+      return(set_names(summary(est)$coef[,"t value"], # t統計量を返す
+                       c("beta0.tval","beta1.tval","beta2.tval"))) 
   }
 
-  ## 数値実験
+  #' 数値実験
   mc <- 5000 # 実験回数
-  myData <- as.data.frame(t( # データフレームの作成
-      replicate(mc, myTrial()))) # mc回の試行
-  names(myData) <- c("beta0.tval","beta1.tval","beta2.tval") 
-
-  ## 各回帰係数のt-統計量の分布
-  n <- length(x.obs1) # データ数 n
+  mc_data <- 
+    replicate(mc, mc_trial()) |> t() |> as_tibble()
+  #' 各回帰係数のt統計量の分布
+  n <- length(x_obs1) # データ数 n
   p <- 2 # 説明変数の次元
-  ## beta0 (k=1), beta1 (k=2), beta2 (k=3)
-  for(k in 1:3){
-      hist(myData[[k]], # 実験により得られた分布
-           breaks=30, freq=FALSE, # 密度で表示
-           border="blue", col="lightblue",
-           xlab=names(myData)[k], main="t values")
-      curve(dt(x,df=n-p-1), # 自由度 n-p-1 のt分布
-            col="orchid", lwd=2, add=TRUE)
+  #' beta0 (k=1), beta1 (k=2), beta2 (k=3)
+  for(k in 1:3) { # 同じ処理であればfor文などの利用を推奨
+    bar <- tibble(x = mc_data[[k]]) |>
+      ggplot(aes(x = x)) + 
+      geom_histogram(aes(y = after_stat(density)), bins = 30,
+                     fill = "lightblue", colour = "blue") +
+      geom_function(fun = \(x) dt(x, df = n-p-1), # 自由度 n-p-1 のt分布
+                    colour = "orchid") + 
+      labs(x = names(mc_data)[k])
+    print(bar) # for 文などの block 内でのグラフ表示は明示的に print する
   }
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 広告費と売上データによる分析
 
-  ### 広告費と売上データによる分析
+  #' 全てを用いたモデルと newspaper を除いたモデルを比較する
+  summary(lm(sales ~ ., data = adv_data)) # "." は全て
+  summary(lm(sales ~ . -newspaper, data = adv_data)) # "-" は除外
 
-  ## 全てを用いたモデルと newspaper を除いたモデルを比較する
-  summary(lm(sales ~ ., data=Adv.data)) # "." は全て
-  summary(lm(sales ~ . -newspaper, data=Adv.data)) # "-" は除外
+  #' @notes
+  #' newspaperの係数のt統計量から有意性は低いと考えられる
+  #' 自由度調整済決定係数も除いた方が高くなることが確認できる
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 東京の気候データによる分析
 
-  ## newspaperの係数のt-統計量から有意性は低いと考えられる
-  ## 自由度調整済決定係数も除いた方が高くなることが確認できる
+  #' solarとpressを用いたモデルを比較する
+  summary(lm(temp ~ press, data = tw_subset))
+  summary(lm(temp ~ solar + press, data = tw_subset))
+  summary(lm(temp ~ solar, data = tw_subset))
 
-  ### 東京の気候データによる分析
-
-  ## solarとpressを用いたモデルを比較する
-  summary(lm(temp ~ press, data=tw_subset))
-  summary(lm(temp ~ solar + press, data=tw_subset))
-  summary(lm(temp ~ solar, data=tw_subset))
-
-  ## press単体では係数の推定精度も決定係数も低いが
-  ## solarと組み合わせることにより精度が上がり説明力も高くなる
-  ## また組み合わせた方が自由度調整済決定係数はsolar単体より大きくなる
+  #' @notes
+  #' press単体では係数の推定精度も決定係数も低いが
+  #' solarと組み合わせることにより精度が上がり説明力も高くなる
+  #' また組み合わせた方が自由度調整済決定係数はsolar単体より大きくなる
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 ** COMMENT 講義資料: \(t\)統計量
@@ -1302,21 +1229,19 @@
 
 
 * モデルの評価
-** \(F\)統計量
+** @@latex:@@\(F\)統計量
 - *ばらつきの比* に関する定理: 
   #+begin_quote
   \(\beta_{1}=\dotsb=\beta_{p}=0\) ならば
-  *\(F\)統計量*
-  #+begin_src latex
-    \begin{equation}
-      % \text{(F-統計量)}\quad
-      F=
-      \frac{\frac{1}{p}S_{r}}{\frac{1}{n{-}p{-}1}S}
-      % =\frac{\frac{1}{p}\sum_{i=1}^n(\hat{y}_i-\bar{y})^2}
-      % {\frac{1}{n{-}p{-}1}\sum_{i=1}^n(y_i-\hat{y}_i)^2}
-      =\frac{n{-}p{-}1}{p}\frac{R^2}{1-R^2}
-    \end{equation}
-  #+end_src
+  *\(F\)統計量* (\(F\)-statistic)
+  \begin{equation}
+    % \text{(F統計量)}\quad
+    F=
+    \frac{\frac{1}{p}S_{r}}{\frac{1}{n{-}p{-}1}S}
+    % =\frac{\frac{1}{p}\sum_{i=1}^n(\hat{y}_i-\bar{y})^2}
+    % {\frac{1}{n{-}p{-}1}\sum_{i=1}^n(y_i-\hat{y}_i)^2}
+    =\frac{n{-}p{-}1}{p}\frac{R^2}{1-R^2}
+  \end{equation}
   は自由度 \(p,n{-}p{-}1\) の \(F\)分布に従う
   #+end_quote
 - 証明には以下の性質を用いる
@@ -1324,34 +1249,30 @@
   - \(S_{r}/\sigma^2\) は自由度 \(p\) の \(\chi^{2}\) 分布に従う
   - \(S/\sigma^2\) は自由度 \(n{-}p{-}1\) の \(\chi^{2}\) 分布に従う
 
-** \(F\)統計量を用いた検定
-- 説明変数のうち1つでも役に立つか否かを検定:
+** @@latex:@@\(F\)統計量を用いた検定
+- 説明変数のうち1つでも役に立つか否かを検定
   - 帰無仮説 \(H_{0}\) : \(\beta_{1}=\dotsb=\beta_{p}=0\) 
     (\(S_r\) が \(\chi^2\) 分布になる)
   - 対立仮説 \(H_{1}\) : \(\exists j\;\beta_j\neq0\)
-- \(p\)値: 確率変数の値が \(F\)を超える確率
+- \(p\)値 : 確率変数の値が \(F\)を超える確率
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \text{(\(p\)値)}
-      =
-      \int_{F}^\infty f(x)dx
-      \quad\text{(片側検定)}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \text{(\(p\)値)}
+    =
+    \int_{F}^\infty f(x)dx
+    \quad\text{(片側検定)}
+  \end{equation}
   #+end_quote
   - \(f(x)\) は自由度 \(p,n{-}p{-}1\) の \(F\)分布の確率密度関数
 #  - 帰無仮説 \(\forall j\;\beta_j=0\) が正しければ \(p\)値は小さくならない
 - 帰無仮説 \(H_{0}\) が正しければ \(p\)値は小さくならない
 
 # - \(F\)統計量による仮説検証:
-#   #+begin_src latex
 #   \begin{equation}
 #     H_{0}:\beta_{1}=\dotsb=\beta_{p}=0
 #     \quad\text{vs}\quad
 #     H_{1}:\exists j\;\beta_j\neq
 #   \end{equation}
-#   #+end_src
 
 
 * COMMENT 実習
@@ -1362,92 +1283,102 @@
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       9C894A66-7226-4D09-9047-F572CCBE903D
 :END:
 - 数値実験により
   \(F\)統計量の性質を確認しなさい
   - 人工データを用いて\(F\)統計量の分布を確認しなさい
     #+begin_src R :eval no
-      ### f-統計量とその自由度は以下のようにして取り出せる
-      est <- lm(formula, data)
-      summary(est)$fstat
-      summary(est)$fstatistic # 省略しない場合
+      #' F統計量とその自由度は以下のようにして取り出せる
+      data_lm <- lm(formula, data)
+      summary(data_lm)$fstat
+      summary(data_lm)$fstatistic # 省略しない場合
     #+end_src
   - 広告費と売上データのモデルの有効性を議論しなさい
   - 東京の気候データのモデルの有効性を議論しなさい
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 F-統計量の性質
-  ### 
-  
-  ### 人工データによる確認
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice F統計量の性質
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 人工データによる確認
   set.seed(2525) # 乱数のシード (適宜変更せよ)
-  
-  ## 試行の設定 (重回帰，以下適宜変更せよ)
-  x.obs1 <- c(1, 20, 13, 9, 5, 15, 19, 8, 3, 4) # 説明変数1
-  x.obs2 <- c(3, 19, 1, 4, 18, 7, 2, 10, 6, 12) # 説明変数2
+
+  #' 試行の設定 (重回帰，以下適宜変更せよ)
+  x_obs1 <- c(1, 20, 13, 9, 5, 15, 19, 8, 3, 4) # 説明変数1
+  x_obs2 <- c(3, 19, 1, 4, 18, 7, 2, 10, 6, 12) # 説明変数2
   beta0 <- -1 # 切片 
   beta1 <-  0 # x1の係数 
   beta2 <-  0 # x2の係数 < 係数のどちらも0なので帰無仮説が成り立つ
   sigma <-  sqrt(2) # 誤差の標準偏差(分散の平方根)
-  myTrial <- function(){ 
-      epsilon <- rnorm(length(x.obs1),sd=sigma) # 誤差項
-      y.obs <- beta0 + beta1*x.obs1 + beta2*x.obs2 + epsilon # 目的変数
-      dat <- data.frame(x1=x.obs1,x2=x.obs2,y=y.obs) # データフレームの作成
-      est <- lm(y ~ x1 + x2, data=dat) # 回帰係数の推定
-      return(summary(est)$fstat[1]) # F-統計量を返す
+  mc_trial <- function(){ 
+      epsilon <- rnorm(length(x_obs1), sd = sigma) # 誤差項
+      y_obs <- beta0 + beta1*x_obs1 + beta2*x_obs2 + epsilon # 目的変数
+      df <- tibble(x1 = x_obs1, x2 = x_obs2, y = y_obs) # データフレームの作成
+      est <- lm(y ~ x1 + x2, data = df) # 回帰係数の推定
+      return(set_names(summary(est)$fstat[1]), "fstat")) # F統計量を返す
   }
-  
-  ## 数値実験 (帰無仮説が成り立つ場合)
+
+  #' 数値実験 (帰無仮説が成り立つ場合)
   mc <- 5000 # 実験回数
-  myData <- data.frame( # 1次元の場合はそのままデータフレームが作成できる
-      fstat=replicate(mc, myTrial()))
-  
-  ## モデルのF-統計量の分布
-  n <- length(x.obs1) # データ数
+  mc_data <- 
+    replicate(mc, mc_trial()) |> tibble() # 1次元なので転置は不要
+
+  #' モデルのF統計量の分布
+  n <- length(x_obs1) # データ数
   p <- 2 # 説明変数の次元
-  hist(myData[[1]], # 実験により得られたF-統計量の分布
-       breaks=30, freq=FALSE, # 密度で表示
-       border="blue", col="lightblue",
-       xlab="F statistic", main="null hypothesis is true")
-  curve(df(x,df1=p,df2=n-p-1), # 自由度 p, n-p-1 のF-分布
-        col="orchid", lwd=2, add=TRUE)
-  
-  ## 数値実験 (帰無仮説が成り立たない場合)
+  mc_data |>
+    ggplot(aes(x = fstat)) + 
+    geom_histogram(aes(y = after_stat(density)), bins = 30,
+                   fill = "lightblue", colour = "blue") +
+    geom_function(fun = \(x) df(x, df1 = p, df2 = n-p-1), # 自由度p,n-p-1のF-分布
+                  colour = "orchid") +
+    labs(x = "F statistic", title="null hypothesis is true")
+
+  #' 数値実験 (帰無仮説が成り立たない場合)
   beta1 <-  2 # x1の係数 < 帰無仮説が成り立たない
-  myData <- data.frame(
-      fstat=replicate(mc, myTrial()))
-  
-  ## モデルのF-統計量の分布は帰無分布に従わない
-  hist(myData[[1]], # 実験により得られたF-統計量の分布
-       breaks=30, freq=FALSE, # 密度で表示
-       border="blue", col="lightblue",
-       xlab="F statistic", main="null hypothesis is false")
-  curve(df(x,df1=p,df2=n-p-1), # 自由度 p, n-p-1 のF-分布
-        col="orchid", lwd=2, add=TRUE)
-  
-  ### 広告費と売上データによる分析の例
+  mc_data <-
+    replicate(mc, mc_trial()) |> tibble()
 
-  ## 説明変数1つのモデルを検討する
-  summary(lm(sales ~ TV, data=Adv.data)) 
-  summary(lm(sales ~ radio, data=Adv.data)) 
-  summary(lm(sales ~ newspaper, data=Adv.data))
+  #' モデルのF統計量の分布は帰無分布に従わない
+  mc_data |>
+    ggplot(aes(x = fstat)) + 
+    geom_histogram(aes(y = after_stat(density)), bins = 30,
+                   fill = "lightblue", colour = "blue") +
+    geom_function(fun = \(x) df(x, df1 = p, df2 = n-p-1), # 自由度p,n-p-1のF-分布
+                  colour = "orchid") +
+    labs(x = "F statistic", title="null hypothesis is false")
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 広告費と売上データによる分析の例
 
-  ## radio, newspaper は決定係数は小さく説明力は無いが，
-  ## F-stat はそれなりに小さいのでモデルの有効性は無いとは言えない
-  
-  ### 東京の気候データによる分析の例
+  #' 説明変数1つのモデルを検討する
+  summary(lm(sales ~ TV, data = adv_data)) 
+  summary(lm(sales ~ radio, data = adv_data)) 
+  summary(lm(sales ~ newspaper, data = adv_data))
 
-  ## press, solar, rain によるモデルを検討する
-  summary(lm(temp ~ press, data=tw_subset))
-  summary(lm(temp ~ press + solar, data=tw_subset))
-  summary(lm(temp ~ press + solar + rain, data=tw_subset))
+  #' @notes
+  #' radio, newspaper は決定係数は小さく説明力は無いが，
+  #' F-stat はそれなりに小さいのでモデルの有効性は無いとは言えない
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 東京の気候データによる分析の例
 
-  ## press のみではモデルの有効性があるとは言えないが
-  ## solar と組み合わせることにより有効性が確認できる
-  ## rain を加えても press の係数に変化は見られないが
-  ## solar の係数が変化し決定係数が大きくなること(自由度調整済みは若干下がるが)から
-  ## solar と rain が相補的にモデルの精度を上げている可能性が示唆される
+  #' press, solar, rain によるモデルを検討する
+  summary(lm(temp ~ press, data = tw_subset))
+  summary(lm(temp ~ press + solar, data = tw_subset))
+  summary(lm(temp ~ press + solar + rain, data = tw_subset))
+
+  #' @notes
+  #' press のみではモデルの有効性があるとは言えないが
+  #' solar と組み合わせることにより有効性が確認できる
+  #' rain を加えても press の係数に変化は見られないが
+  #' solar の係数が変化し決定係数が大きくなることから
+  #' solar と rain が相補的にモデルの精度を上げている可能性が示唆される
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 ** COMMENT 講義資料: \(F\)統計量
@@ -1472,35 +1403,168 @@
 * COMMENT 補足
 # 東京大学
 ** R : 診断プロット
+:PROPERTIES:
+:ID:       8276BB31-EBD2-4E4D-9CA8-DA2468157894
+:END:
 - 回帰モデルのあてはまりを視覚的に評価
   - *Residuals vs Fitted*: 
     あてはめ値(予測値)と残差の関係
   - *Normal Q-Q*:
     残差の正規性の確認
   - *Scale-Location*:
-    あてはめ値と標準誤差で正規化した残差の関係
+    あてはめ値と正規化した残差の関係
   - *Residuals vs Leverage*:
     正規化した残差とテコ比の関係
   などが用意されている
-  #+begin_src R :eval no :tangle yes
-    ### 関数 lm() による推定結果の診断プロットの使い方
-    est <- lm(temp ~ press + solar + rain, data=tw_subset)
-    plot(est) # 指示に従って <Return> キーを押すと順次表示される
-    ## help(plot.lm) を参照
+  #+begin_src R :eval no
+    #' 関数 stats::lm() による推定結果の診断プロット
+    tw_lm6 <- lm(temp ~ press + solar + rain, data = tw_subset)
+    #' 関数 ggfortify::autoplot() を利用する
+    #' 必要であれば 'install.packages("ggfortify")' を実行
+    library(ggfortify)
+    autoplot(tw_lm6)
+    #' 診断プロットは1から6まで用意されており 1,2,3,5 がまとめて表示される
+    #' 個別に表示する場合は 'autoplot(tw_lm6, which = 1)' のように指定する
+    #' 詳細は '?ggfortify::autoplot.lm' を参照
   #+end_src
 
 
 * 解析の事例
 # 早稲田大学
-** データについて
-- 気象庁より取得した東京の気候データ \\
+** COMMENT 実データによる例 (再掲)
+- 気象庁より取得した東京の気候データ
   - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
   - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
     # - 広告費(TV,radio,newspaper)と売上データ \\
     #   - 書籍のサイト https://faculty.marshall.usc.edu/gareth-james/ISL/
     #   - データ https://faculty.marshall.usc.edu/gareth-james/ISL/Advertising.csv
 
-** 東京の8月の気候の分析
+** 東京の8月の気候の分析 (再掲)
+:PROPERTIES:
+:ID:       2100AC2B-D452-48B6-998A-93B6B3675212
+:END:
+- データの一部
+  #+begin_src R :exports none
+    #' @exercise 東京の気候データを用いた例
+    
+    #' データの読み込み
+    tw_subset <- read_csv("data/tokyo_weather.csv") |>
+      filter(month == 8) |> # 8月のデータの抽出
+      mutate(date=date(paste(year,month,day,sep="-")), .before = 1) |>
+      select(-c(year,month,day,day_of_week))
+
+    #' モデル式
+    tw_model1 <- temp ~ press
+    tw_model2 <- temp ~ solar
+    tw_model3 <- temp ~ press + solar
+    tw_model4 <- temp ~ press + solar + humid
+    tw_model5 <- temp ~ press + solar + cloud
+
+    #' 推定
+    tw_lm1 <- lm(tw_model1, data=tw_subset, y=TRUE)
+    tw_lm2 <- lm(tw_model2, data=tw_subset, y=TRUE)
+    tw_lm3 <- lm(tw_model3, data=tw_subset, y=TRUE)
+    tw_lm4 <- lm(tw_model4, data=tw_subset, y=TRUE)
+    tw_lm5 <- lm(tw_model5, data=tw_subset, y=TRUE)
+  #+end_src
+  #+begin_src R :exports none
+    #' データの表示
+    #' 列名を日本語にして表示する
+    foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
+                        c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+    (bar <- tw_subset |> rename(all_of(foo)))
+  #+end_src
+  #+begin_src R :eval no :exports none
+    View(bar) # 左上ペインに表として表示
+  #+end_src
+  #+html: <font size=6>
+  #+begin_src R :exports results :results output raw :tangle no
+    #' データの表示(reveal用)
+    bar |>
+      head(12) |> # 12日分を表示
+      ascii::ascii(include.rownames = FALSE) |>
+      ascii::print(type = "org")
+  #+end_src
+  #+html: </font>
+
+#+reveal: split
+- 気温を説明する5種類の線形回帰モデルを検討
+  - モデル1 : 気温 = F(気圧)
+  - モデル2 : 気温 = F(日射)
+  - モデル3 : 気温 = F(気圧, 日射)
+  - モデル4 : 気温 = F(気圧, 日射, 湿度)
+  - モデル5 : 気温 = F(気圧, 日射, 雲量)
+
+** 分析の視覚化 (再掲)
+:PROPERTIES:
+:ID:       59B71FB4-2412-4B64-BF49-A53AF3313B7F
+:END:
+- 観測値とあてはめ値の比較
+  #+begin_src R :file figs/03_models.png :exports results :results graphics
+    #' 観測値とあてはめ値の比較
+    tw_subset |>
+      mutate(モデル1 = fitted(tw_lm1),    # モデルごとに予測値をデータフレームに追加
+             モデル2 = fitted(tw_lm2),
+             モデル3 = fitted(tw_lm3),
+             モデル4 = fitted(tw_lm4),
+             モデル5 = fitted(tw_lm5)) |>
+      pivot_longer(starts_with("モデル"), # モデルをラベルとして予測値をまとめる
+                   names_to = "model", values_to = "fitted") |>
+      ggplot(aes(x = temp, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
+      geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
+      geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
+      labs(x = "気温", y = "あてはめ値") +
+      xlim(22,32) + ylim(22,32) + theme(legend.position = c(.88,.15))
+  #+end_src
+
+#+caption: モデルの比較
+#+name: fig:03_models
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/03_models.png]]
+
+** モデルの比較
+- 寄与率・\(t\)統計量・\(F\)統計量
+  #+html: <font size=4>
+  #+begin_src R :exports results :results output html :tangle no
+    #' データの表示(reveal用)
+    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5,
+                         ## column.labels=c("A","B","C","D","E"),
+                         type="html",single.row=TRUE)
+  #+end_src
+  #+html: </font>
+- 変数名の対応
+  - 気温(temp), 気圧(press), 日射(solar), 湿度(humid), 雲量(cloud)
+
+#+reveal: split
+- 診断プロット (モデル4)
+  #+begin_src R :file figs/04_diag_model4.png :exports results :results graphics
+    #' 診断プロット (モデル4)
+    autoplot(tw_lm4)
+  #+end_src
+
+#+caption: モデルの比較
+#+name: fig:04_diag_model4
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/04_diag_model4.png]]
+  #+reveal: split
+- 診断プロット (モデル5)
+  #+begin_src R :file figs/04_diag_model5.png :exports results :results graphics
+    #' 診断プロット (モデル5)
+    autoplot(tw_lm5)
+  #+end_src
+
+#+caption: モデルの比較
+#+name: fig:04_diag_model5
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/04_diag_model5.png]]
+  
+** COMMENT 東京の8月の気候の分析(古いcode)
+:PROPERTIES:
+:ID:       99AAECD9-1974-48D7-9E3C-F81FDDD8A7AC
+:END:
 - 気候 (気温,降雨,日射,降雪,風速,気圧,湿度,雲量) \\
   に関するデータ(の一部)
   #+begin_src R :exports results :tangle yes
@@ -1663,9 +1727,9 @@
 
 
 * 次回の予定
-- 第1回: 回帰モデルの考え方と推定
-- 第2回: モデルの評価
-- *第3回: モデルによる予測と発展的なモデル*
+- 第1回 : 回帰モデルの考え方と推定
+- 第2回 : モデルの評価
+- *第3回 : モデルによる予測と発展的なモデル*
 
 
 * Footnotes
