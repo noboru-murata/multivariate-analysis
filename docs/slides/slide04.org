@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-16 18:19:49 mura>
+# Time-stamp: <2023-10-17 17:45:01 mura>
 
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
@@ -28,7 +28,7 @@
 - *第2回 : モデルの評価*
 - 第3回 : モデルによる予測と発展的なモデル
 
-#+begin_src R :exports none
+#+begin_src R :exports none :tangle no
   setwd("~/Desktop/lectures/mva/course")
 #+end_src
 #+begin_src R :exports none
@@ -263,15 +263,25 @@
   #+begin_src R :eval no :exports none
     View(bar) # 左上ペインに表として表示
   #+end_src
-  #+html: <font size=6>
-  #+begin_src R :exports results :results output raw :tangle no
+  #+html: <font size=5>
+  #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
-    bar |>
-      head(12) |> # 12日分を表示
-      ascii::ascii(include.rownames = FALSE) |>
-      ascii::print(type = "org")
+    bar |> slice(1:15) |> mutate(日付 = as.character(日付)) |>
+      stargazer::stargazer(summary = FALSE,
+                           rownames = FALSE,
+                           title = "東京の8月の気候",
+                           type = "html")
   #+end_src
   #+html: </font>
+
+  #+begin_src R :exports results :results output latex :tangle no
+    #' データの表示(latex用)
+    bar |> mutate(日付 = as.character(日付)) |>
+      stargazer::stargazer(summary = FALSE,
+                           rownames = FALSE,
+                           title = "東京の8月の気候",
+                           font.size = "small", type = "latex")
+  #+end_src
 
 #+reveal: split
 - 気温を説明する5種類の線形回帰モデルを検討
@@ -286,7 +296,7 @@
 :ID:       E5C084E0-BB7D-4C8B-B289-C1F617CE2B13
 :END:
 - 関連するデータの散布図
-  #+begin_src R :file figs/03_pairs.png :exports results :results graphics
+  #+begin_src R :file figs/04_pairs.png :exports results :results graphics
     #' 関連データの散布図
     tw_subset |>
       select(temp,press,solar,humid,cloud) |>
@@ -294,14 +304,14 @@
   #+end_src
 
 #+caption: 散布図
-#+name: fig:03_pairs
+#+name: fig:04_pairs
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
-[[file:figs/03_pairs.png]]
+[[file:figs/04_pairs.png]]
 
 #+reveal: split
 - モデル1の推定結果
-  #+begin_src R :file figs/03_model1.png :exports results :results graphics
+  #+begin_src R :file figs/04_model1.png :exports results :results graphics
     #' モデル1の推定結果
     tw_subset |>
       ggplot(aes(x = press, y = temp)) +
@@ -311,14 +321,14 @@
   #+end_src
 
 #+caption: モデル1
-#+name: fig:03_model1
+#+name: fig:04_model1
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
-[[file:figs/03_model1.png]]
+[[file:figs/04_model1.png]]
 
 #+reveal: split
 - モデル2の推定結果
-  #+begin_src R :file figs/03_model2.png :exports results :results graphics
+  #+begin_src R :file figs/04_model2.png :exports results :results graphics
     #' モデル2の推定結果
     tw_subset |>
       ggplot(aes(x = solar, y = temp)) +
@@ -328,14 +338,14 @@
   #+end_src
 
 #+caption: モデル2
-#+name: fig:03_model2
+#+name: fig:04_model2
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
-[[file:figs/03_model2.png]]
+[[file:figs/04_model2.png]]
   
 #+reveal: split
 - モデル3の推定結果
-  #+begin_src R :file figs/03_model3.png :exports results :results graphics
+  #+begin_src R :file figs/04_model3.png :exports results :results graphics
     #' モデル3の推定結果
     if(Sys.info()[["sysname"]] == "Darwin") par(family = "HiraginoSans-W4")
     s3d <- scatterplot3d::scatterplot3d( 
@@ -355,14 +365,14 @@
   #+end_src
 
 #+caption: モデル3
-#+name: fig:03_model3
+#+name: fig:04_model3
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
-[[file:figs/03_model3.png]]
+[[file:figs/04_model3.png]]
 
 #+reveal: split
 - 観測値とあてはめ値の比較
-  #+begin_src R :file figs/03_models.png :exports results :results graphics
+  #+begin_src R :file figs/04_models.png :exports results :results graphics
     #' 観測値とあてはめ値の比較
     tw_subset |>
       mutate(モデル1 = fitted(tw_lm1),    # モデルごとに予測値をデータフレームに追加
@@ -380,38 +390,74 @@
   #+end_src
 
 #+caption: モデルの比較
-#+name: fig:03_models
+#+name: fig:04_models
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
-[[file:figs/03_models.png]]
+[[file:figs/04_models.png]]
 
 ** モデルの比較
 :PROPERTIES:
 :ID:       6463C58D-1F34-41FE-8F44-77CE478493C0
 :END:
-- 寄与率による比較
-  #+begin_src R :exports none
-    #' 関数 tibble::tribble() を利用して結果をまとめる
-    #' 行ごとにデータを並べてデータフレームを作ることができる
-    (baz <- tribble(
-       ~モデル, ~決定係数, ~自由度調整済み決定係数,
-       ## 列名は ~ で指定
-       "気温 = F(気圧)", summary(tw_lm1)$r.squared, summary(tw_lm1)$adj.r.squared,
-       "気温 = F(日射)", summary(tw_lm2)$r.squared, summary(tw_lm2)$adj.r.squared,
-       "気温 = F(気圧, 日射)", summary(tw_lm3)$r.squared, summary(tw_lm3)$adj.r.squared,
-       "気温 = F(気圧, 日射, 湿度)", summary(tw_lm4)$r.squared, summary(tw_lm4)$adj.r.squared,
-       "気温 = F(気圧, 日射, 雲量)", summary(tw_lm5)$r.squared, summary(tw_lm5)$adj.r.squared,
-       ))
-  #+end_src
-  #+begin_src R :eval no :exports none
-    View(baz) # 左上ペインに表として表示
-  #+end_src
-  #+html: <font size=6>
-  #+begin_src R :exports results :results output raw :tangle no
-    #' 比較結果の表示 (reveal用)
-    baz |> ascii::ascii(digits=3) |> ascii::print(type = "org")
+- 決定係数(\(R^{2}\), Adjusted \(R^{2}\))
+  #+html: <font size=5>
+  #+begin_src R :exports results :results output html :tangle no
+    #' 関数 stargazer::stargazer() を利用して結果をまとめる
+    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5,
+                         column.labels = c("モデル1","モデル2","モデル3","モデル4","モデル5"), # NULL,
+                         covariate.labels = c("気圧","日射","湿度","雲量"), # NULL,
+                         dep.var.caption = "目的変数", # NULL,
+                         dep.var.labels = "気温", # NULL,
+                         ## dep.var.labels.include = TRUE,
+                         keep.stat = c("rsq","adj.rsq"), # NULL,
+                         ## model.names = NULL,
+                         model.numbers = FALSE, # NULL,
+                         ## object.names = FALSE,
+                         omit.table.layout = "n", # NULL, # "sn"
+                         report = "vcs", # NULL,
+                         single.row = TRUE, # FALSE,
+                         title = "寄与率によるモデルの比較",
+                         type = "html")
   #+end_src
   #+html: </font>
+  #+begin_src R :exports results :results output latex :tangle no
+    #' latex 版
+    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5,
+                         column.labels = c("モデル1","モデル2","モデル3","モデル4","モデル5"), # NULL,
+                         covariate.labels = c("気圧","日射","湿度","雲量"), # NULL,
+                         dep.var.caption = "目的変数", # NULL,
+                         dep.var.labels = "気温", # NULL,
+                         ## dep.var.labels.include = TRUE,
+                         keep.stat = c("rsq","adj.rsq"), # NULL,
+                         ## model.names = NULL,
+                         model.numbers = FALSE, # NULL,
+                         ## object.names = FALSE,
+                         omit.table.layout = "n", # NULL, # "sn"
+                         report = "vcs", # NULL,
+                         single.row = TRUE, # FALSE,
+                         title = "寄与率によるモデルの比較",
+                         font.size = "small", type = "latex")
+  #+end_src
+  #+begin_src R :eval no :exports none
+    #' 関数 stargazer::stargazer() を利用して結果をまとめる
+    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5, # 既定値を '#' の後に記している
+                         column.labels = c("モデル1","モデル2","モデル3","モデル4","モデル5"), # NULL,
+                         covariate.labels = c("気圧","日射","湿度","雲量"), # NULL,
+                         dep.var.caption = "目的変数", # NULL,
+                         dep.var.labels = "気温", # NULL,
+                         ## dep.var.labels.include = TRUE,
+                         keep.stat = c("rsq","adj.rsq"), # NULL,
+                         ## model.names = NULL,
+                         model.numbers = FALSE, # NULL,
+                         ## object.names = FALSE,
+                         omit.table.layout = "n", # NULL, # "sn"
+                         report = "vcs", # NULL,
+                         single.row = TRUE, # FALSE,
+                         title = "寄与率によるモデルの比較",
+                         type = "text")
+    #' 'type = "html" または "latex"' など形式を選択することができる
+    #' それ以外のオプションの設定で様々な表を出力することができる
+  #+end_src
 
 
 * あてはめ値の性質
@@ -1441,6 +1487,73 @@
 
 ** 東京の8月の気候の分析 (再掲)
 :PROPERTIES:
+:ID:       A489FC6E-DE7F-40F3-AF84-149780E42205
+:END:
+- データの一部
+  #+begin_src R :exports none
+    #' @exercise 東京の気候データを用いた例
+    
+    #' データの読み込み
+    tw_subset <- read_csv("data/tokyo_weather.csv") |>
+      filter(month == 8) |> # 8月のデータの抽出
+      mutate(date=date(paste(year,month,day,sep="-")), .before = 1) |>
+      select(-c(year,month,day,day_of_week))
+
+    #' モデル式
+    tw_model1 <- temp ~ press
+    tw_model2 <- temp ~ solar
+    tw_model3 <- temp ~ press + solar
+    tw_model4 <- temp ~ press + solar + humid
+    tw_model5 <- temp ~ press + solar + cloud
+
+    #' 推定
+    tw_lm1 <- lm(tw_model1, data=tw_subset, y=TRUE)
+    tw_lm2 <- lm(tw_model2, data=tw_subset, y=TRUE)
+    tw_lm3 <- lm(tw_model3, data=tw_subset, y=TRUE)
+    tw_lm4 <- lm(tw_model4, data=tw_subset, y=TRUE)
+    tw_lm5 <- lm(tw_model5, data=tw_subset, y=TRUE)
+  #+end_src
+
+  #+begin_src R :exports none
+    #' データの表示
+    #' 列名を日本語にして表示する
+    foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
+                        c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+    (bar <- tw_subset |> rename(all_of(foo)))
+  #+end_src
+  #+begin_src R :eval no :exports none
+    View(bar) # 左上ペインに表として表示
+  #+end_src
+  #+html: <font size=5>
+  #+begin_src R :exports results :results output html :tangle no
+    #' データの表示(reveal用)
+    bar |> slice(1:15) |> mutate(日付 = as.character(日付)) |>
+      stargazer::stargazer(summary = FALSE,
+                           rownames = FALSE,
+                           title = "東京の8月の気候",
+                           type = "html")
+  #+end_src
+  #+html: </font>
+
+  #+begin_src R :exports results :results output latex :tangle no
+    #' データの表示(latex用)
+    bar |> mutate(日付 = as.character(日付)) |>
+      stargazer::stargazer(summary = FALSE,
+                           rownames = FALSE,
+                           title = "東京の8月の気候",
+                           font.size = "small", type = "latex")
+  #+end_src
+
+#+reveal: split
+- 気温を説明する5種類の線形回帰モデルを検討
+  - モデル1 : 気温 = F(気圧)
+  - モデル2 : 気温 = F(日射)
+  - モデル3 : 気温 = F(気圧, 日射)
+  - モデル4 : 気温 = F(気圧, 日射, 湿度)
+  - モデル5 : 気温 = F(気圧, 日射, 雲量)
+
+** COMMENT 東京の8月の気候の分析 (再掲)
+:PROPERTIES:
 :ID:       2100AC2B-D452-48B6-998A-93B6B3675212
 :END:
 - データの一部
@@ -1500,44 +1613,57 @@
 :ID:       59B71FB4-2412-4B64-BF49-A53AF3313B7F
 :END:
 - 観測値とあてはめ値の比較
-  #+begin_src R :file figs/03_models.png :exports results :results graphics
-    #' 観測値とあてはめ値の比較
-    tw_subset |>
-      mutate(モデル1 = fitted(tw_lm1),    # モデルごとに予測値をデータフレームに追加
-             モデル2 = fitted(tw_lm2),
-             モデル3 = fitted(tw_lm3),
-             モデル4 = fitted(tw_lm4),
-             モデル5 = fitted(tw_lm5)) |>
-      pivot_longer(starts_with("モデル"), # モデルをラベルとして予測値をまとめる
-                   names_to = "model", values_to = "fitted") |>
-      ggplot(aes(x = temp, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
-      geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
-      geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
-      labs(x = "気温", y = "あてはめ値") +
-      xlim(22,32) + ylim(22,32) + theme(legend.position = c(.88,.15))
-  #+end_src
 
 #+caption: モデルの比較
-#+name: fig:03_models
+#+name: fig:04_models
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
-[[file:figs/03_models.png]]
+[[file:figs/04_models.png]]
 
 ** モデルの比較
 :PROPERTIES:
 :ID:       6104947A-BAD8-48A6-848D-9001C82883BF
 :END:
-- 寄与率・\(t\)統計量・\(F\)統計量
+- \(t\)統計量・\(F\)統計量
   #+html: <font size=4>
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
-    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5,
-                         ## column.labels=c("A","B","C","D","E"),
-                         type="html",single.row=TRUE)
+    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5, # 既定値を '#' の後に記している
+                         column.labels = c("モデル1","モデル2","モデル3","モデル4","モデル5"), # NULL,
+                         covariate.labels = c("気圧","日射","湿度","雲量"), # NULL,
+                         dep.var.caption = "目的変数", # NULL,
+                         dep.var.labels = "気温", # NULL,
+                         ## dep.var.labels.include = TRUE,
+                         ## keep.stat = c("rsq","adj.rsq"), # NULL,
+                         ## model.names = NULL,
+                         model.numbers = FALSE, # NULL,
+                         ## object.names = FALSE,
+                         ## omit.table.layout = "n", # NULL, # "sn"
+                         report = "vc*st", # NULL,
+                         single.row = TRUE, # FALSE,
+                         title = "t統計量・F統計量によるモデルの比較",
+                         type = "html")
   #+end_src
   #+html: </font>
-- 変数名の対応
-  - 気温(temp), 気圧(press), 日射(solar), 湿度(humid), 雲量(cloud)
+
+  #+begin_src R :exports results :results output latex :tangle no
+    #' データの表示(latex用)
+    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5, # 既定値を '#' の後に記している
+                         column.labels = c("モデル1","モデル2","モデル3","モデル4","モデル5"), # NULL,
+                         covariate.labels = c("気圧","日射","湿度","雲量"), # NULL,
+                         dep.var.caption = "目的変数", # NULL,
+                         dep.var.labels = "気温", # NULL,
+                         ## dep.var.labels.include = TRUE,
+                         ## keep.stat = c("rsq","adj.rsq"), # NULL,
+                         ## model.names = NULL,
+                         model.numbers = FALSE, # NULL,
+                         ## object.names = FALSE,
+                         ## omit.table.layout = "n", # NULL, # "sn"
+                         report = "vc*st", # NULL,
+                         single.row = TRUE, # FALSE,
+                         title = "t統計量・F統計量によるモデルの比較",
+                         font.size = "small", type = "latex")
+  #+end_src
 
 #+reveal: split
 - 診断プロット (モデル4)

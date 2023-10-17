@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-17 12:26:22 mura>
+# Time-stamp: <2023-10-17 17:32:49 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -1265,7 +1265,7 @@
                            font.size = "small", type = "latex")
   #+end_src
 
-  # org に表を処理させる場合は以下
+  # org に表を処理させる場合は以下のとおり
   # #+html: <font size=6>
   # #+begin_src R :exports results :results output raw :tangle no
   #   #' データの表示(reveal用)
@@ -1392,30 +1392,7 @@
 :PROPERTIES:
 :ID:       6463C58D-1F34-41FE-8F44-77CE478493C0
 :END:
-- 決定係数・自由度調整済み決定係数による比較
-  # #+begin_src R :exports none
-  #   #' 関数 tibble::tribble() を利用して結果をまとめる
-  #   #' 行ごとにデータを並べてデータフレームを作ることができる
-  #   (baz <- tribble(
-  #      ~モデル, ~決定係数, ~自由度調整済み決定係数,
-  #      ## 列名は ~ で指定
-  #      "気温 = F(気圧)", summary(tw_lm1)$r.squared, summary(tw_lm1)$adj.r.squared,
-  #      "気温 = F(日射)", summary(tw_lm2)$r.squared, summary(tw_lm2)$adj.r.squared,
-  #      "気温 = F(気圧, 日射)", summary(tw_lm3)$r.squared, summary(tw_lm3)$adj.r.squared,
-  #      "気温 = F(気圧, 日射, 湿度)", summary(tw_lm4)$r.squared, summary(tw_lm4)$adj.r.squared,
-  #      "気温 = F(気圧, 日射, 雲量)", summary(tw_lm5)$r.squared, summary(tw_lm5)$adj.r.squared,
-  #      ))
-  # #+end_src
-  # #+begin_src R :eval no :exports none
-  #   View(baz) # 左上ペインに表として表示
-  # #+end_src
-  # #+html: <font size=6>
-  # #+begin_src R :exports results :results output raw :tangle no
-  #   #' 比較結果の表示 (reveal用)
-  #   baz |> ascii::ascii(digits=3) |> ascii::print(type = "org")
-  # #+end_src
-  # #+html: </font>
-
+- 決定係数(\(R^{2}\), Adjusted \(R^{2}\))
   #+html: <font size=5>
   #+begin_src R :exports results :results output html :tangle no
     #' 関数 stargazer::stargazer() を利用して結果をまとめる
@@ -1455,6 +1432,30 @@
                          title = "寄与率によるモデルの比較",
                          font.size = "small", type = "latex")
   #+end_src
+
+  # org に表を処理させる場合は以下のとおり
+  # #+begin_src R :exports none
+  #   #' 関数 tibble::tribble() を利用して結果をまとめる
+  #   #' 行ごとにデータを並べてデータフレームを作ることができる
+  #   (baz <- tribble(
+  #      ~モデル, ~決定係数, ~自由度調整済み決定係数,
+  #      ## 列名は ~ で指定
+  #      "気温 = F(気圧)", summary(tw_lm1)$r.squared, summary(tw_lm1)$adj.r.squared,
+  #      "気温 = F(日射)", summary(tw_lm2)$r.squared, summary(tw_lm2)$adj.r.squared,
+  #      "気温 = F(気圧, 日射)", summary(tw_lm3)$r.squared, summary(tw_lm3)$adj.r.squared,
+  #      "気温 = F(気圧, 日射, 湿度)", summary(tw_lm4)$r.squared, summary(tw_lm4)$adj.r.squared,
+  #      "気温 = F(気圧, 日射, 雲量)", summary(tw_lm5)$r.squared, summary(tw_lm5)$adj.r.squared,
+  #      ))
+  # #+end_src
+  # #+begin_src R :eval no :exports none
+  #   View(baz) # 左上ペインに表として表示
+  # #+end_src
+  # #+html: <font size=6>
+  # #+begin_src R :exports results :results output raw :tangle no
+  #   #' 比較結果の表示 (reveal用)
+  #   baz |> ascii::ascii(digits=3) |> ascii::print(type = "org")
+  # #+end_src
+  # #+html: </font>
       
 * 次回の予定
 - 第1回 : 回帰モデルの考え方と推定
