@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-17 12:21:48 mura>
+# Time-stamp: <2023-10-17 12:26:22 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -1392,7 +1392,7 @@
 :PROPERTIES:
 :ID:       6463C58D-1F34-41FE-8F44-77CE478493C0
 :END:
-- 寄与率(決定係数・自由度調整済み決定係数)による比較
+- 決定係数・自由度調整済み決定係数による比較
   # #+begin_src R :exports none
   #   #' 関数 tibble::tribble() を利用して結果をまとめる
   #   #' 行ごとにデータを並べてデータフレームを作ることができる
