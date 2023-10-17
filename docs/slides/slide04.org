@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-16 18:17:39 mura>
+# Time-stamp: <2023-10-16 18:19:49 mura>
 
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
@@ -1524,6 +1524,9 @@
 [[file:figs/03_models.png]]
 
 ** モデルの比較
+:PROPERTIES:
+:ID:       6104947A-BAD8-48A6-848D-9001C82883BF
+:END:
 - 寄与率・\(t\)統計量・\(F\)統計量
   #+html: <font size=4>
   #+begin_src R :exports results :results output html :tangle no

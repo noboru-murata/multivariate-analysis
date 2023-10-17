@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-16 18:02:48 mura>
+# Time-stamp: <2023-10-17 12:21:48 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -31,7 +31,7 @@
 - 第2回 : モデルの評価
 - 第3回 : モデルによる予測と発展的なモデル
 
-#+begin_src R :exports none
+#+begin_src R :exports none :tangle no
   setwd("~/Desktop/lectures/mva/course")
 #+end_src
 #+begin_src R :exports none
@@ -1239,21 +1239,42 @@
     #' データの表示
     #' 列名を日本語にして表示する
     foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
-                        c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+                     c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
     (bar <- tw_subset |> rename(all_of(foo)))
   #+end_src
   #+begin_src R :eval no :exports none
     View(bar) # 左上ペインに表として表示
   #+end_src
-  #+html: <font size=6>
-  #+begin_src R :exports results :results output raw :tangle no
+  #+html: <font size=5>
+  #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
-    bar |>
-      head(12) |> # 12日分を表示
-      ascii::ascii(include.rownames = FALSE) |>
-      ascii::print(type = "org")
+    bar |> slice(1:15) |> mutate(日付 = as.character(日付)) |>
+      stargazer::stargazer(summary = FALSE,
+                           rownames = FALSE,
+                           title = "東京の8月の気候",
+                           type = "html")
   #+end_src
   #+html: </font>
+
+  #+begin_src R :exports results :results output latex :tangle no
+    #' データの表示(latex用)
+    bar |> mutate(日付 = as.character(日付)) |>
+      stargazer::stargazer(summary = FALSE,
+                           rownames = FALSE,
+                           title = "東京の8月の気候",
+                           font.size = "small", type = "latex")
+  #+end_src
+
+  # org に表を処理させる場合は以下
+  # #+html: <font size=6>
+  # #+begin_src R :exports results :results output raw :tangle no
+  #   #' データの表示(reveal用)
+  #   bar |>
+  #     head(12) |> # 12日分を表示
+  #     ascii::ascii(include.rownames = FALSE) |>
+  #     ascii::print(type = "org")
+  # #+end_src
+  # #+html: </font>
 
 #+reveal: split
 - 気温を説明する5種類の線形回帰モデルを検討
@@ -1371,31 +1392,70 @@
 :PROPERTIES:
 :ID:       6463C58D-1F34-41FE-8F44-77CE478493C0
 :END:
-- 寄与率による比較
-  #+begin_src R :exports none
-    #' 関数 tibble::tribble() を利用して結果をまとめる
-    #' 行ごとにデータを並べてデータフレームを作ることができる
-    (baz <- tribble(
-       ~モデル, ~決定係数, ~自由度調整済み決定係数,
-       ## 列名は ~ で指定
-       "気温 = F(気圧)", summary(tw_lm1)$r.squared, summary(tw_lm1)$adj.r.squared,
-       "気温 = F(日射)", summary(tw_lm2)$r.squared, summary(tw_lm2)$adj.r.squared,
-       "気温 = F(気圧, 日射)", summary(tw_lm3)$r.squared, summary(tw_lm3)$adj.r.squared,
-       "気温 = F(気圧, 日射, 湿度)", summary(tw_lm4)$r.squared, summary(tw_lm4)$adj.r.squared,
-       "気温 = F(気圧, 日射, 雲量)", summary(tw_lm5)$r.squared, summary(tw_lm5)$adj.r.squared,
-       ))
-  #+end_src
-  #+begin_src R :eval no :exports none
-    View(baz) # 左上ペインに表として表示
-  #+end_src
-  #+html: <font size=6>
-  #+begin_src R :exports results :results output raw :tangle no
-    #' 比較結果の表示 (reveal用)
-    baz |> ascii::ascii(digits=3) |> ascii::print(type = "org")
+- 寄与率(決定係数・自由度調整済み決定係数)による比較
+  # #+begin_src R :exports none
+  #   #' 関数 tibble::tribble() を利用して結果をまとめる
+  #   #' 行ごとにデータを並べてデータフレームを作ることができる
+  #   (baz <- tribble(
+  #      ~モデル, ~決定係数, ~自由度調整済み決定係数,
+  #      ## 列名は ~ で指定
+  #      "気温 = F(気圧)", summary(tw_lm1)$r.squared, summary(tw_lm1)$adj.r.squared,
+  #      "気温 = F(日射)", summary(tw_lm2)$r.squared, summary(tw_lm2)$adj.r.squared,
+  #      "気温 = F(気圧, 日射)", summary(tw_lm3)$r.squared, summary(tw_lm3)$adj.r.squared,
+  #      "気温 = F(気圧, 日射, 湿度)", summary(tw_lm4)$r.squared, summary(tw_lm4)$adj.r.squared,
+  #      "気温 = F(気圧, 日射, 雲量)", summary(tw_lm5)$r.squared, summary(tw_lm5)$adj.r.squared,
+  #      ))
+  # #+end_src
+  # #+begin_src R :eval no :exports none
+  #   View(baz) # 左上ペインに表として表示
+  # #+end_src
+  # #+html: <font size=6>
+  # #+begin_src R :exports results :results output raw :tangle no
+  #   #' 比較結果の表示 (reveal用)
+  #   baz |> ascii::ascii(digits=3) |> ascii::print(type = "org")
+  # #+end_src
+  # #+html: </font>
+
+  #+html: <font size=5>
+  #+begin_src R :exports results :results output html :tangle no
+    #' 関数 stargazer::stargazer() を利用して結果をまとめる
+    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5,
+                         column.labels = c("モデル1","モデル2","モデル3","モデル4","モデル5"), # NULL,
+                         covariate.labels = c("気圧","日射","湿度","雲量"), # NULL,
+                         dep.var.caption = "目的変数", # NULL,
+                         dep.var.labels = "気温", # NULL,
+                         ## dep.var.labels.include = TRUE,
+                         keep.stat = c("rsq","adj.rsq"), # NULL,
+                         ## model.names = NULL,
+                         model.numbers = FALSE, # NULL,
+                         ## object.names = FALSE,
+                         omit.table.layout = "n", # NULL, # "sn"
+                         report = "vcs", # NULL,
+                         single.row = TRUE, # FALSE,
+                         title = "寄与率によるモデルの比較",
+                         type = "html")
   #+end_src
   #+html: </font>
 
-    
+  #+begin_src R :exports results :results output latex :tangle no
+    #' latex 版
+    stargazer::stargazer(tw_lm1, tw_lm2, tw_lm3, tw_lm4, tw_lm5,
+                         column.labels = c("モデル1","モデル2","モデル3","モデル4","モデル5"), # NULL,
+                         covariate.labels = c("気圧","日射","湿度","雲量"), # NULL,
+                         dep.var.caption = "目的変数", # NULL,
+                         dep.var.labels = "気温", # NULL,
+                         ## dep.var.labels.include = TRUE,
+                         keep.stat = c("rsq","adj.rsq"), # NULL,
+                         ## model.names = NULL,
+                         model.numbers = FALSE, # NULL,
+                         ## object.names = FALSE,
+                         omit.table.layout = "n", # NULL, # "sn"
+                         report = "vcs", # NULL,
+                         single.row = TRUE, # FALSE,
+                         title = "寄与率によるモデルの比較",
+                         font.size = "small", type = "latex")
+  #+end_src
+      
 * 次回の予定
 - 第1回 : 回帰モデルの考え方と推定
 - *第2回 : モデルの評価*
