@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-11-06 18:53:57 mura>
+# Time-stamp: <2023-11-07 17:07:17 mura>
 :REVEAL:
 #+INCLUDE: "./reveal.js/org/mycourse.org"
 #+PROPERTY: header-args:R :cache yes :session *R*
@@ -1308,6 +1308,9 @@
               predict(tw_lm, newdata = tw_test, interval = "confidence"))
 
   #' 予測区間
+  tw_train_pred <- # あてはめ値と予測区間を付加
+    bind_cols(tw_train,
+              predict(tw_lm, interval = "prediction"))
   tw_test_pred <- # 新規データへのあてはめ値と予測区間を付加
     bind_cols(tw_test, 
               predict(tw_lm, newdata = tw_test, interval = "prediction"))
@@ -1319,8 +1322,9 @@
     ggplot(aes(x = day, y = temp)) +
     geom_point(colour = "red", shape = 16) +
     geom_point(aes(y = fit), colour = "blue") +
-    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "steelblue") +
-    labs(x = "August", y = "Temperature", title = "Confidence Interval")
+    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "royalblue") +
+    ylim(c(20,34)) + # 4つのグラフで気温の範囲を揃える
+    labs(x = "8月", y = "気温", title = "信頼区間")
 #+end_src
 
 #+caption: 8月のあてはめ値の信頼区間
@@ -1330,14 +1334,33 @@
 [[file:figs/05_aug_cint.png]]
 
 #+reveal: split
+#+begin_src R :file figs/05_aug_pred.png :exports results :results graphics
+  #' 8月のデータで推定したモデルで8月をあてはめた予測区間
+  tw_train_pred |>
+    ggplot(aes(x = day, y = temp)) +
+    geom_point(colour = "red", shape = 16) +
+    geom_point(aes(y = fit), colour = "blue") +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "steelblue") +
+    ylim(c(20,34)) + # 4つのグラフで気温の範囲を揃える
+    labs(x = "8月", y = "気温", title = "予測区間")
+#+end_src
+
+#+caption: 8月のあてはめ値の予測区間
+#+name: fig:05_aug_pred
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/05_aug_pred.png]]
+
+#+reveal: split
 #+begin_src R :file figs/05_sep_cint.png :exports results :results graphics
   #' 8月のモデルで9月をあてはめた信頼区間
   tw_test_conf |>
     ggplot(aes(x = day, y = temp)) +
     geom_point(colour = "red", shape = 16) +
     geom_point(aes(y = fit), colour = "blue") +
-    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "steelblue") +
-    labs(x = "September", y = "Temperature", title = "Confidence Interval")
+    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "royalblue") +
+    ylim(c(20,34)) + # 4つのグラフで気温の範囲を揃える
+    labs(x = "9月", y = "気温", title = "信頼区間")
 #+end_src
 
 #+caption: 8月モデルによる9月の予測値の信頼区間
@@ -1353,8 +1376,9 @@
     ggplot(aes(x = day, y = temp)) +
     geom_point(colour = "red", shape = 16) +
     geom_point(aes(y = fit), colour = "blue") +
-    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "lightblue") +
-    labs(x = "September", y = "Temperature", title = "Prediction Interval")
+    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "steelblue") +
+    ylim(c(20,34)) + # 4つのグラフで気温の範囲を揃える
+    labs(x = "9月", y = "気温", title = "予測区間")
 #+end_src
 
 #+caption: 8月モデルによる9月の予測値の予測区間
@@ -1366,11 +1390,11 @@
    
 * 発展的なモデル
 ** 非線形性を含むモデル
-- 目的変数 \(Y\)
-- 説明変数 \(X_1,\dotsc,X_p\)
+- 目的変数 \(y\)
+- 説明変数 \(x_1,\dotsc,x_p\)
 - 説明変数の追加で対応可能
-  - 交互作用 (交差項) : \(X_iX_j\) のような説明変数の積
-  - 非線形変換 : \(\log(X_k)\) のような関数による変換
+  - 交互作用 (交差項) : \(x_ix_j\) のような説明変数の積
+  - 非線形変換 : \(\log(x_k)\) のような関数による変換
 
 ** カテゴリカル変数を含むモデル
 - 数値ではないデータ
@@ -1393,23 +1417,35 @@
 :PROPERTIES:
 :ID:       74AD1041-5716-450D-8520-16ADF64B934A
 :END:
-- 体重と脳の重さの関係
-  #+html: <font size=5>
-  #+begin_src R :exports results :results output html :tangle no
-    #' データの表示(reveal用)
-    MASS::Animals |> slice(1:14) |>
-      stargazer::stargazer(summary = FALSE,
-                           rownames = TRUE,
-                           type = "html")
-  #+end_src
-  #+html: </font>
-  #+begin_src R :exports results :results output latex :tangle no
-    #' データの表示(latex用)
-    MASS::Animals |> 
-      stargazer::stargazer(summary = FALSE,
-                           rownames = TRUE,
-                           font.size = "small", type = "latex")
-  #+end_src
+#+begin_leftcol
+#+html: <font size=5>
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  MASS::Animals |> slice(1:14) |>
+    stargazer::stargazer(summary = FALSE,
+                         rownames = TRUE,
+                         title = "体重と脳の重さ(一部)",
+                         type = "html")
+#+end_src
+#+html: </font>
+#+begin_src R :exports results :results output latex :tangle no
+  #' データの表示(latex用)
+  MASS::Animals |> 
+    stargazer::stargazer(summary = FALSE,
+                         rownames = TRUE,
+                         title = "体重と脳の重さ",
+                         font.size = "small", type = "latex")
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+- 様々な動物の体重と脳の重さの関係を調べる
+  - 体重は5桁程度のばらつき
+  - 脳の重さは4桁程度のばらつき
+- 以下の変換を検討する  
+  - 変換なし
+  - 体重を対数変換
+  - 体重および脳の重さを対数変換
+#+end_rightcol
   
 #+reveal: split
 - 散布図 (変換なし)
@@ -1417,10 +1453,11 @@
     #' 散布図 (normal plot)
     MASS::Animals |>
       ggplot(aes(body, brain)) +
+      # ggrepel::geom_text_repel(aes(label = rownames(MASS::Animals)), size = 4) +
       geom_text(aes(label = rownames(MASS::Animals)), size = 4, vjust = 1) +
       geom_point(colour = "royalblue") + 
-      labs(title = "Brain and Body Weights (normal plot)",
-           x = "body [kg]", y = "brain [g]") 
+      labs(title = "体重と脳の重さ (normal plot)",
+           x = "体重 [kg]", y = "脳の重さ [g]") 
   #+end_src
 
 #+caption: 散布図 (データの変換なし)
@@ -1435,11 +1472,12 @@
     #' 散布図 (normal plot)
     MASS::Animals |>
       ggplot(aes(body, brain)) +
-      geom_text(aes(label = rownames(MASS::Animals)), size = 4, vjust = 1) +
+      ggrepel::geom_text_repel(aes(label = rownames(MASS::Animals)), size = 4, vjust = 1) +
+      # geom_text(aes(label = rownames(MASS::Animals)), size = 4, vjust = 1) +
       geom_point(colour = "royalblue") + 
       scale_x_log10() +
-      labs(title = "Brain and Body Weights (log-normal plot)",
-           x = "body [kg]", y = "brain [g]") 
+      labs(title = "体重と脳の重さ (log-normal plot)",
+           x = "体重 [kg]", y = "脳の重さ [g]") 
   #+end_src
 
 #+caption: 散布図 (体重を対数変換)
@@ -1454,11 +1492,12 @@
     #' 散布図 (log-log plot)
     MASS::Animals |>
       ggplot(aes(body, brain)) +
-      geom_text(aes(label = rownames(MASS::Animals)), size = 4, vjust = 1) +
+      ggrepel::geom_text_repel(aes(label = rownames(MASS::Animals)), size = 4) +
+      # geom_text(aes(label = rownames(MASS::Animals)), size = 4, vjust = 1) +
       geom_point(colour = "royalblue") + 
       scale_x_log10() + scale_y_log10() +
-      labs(title = "Brain and Body Weights (log-log plot)",
-           x = "body [kg]", y = "brain [g]") 
+      labs(title = "体重と脳の重さ (log-log plot)",
+           x = "体重 [kg]", y = "脳の重さ [g]") 
   #+end_src
 
 #+caption: 散布図 (体重と脳の重さを対数変換)
@@ -1466,6 +1505,47 @@
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/05_animals3.png]]
+
+#+reveal: split
+- 単回帰 (全データ)
+  #+begin_src R :file figs/05_animals4.png :exports results :results graphics
+    #' 回帰式の表示
+    MASS::Animals |>
+      ggplot(aes(body, brain)) +
+      geom_smooth(method = lm, colour = "blue") + 
+      ggrepel::geom_text_repel(aes(label = rownames(MASS::Animals)), size = 4) +
+      geom_point(colour = "royalblue") + 
+      scale_x_log10() + scale_y_log10() +
+      labs(title = "体重と脳の重さ",
+           x = "体重 [kg]", y = "脳の重さ [g]") 
+  #+end_src
+
+#+caption: 単回帰
+#+name: fig:05_animals4
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/05_animals4.png]]
+
+#+reveal: split
+- 単回帰 (外れ値を除去)
+  #+begin_src R :file figs/05_animals5.png :exports results :results graphics
+    #' 回帰式の表示
+    MASS::Animals |>
+      ggplot(aes(body, brain)) +
+      geom_smooth(data = slice(MASS::Animals,-c(6,16,26)), # 外れ値を除去
+                  method = lm, colour = "blue") + 
+      ggrepel::geom_text_repel(aes(label = rownames(MASS::Animals)), size = 4) +
+      geom_point(colour = "royalblue") + 
+      scale_x_log10() + scale_y_log10() +
+      labs(title = "体重と脳の重さ",
+           x = "体重 [kg]", y = "脳の重さ [g]") 
+  #+end_src
+
+#+caption: 外れ値を除いた単回帰
+#+name: fig:05_animals5
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/05_animals5.png]]
 
 ** COMMENT 非線形な関係の分析
 :PROPERTIES:
@@ -1544,6 +1624,21 @@
   - これらの交互作用を加えた線形回帰モデル \\
     (日射量と気圧の相互の関係の影響を検討する)
 
+#+reveal: split
+- 関連データの散布図
+  #+begin_src R :file figs/05_interaction.png :exports results :results graphics
+    #' 関連データの散布図
+    tw_subset |>
+      select(temp,solar,press) |>
+      GGally::ggpairs(columnLabels=c("気温","日射","気圧"))
+  #+end_src
+
+#+caption: 散布図 (気温・日射・気圧)
+#+name: fig:05_interaction
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/05_interaction.png]]
+    
 ** 交互作用の効果
 :PROPERTIES:
 :ID:       2CC1EB4C-139F-4CD5-9C6E-7647E3AAE53E
@@ -1600,8 +1695,8 @@
     - 日射が高くなるほど高
     - 気圧が低くなるほど高
   - 交互作用を加えたモデル
-    - ある気圧より低い場合には日射量が高くなるほど高
-    - ある日射量より低い場合には気圧が高くなるほど高
+    - ある気圧より高い場合には日射量が高くなるほど高
+    - ある日射量より高い場合には気圧が高くなるほど高
     - 係数の有意性は低いのでより多くのデータでの分析が必要
 #+end_rightcol
 
@@ -1678,15 +1773,32 @@
     (雨が降ると気温が変化することを検証する)
   - 月をカテゴリカル変数として加えたモデル \\
     (月毎の気温の差を考慮する)
+
+#+reveal: split
+- 関連データの散布図
+  #+begin_src R :file figs/05_categorical.png :exports results :results graphics
+    #' 関連データの散布図
+    tw_data_cat <- tw_data |>
+      mutate(rain = factor(rain > 0),
+             month = as_factor(month))
+    tw_data_cat |>
+      select(temp,rain,month) |>
+      GGally::ggpairs(aes(colour = rain),
+                      columnLabels=c("気温","降雨","月"))
+  #+end_src
+
+#+caption: 散布図 (気温・降雨・月)
+#+name: fig:05_categorical
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/05_categorical.png]]
+    
 ** カテゴリカル変数の効果
 :PROPERTIES:
 :ID:       0BFAD130-FA6A-4F50-947C-AFDD7297EBB5
 :END:
 #+begin_leftcol
 #+begin_src R :exports none
-  tw_data_cat <- tw_data |>
-    mutate(rain = factor(rain > 0),
-           month = as_factor(month))
   #' 雨と気温の関係を分析
   tw_lm3 <- lm(temp ~ rain, data = tw_data_cat)
   #' 月毎の気温の差を考慮して月を表す変数をダミー化する
