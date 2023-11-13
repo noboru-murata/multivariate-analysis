@@ -45,27 +45,25 @@
 </div>
 
 </section>
-
 <section>
-<section id="slide-org3eaedf3">
-<h2 id="org3eaedf3">講義の内容</h2>
+<section id="slide-orgc340d62">
+<h2 id="orgc340d62">講義の内容</h2>
 <ul>
 <li><b>第1日 : 主成分分析の考え方</b></li>
 <li>第2日 : 分析の評価と視覚化</li>
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
 </section>
 <section>
-<section id="slide-orgc06c52a">
-<h2 id="orgc06c52a">主成分分析の考え方</h2>
-<div class="outline-text-2" id="text-orgc06c52a">
+<section id="slide-org99716df">
+<h2 id="org99716df">主成分分析の考え方</h2>
+<div class="outline-text-2" id="text-org99716df">
 </div>
 </section>
-<section id="slide-orgcb7a6dc">
-<h3 id="orgcb7a6dc">主成分分析</h3>
+<section id="slide-org2d6dc92">
+<h3 id="org2d6dc92">主成分分析</h3>
 <ul>
 <li>多数の変量のもつ情報の分析・視覚化
 <ul>
@@ -81,12 +79,11 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org73db7d3">
-<h3 id="org73db7d3">分析の枠組み</h3>
+<section id="slide-orgfcd8615">
+<h3 id="orgfcd8615">分析の枠組み</h3>
 <ul>
-<li>\(X_{1},\dotsc,X_{p}\) : <b>変数</b> (確率変数として扱っている)</li>
+<li>\(X_{1},\dotsc,X_{p}\) : <b>変数</b></li>
 <li>\(Z_{1},\dotsc,Z_{d}\) : <b>特徴量</b> ( \(d\leq p\) )</li>
 <li><p>
 変数と特徴量の関係 (線形結合)
@@ -116,15 +113,14 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org60b9667">
-<h3 id="org60b9667">主成分分析の用語</h3>
+<section id="slide-orgcc91db7">
+<h3 id="orgcc91db7">主成分分析の用語</h3>
 <ul>
 <li>特徴量 \(Z_k\)
 <ul>
-<li>第 \(k\) <b>主成分</b></li>
 <li>第 \(k\) <b>主成分得点</b> (principal component score)</li>
+<li>第 \(k\) <b>主成分</b></li>
 
 </ul></li>
 <li>係数ベクトル \(\boldsymbol{a}_k\)
@@ -136,10 +132,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org73a447b">
-<h3 id="org73a447b">分析の目的</h3>
+<section id="slide-orge1569b8">
+<h3 id="orge1569b8">分析の目的</h3>
 <ul>
 <li><p>
 目的
@@ -152,7 +147,7 @@
 \(X_{1},\dotsc,X_{p}\)
 の情報を効率よく反映するように主成分負荷量
 \(\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{d}\)
-を観測データから <b>うまく</b> 決定する
+を観測データから決定する
 </p>
 </blockquote></li>
 <li>分析の方針 (以下は同値)
@@ -163,25 +158,23 @@
 </ul></li>
 <li><b>教師なし学習</b> の代表的手法の1つ
 <ul>
-<li>次元縮約 : 入力をできるだけ少ない変数で表現</li>
 <li>特徴抽出 : 情報処理に重要な特性を変数に凝集</li>
+<li>次元縮約 : 入力をできるだけ少ない変数で表現</li>
 
 </ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgdee3b4f">
-<h2 id="orgdee3b4f">第1主成分の計算</h2>
-<div class="outline-text-2" id="text-orgdee3b4f">
+<section id="slide-org0bc50a0">
+<h2 id="org0bc50a0">第1主成分の計算</h2>
+<div class="outline-text-2" id="text-org0bc50a0">
 </div>
 </section>
-<section id="slide-orgf5954a0">
-<h3 id="orgf5954a0">記号の準備</h3>
+<section id="slide-orgb60a5ac">
+<h3 id="orgb60a5ac">記号の準備</h3>
 <ul>
 <li>変数 : \(x_{1},\dotsc,x_{p}\) (\(p\)次元)</li>
 <li><p>
@@ -206,10 +199,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-orgb963acf">
-<h3 id="orgb963acf">係数ベクトルによる射影</h3>
+<section id="slide-orgcc7f9c3">
+<h3 id="orgcc7f9c3">係数ベクトルによる射影</h3>
 <ul>
 <li><p>
 データ \(\boldsymbol{x}_{i}\) の \(\boldsymbol{a}\) 方向成分の長さ
@@ -240,21 +232,19 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org1ac1012">
-<h3 id="org1ac1012">幾何学的描像</h3>
+<section id="slide-org4259aee">
+<h3 id="org4259aee">幾何学的描像</h3>
 
-<div id="org6ae09e6" class="figure">
+<div id="org31f5bc9" class="figure">
 <p><img src="./figs/pca-figure.png" alt="pca-figure.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 1: </span>観測データの直交射影 (\(p=2,n=2\) の場合)</p>
 </div>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-orge1471e2">
-<h3 id="orge1471e2">ベクトル \(\boldsymbol{a}\) の選択の指針</h3>
+<section id="slide-orgf352431">
+<h3 id="orgf352431">ベクトル \(\boldsymbol{a}\) の選択の指針</h3>
 <ul>
 <li><p>
 射影による特徴量の構成
@@ -262,15 +252,15 @@
 <blockquote>
 <p>
 ベクトル \(\boldsymbol{a}\) を <b>うまく</b> 選んで
-観測データ \(\boldsymbol{x}_{1},\dots,\boldsymbol{x}_n\)
-の情報を最も保持する1変量データを構成
+観測データ \(\boldsymbol{x}_{1},\cdots,\boldsymbol{x}_{n}\)
+の情報を最も保持する1変量データ \(z_{1},\cdots,z_{n}\)を構成
 </p>
 <div>
 \begin{equation}
-  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{1},
-  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_2,
+  z_{1}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{1},
+  z_{2}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_2,
   \dotsc,
-  \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n
+  z_{n}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n
 \end{equation}
 
 </div>
@@ -299,10 +289,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org75f003d">
-<h3 id="org75f003d">ベクトル \(\boldsymbol{a}\) の最適化</h3>
+<section id="slide-org457ed79">
+<h3 id="org457ed79">ベクトル \(\boldsymbol{a}\) の最適化</h3>
 <ul>
 <li><p>
 最適化問題
@@ -331,17 +320,15 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-org229dc63" data-background="#fef4f4">
-<h2 id="org229dc63">演習</h2>
+<section id="slide-orgfaa9de7" data-background="#fef4f4">
+<h2 id="orgfaa9de7">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orga89d6fd" data-background="#fef4f4">
-<h3 id="orga89d6fd">問題</h3>
+<section id="slide-orgf77566c" data-background="#fef4f4">
+<h3 id="orgf77566c">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -388,10 +375,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-orgb51a575" data-background="#fef4f4">
-<h3 id="orgb51a575">解答例</h3>
+<section id="slide-orga92c158" data-background="#fef4f4">
+<h3 id="orga92c158">解答例</h3>
 <ul>
 <li><p>
 定義どおりに計算する
@@ -464,18 +450,16 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgf56943b">
-<h2 id="orgf56943b">第1主成分の解</h2>
-<div class="outline-text-2" id="text-orgf56943b">
+<section id="slide-org5e5756c">
+<h2 id="org5e5756c">第1主成分の解</h2>
+<div class="outline-text-2" id="text-org5e5756c">
 </div>
 </section>
-<section id="slide-org04be551">
-<h3 id="org04be551">ベクトル \(\boldsymbol{a}\) の解</h3>
+<section id="slide-org73bc7c6">
+<h3 id="org73bc7c6">ベクトル \(\boldsymbol{a}\) の解</h3>
 <ul>
 <li><p>
 最適化問題
@@ -513,10 +497,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org248fad7">
-<h3 id="org248fad7">第1主成分</h3>
+<section id="slide-org81a4b25">
+<h3 id="org81a4b25">第1主成分</h3>
 <ul>
 <li><p>
 固有ベクトル\(\boldsymbol{a}\)に対する\(f(\boldsymbol{a})\)
@@ -535,9 +518,9 @@
 </blockquote></li>
 <li>求める \(\boldsymbol{a}\)
 は行列 \(X^{\mathsf{T}}X\) の最大固有ベクトル (長さ1)</li>
-<li><b>第1主成分負荷量</b> : ベクトル \(\boldsymbol{a}\)</li>
+<li><b>第1主成分負荷量</b> : 最大(第一)固有ベクトル \(\boldsymbol{a}\)</li>
 <li><p>
-<b>第1主成分得点</b> :
+<b>第1主成分得点</b>
 </p>
 <blockquote>
 <div>
@@ -553,18 +536,16 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-org961d547">
-<h2 id="org961d547">Gram 行列の性質</h2>
-<div class="outline-text-2" id="text-org961d547">
+<section id="slide-org7ef917d">
+<h2 id="org7ef917d">Gram 行列の性質</h2>
+<div class="outline-text-2" id="text-org7ef917d">
 </div>
 </section>
-<section id="slide-org09c86cb">
-<h3 id="org09c86cb">Gram 行列の固有値</h3>
+<section id="slide-orgbb6b524">
+<h3 id="orgbb6b524">Gram 行列の固有値</h3>
 <ul>
 <li>\(X^{\mathsf{T}}X\) は非負定値対称行列</li>
 <li>\(X^{\mathsf{T}}X\) の固有値は0以上の実数
@@ -597,10 +578,9 @@
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-orga0099dd">
-<h3 id="orga0099dd">Gram 行列のスペクトル分解</h3>
+<section id="slide-orge1754d9">
+<h3 id="orge1754d9">Gram 行列のスペクトル分解</h3>
 <ul>
 <li><p>
 \(\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{p}\) は <b>互いに直交</b> するようとることができる
@@ -629,25 +609,23 @@
 \end{align}
 
 </div>
+</blockquote>
+<ul>
+<li>固有値と固有ベクトルによる行列の表現</li>
 
-<p>
-固有値と固有ベクトルによる行列の表現
-</p>
-</blockquote></li>
+</ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-org8f9f996" data-background="#fef4f4">
-<h2 id="org8f9f996">演習</h2>
+<section id="slide-org53a0208" data-background="#fef4f4">
+<h2 id="org53a0208">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org12c515e" data-background="#fef4f4">
-<h3 id="org12c515e">問題</h3>
+<section id="slide-org9d1e849" data-background="#fef4f4">
+<h3 id="org9d1e849">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -696,10 +674,9 @@ Gram 行列のスペクトル分解において
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org23fd02f" data-background="#fef4f4">
-<h3 id="org23fd02f">解答例</h3>
+<section id="slide-orge0b2604" data-background="#fef4f4">
+<h3 id="orge0b2604">解答例</h3>
 <ul>
 <li><p>
 固有ベクトルの直交性に注意する
@@ -740,18 +717,16 @@ Gram 行列のスペクトル分解において
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgd551250">
-<h2 id="orgd551250">第2主成分以降の計算</h2>
-<div class="outline-text-2" id="text-orgd551250">
+<section id="slide-orgf3c115d">
+<h2 id="orgf3c115d">第2主成分以降の計算</h2>
+<div class="outline-text-2" id="text-orgf3c115d">
 </div>
 </section>
-<section id="slide-orgbe4d2e9">
-<h3 id="orgbe4d2e9">第2主成分の考え方</h3>
+<section id="slide-org85ddc75">
+<h3 id="org85ddc75">第2主成分の考え方</h3>
 <ul>
 <li>第1主成分
 <ul>
@@ -789,10 +764,9 @@ Gram 行列のスペクトル分解において
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org6a281d5">
-<h3 id="org6a281d5">第2主成分の最適化</h3>
+<section id="slide-org0dee1a6">
+<h3 id="org0dee1a6">第2主成分の最適化</h3>
 <ul>
 <li><p>
 最適化問題
@@ -819,17 +793,15 @@ Gram 行列のスペクトル分解において
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgbbce476" data-background="#fef4f4">
-<h2 id="orgbbce476">演習</h2>
+<section id="slide-org6d4255c" data-background="#fef4f4">
+<h2 id="org6d4255c">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgab12453" data-background="#fef4f4">
-<h3 id="orgab12453">問題</h3>
+<section id="slide-org6562f97" data-background="#fef4f4">
+<h3 id="org6562f97">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -872,10 +844,9 @@ Gram 行列のスペクトル分解において
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-orgfe364dc" data-background="#fef4f4">
-<h3 id="orgfe364dc">解答例</h3>
+<section id="slide-orgd29ba67" data-background="#fef4f4">
+<h3 id="orgd29ba67">解答例</h3>
 <ul>
 <li><p>
 定義どおりに計算する
@@ -925,7 +896,6 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\) を計算する
 \end{align}
 
 </div>
-
 <p>
 元の Gram 行列 \(X^{\mathsf{T}}X\)
 の固有ベクトル \(\boldsymbol{a}_{1}\)
@@ -935,18 +905,16 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\) を計算する
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgce67953">
-<h2 id="orgce67953">第2主成分以降の解</h2>
-<div class="outline-text-2" id="text-orgce67953">
+<section id="slide-org3521b90">
+<h2 id="org3521b90">第2主成分以降の解</h2>
+<div class="outline-text-2" id="text-org3521b90">
 </div>
 </section>
-<section id="slide-orgfd59d46">
-<h3 id="orgfd59d46">第2主成分</h3>
+<section id="slide-org2c6eec0">
+<h3 id="org2c6eec0">第2主成分</h3>
 <ul>
 <li><p>
 Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
@@ -965,6 +933,10 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 の最大固有値は
 \(\lambda_2\)</li>
 <li>解は第2固有値 \(\lambda_2\) に対応する固有ベクトル \(\boldsymbol{a}_2\)</li>
+
+</ul>
+<hr />
+<ul>
 <li>以下同様に
 第 \(k\) 主成分負荷量は 
 \(X^{\mathsf{T}}X\) の第 \(k\) 固有値 \(\lambda_k\)
@@ -972,19 +944,17 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 
 </ul>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgb8639cc">
-<h2 id="orgb8639cc">解析の事例</h2>
+<section id="slide-orge851e83">
+<h2 id="orge851e83">解析の事例</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orge1acc3f">
-<h3 id="orge1acc3f">データセットについて</h3>
+<section id="slide-org582e07f">
+<h3 id="org582e07f">データセットについて</h3>
 <ul>
-<li>総務省統計局より取得した都道府県別の社会生活統計指標の一部
+<li>総務省統計局より取得した都道府県別の社会生活統計指標(自然環境・経済基盤)の一部
 <ul>
 <li>総務省 <a href="https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&amp;cycode=0">https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&amp;cycode=0</a></li>
 <li><p>
@@ -998,6 +968,7 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 <li>Ratio : 全国総人口に占める人口割合 (%) 2015年</li>
 <li>Land : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年</li>
 <li>Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年</li>
+<li>Area : 地方区分</li>
 
 </ul>
 </blockquote></li>
@@ -1006,35 +977,35 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 
 </ul>
 <div class="slide-footer"><br></div>
-
 </section>
-<section id="slide-org0ebf0d0">
-<h3 id="org0ebf0d0">社会生活統計指標の分析</h3>
+<section id="slide-orgf104072">
+<h3 id="orgf104072">社会生活統計指標の分析</h3>
 <ul>
 <li><p>
 データ(の一部)の内容
 </p>
-<pre class="example" id="orgfcfae30">
-	  Forest   Agri Ratio  Land  Goods
-Hokkaido    67.9 1150.6  4.23  96.8  283.3
-Aomori      63.8  444.7  1.03 186.0  183.0
-Iwate       74.9  334.3  1.01 155.2  179.4
-Miyagi      55.9  299.9  1.84 125.3  365.9
-Akita       70.5  268.7  0.81  98.5  153.3
-Yamagata    68.7  396.3  0.88 174.1  157.5
-Fukushima   67.9  236.4  1.51 127.1  184.5
-Ibaraki     31.0  479.0  2.30 249.1  204.9
-Tochigi     53.2  402.6  1.55 199.6  204.3
-Gumma       63.8  530.6  1.55 321.6  270.0
-Saitama     31.9  324.7  5.72 247.0  244.7
-Chiba       30.4  565.5  4.90 326.1  219.7
-Tokyo       34.8  268.5 10.63 404.7 1062.6
-Kanagawa    38.8  322.8  7.18 396.4  246.1
-Niigata     63.5  308.6  1.81 141.9  205.5
-Toyama      56.6  276.1  0.84  98.5  192.4
-Ishikawa    66.0  271.3  0.91 112.0  222.9
-Fukui       73.9  216.1  0.62  98.5  167.3
-</pre></li>
+<font size=5>
+
+<table style="text-align:center"><caption><strong>社会生活統計指標</strong></caption>
+<tr><td colspan="7" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Pref</td><td>Forest</td><td>Agri</td><td>Ratio</td><td>Land</td><td>Goods</td><td>Area</td></tr>
+<tr><td colspan="7" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Hokkaido</td><td>67.9</td><td>1150.6</td><td>4.23</td><td>96.8</td><td>283.3</td><td>Hokkaido</td></tr>
+<tr><td style="text-align:left">Aomori</td><td>63.8</td><td>444.7</td><td>1.03</td><td>186</td><td>183</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Iwate</td><td>74.9</td><td>334.3</td><td>1.01</td><td>155.2</td><td>179.4</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Miyagi</td><td>55.9</td><td>299.9</td><td>1.84</td><td>125.3</td><td>365.9</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Akita</td><td>70.5</td><td>268.7</td><td>0.81</td><td>98.5</td><td>153.3</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Yamagata</td><td>68.7</td><td>396.3</td><td>0.88</td><td>174.1</td><td>157.5</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Fukushima</td><td>67.9</td><td>236.4</td><td>1.51</td><td>127.1</td><td>184.5</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Ibaraki</td><td>31</td><td>479</td><td>2.3</td><td>249.1</td><td>204.9</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Tochigi</td><td>53.2</td><td>402.6</td><td>1.55</td><td>199.6</td><td>204.3</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Gumma</td><td>63.8</td><td>530.6</td><td>1.55</td><td>321.6</td><td>270</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Saitama</td><td>31.9</td><td>324.7</td><td>5.72</td><td>247</td><td>244.7</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Chiba</td><td>30.4</td><td>565.5</td><td>4.9</td><td>326.1</td><td>219.7</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Tokyo</td><td>34.8</td><td>268.5</td><td>10.63</td><td>404.7</td><td>1062.6</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Kanagawa</td><td>38.8</td><td>322.8</td><td>7.18</td><td>396.4</td><td>246.1</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Niigata</td><td>63.5</td><td>308.6</td><td>1.81</td><td>141.9</td><td>205.5</td><td>Chubu</td></tr>
+<tr><td colspan="7" style="border-bottom: 1px solid black"></td></tr></table>
+
+</font></li>
 
 </ul>
 
@@ -1049,7 +1020,7 @@ Fukui       73.9  216.1  0.62  98.5  167.3
 </ul>
 
 
-<div id="org90b968f" class="figure">
+<div id="org7606873" class="figure">
 <p><img src="figs/06_pairs.png" alt="06_pairs.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>散布図</p>
@@ -1066,7 +1037,7 @@ Fukui       73.9  216.1  0.62  98.5  167.3
 </ul>
 
 
-<div id="org5fe454a" class="figure">
+<div id="orgfe1dfc1" class="figure">
 <p><img src="figs/06_boxplot.png" alt="06_boxplot.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>箱ひげ図</p>
@@ -1079,27 +1050,28 @@ Fukui       73.9  216.1  0.62  98.5  167.3
 <li><p>
 正規化したデータ(の一部)
 </p>
-<pre class="example" id="orgdf0defe">
-	      Forest       Agri       Ratio       Land        Goods
-Hokkaido   0.4251449  4.6347479  0.97919136 -1.4013620  0.420858926
-Aomori     0.1514215  0.4892308 -0.51155042 -0.4462680 -0.274466158
-Iwate      0.8924775 -0.1591118 -0.52086756 -0.7760538 -0.299422991
-Miyagi    -0.3759968 -0.3611317 -0.13420641 -1.0962031  0.993479583
-Akita      0.5987256 -0.5443589 -0.61403892 -1.3831596 -0.480360026
-Yamagata   0.4785543  0.2049936 -0.58142894 -0.5736852 -0.451243722
-Fukushima  0.4251449 -0.7340462 -0.28793915 -1.0769299 -0.264067478
-Ibaraki   -2.0383658  0.6906634  0.08008772  0.2293647 -0.122645427
-Tochigi   -0.5562537  0.2419915 -0.26930488 -0.3006482 -0.126804899
-Gumma      0.1514215  0.9936931 -0.26930488  1.0056464  0.328657294
-Saitama   -1.9782802 -0.2154895  1.67331800  0.2068793  0.153266221
-Chiba     -2.0784229  1.1986492  1.29131542  1.0538294 -0.020045115
-Tokyo     -1.7846709 -0.5455335  3.96067491  1.8954257  5.823319920
-Kanagawa  -1.5176237 -0.2266475  2.35346893  1.8065548  0.162971656
-Niigata    0.1313929 -0.3100394 -0.14818211 -0.9184613 -0.118485955
-Toyama    -0.3292635 -0.5009012 -0.60006321 -1.3831596 -0.209301095
-Ishikawa   0.2982974 -0.5290900 -0.56745324 -1.2386106  0.002138736
-Fukui      0.8257157 -0.8532613 -0.70255171 -1.3831596 -0.383305678
-</pre></li>
+<font size=5>
+
+<table style="text-align:center"><caption><strong>社会生活統計指標</strong></caption>
+<tr><td colspan="7" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Pref</td><td>Forest</td><td>Agri</td><td>Ratio</td><td>Land</td><td>Goods</td><td>Area</td></tr>
+<tr><td colspan="7" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Hokkaido</td><td>0.425</td><td>4.63</td><td>0.979</td><td>-1.4</td><td>0.421</td><td>Hokkaido</td></tr>
+<tr><td style="text-align:left">Aomori</td><td>0.151</td><td>0.489</td><td>-0.512</td><td>-0.446</td><td>-0.274</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Iwate</td><td>0.892</td><td>-0.159</td><td>-0.521</td><td>-0.776</td><td>-0.299</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Miyagi</td><td>-0.376</td><td>-0.361</td><td>-0.134</td><td>-1.1</td><td>0.993</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Akita</td><td>0.599</td><td>-0.544</td><td>-0.614</td><td>-1.38</td><td>-0.48</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Yamagata</td><td>0.479</td><td>0.205</td><td>-0.581</td><td>-0.574</td><td>-0.451</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Fukushima</td><td>0.425</td><td>-0.734</td><td>-0.288</td><td>-1.08</td><td>-0.264</td><td>Tohoku</td></tr>
+<tr><td style="text-align:left">Ibaraki</td><td>-2.04</td><td>0.691</td><td>0.0801</td><td>0.229</td><td>-0.123</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Tochigi</td><td>-0.556</td><td>0.242</td><td>-0.269</td><td>-0.301</td><td>-0.127</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Gumma</td><td>0.151</td><td>0.994</td><td>-0.269</td><td>1.01</td><td>0.329</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Saitama</td><td>-1.98</td><td>-0.215</td><td>1.67</td><td>0.207</td><td>0.153</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Chiba</td><td>-2.08</td><td>1.2</td><td>1.29</td><td>1.05</td><td>-0.02</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Tokyo</td><td>-1.78</td><td>-0.546</td><td>3.96</td><td>1.9</td><td>5.82</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Kanagawa</td><td>-1.52</td><td>-0.227</td><td>2.35</td><td>1.81</td><td>0.163</td><td>Kanto</td></tr>
+<tr><td style="text-align:left">Niigata</td><td>0.131</td><td>-0.31</td><td>-0.148</td><td>-0.918</td><td>-0.118</td><td>Chubu</td></tr>
+<tr><td colspan="7" style="border-bottom: 1px solid black"></td></tr></table>
+
+</font></li>
 
 </ul>
 
@@ -1114,7 +1086,7 @@ Fukui      0.8257157 -0.8532613 -0.70255171 -1.3831596 -0.383305678
 </ul>
 
 
-<div id="org8235517" class="figure">
+<div id="org4745dd4" class="figure">
 <p><img src="figs/06_normalized_boxplot.png" alt="06_normalized_boxplot.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>箱ひげ図 (データを正規化)</p>
@@ -1127,14 +1099,17 @@ Fukui      0.8257157 -0.8532613 -0.70255171 -1.3831596 -0.383305678
 <li><p>
 主成分負荷量を計算 (正規化後)
 </p>
-<pre class="example">
-              PC1        PC2         PC3        PC4         PC5
-Forest -0.4871498  0.1045813 -0.45748795  0.6859649 -0.26815060
-Agri    0.1339190  0.8115056  0.47912767  0.3045447  0.03483694
-Ratio   0.5851294 -0.1511042  0.04467249  0.1640953 -0.77837539
-Land    0.3547649  0.4851374 -0.74167904 -0.2897485  0.06885892
-Goods   0.5258481 -0.2689436 -0.09517368  0.5708093  0.56238052
-</pre></li>
+<font size=6>
+
+<table style="text-align:center"><tr><td colspan="6" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"></td><td>PC1</td><td>PC2</td><td>PC3</td><td>PC4</td><td>PC5</td></tr>
+<tr><td colspan="6" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Forest</td><td>-0.487</td><td>0.105</td><td>-0.457</td><td>0.686</td><td>-0.268</td></tr>
+<tr><td style="text-align:left">Agri</td><td>0.134</td><td>0.812</td><td>0.479</td><td>0.305</td><td>0.035</td></tr>
+<tr><td style="text-align:left">Ratio</td><td>0.585</td><td>-0.151</td><td>0.045</td><td>0.164</td><td>-0.778</td></tr>
+<tr><td style="text-align:left">Land</td><td>0.355</td><td>0.485</td><td>-0.742</td><td>-0.290</td><td>0.069</td></tr>
+<tr><td style="text-align:left">Goods</td><td>0.526</td><td>-0.269</td><td>-0.095</td><td>0.571</td><td>0.562</td></tr>
+<tr><td colspan="6" style="border-bottom: 1px solid black"></td></tr></table>
+
+</font></li>
 
 <li>主成分方向から読み取れること
 <ul>
@@ -1156,22 +1131,20 @@ Goods   0.5258481 -0.2689436 -0.09517368  0.5708093  0.56238052
 </ul>
 
 
-<div id="orgc745331" class="figure">
+<div id="orgce25ff4" class="figure">
 <p><img src="figs/06_pcaplot.png" alt="06_pcaplot.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>主成分得点による散布図</p>
 </div>
 <div class="slide-footer"><br></div>
-
-
 </section>
 </section>
 <section>
-<section id="slide-orgc4e5aff">
-<h2 id="orgc4e5aff">次回の予定</h2>
+<section id="slide-org43b75d0">
+<h2 id="org43b75d0">次回の予定</h2>
 <ul>
-<li>第1日: 主成分分析の考え方</li>
-<li><b>第2日: 分析の評価と視覚化</b></li>
+<li>第1日 : 主成分分析の考え方</li>
+<li><b>第2日 : 分析の評価と視覚化</b></li>
 
 </ul>
 <div class="slide-footer"><br></div>
