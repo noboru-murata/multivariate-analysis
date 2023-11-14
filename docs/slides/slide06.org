@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-11-13 18:36:28 mura>
+# Time-stamp: <2023-11-14 10:46:07 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -77,12 +77,12 @@
   - 構成する特徴量 : *主成分* (princial component)
 
 ** 分析の枠組み
-- \(X_{1},\dotsc,X_{p}\) : *変数* 
-- \(Z_{1},\dotsc,Z_{d}\) : *特徴量* ( \(d\leq p\) )
+- \(x_{1},\dotsc,x_{p}\) : *変数* 
+- \(z_{1},\dotsc,z_{d}\) : *特徴量* ( \(d\leq p\) )
 - 変数と特徴量の関係 (線形結合)
   #+begin_quote
   \begin{equation}
-    Z_k=a_{1k}X_{1}+\cdots+a_{pk}X_{p}\quad(k=1,\dotsc,d)
+    z_k=a_{1k}x_{1}+\cdots+a_{pk}x_{p}\quad(k=1,\dotsc,d)
   \end{equation}
   #+end_quote
   - 特徴量は定数倍の任意性があるので以下を仮定
@@ -93,7 +93,7 @@
     #+end_quote
 
 ** 主成分分析の用語
-- 特徴量 \(Z_k\)
+- 特徴量 \(z_k\)
   - 第 \(k\) *主成分得点* (principal component score) 
   - 第 \(k\) *主成分*
 - 係数ベクトル \(\boldsymbol{a}_k\)
@@ -104,9 +104,9 @@
 - 目的
   #+begin_quote
   主成分得点
-  \(Z_{1},\dots,Z_{d}\)
+  \(z_{1},\dots,z_{d}\)
   が変数
-  \(X_{1},\dotsc,X_{p}\)
+  \(x_{1},\dotsc,x_{p}\)
   の情報を効率よく反映するように主成分負荷量
   \(\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{d}\)
   を観測データから決定する
