@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-11-14 10:46:07 mura>
+# Time-stamp: <2023-11-14 11:14:20 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -1193,9 +1193,11 @@
     as_tibble(predict(js_pca)) |> # 主成分得点のデータフレーム
       mutate(Pref = js_data[["Pref"]], # 都道府県名
              Area = as_factor(js_data[["Area"]])) |> # 因子化した地方区分
-      ggplot(aes(x = PC1, y = PC2, colour = Area)) +
-      geom_point(shape = 19, size = 2) +
-      ggrepel::geom_text_repel(aes(label = Pref), max.overlaps = 20) +
+      ggplot(aes(x = PC1, y = PC2)) +
+      geom_point(aes(colour = Area), shape = 19, size = 2) +
+      ggrepel::geom_text_repel(aes(label = Pref),
+                               colour = "darkgray",
+                               max.overlaps = 20) +
       theme(legend.position = c(.9,.8))
   #+end_src
 
