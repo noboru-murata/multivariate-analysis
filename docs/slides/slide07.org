@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-11-14 12:09:54 mura>
+# Time-stamp: <2023-11-21 12:19:24 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -312,8 +312,26 @@
   \end{equation}
   #+end_quote
 
+** 全体の変動
+- スペクトル分解との関係
+  #+begin_quote
+  \begin{align}
+    \text{(全体の変動)}
+    &=\sum_{i=1}^{n}\|\boldsymbol{x}_i-\bar{\boldsymbol{x}}\|^2 \\
+    &=\sum_{i=1}^{n}(\boldsymbol{x}_i-\bar{\boldsymbol{x}})^{\mathsf{T}}
+      (\boldsymbol{x}_i-\bar{\boldsymbol{x}})\\
+    &=\mathrm{tr}XX^{\mathsf{T}}=\mathrm{tr}X^{\mathsf{T}}X\\
+    &=\mathrm{tr}\sum_{k=1}^{p}\lambda_{k}
+      \boldsymbol{a}_{k}\boldsymbol{a}_{l}^{\mathsf{T}}
+      =\sum_{k=1}^{p}\lambda_{k}\mathrm{tr}
+      \boldsymbol{a}_{k}\boldsymbol{a}_{l}^{\mathsf{T}}
+      =\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{l}^{\mathsf{T}}\boldsymbol{a}_{k}\\
+    &=\sum_{k=1}^p\lambda_{k}
+  \end{align}
+  #+end_quote
+
 ** 累積寄与率
-- *累積寄与率* (cumulative proportion) :
+- *累積寄与率* (cumulative proportion)
   #+begin_quote
   第 \(k\) 主成分までの変動の累計
   \begin{equation}
@@ -758,15 +776,24 @@
 #+reveal: split
 - 第1,2主成分得点の表示
   #+begin_src R :file figs/07_pcaplot12_raw.png :exports results :results graphics
-    as_tibble(predict(js_pca_raw)) |> # 主成分得点のデータフレーム
-      mutate(Pref = js_data[["Pref"]], # 都道府県名
-             Area = js_data[["Area"]]) |> # 地方区分
-      ggplot(aes(x = PC1, y = PC2)) +
-      geom_point(aes(colour = Area), shape = 19, size = 2) +
-      ggrepel::geom_text_repel(aes(label = Pref),
-                               colour = "darkgray",
-                               max.overlaps = 20) +
+    autoplot(js_pca_raw, data = js_data, colour = "Area", # 地方区分ごとに色を変える
+             scale = 0, asp =1,
+             shape = 19, size = 2, 
+             loadings = FALSE) +
+      ggrepel::geom_text_repel(aes(label = Pref), colour = "darkgray",
+    ## ggrepel::geom_text_repel(aes(label = Pref, colour = Area),
+                               max.overlaps = 18) +
       theme(legend.position = c(.9,.2))
+    ##  theme(legend.position = "none")
+    ## as_tibble(predict(js_pca_raw)) |> # 主成分得点のデータフレーム
+    ##   mutate(Pref = js_data[["Pref"]], # 都道府県名
+    ##          Area = js_data[["Area"]]) |> # 地方区分
+    ##   ggplot(aes(x = PC1, y = PC2)) +
+    ##   geom_point(aes(colour = Area), shape = 19, size = 2) +
+    ##   ggrepel::geom_text_repel(aes(label = Pref),
+    ##                            colour = "darkgray",
+    ##                            max.overlaps = 20) +
+    ##   theme(legend.position = c(.9,.2))
    #+end_src
 
 #+caption: 主成分得点による散布図 (正規化なし)
@@ -778,15 +805,22 @@
 #+reveal: split
 - 第3,2主成分得点の表示
   #+begin_src R :file figs/07_pcaplot32_raw.png :exports results :results graphics
-    as_tibble(predict(js_pca_raw)) |> # 主成分得点のデータフレーム
-      mutate(Pref = js_data[["Pref"]], # 都道府県名
-             Area = js_data[["Area"]]) |> # 地方区分
-      ggplot(aes(x = PC3, y = PC2)) +
-      geom_point(aes(colour = Area), shape = 19, size = 2) +
-      ggrepel::geom_text_repel(aes(label = Pref),
-                               colour = "darkgray",
-                               max.overlaps = 20) +
+    autoplot(js_pca_raw, data = js_data, colour = "Area", # 地方区分ごとに色を変える
+             x = 3, y = 2, scale = 0, asp =1,
+             shape = 19, size = 2, 
+             loadings = FALSE) +
+      ggrepel::geom_text_repel(aes(label = Pref), colour = "darkgray",
+                               max.overlaps = 18) +
       theme(legend.position = "none")
+    ## as_tibble(predict(js_pca_raw)) |> # 主成分得点のデータフレーム
+    ##   mutate(Pref = js_data[["Pref"]], # 都道府県名
+    ##          Area = js_data[["Area"]]) |> # 地方区分
+    ##   ggplot(aes(x = PC3, y = PC2)) +
+    ##   geom_point(aes(colour = Area), shape = 19, size = 2) +
+    ##   ggrepel::geom_text_repel(aes(label = Pref),
+    ##                            colour = "darkgray",
+    ##                            max.overlaps = 20) +
+    ##   theme(legend.position = "none")
   #+end_src
 
 #+caption: 主成分得点による散布図 (正規化なし)
@@ -819,7 +853,7 @@
   #+html: <font size=5>
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
-    summary(js_pca_raw)$imp |>
+    summary(js_pca)$imp |>
       stargazer::stargazer(summary = FALSE,
                            rownames = TRUE,
                            type = "html")
@@ -827,7 +861,7 @@
   #+html: </font>
   #+begin_src R :exports results :results output latex :tangle no
     #' データの表示(latex用)
-    summary(js_pca_raw)$imp |>
+    summary(js_pca)$imp |>
       stargazer::stargazer(summary = FALSE,
                            rownames = TRUE,
                            font.size = "small", type = "latex")
@@ -836,14 +870,12 @@
 #+reveal: split
 - 第1,2主成分得点の表示
   #+begin_src R :file figs/07_pcaplot12.png :exports results :results graphics
-    as_tibble(predict(js_pca)) |> # 主成分得点のデータフレーム
-      mutate(Pref = js_data[["Pref"]], # 都道府県名
-             Area = js_data[["Area"]]) |> # 地方区分
-      ggplot(aes(x = PC1, y = PC2)) +
-      geom_point(aes(colour = Area), shape = 19, size = 2) +
-      ggrepel::geom_text_repel(aes(label = Pref),
-                               colour = "darkgray",
-                               max.overlaps = 20) +
+    autoplot(js_pca, data = js_data, colour = "Area", # 地方区分ごとに色を変える
+             scale = 0, asp =1,
+             shape = 19, size = 2, 
+             loadings = FALSE) +
+      ggrepel::geom_text_repel(aes(label = Pref), colour = "darkgray",
+                               max.overlaps = 18) +
       theme(legend.position = c(.9,.8))
    #+end_src
 
@@ -856,14 +888,12 @@
 #+reveal: split
 - 第3,2主成分得点の表示
   #+begin_src R :file figs/07_pcaplot32.png :exports results :results graphics :tangle yes
-    as_tibble(predict(js_pca)) |> # 主成分得点のデータフレーム
-      mutate(Pref = js_data[["Pref"]], # 都道府県名
-             Area = js_data[["Area"]]) |> # 地方区分
-      ggplot(aes(x = PC3, y = PC2)) +
-      geom_point(aes(colour = Area), shape = 19, size = 2) +
-      ggrepel::geom_text_repel(aes(label = Pref),
-                               colour = "darkgray",
-                               max.overlaps = 20) +
+    autoplot(js_pca, data = js_data, colour = "Area", # 地方区分ごとに色を変える
+             x = 3, y = 2, scale = 0, asp =1,
+             shape = 19, size = 2, 
+             loadings = FALSE) +
+      ggrepel::geom_text_repel(aes(label = Pref), colour = "darkgray",
+                               max.overlaps = 18) +
       theme(legend.position = "none")
   #+end_src
 
@@ -971,18 +1001,18 @@
 
 * 主成分負荷量
 ** 主成分負荷量と主成分得点
-- 負荷量(得点係数)の大きさ: 変数の貢献度
-- *問題点*:
+- 負荷量(得点係数)の大きさ : 変数の貢献度
+- *問題点*
   - 変数のスケールによって係数の大きさは変化する
   - 変数の正規化(平均0，分散1)がいつも妥当とは限らない
-- スケールによらない変数と主成分の関係: \\
+- スケールによらない変数と主成分の関係 \\
   *相関係数* を考えればよい
 
 ** 相関係数
 - \(\boldsymbol{e}_{j}\): 第 \(j\) 成分は1，それ以外は0のベクトル
 - \(X\boldsymbol{e}_{j}\): 第 \(j\) 変数ベクトル
 - \(X\boldsymbol{a}_{k}\): 第 \(k\) 主成分得点ベクトル
-- 主成分と変数の相関係数:
+- 主成分と変数の相関係数
   #+begin_quote
   \begin{align}
     \mathrm{Cor}(X\boldsymbol{a}_{k},X\boldsymbol{e}_{j})
@@ -1007,7 +1037,7 @@
   #       =\sqrt{\lambda_{k}/(n-1)}\cdot(\boldsymbol{a}_{k})_{j}
   #     \end{equation}
   #   #+end_quote
-  - 第 \(k\) 主成分に対する相関係数ベクトル:
+  - 第 \(k\) 主成分に対する相関係数ベクトル
     #+begin_quote
     \begin{equation}
       \boldsymbol{r}_{k}
@@ -1026,7 +1056,7 @@
 
 * データ行列の分解表現
 ** 特異値分解
-- 階数 \(r\) の \(n\times p\) 型行列 \(X\) の分解:
+- 階数 \(r\) の \(n\times p\) 型行列 \(X\) の分解
   #+begin_quote
   \begin{equation}
     X=U\Sigma V^{\mathsf{T}}
@@ -1063,10 +1093,10 @@
     \end{pmatrix}
   \end{equation}
   #+end_quote
-- \(D\) の対角成分: \(X\) の *特異値* (singular value)
+- \(D\) の対角成分 : \(X\) の *特異値* (singular value)
 
 ** 特異値分解によるGram行列の表現
-- Gram行列の展開:
+- Gram行列の展開
   #+begin_quote
   \begin{align*}
     X^{\mathsf{T}}X
@@ -1225,7 +1255,7 @@
 ** データ行列の分解
 - 行列 \(U\) の第 \(k\) 列ベクトル \(\boldsymbol{u}_{k}\)
 - 行列 \(V\) の第 \(k\) 列ベクトル \(\boldsymbol{v}_{k}\)
-- データ行列の特異値分解: (\(\Sigma\) の非零値に注意)
+- データ行列の特異値分解 : (\(\Sigma\) の非零値に注意)
   #+begin_quote
   \begin{equation}
     X
@@ -1265,16 +1295,20 @@
 ** バイプロット
 - 関連がある2枚の散布図を1つの画面に表示する散布図を一般に
   *バイプロット* (biplot) と呼ぶ
-- 行列\(G,H\)の各行を2次元座標と見なす
-  #+begin_quote
-  \begin{equation}
-    X'=GH^{\mathsf{T}}
-  \end{equation}
-  #+end_quote
-  - 行列 \(G\) の各行は各データの2次元座標
-  - 行列 \(H\) の各行は各変量の2次元座標
-- パラメタ \(s\) は \(0\), \(1\) または \(1/2\) が主に用いられる
-- \(X\) の変動を最大限保持する近似は \(k=1,l=2\)
+  - 行列\(G,H\)の各行を2次元座標と見なす
+    #+begin_quote
+    \begin{equation}
+      X'=GH^{\mathsf{T}}
+    \end{equation}
+    #+end_quote
+    - 行列 \(G\) の各行は各データの2次元座標
+    - 行列 \(H\) の各行は各変量の2次元座標
+  - \(X\) の変動を最大限保持する近似は \(k=1,l=2\)
+  - パラメタ \(s\) は \(0\), \(1\) または \(1/2\) が主に用いられる
+    - \(s=0\): データの散布図は主成分得点(\(G\)は主成分得点)
+    - \(s=1\): データの散布図は正規化される
+    - \(s=1/2\): 変量ベクトルが相関ベクトル(正規化されたデータ)
+  
 
 
 * COMMENT 実習
@@ -1461,7 +1495,7 @@
   #+html: <font size=5>
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
-    summary(js_pca_raw)$imp |>
+    summary(js_pca)$imp |>
       stargazer::stargazer(summary = FALSE,
                            rownames = TRUE,
                            type = "html")
@@ -1469,7 +1503,7 @@
   #+html: </font>
   #+begin_src R :exports results :results output latex :tangle no
     #' データの表示(latex用)
-    summary(js_pca_raw)$imp |>
+    summary(js_pca)$imp |>
       stargazer::stargazer(summary = FALSE,
                            rownames = TRUE,
                            font.size = "small", type = "latex")
@@ -1479,7 +1513,7 @@
 - 第1,2主成分によるバイプロット
   #+begin_src R :file figs/07_biplot12.png :exports results :results graphics
     autoplot(js_pca, data = js_data, colour = "Area", # 地方区分ごとに色を変える
-             shape = 19, size = 1, 
+             shape = 19, size = 2, asp = 1,
              loadings = TRUE, loadings.colour = "red",
              loadings.label = TRUE, 
              loadings.label.colour = "darkred", loadings.label.size = 4) +
@@ -1500,7 +1534,7 @@
   #+begin_src R :file figs/07_biplot32.png :exports results :results graphics :tangle yes
     autoplot(js_pca, data = js_data, colour = "Area", # 地方区分ごとに色を変える
              x = 3, y = 2, # x軸を第3，y軸を第2
-             shape = 19, size = 1, 
+             shape = 19, size = 2, asp = 1,
              loadings = TRUE, loadings.colour = "red",
              loadings.label = TRUE, 
              loadings.label.colour = "darkred", loadings.label.size = 4) +
@@ -1520,7 +1554,7 @@
 - 中心部の拡大 (第1,2主成分)
   #+begin_src R :file figs/07_biplot12e.png :exports results :results graphics
     autoplot(js_pca, data = js_data, colour = "Area", # 地方区分ごとに色を変える
-             shape = 19, size = 1, 
+             shape = 19, size = 2, asp = 1,
              loadings = TRUE, loadings.colour = "red",
              loadings.label = TRUE, 
              loadings.label.colour = "darkred", loadings.label.size = 4) +
@@ -1542,7 +1576,7 @@
   #+begin_src R :file figs/07_biplot32e.png :exports results :results graphics
     autoplot(js_pca, data = js_data, colour = "Area", # 地方区分ごとに色を変える
              x = 3, y = 2,
-             shape = 19, size = 1, 
+             shape = 19, size = 2, asp = 1,
              loadings = TRUE, loadings.colour = "red",
              loadings.label = TRUE, 
              loadings.label.colour = "darkred", loadings.label.size = 4) +
