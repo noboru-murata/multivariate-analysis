@@ -1,128 +1,75 @@
 #+TITLE: 判別分析 
 #+SUBTITLE: 基本的な考え方
 #+AUTHOR: 村田 昇
-#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2022-11-22 10:31:41 mura>
-:REVEAL:
-#+INCLUDE: "./reveal.js/org/mycourse.org"
-#+PROPERTY: header-args:R :cache yes :session *R*
-# #+PROPERTY: header-args:R+ :exports both :results output
-#+PROPERTY: header-args:R+ :width 800 :height 800 :res 100
-#+PROPERTY: header-args:R+ :tangle no
-#+PROPERTY: header-args:latex :exports results :results raw
 #+STARTUP: hidestars content indent
+# Time-stamp: <2023-11-27 12:41:09 mura>
+:REVEAL:
+#+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
 :END:
 
 * COMMENT メモ
-- 第3講以降は同じファイルを使うように整理する
-- 同じタイトルの項目にはメモを入れる
-- 演習の内容が異なるので演習は2つ作る形で対応
+[[file:README.org]]
 
 * 講義の内容
+:PROPERTIES:
+:ID:       CE72CD31-63E0-44B8-ADB3-D9E175DD6B30
+:END:
 # 早稲田大学
 - *第1日 : 判別分析の考え方*
 - 第2日 : 分析の評価
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 第8講 資料
+#+begin_src R :exports none :tangle no
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/course")
+  ### 第8講 資料
+  library(conflicted)
+  library(tidyverse)
+  conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+  )
+  library(ggfortify)
+  #' 日本語表示・色の設定 (ggplot)
+  theme_set(theme_gray(base_size = 16))
+  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
+    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
+    else
+      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
+  library(see)
+  options(ggplot2.discrete.colour = function() scale_colour_material(),
+          ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
 * COMMENT 講義概要
+:PROPERTIES:
+:ID:       1E393ABD-D9AF-4404-A443-A9DF9DCADD9B
+:END:
 # 東京大学
-- *第1日 : 判別分析の考え方*
-- 第2日 : 分析の評価
+- *第1回 : 判別分析の考え方*
+- 第2回 : 分析の評価
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 第8講 サンプルコード
-  ###
-#+end_src
-#+begin_src R :exports none
+#+begin_src R :exports none :tangle no
   setwd("~/Desktop/lectures/u-tokyo/autumn/course")
 #+end_src
-
-* COMMENT 演習 (早稲田大学雛型)
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-# 早稲田大学
-** 問題
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- について以下を示しなさい．
-  - である．
-    #+begin_quote
-    #+begin_src latex
-    #+end_src
-    #+end_quote
-
-** 解答例
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- いずれも定義にもとづいて計算すればよい
-  #+begin_quote
-  #+begin_src latex
-  #+end_src
-  #+end_quote
-
-* COMMENT 演習 (東京大学雛型)
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-# 東京大学
-** R: 概要
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- ほげほげな方法:
-  #+begin_src R :eval no
-  #+end_src
-  
-** データセット
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- 以下のデータセットを使用します
-  - ~xxx~
-    #+begin_quote
-    データの素性
-    #+end_quote
-    [[https://www.foo.com/]]
-
-** 練習問題
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- 構成しなさい
-  - データ
-    #+begin_quote
-    formulaなどを与える
-    #+end_quote
-
-#+begin_src R :eval no :exports none :tangle yes
-  ###
-  ### 練習問題 
-  ###
-
-  ## 
-  ## 分析
-  ##
+#+begin_src R :exports none 
+  ### 第8講 サンプルコード
+  library(conflicted)
+  library(tidyverse)
+  conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+  )
+  library(ggfortify)
 #+end_src
-
-** COMMENT 講義資料: 概略
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-- [[./code/bar.r][bar.r]] を確認してみよう
 
 
 * 判別分析の考え方
@@ -155,20 +102,16 @@
 - 確率による定式化
   1. \(X=\boldsymbol{x}\) の下で \(Y=k\) となる *条件付確率* を計算
      #+begin_quote
-     #+begin_src latex
-       \begin{equation}
-         p_{k}(\boldsymbol{x})=P(Y=k|X=\boldsymbol{x})
-       \end{equation}
-     #+end_src
+     \begin{equation}
+       p_{k}(\boldsymbol{x})=P(Y=k|X=\boldsymbol{x})
+     \end{equation}
      #+end_quote
   2. 所属する確率が最も高いクラスに個体を分類
 - 観測データ : \(n\) 個の \((Y,X_{1},\dots,X_{q})\) の組
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \{(y_{i},x_{i1},\dots,x_{iq})\}_{i=1}^n
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \{(y_{i},x_{i1},\dots,x_{iq})\}_{i=1}^n
+  \end{equation}
   #+end_quote
 - 観測データから\(Y\)の条件付確率 \(p_{k}(\boldsymbol{x})\) を構成
   # - (直接判別基準を構築するアプローチもある．例:サポートベクターマシン)
@@ -178,30 +121,26 @@
 - 事象 \(X=\boldsymbol{x}\) が起きたという条件の下で
   事象 \(Y=k\) が起きる条件付確率
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      p_{k}(\boldsymbol{x})
-      =
-      P(Y=k|X=\boldsymbol{x})
-      =
-      \frac{P(Y=k,X=\boldsymbol{x})}{P(X=\boldsymbol{x})}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    p_{k}(\boldsymbol{x})
+    =
+    P(Y=k|X=\boldsymbol{x})
+    =
+    \frac{P(Y=k,X=\boldsymbol{x})}{P(X=\boldsymbol{x})}
+  \end{equation}
   #+end_quote
-- [[color:gray][連続な確率変数の場合は確率密度関数を用いる]]
+- 連続な確率変数の場合は確率密度関数を用いる
 
 ** 条件付確率の表現
 - \(Y\)の条件付確率 \(p_{k}(\boldsymbol{x})\) のモデル化の方針
   - \(p_{k}(\boldsymbol{x})\) を直接モデル化する ([[color:green][例 : ロジスティック回帰]])
   - \(Y=k\) の下での \(X\) の条件付き確率質量関数
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	f_{k}(\boldsymbol{x})
-	=
-	P(X=\boldsymbol{x}|Y=k)=\frac{P(X=\boldsymbol{x},Y=k)}{P(Y=k)}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      f_{k}(\boldsymbol{x})
+      =
+      P(X=\boldsymbol{x}|Y=k)=\frac{P(X=\boldsymbol{x},Y=k)}{P(Y=k)}
+    \end{equation}
     #+end_quote
     のモデル化を通じて \(p_{k}(\boldsymbol{x})\) をモデル化する
 - 本講義では *後者* について説明
@@ -228,19 +167,15 @@
 - Bayesの定理を用いればよい
   #+begin_quote
   事象で書くと以下のようになる
-  #+begin_src latex
-    \begin{equation}
-      P(A|B)
-      =\frac{P(A)P(B|A)}{P(B)}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    P(A|B)
+    =\frac{P(A)P(B|A)}{P(B)}
+  \end{equation}
   離散変数の場合は
-  #+begin_src latex
-    \begin{equation}
-      P(Y=k|X=x)
-      =\frac{P(Y=k)P(X=x|Y=k)}{P(X=x)}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    P(Y=k|X=x)
+    =\frac{P(Y=k)P(X=x|Y=k)}{P(X=x)}
+  \end{equation}
   と書くことができる
   #+end_quote
 
@@ -251,60 +186,54 @@
   #+begin_quote
   *原因 \(X=\boldsymbol{x}\) から結果 \(Y=k\) が生じる確率*
   を
-  *結果 \(Y=k\) が生じた原因が \(X=\boldsymbol{x}\) である確率*
+  *結果 \(Y=k\) が生じる原因が \(X=\boldsymbol{x}\) である確率*
   から計算する方法
   #+end_quote
 - Bayes の公式 (Bayes' formula)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      p_{k}(\boldsymbol{x})
-      =
-      P(Y=k|X=\boldsymbol{x})
-      =
-      \frac{f_{k}(\boldsymbol{x})P(Y=k)}{\sum_{l=1}^{K}f_l(\boldsymbol{x})P(Y=l)}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    p_{k}(\boldsymbol{x})
+    =
+    P(Y=k|X=\boldsymbol{x})
+    =
+    \frac{f_{k}(\boldsymbol{x})P(Y=k)}{\sum_{l=1}^{K}f_l(\boldsymbol{x})P(Y=l)}
+  \end{equation}
   #+end_quote
+  - \(p_{k}(\boldsymbol{x})\): 原因 \(X=\boldsymbol{x}\) から結果 \(Y=k\) が生じる確率
+  - \(f_{k}(\boldsymbol{x})\): 結果 \(Y=k\) が生じる原因が \(X=\boldsymbol{x}\) である確率
 
 ** Bayes の公式の略証
 - 定義より
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      f_{k}(\boldsymbol{x})
-      =
-      P(X=\boldsymbol{x}|Y=k)
-      =
-      \frac{P(X=\boldsymbol{x},Y=k)}{P(Y=k)}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    f_{k}(\boldsymbol{x})
+    =
+    P(X=\boldsymbol{x}|Y=k)
+    =
+    \frac{P(X=\boldsymbol{x},Y=k)}{P(Y=k)}
+  \end{equation}
   #+end_quote
 - 求める条件付確率
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      p_{k}(\boldsymbol{x})
-      =
-      P(Y=k|X=\boldsymbol{x})
-      =
-      \frac{f_{k}(\boldsymbol{x})P(Y=k)}{P(X=\boldsymbol{x})}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    p_{k}(\boldsymbol{x})
+    =
+    P(Y=k|X=\boldsymbol{x})
+    =
+    \frac{f_{k}(\boldsymbol{x})P(Y=k)}{P(X=\boldsymbol{x})}
+  \end{equation}
   #+end_quote
 
 #+reveal: split
 - 分母の展開
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      P(X=\boldsymbol{x})
-      &=
-        \sum_{l=1}^{K}P(X=\boldsymbol{x},Y=l)\\
-      &=
-        \sum_{l=1}^{K}f_l(\boldsymbol{x})P(Y=l)
-    \end{align}
-  #+end_src
+  \begin{align}
+    P(X=\boldsymbol{x})
+    &=
+      \sum_{l=1}^{K}P(X=\boldsymbol{x},Y=l)\\
+    &=
+      \sum_{l=1}^{K}f_l(\boldsymbol{x})P(Y=l)
+  \end{align}
   #+end_quote
 
 ** 事前確率と事後確率
@@ -314,16 +243,14 @@
   - \(X=\boldsymbol{x}\) が与えられた後に予測されるクラス確率
 - Bayes の公式による書き換え
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      p_{k}(\boldsymbol{x})
-      =
-      \frac{f_{k}(\boldsymbol{x})\pi_{k}}{\sum_{l=1}^{K}f_l(\boldsymbol{x})\pi_l}
-      =
-      \frac{f_{k}(\boldsymbol{x})}{\sum_{l=1}^{K}f_l(\boldsymbol{x})\pi_l}
-      \cdot\pi_{k}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    p_{k}(\boldsymbol{x})
+    =
+    \frac{f_{k}(\boldsymbol{x})\pi_{k}}{\sum_{l=1}^{K}f_l(\boldsymbol{x})\pi_l}
+    =
+    \frac{f_{k}(\boldsymbol{x})}{\sum_{l=1}^{K}f_l(\boldsymbol{x})\pi_l}
+    \cdot\pi_{k}
+  \end{equation}
   #+end_quote
   - 事前確率が説明変数の条件付確率の重みで変更される
 
@@ -331,13 +258,11 @@
 - 事前に特別な情報がない場合
   #+begin_quote
   データから自然に決まる確率
-  #+begin_src latex
-    \begin{equation}
-      \pi_{k}
-      =
-      \frac{\text{\(Y=k\)のサンプル数}}{\text{全サンプル数}}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \pi_{k}
+    =
+    \frac{\text{\(Y=k\)のサンプル数}}{\text{全サンプル数}}
+  \end{equation}
   #+end_quote
 - 事前に情報がある場合
   #+begin_quote
@@ -356,17 +281,15 @@
   3. 事後確率最大のクラスにデータを分類
 - *判別関数* : \(\delta_{k}(\boldsymbol{x})\) (\(k=1,\dots,K\))
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      p_{k}(\boldsymbol{x}) 
-      < 
-      p_l(\boldsymbol{x})
-      \Leftrightarrow
-      \delta_{k}(\boldsymbol{x})
-      <
-      \delta_l(\boldsymbol{x})
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    p_{k}(\boldsymbol{x}) 
+    < 
+    p_l(\boldsymbol{x})
+    \Leftrightarrow
+    \delta_{k}(\boldsymbol{x})
+    <
+    \delta_l(\boldsymbol{x})
+  \end{equation}
   #+end_quote
   - 事後確率の順序を保存する計算しやすい関数
 - 判別関数 \(\delta_{k}(\boldsymbol{x})\) を最大化するクラス \(k\) に分類
@@ -377,76 +300,66 @@
   - 平均ベクトル \(\boldsymbol{\mu}_{k}\) : クラスごとに異なる
   - 共分散行列 \(\Sigma\) : すべてのクラスで共通
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-        f_{k}(\boldsymbol{x})
-        =
-        \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma}}
-        \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
-          \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})\right)
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      f_{k}(\boldsymbol{x})
+      =
+      \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma}}
+      \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+        \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})\right)
+    \end{equation}
     #+end_quote
 - 線形判別関数 : \(\boldsymbol{x}\) の1次式
   # (linear discriminant function)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \delta_{k}(\boldsymbol{x})
-      =
-      \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_{k}
-      -\frac{1}{2}\boldsymbol{\mu}_{k}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_{k}
-      +\log\pi_{k}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \delta_{k}(\boldsymbol{x})
+    =
+    \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_{k}
+    -\frac{1}{2}\boldsymbol{\mu}_{k}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_{k}
+    +\log\pi_{k}
+  \end{equation}
   #+end_quote
 
 ** COMMENT 同値性の確認
 # 東京大学
 - 事後確率と判別関数の関係
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      &p_{k}(\boldsymbol{x}) < p_{l}(\boldsymbol{x})\\
-      &\Leftrightarrow
-	f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
-      &\Leftrightarrow
-	\log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
-      &\Leftrightarrow
-	-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
-	\Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})+\log\pi_{k}\\
-      &\phantom{\Leftrightarrow}\quad < 
-	-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
-	\Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)+\log\pi_l\\
-      &\Leftrightarrow
-	\delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
-    \end{align}
-  #+end_src
+  \begin{align}
+    &p_{k}(\boldsymbol{x}) < p_{l}(\boldsymbol{x})\\
+    &\Leftrightarrow
+      f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
+    &\Leftrightarrow
+      \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
+    &\Leftrightarrow
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+      \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})+\log\pi_{k}\\
+    &\phantom{\Leftrightarrow}\quad < 
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
+      \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)+\log\pi_l\\
+    &\Leftrightarrow
+      \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+  \end{align}
   #+end_quote
 
 ** 平均・分散の推定
 - 平均の推定 (クラスごとに行う)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \hat{\boldsymbol{\mu}}_{k}
-      =
-      \frac{1}{n_{k}}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \hat{\boldsymbol{\mu}}_{k}
+    =
+    \frac{1}{n_{k}}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
+  \end{equation}
   #+end_quote
   - ただし \(n_{k}\) は \(y_{i}=k\) であるようなデータの総数
 - 分散の推定 (まとめて行う)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \hat{\Sigma}
-      =
-      \frac{1}{n{-}K}\sum_{k=1}^{K}\sum_{i:y_{i}=k}
-      (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})
-      (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})^{\mathsf{T}}  
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \hat{\Sigma}
+    =
+    \frac{1}{n{-}K}\sum_{k=1}^{K}\sum_{i:y_{i}=k}
+    (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})
+    (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})^{\mathsf{T}}  
+  \end{equation}
   #+end_quote
 
 
@@ -467,13 +380,11 @@
     のもとで
     事後確率と線形判別関数の同値性
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})
-	\Leftrightarrow
-	\delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})
+      \Leftrightarrow
+      \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+    \end{equation}
     #+end_quote
     を示しなさい
 
@@ -483,25 +394,23 @@
 :END:
 - 同値関係を順に確認すればよい
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
-      &\Leftrightarrow
-	f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
-      &\qquad\text{(分母は共通)}\\
-      &\Leftrightarrow
-	\log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
-      &\Leftrightarrow
-	-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
-	\Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})+\log\pi_{k}\\
-      &\phantom{\Leftrightarrow}\quad < 
-	-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
-	\Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)+\log\pi_l\\
-      &\qquad\text{(2次の項は右辺と左辺で共通)}\\
-      &\Leftrightarrow
-	\delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
-    \end{align}
-  #+end_src
+  \begin{align}
+    &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
+    &\Leftrightarrow
+      f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
+    &\qquad\text{(分母は共通)}\\
+    &\Leftrightarrow
+      \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
+    &\Leftrightarrow
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+      \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})+\log\pi_{k}\\
+    &\phantom{\Leftrightarrow}\quad < 
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
+      \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)+\log\pi_l\\
+    &\qquad\text{(2次の項は右辺と左辺で共通)}\\
+    &\Leftrightarrow
+      \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+  \end{align}
   #+end_quote
 
 
@@ -511,20 +420,29 @@
 :END:
 # 東京大学
 ** R : 線形判別関数 ~MASS::lda()~
+:PROPERTIES:
+:ID:       BB276D04-1D56-40CC-898A-800551D44DFD
+:END:
 - データフレームに対する分析
-  #+begin_src R :eval no
-    library(MASS) # または require(MASS) 
-    lda(formula = yの変数名 ~ x1の変数名 + ... + xpの変数名,
-	data = データフレーム)
-    ## formula: 目的変数名 ~ 説明変数名
-    ## data: 目的変数，説明変数を含むデータフレーム
-    ## 書式は lm() とほぼ同じ
+  #+begin_src R :eval no :tangle no
+    library(MASS) # パッケージの読み込み
+    lda(formula, data, ..., subset, na.action)
+    #' formula: モデル式 (ラベル ~ 判別に用いる変数)
+    #' data: 必要な情報を含むデータフレーム
+    #' 詳細は '?MASS::lda' を参照
   #+end_src
-- 判別関数値の図示
-  #+begin_src R :eval no
-    est <- lda(formula = yの変数名 ~ x1の変数名 + ... + xpの変数名,
-	       data = データフレーム)
-    plot(est)
+- 判別結果の取得
+  #+begin_src R :eval no :tangle no
+    predict(object, newdata, prior = object$prior, dimen,
+            method = c("plug-in", "predictive", "debiased"), ...)
+    #' object: ldaの返すオブジェクト
+    #' newdata: 予測の対象とするデータフレーム
+    #' prior: ラベルの事前分布
+    #' 返値はリスト型で以下の項目がある
+    #' class: 判別関数による予測ラベル
+    #' posterior: ラベルの事後確率
+    #' x: 判別関数値
+    #' 詳細は '?MASS::predict.lda' を参照
   #+end_src
 
 ** COMMENT 演習: 人工データによる線形判別
@@ -542,74 +460,131 @@
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       91548DC4-4AE6-44E4-AFB8-D5BF457D40CC
 :END:
 - 東京の気候データを用いて以下の分析を行いなさい
-  - 10月と11月の気温と湿度のデータを抽出する
-    #+begin_src R :eval no
-      tw_data <- read.csv("data/tokyo_weather.csv")
-      tw_subset  <- subset(tw_data,
-			   subset= month %in% c(10,11),
-			   select=c(temp,humid,month))
+  - 9月と10月の気温と湿度のデータを抽出する
+    #+begin_src R :eval no :tangle no
+      tw_data <- read_csv("data/tokyo_weather.csv") 
+      tw_subset  <- tw_data |>
+        filter(month %in% c(9,10)) |>
+        select(temp, humid, month) |>
+        mutate(month = as_factor(month)) # 月を因子化
     #+end_src
   - 半分のデータを用いて線形判別関数を構成し，残りのデータを用いて判別を行う
-    #+begin_src R :eval no
+    #+begin_src R :eval no :tangle no
       library(MASS)
-      idx <- seq(2,60,by = 2)
+      idx <- seq(2, 60, by = 2)
       tw_train <- tw_subset[ idx,] # 訓練データ
       tw_test  <- tw_subset[-idx,] # 試験データ
-      tw_lda <- lda(month ~ temp + humid, data=tw_train) # 線形判別関数の構成
-      tw_est <- predict(tw_lda) # 判別関数によるクラス分類結果の取得
-      tw_pred <- predict(tw_lda, newdata=tw_test) # 新しいデータの予測
+      tw_lda <- lda(month ~ temp + humid, data = tw_train) # 線形判別関数の構成
+      tw_lda_fitted <- predict(tw_lda) # 判別関数によるクラス分類結果の取得
+      tw_lda_predict <- predict(tw_lda, newdata = tw_test) # 新しいデータの予測
     #+end_src
     
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 線形判別
-  ###
-  
-  ### 東京の気象データによる判別分析
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 線形判別
+#+end_src
+#+begin_src R :eval no :exports none
+  #' パッケージの読み込み
   library(MASS)
-  ## データの整理
-  tw_data <- read.csv("data/tokyo_weather.csv")
-  tw_subset  <- subset(tw_data,
-                       subset= month %in% c(10,11),
-                       select=c(temp,humid,month))
-  idx <- seq(2,60,by = 2)
-  tw_train <- tw_subset[ idx,] # 訓練データ
-  tw_test  <- tw_subset[-idx,] # 試験データ
-  ## 視覚化
-  with(tw_subset, 
-       plot(temp, humid, # 散布図の作成
-            pch=month, col=month,
-            xlab="temperature",ylab="humidity",
-            main="Oct. & Nov"))
-  legend("bottomright",inset=.05, # 凡例の作成
-         pch=c(10,11), col=c(10,11), legend=c("Oct","Nov"))
-  ## 訓練データで判別関数を作成．等分散性を仮定
-  tw_lda <- lda(month ~ temp + humid, data=tw_train)
-  plot(tw_lda) # 訓練データの判別関数値
-  tw_est <- predict(tw_lda) # 判別関数によるクラス分類結果の取得
-  table(true=tw_train$month, pred=tw_est$class) # 真値と予測値の比較
-  ## 試験データによる評価
-  tw_pred <- predict(tw_lda, newdata=tw_test) 
-  table(true=tw_test$month, pred=tw_pred$class) # 真値と予測値の比較
-  tw_pred$class 
-  tw_test$month 
-  ## 判別結果の図示
-  myLine <- function(z) { # 判別境界を引くための関数
-      a0<-as.vector(colMeans(z$means) %*% z$scaling)
-      a<-c(a0/z$scaling[2],-z$scaling[1]/z$scaling[2])
-      return(a)
-  }
-  with(tw_test, 
-       plot(temp, humid, # 試験データの散布図
-            pch=month, col=month,
-            xlab="temperature",ylab="humidity",
-            main="Oct. & Nov"))
-  with(tw_train, 
-       points(temp, humid, # 訓練データの散布図
-              pch=month, col=month+3))
-  abline(myLine(tw_lda), col="blue", lwd=2)
+  
+  #' 東京の気象データによる判別分析
+  tw_data <- read_csv("data/tokyo_weather.csv")
+  tw_subset  <- tw_data |> 
+    filter(month %in% c(9,10)) |> # 9,10月のデータ
+    select(temp, humid, month) |> # 気温・湿度・月を選択
+    mutate(month = as_factor(month)) # 月を因子化
+  idx <- seq(1, nrow(tw_subset), by = 2) # データの分割(1つおき)
+  tw_train <- tw_subset[ idx,] # 訓練データ(推定に用いる)
+  tw_test  <- tw_subset[-idx,] # 試験データ(評価に用いる)
+
+  #' @notes
+  #' 関数lubridate::month()を用いれば月を文字列(因子)とすることもできる
+  #' mutate(month = month(month, label = TRUE))
+  #' 
+  #' ランダムに分割するには例えば以下のようにすれば良い
+  #' n <- nrow(tw_subset); idx <- sample(1:n, n/2)
+  #'
+  #' 以下のようにして最初に月を因子化することもできるが
+  #' read_csv("data/tokyo_weather.csv") |>
+  #'   mutate(month = as_factor(month))
+  #' 関数によっていは処理で使われない因子(例えば1月)も表示してしまうので注意が必要
+  #'
+  #' また複数の項目を因子化するには例えば以下のようにすればよい
+  #' mutate(across(c(year, month, day), as_factor))
+
+  #' 視覚化
+  tw_subset |> # 気温と湿度の散布図を作成
+    ggplot(aes(x = temp, y = humid)) + 
+    geom_point(aes(colour = month)) + # 月ごとに点の色を変える
+    labs(x = "Temperature", y = "Humidity",
+         title = "September & October")
+
+  #' 訓練データで線形判別関数(等分散性を仮定)を作成
+  tw_model <- month ~ temp + humid
+  tw_lda <- lda(formula = tw_model, data = tw_train)
+  tw_lda_fitted <- predict(tw_lda) # 判別関数によるクラス分類結果の取得
+  table(true = tw_train[["month"]], # 真値
+        predict = tw_lda_fitted[["class"]]) # 予測値の比較(混同行列) 
+  tibble(true = tw_train[["month"]]) |>
+    mutate(predict = tw_lda_fitted[["class"]]) |>
+    View() # 真値と予測値の対応表を作成して直接比較
+  as_tibble(tw_lda_fitted[["x"]]) |> # リストから判別関数値(配列)を取得
+    mutate(month = tw_train[["month"]]) |> # 月(真値)を追加
+    ggplot(aes(x = LD1, fill = month)) + 
+    geom_histogram(aes(y = after_stat(density)), bins = 30) +
+    facet_grid(month ~ .) # 月ごとに表示(y方向に並べる)
+
+  #' 試験データによる評価
+  tw_lda_predict <- predict(tw_lda, newdata = tw_test) 
+  table(true = tw_test[["month"]], # 混同行列
+        predict = tw_lda_predict[["class"]])
+  tibble(true = tw_test[["month"]]) |> # 比較表
+    mutate(predict = tw_lda_predict[["class"]]) |>
+    View() 
+  as_tibble(tw_lda_predict[["x"]]) |> # 判別関数値の視覚化
+    mutate(month = tw_test[["month"]]) |> 
+    ggplot(aes(x = LD1, fill = month)) + 
+    geom_histogram(aes(y = after_stat(density)), bins = 30) +
+    facet_grid(month ~ .) 
+
+  #' 推定された線形判別関数の図示
+  range_x <- range(tw_subset[["temp"]])  # 気温の値域
+  range_y <- range(tw_subset[["humid"]]) # 湿度の値域
+  grid_x <- pretty(range_x, 100) # 気温の値域の格子点を作成
+  grid_y <- pretty(range_y, 100) # 湿度の値域の格子点を作成
+  grid_xy <- expand.grid(temp = grid_x,
+                         humid = grid_y) # 2次元の格子点を作成
+  tw_lda_grid <- predict(tw_lda, # 格子点上の判別関数値を計算
+                         newdata = grid_xy)
+  #' 判別関数により予測されるラベルの図示
+  p <- as_tibble(grid_xy) |> 
+    mutate(predict = tw_lda_grid[["class"]]) |>
+    ggplot(aes(x = temp, y = humid)) +
+    geom_tile(aes(fill = predict), alpha = 0.3) +
+    labs(x = "Temperature", y = "Humidity",
+         title = "Linear Discriminant Analysis")
+  print(p) # 判別境界の表示
+  p + # データ点の重ね描き
+    geom_point(data = tw_subset,
+               aes(x = temp, y = humid, colour = month))
+  #' 判別関数値の図示 (参考)
+  p2 <- as_tibble(grid_xy) |> 
+    mutate(LD = tw_lda_grid[["x"]][,"LD1"]) |> # LD1列のみ利用
+    ggplot(aes(x = temp, y = humid)) +
+    geom_raster(aes(fill = LD), alpha = 0.5) +
+    scale_fill_gradientn(colours=c("red","white","blue")) +
+    labs(x = "Temperature", y = "Humidity",
+         title = "Scores of Discriminant Variables")
+  print(p2) # 判別関数値の表示
+  p2 + # データ点の重ね描き
+    geom_point(data = tw_subset,
+               aes(x = temp, y = humid, colour = month))
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
@@ -620,82 +595,72 @@
   - 平均ベクトル \(\boldsymbol{\mu}_{k}\) : クラスごとに異なる
   - 共分散行列 \(\Sigma_{k}\) : *クラスごとに異なる*
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	f_{k}(\boldsymbol{x})
-	=
-	\frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_{k}}}
-	\exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
-	  \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})\right)
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      f_{k}(\boldsymbol{x})
+      =
+      \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_{k}}}
+      \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+        \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})\right)
+    \end{equation}
     #+end_quote
 - 2次判別関数 : \(\boldsymbol{x}\) の2次式
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \delta_{k}(\boldsymbol{x})
-      =
-      -\frac{1}{2}\det\Sigma_{k}
-      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
-      \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
-      +\log\pi_{k}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \delta_{k}(\boldsymbol{x})
+    =
+    -\frac{1}{2}\det\Sigma_{k}
+    -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+    \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
+    +\log\pi_{k}
+  \end{equation}
   #+end_quote
 
 ** COMMENT 同値性の確認
 # 東京大学
 - 事後確率と判別関数の関係
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
-      &\Leftrightarrow 
-	f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
-      &\qquad\text{(分母は共通)}\\
-      &\Leftrightarrow
-	\log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
-      &\Leftrightarrow
-	-\frac{1}{2}\det\Sigma_{k}
-	-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
-	\Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
-	+\log\pi_{k}\\
-      &\phantom{\Leftrightarrow}\quad <
-	-\frac{1}{2}\det\Sigma_l
-	-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
-	\Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
-	+\log\pi_l\\
-      &\Leftrightarrow
-	\delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})\\
-      &\qquad\text{(2次の項は右辺と左辺で共通)}
-    \end{align}
-  #+end_src
+  \begin{align}
+    &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
+    &\Leftrightarrow 
+      f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
+    &\qquad\text{(分母は共通)}\\
+    &\Leftrightarrow
+      \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
+    &\Leftrightarrow
+      -\frac{1}{2}\det\Sigma_{k}
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+      \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
+      +\log\pi_{k}\\
+    &\phantom{\Leftrightarrow}\quad <
+      -\frac{1}{2}\det\Sigma_l
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
+      \Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
+      +\log\pi_l\\
+    &\Leftrightarrow
+      \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})\\
+    &\qquad\text{(2次の項は右辺と左辺で共通)}
+  \end{align}
   #+end_quote
 
 ** 平均・分散の推定
 - 平均の推定 (クラスごとに行う)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \hat{\boldsymbol{\mu}}_{k}
-      =
-      \frac{1}{n_{k}}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \hat{\boldsymbol{\mu}}_{k}
+    =
+    \frac{1}{n_{k}}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
+  \end{equation}
   #+end_quote
   - だたし \(n_{k}\) は \(y_{i}=k\) であるようなデータの総数
 - 分散の推定 (クラスごとに行う)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \hat{\Sigma}_{k}
-      =
-      \frac{1}{n_{k}-1}\sum_{i:y_{i}=k}
-      (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})
-      (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})^{\mathsf{T}}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \hat{\Sigma}_{k}
+    =
+    \frac{1}{n_{k}-1}\sum_{i:y_{i}=k}
+    (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})
+    (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})^{\mathsf{T}}
+  \end{equation}
   #+end_quote
 
 
@@ -703,6 +668,7 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -715,13 +681,11 @@
     のもとで
     事後確率と2次判別関数の同値性
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})
-	\Leftrightarrow
-	\delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})
+      \Leftrightarrow
+      \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+    \end{equation}
     #+end_quote
     を示しなさい
 
@@ -731,27 +695,25 @@
 :END:
 - 同値関係を順に確認すればよい
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
-      &\Leftrightarrow 
-	f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
-      &\Leftrightarrow
-	\log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
-      &\Leftrightarrow
-	-\frac{1}{2}\det\Sigma_{k}
-	-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
-	\Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
-	+\log\pi_{k}\\
-      &\phantom{\Leftrightarrow}\quad <
-	-\frac{1}{2}\det\Sigma_l
-	-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
-	\Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
-	+\log\pi_l\\
-      &\Leftrightarrow
-	\delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
-    \end{align}
-  #+end_src
+  \begin{align}
+    &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
+    &\Leftrightarrow 
+      f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
+    &\Leftrightarrow
+      \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
+    &\Leftrightarrow
+      -\frac{1}{2}\det\Sigma_{k}
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+      \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
+      +\log\pi_{k}\\
+    &\phantom{\Leftrightarrow}\quad <
+      -\frac{1}{2}\det\Sigma_l
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
+      \Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
+      +\log\pi_l\\
+    &\Leftrightarrow
+      \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+  \end{align}
   #+end_quote
 
 
@@ -761,13 +723,27 @@
 :END:
 # 東京大学
 ** R : 2次判別関数 ~MASS::qda()~
+:PROPERTIES:
+:ID:       B4D138CC-63A9-4EDB-ABD4-3CC6E5E769F0
+:END:
 - データフレームに対する分析
-  #+begin_src R :eval no
-    library(MASS) # または require(MASS) 
-    qda(formula = yの変数名 ~ x1の変数名 + ... + xpの変数名,
-	data = データフレーム)
-    ## formula: 目的変数名 ~ 説明変数名
-    ## data: 目的変数，説明変数を含むデータフレーム
+  #+begin_src R :eval no :tangle no
+    library(MASS) # 既に読み込んでいる場合は不要
+    qda(formula, data, ..., subset, na.action)
+    #' formula: モデル式 (ラベル ~ 判別に用いる変数)
+    #' data: 必要な情報を含むデータフレーム
+    #' 詳細は '?MASS::qda' を参照
+  #+end_src
+- 判別結果の取得
+  #+begin_src R :eval no :tangle no
+    predict(object, newdata, prior = object$prior,
+            method = c("plug-in", "predictive", "debiased", "looCV"), ...)
+    #' object: qda の返すオブジェクト
+    #' newdata: 予測対象のデータフレーム．省略すると推定に用いたデータフレーム
+    #' 返値はリスト型で以下の項目がある
+    #' class: 判別関数による予測ラベル
+    #' posterior: ラベルの事後確率
+    #' 詳細は '?MASS::predict.qda' を参照
   #+end_src
 
 ** COMMENT 演習: 人工データによる2次判別
@@ -779,52 +755,64 @@
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       DCDE0C9C-8B65-48D9-BCF1-C8AE856FFB68
 :END:
 - 東京の気候データを用いて以下の分析を行いなさい
   - 前問と同様な設定で2次判別を行いなさい
-    #+begin_src R :eval no
-      tw_qda <- qda(month ~ temp + humid, data=tw_train) # 2次判別関数の構成
-      tw_est <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
-      tw_pred <- predict(tw_qda, newdata=tw_test) # 新しいデータの予測
+    #+begin_src R :eval no :tangle no
+      tw_qda <- qda(month ~ temp + humid, data = tw_train) # 2次判別関数の構成
+      tw_qda_fitted <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
+      tw_qda_predict <- predict(tw_qda, newdata = tw_test) # 新しいデータの予測
     #+end_src
   - 別の月や変数を用いて判別分析を行いなさい
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 2次判別
-  ### 
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 2次判別
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 東京の気象データによる判別分析
+  #' 前の練習問題で作成した 'tw_train', 'tw_test' を利用
 
-  ### 東京の気象データによる判別分析
-  library(MASS)
-  ## データの整理 (前に実行している場合は不要)
-  tw_data <- read.csv("data/tokyo_weather.csv")
-  tw_subset  <- subset(tw_data,
-                       subset= month %in% c(10,11),
-                       select=c(temp,humid,month))
-  idx <- seq(2,60,by = 2)
-  tw_train <- tw_subset[ idx,] # 訓練データ
-  tw_test  <- tw_subset[-idx,] # 試験データ
-  ## 訓練データで判別関数を作成
-  tw_qda <- qda(month ~ temp + humid, data=tw_train)
-  tw_est2 <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
-  table(true=tw_train$month, pred=tw_est2$class) # 真値と予測値の比較
-  ## 試験データによる評価
-  tw_pred2 <- predict(tw_qda, newdata=tw_test) 
-  table(true=tw_test$month, pred=tw_pred2$class) # 真値と予測値の比較
-  tw_pred2$class 
-  tw_test$month 
-  ## 判別結果の図示
-  ## 判別境界を描くのは複雑なので，色と形で代用する
-  with(tw_test, 
-       plot(temp, humid, # 試験データの散布図
-            pch=as.numeric(tw_pred2$class),
-            col=month,
-            xlab="temperature",ylab="humidity",
-            main="Oct. & Nov"))
+  #' 訓練データで2次判別関数(等分散性を仮定しない)を作成
+  #' 線形判別関数と同じモデル式を用いる
+  tw_qda <- qda(formula = tw_model, data = tw_train)
+  tw_qda_fitted <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
+  table(true = tw_train[["month"]], # 真値
+        predict = tw_qda_fitted[["class"]]) # 予測値の比較(混同行列) 
+  tibble(true = tw_train[["month"]]) |>
+    mutate(predict = tw_qda_fitted[["class"]]) |>
+    View() # 真値と予測値の対応表を作成して直接比較
+
+  #' 試験データによる評価
+  tw_qda_predict <- predict(tw_qda, newdata = tw_test) 
+    table(true = tw_test[["month"]], # 混同行列
+        predict = tw_qda_predict[["class"]])
+  tibble(true = tw_test[["month"]]) |> # 比較表
+    mutate(predict = tw_qda_predict[["class"]]) |>
+    View() 
+
+  #' 推定された2次判別関数の図示
+  tw_qda_grid <- predict(tw_qda, # 格子点上の判別関数値を計算
+                         newdata = grid_xy)
+  #' 判別関数により予測されるラベルの図示
+  p <- as_tibble(grid_xy) |> 
+    mutate(predict = tw_qda_grid[["class"]]) |>
+    ggplot(aes(x = temp, y = humid)) +
+    geom_tile(aes(fill = predict), alpha = 0.3) +
+    labs(x = "Temperature", y = "Humidity",
+         title = "Quadratic Discriminant Analysis")
+  print(p) # 判別境界の表示
+  p + # データ点の重ね描き
+    geom_point(data = tw_subset,
+               aes(x = temp, y = humid, colour = month))
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
   
 
-* 多値判別
+* さまざまな多値判別
 ** 多値判別の構成方法
 - 判別関数の比較
   - 判別関数 \(\delta_{k}\) を比較
@@ -834,31 +822,30 @@
   - グループでの比較 : 最大の組合せ数 \(2^{K}-2\)
 - \(K{-}1\) 個の特徴量への変換
   - 説明変数の線形結合による特徴量の構成
+  - 異なる\(K\)個の点(かたまり)を\(K{-}1\)次元空間に配置
   - *Fisher の線形判別*
 
 ** 変動の分解
 - 3種類の変動
   - \(A=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu})(\boldsymbol{x}_{i}-\boldsymbol{\mu})^{\mathsf{T}}\) :
-    全変動
+    *全変動*
   - \(W=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}\) :
-    群内変動
+    *群内変動*
   - \(B=\sum_{k=1}^{K}n_{k}(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}\) :
-    群間変動 \\
+    *群間変動* \\
     (\(n_{k}\) はクラス \(k\) のデータ数)
 - 変動の関係
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \text{(全変動)}
-      =
-      \text{(群内変動)}
-      +
-      \text{(群間変動)}
-    \end{equation}
-    \begin{equation}
-      A = W + B
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \text{(全変動)}
+    =
+    \text{(群内変動)}
+    +
+    \text{(群間変動)}
+  \end{equation}
+  \begin{equation}
+    A = W + B
+  \end{equation}
   #+end_quote
 
 
@@ -866,6 +853,7 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
+# 早稲田大学
 ** 問題
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -874,11 +862,9 @@
   - 全変動が群内・群間変動に分解されることを示しなさい
   - 説明変数の線形結合で新たな特徴量を構成する
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	Z=\boldsymbol{\alpha}^{\mathsf{T}} X
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      Z=\boldsymbol{\alpha}^{\mathsf{T}} X
+    \end{equation}
     #+end_quote
     このとき\(Z\)の群内変動と群間変動を求めなさい
 
@@ -888,116 +874,108 @@
 :END:
 - 定義どおりに計算する
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      A
-      &=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu})
-	(\boldsymbol{x}_{i}-\boldsymbol{\mu})^{\mathsf{T}}\\
-      &=
-	\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}}+\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
-	(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}}+\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}\\
-      &=
-	\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
-	(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
-	+
-	\sum_{i=1}^{n}(\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
-	(\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}\\
-      &\quad
-	+\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
-	(\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}
-	+\sum_{i=1}^{n}(\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
-	(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
-    \end{align}
-  #+end_src
+  \begin{align}
+    A
+    &=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu})
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu})^{\mathsf{T}}\\
+    &=
+      \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}}+\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}}+\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}\\
+    &=
+      \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+      +
+      \sum_{i=1}^{n}(\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
+      (\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}\\
+    &\quad
+      +\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+      (\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})^{\mathsf{T}}
+      +\sum_{i=1}^{n}(\boldsymbol{\mu}_{y_{i}}-\boldsymbol{\mu})
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+  \end{align}
   #+end_quote
 
 #+reveal: split
 - 添字の扱いに注意する
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      &=
-        \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
-        (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
-        +
-        \sum_{k=1}^{K}\sum_{i:y_{i}=k}
-        (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
-        (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}\\
-      &\quad
-        +\sum_{k=1}^{K}\sum_{i:y_{i}=k}
-        (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{k})
-        (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}
-        +\sum_{k=1}^{K}\sum_{i:y_{i}=k}
-        (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
-        (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{k})^{\mathsf{T}}\\
-      &=
-        \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
-        (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
-        +
-        \sum_{k=1}^{K}n_{k}(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
-        (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}\\
-      &=
-        W+B
-    \end{align}
-  #+end_src
+  \begin{align}
+    &=
+      \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+      +
+      \sum_{k=1}^{K}\sum_{i:y_{i}=k}
+      (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
+      (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}\\
+    &\quad
+      +\sum_{k=1}^{K}\sum_{i:y_{i}=k}
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{k})
+      (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}
+      +\sum_{k=1}^{K}\sum_{i:y_{i}=k}
+      (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{k})^{\mathsf{T}}\\
+    &=
+      \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+      +
+      \sum_{k=1}^{K}n_{k}(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})
+      (\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}\\
+    &=
+      W+B
+  \end{align}
   #+end_quote
 
 #+reveal: split
 - 定義どおりに計算する
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
+  \begin{align}
+    \sum_{i=1}^{n}
+    (z_{i}-\mu_{y_{i}})^{2}
+    &=
       \sum_{i=1}^{n}
-      (z_{i}-\mu_{y_{i}})^{2}
-      &=
-	\sum_{i=1}^{n}
-	(z_{i}-\mu_{y_{i}})(z_{i}-\mu_{y_{i}})\\
-      &=
-	\sum_{i=1}^{n}(\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{x}_{i}
-	-\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{\mu}_{y_{i}})
-	(\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{x}_{i}
-	-\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}\\
-      &=
-	\boldsymbol{\alpha}^{\mathsf{T}}
-	\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
-	(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
-	\boldsymbol{\alpha}
-	=
-	\boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}\\
-      \sum_{k=1}^{K}n_{k}(\mu_{k}-\mu)^{2}
-      &=
-	\boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
-    \end{align}
-  #+end_src
+      (z_{i}-\mu_{y_{i}})(z_{i}-\mu_{y_{i}})\\
+    &=
+      \sum_{i=1}^{n}(\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{x}_{i}
+      -\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{\mu}_{y_{i}})
+      (\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{x}_{i}
+      -\boldsymbol{\alpha}^{\mathsf{T}}\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}\\
+    &=
+      \boldsymbol{\alpha}^{\mathsf{T}}
+      \sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})
+      (\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}
+      \boldsymbol{\alpha}
+      =
+      \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}\\
+    \sum_{k=1}^{K}n_{k}(\mu_{k}-\mu)^{2}
+    &=
+      \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
+  \end{align}
   #+end_quote
 
 
 * Fisher の判別分析
 ** Fisherの線形判別
 - 判別のための特徴量 \(Z=\boldsymbol{\alpha}^{\mathsf{T}} X\)
+  - 特徴量\(Z\)のばらつきの計算は主成分分析と同様
+  - 変動 \(A,W,B\) を Gram 行列とみなせばよい
 - 良い \(Z\) の基準
   - クラス内では集まっているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}\)は小)
   - クラス間では離れているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}\)は大)
 - Fisherの基準
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \text{maximize}\quad \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
-      \quad\text{s.t.}\quad \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}=\text{const.}
-    \end{equation}
-  #+end_src
-  クラス内変動を一定にしてクラス間変動を最大化する
+  \begin{equation}
+    \text{maximize}\quad \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
+    \quad\text{s.t.}\quad \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}=\text{const.}
+  \end{equation}
   #+end_quote
+  - クラス内変動を一定にしてクラス間変動を最大化する
 
 ** Fisherの線形判別の解
 - \(\boldsymbol{\alpha}\) は \(W^{-1}B\) の固有値 (主成分分析の導出と同様)
   - \(K=2\) の場合 : 最大固有値を用いる (線形判別と一致)
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	\boldsymbol{\alpha}\propto W^{-1}(\mu_{1}-\mu_2)
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \boldsymbol{\alpha}\propto W^{-1}(\mu_{1}-\mu_2)
+    \end{equation}
     #+end_quote
   - 一般の \(K\) の場合 : 第1から第 \(K{-}1\) 固有値を用いる
 - 判別の手続き
@@ -1036,69 +1014,121 @@
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       55127149-41D2-41FA-A6BC-589ED8381433
 :END:
 - 東京の気候データを用いて以下の分析を行いなさい
   - 9月，10月，11月の気温と湿度のデータを用いて判別関数を作成しなさい．
-    #+begin_src R :eval no
-      tw_subset  <- subset(tw_data,
-			   subset= month %in% c(9,10,11),
-			   select=c(temp,humid,month))
-      tw_lda <- lda(month ~ temp + humid, data=tw_subset)
+    #+begin_src R :eval no :tangle no
+      tw_subset  <- tw_data |>
+        filter(month %in% c(9,10,11)) |>
+        select(temp, humid, month) |>
+        mutate(month = as_factor(month))
     #+end_src
   - 別の月や変数を用いて判別分析を行いなさい
-    #+begin_src R :eval no 
-      ## 雨の有無を識別する例
-      tw_mydata <- transform(tw_data,
-			     rain=factor(rain>0), # 雨の有無でラベル化する
-			     month=factor(month)) # 月ごとの気候の違いの補正のため
-      tw_mylda <- lda(rain ~ temp + solar + wind + month,
-		      data=tw_mydata)
+    #+begin_src R :eval no :tangle no
+      #' 雨の有無を識別する例
+      tw_subset2 <- tw_data |>
+        mutate(rain = factor(rain > 0),
+               month = as_factor(month)) |> # 雨の有無でラベル化する
+        select(rain, temp, solar, wind, month)
+      tw_lda2 <- lda(rain ~ ., data = tw_subset2) # 'rain' をそれ以外で判別
     #+end_src
     
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 多値判別
-  ### 
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 多値判別
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 東京の気象データによる判別分析
+  #' 3値判別のためのデータの整理
+  tw_subset3  <- tw_data |>
+    filter(month %in% c(9,10,11)) |>
+    select(temp, humid, month) |>
+    mutate(month = as_factor(month))
 
-  ### 東京の気象データによる判別分析
-  library(MASS)
-  ## データの整理 (前に実行している場合は不要)
-  tw_data <- read.csv("data/tokyo_weather.csv")
-  tw_subset  <- subset(tw_data,
-                       subset= month %in% c(9,10,11),
-                       select=c(temp,humid,month))
-  ## 判別関数を作成
-  tw_lda3 <- lda(month ~ temp + humid, data=tw_subset)
-  tw_est3 <- predict(tw_lda3) # 判別関数によるクラス分類結果の取得
-  table(true=tw_subset$month, pred=tw_est3$class) # 真値と予測値の比較
-  plot(tw_lda3, col=tw_subset$month) # 判別関数値の図示
+  #' 線形判別関数(3値)を作成
+  tw_lda3 <- lda(formula = tw_model, data = tw_subset3)
+  tw_lda3_fitted <- predict(tw_lda3) # 判別関数によるクラス分類結果の取得
+  table(true = tw_subset3[["month"]], # 真値
+        predict = tw_lda3_fitted[["class"]]) # 予測値の比較(混同行列)
 
-  ## 12ヶ月分のデータを用いる
-  ## 数が多いのでサンプリングする
+  #' 推定された線形判別関数(3値)により予測されるラベルの図示
+  #' 格子点は再計算する必要がある
+  range_x <- range(tw_subset3[["temp"]])  # 気温の値域
+  range_y <- range(tw_subset3[["humid"]]) # 湿度の値域
+  grid_x <- pretty(range_x, 100) # 気温の値域の格子点を作成
+  grid_y <- pretty(range_y, 100) # 湿度の値域の格子点を作成
+  grid_xy <- expand.grid(temp = grid_x,
+                         humid = grid_y) # 2次元の格子点を作成
+  tw_lda3_grid <- predict(tw_lda3, # 格子点上の判別関数値を計算
+                          newdata = grid_xy)
+  as_tibble(grid_xy) |> 
+    mutate(predict = tw_lda3_grid[["class"]]) |>
+    ggplot(aes(x = temp, y = humid)) +
+    geom_tile(aes(fill = predict), alpha = 0.3) +
+    geom_point(data = tw_subset3,
+               aes(x = temp, y = humid, colour = month)) +
+    labs(x = "Temperature", y = "Humidity",
+         title = "Multi-label Discriminant Analysis")
+
+  #' 3値判別の場合には2つの判別関数を構成するので
+  #' これを用いてデータ点の散布図を作成することができる
+  p <- bind_cols(tw_lda3_fitted[["x"]], # 判別関数値(LD1,LD2)
+                 tw_subset3["month"]) |> # データフレームとして抽出
+    ggplot(aes(x = LD1, y = LD2)) + 
+    geom_point(aes(colour = month)) # 月ごとに色を変更
+  print(p)
+
+  #' 関数geom_tile()が座標軸に沿った格子点を想定しているため
+  #' 判別関数値の散布図上で判別境界とデータ点を表示するには工夫が必要
+  #' ここでは関数geom_point()で代用した簡便な例を示す
+  p + geom_point(data = # 判別関数値と予測ラベルのデータフレームを作成
+                   bind_cols(tw_lda3_grid[["x"]],
+                             predict = tw_lda3_grid[["class"]]),
+                 aes(colour = predict), alpha = 0.2)
+
+  #' 12ヶ月分のデータを用いる
+  #' 数が多いのでサンプリングする
   idx <- sample(nrow(tw_data), 100)
-  tw_multi <- lda(month ~ temp + solar + wind + humid,
-                  data=tw_data[idx,])
-  plot(tw_multi, col=tw_data[idx,]$month)
-  ## 特徴量は説明変数の数までしか作成できないので，精度は低いことがわかる
+  tw_subset12 <- slice(tw_data, idx) |>
+    mutate(month = as_factor(month))
+  tw_lda12 <- lda(month ~ temp + solar + wind + humid,
+               data = tw_subset12)
+  tw_lda12_fitted <- predict(tw_lda12)
+  table(true = tw_subset12[["month"]], # 混同行列
+        predict = tw_lda12_fitted[["class"]])
+  bind_cols(tw_lda12_fitted[["x"]], # 判別関数値の散布図を作成
+            tw_subset12["month"]) |>
+    GGally::ggpairs(aes(colour = month))
+  #' 判別関数は説明変数の数までしか作成できないので，精度はあまり高くないことがわかる
 
-  ## 雨の有無を識別する例
-  tw_rdata <- transform(tw_data,
-                        rain=factor(rain>0), # 雨の有無でラベル化する
-                        month=factor(month)) # 月ごとの気候の違いの補正のため
-  tw_rain <- lda(rain ~ temp + solar + wind + month,
-                 data=tw_rdata,
-                 subset=idx) # 一部のデータで推定，12ヶ月分の例とは別の指定の仕方
-  plot(tw_rain)
-  tw_rpred <- predict(tw_rain, newdata=tw_rdata) # 全データを予測
-  table(true=tw_rdata$rain[idx], est=tw_rpred$class[idx])
-  table(true=tw_rdata$rain[-idx], est=tw_rpred$class[-idx])
+  #' 雨の有無を識別する例
+  tw_rain <- tw_data |>
+    mutate(rain = factor(rain > 0), # 雨の有無でラベル化する
+           month = as_factor(month)) # 月ごとの気候の違いの補正のため
+  tw_rain_lda <- lda(rain ~ temp + solar + wind + month,
+                     data = tw_rain,
+                     subset = idx) # 一部のデータで推定，12ヶ月分の例とは別の指定の仕方
+  tw_rain_lda_fitted <- predict(tw_rain_lda)
+  as_tibble(tw_rain_lda_fitted[["x"]]) |> # 判別関数値の視覚化
+    mutate(rain = tw_rain[["rain"]][idx]) |> 
+    ggplot(aes(x = LD1, fill = rain)) + 
+    geom_histogram(aes(y = after_stat(density)), bins = 30) +
+    facet_grid(rain ~ .) 
+
+  #' 全データを予測
+  tw_rain_lda_predict <- predict(tw_rain_lda, newdata = tw_rain) 
+  table(true = tw_rain[["rain"]][idx], # 推定に用いたデータの混同行列
+        predict = tw_rain_lda_predict[["class"]][idx])
+  table(true = tw_rain[["rain"]][-idx], # 未知データに対する予測の混同行列
+        predict = tw_rain_lda_predict[["class"]][-idx])
 #+end_src
 
 
 * 解析の事例
 # 早稲田大学
 ** データについて
-- 気象庁より取得した東京の気候データ \\
+- 気象庁より取得した東京の気候データ
   - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
   - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
     # - 広告費(TV,radio,newspaper)と売上データ \\
@@ -1106,85 +1136,100 @@
     #   - データ https://faculty.marshall.usc.edu/gareth-james/ISL/Advertising.csv
 
 ** 気温と湿度による月の判別
+:PROPERTIES:
+:ID:       501D7D38-752C-46A6-A43B-D19B6533F359
+:END:
 - 10,11月のデータの散布図
-  #+begin_src R :file figs/08_pairs.png :exports results :results graphics :tangle yes
-    ### 東京の気象データによる判別分析
-    library(MASS)
-    myCol <- rainbow(12)[c(2,5,8)]
-    ## データの整理
-    target <- c(10,11)
-    tw_data <- read.csv("data/tokyo_weather.csv")
-    tw_subset  <- subset(tw_data,
-			 subset= month %in% target,
-			 select=c(temp,humid,month))
-    ## 視覚化
-    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    with(tw_subset, 
-         plot(temp, humid, # 散布図の作成
-              pch=month+6, col=myCol[month-8],
-              xlab="気温",ylab="湿度",
-              main="東京の機構"))
-    legend("bottomright",inset=.05, # 凡例の作成
-	   pch=target+6, col=myCol[target-8], legend=c("10月","11月"))
+  #+begin_src R :file figs/08_pairs.png :exports results :results graphics
+    #' 東京の気象データによる判別分析
+    library(MASS) # パッケージの読み込み
+    #' データの整理
+    tw_data <- read_csv("data/tokyo_weather.csv")
+    tw_subset  <- tw_data |> 
+      filter(month %in% c(9,10)) |> # 9,10月のデータ
+      select(temp, humid, month) |> # 気温・湿度・月を選択
+      mutate(month = as_factor(month)) # 月を因子化
+    #' 視覚化
+    tw_subset |> # 気温と湿度の散布図を作成
+      ggplot(aes(x = temp, y = humid)) + 
+      geom_point(aes(colour = month)) + # 月ごとに点の色を変える
+      labs(x = "気温", y = "湿度", 
+           colour = "月",
+           title = "東京の気候 (9月・10月)")
   #+end_src
-
-
-#+CAPTION: 散布図
-#+NAME: fig:08_pairs
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: 散布図
+#+name: fig:08_pairs
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/08_pairs.png]]
 
 #+reveal: split
 - 線形判別 (2値)
-  #+begin_src R :file figs/08_lda.png :exports results :results graphics :tangle yes
-    ## 線形判別関数を作成
-    tw_lda <- lda(month ~ temp + humid, data=tw_subset)
-    tw_lest <- predict(tw_lda)
-    tw_lerr <- which(tw_lest$class!=tw_subset$month)
-    ## 判別結果の図示
-    myLine <- function(z) { # 判別境界を引くための関数
-	a0<-as.vector(colMeans(z$means) %*% z$scaling)
-	a<-c(a0/z$scaling[2],-z$scaling[1]/z$scaling[2])
-	return(a)
-    }
-    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    with(tw_subset, 
-	 plot(temp, humid, # 試験データの散布図
-	      pch=month+6, col=myCol[month-8],
-	      xlab="気温",ylab="湿度",
-	      main="linear discriminant"))
-    with(tw_subset[tw_lerr,], 
-	 points(temp, humid, # 訓練データの散布図
-		pch=1, col="orchid", cex=2, lwd=2))
-    abline(myLine(tw_lda), col="orange", lwd=2)
+  #+begin_src R :file figs/08_lda_value.png :exports results :results graphics
+    #' 線形判別関数の推定
+    tw_model <- month ~ temp + humid
+    tw_lda <- lda(formula = tw_model, data = tw_subset)
+    tw_lda_fitted <- predict(tw_lda) # 判別関数によるクラス分類結果の取得
+    as_tibble(tw_lda_fitted[["x"]]) |> # リストから判別関数値(配列)を取得
+      mutate(month = tw_subset[["month"]]) |> # 月(真値)を追加
+      ggplot(aes(x = LD1, fill = month)) + 
+      geom_histogram(aes(y = after_stat(density)), bins = 30) +
+      labs(fill = "月") +
+      facet_grid(month ~ .) # 月ごとに表示(y方向に並べる)
   #+end_src
+#+caption: 線形判別 (判別関数の値)
+#+name: fig:08_lda_value
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/08_lda_value.png]]
 
+#+reveal: split
+- 線形判別 (2値)
+  #+begin_src R :file figs/08_lda.png :exports results :results graphics
+    #' 判別関数により予測されるラベルの図示
+    range_x <- range(tw_subset[["temp"]])  # 気温の値域
+    range_y <- range(tw_subset[["humid"]]) # 湿度の値域
+    grid_x <- pretty(range_x, 100) # 気温の値域の格子点を作成
+    grid_y <- pretty(range_y, 100) # 湿度の値域の格子点を作成
+    grid_xy <- expand.grid(temp = grid_x,
+                           humid = grid_y) # 2次元の格子点を作成
+    tw_lda_grid <- predict(tw_lda, # 格子点上の判別関数値を計算
+                           newdata = grid_xy)
+    as_tibble(grid_xy) |> 
+      mutate(predict = tw_lda_grid[["class"]]) |>
+      ggplot(aes(x = temp, y = humid)) +
+      geom_tile(aes(fill = predict), alpha = 0.3) +
+      geom_point(data = tw_subset,
+                 aes(x = temp, y = humid, colour = month)) +
+      labs(x = "気温", y = "湿度",
+           fill = "予測", colour = "真値",
+           title = "線形判別")
 
-#+CAPTION: 線形判別 (〇は判別誤り)
-#+NAME: fig:08_lda
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+  #+end_src
+#+caption: 線形判別 (判別境界)
+#+name: fig:08_lda
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/08_lda.png]]
 
 #+reveal: split
 - 2次判別 (2値)
-  #+begin_src R :file figs/08_qda.png :exports results :results graphics :tangle yes
-    ## 2次判別関数を作成
-    tw_qda <- qda(month ~ temp + humid, data=tw_subset)
-    tw_qest <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
-    tw_qerr <- which(tw_qest$class!=tw_subset$month)
-    ## 判別結果の図示
-    ## 判別境界を描くのは複雑なので，色と形で代用する
-    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    with(tw_subset, 
-         plot(temp, humid, # 試験データの散布図
-              pch=month+6, col=myCol[month-8],
-              xlab="気温",ylab="湿度",
-              main="quadratic discriminant"))
-    with(tw_subset[tw_qerr,], 
-         points(temp, humid, # 訓練データの散布図
-                pch=1, col="orchid", cex=2, lwd=2))
+  #+begin_src R :file figs/08_qda.png :exports results :results graphics
+      #' 2次判別関数を推定
+    tw_qda <- qda(formula = tw_model, data = tw_subset)
+    tw_qda_fitted <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
+    #' 判別関数により予測されるラベルの図示
+    tw_qda_grid <- predict(tw_qda, # 格子点上の判別関数値を計算
+                           newdata = grid_xy)
+    as_tibble(grid_xy) |> 
+      mutate(predict = tw_qda_grid[["class"]]) |>
+      ggplot(aes(x = temp, y = humid)) +
+      geom_tile(aes(fill = predict), alpha = 0.3) +
+      geom_point(data = tw_subset,
+                 aes(x = temp, y = humid, colour = month)) +
+      labs(x = "温度", y = "湿度",
+           fill = "予測", colour = "真値",
+           title = "2次判別")
   #+end_src
 
 #+CAPTION: 2次判別
@@ -1195,36 +1240,48 @@
 
 #+reveal: split
 - Fisherの線形判別 (多値)
-  #+begin_src R :file figs/08_multi.png :exports results :results graphics :tangle yes
-    ### 多値判別
-    target <- c(9,10,11)
-    tw_subset  <- subset(tw_data,
-                         subset= month %in% target,
-                         select=c(temp,humid,month))
-    ## 判別関数を作成
-    tw_mda <- lda(month ~ temp + humid, data=tw_subset)
-    tw_mest <- predict(tw_mda) # 判別関数によるクラス分類結果の取得
-    tw_merr <- which(tw_mest$class!=tw_subset$month)
-    with(tw_subset,
-         plot(tw_mda,
-              col=myCol[month-8],
-              main="multi label discriminant")) # 判別関数値の図示
-    tw_mld <- predict(tw_mda)$x
-    with(as.data.frame(tw_mld[tw_merr,]), 
-         points(LD1, LD2,
-                pch=1, col="orchid", cex=2, lwd=2))
-  #+end_src
+  #+begin_src R :file figs/08_multi.png :exports results :results graphics
+    #' 多値判別
+    tw_subset3  <- tw_data |>
+      filter(month %in% c(9,10,11)) |>
+      select(temp, humid, month) |>
+      mutate(month = as_factor(month))
 
-#+CAPTION: 多値判別
-#+NAME: fig:08_qda
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+    #' 線形判別関数(3値)を作成
+    tw_lda3 <- lda(formula = tw_model, data = tw_subset3)
+    tw_lda3_fitted <- predict(tw_lda3) # 判別関数によるクラス分類結果の取得
+
+    #' 推定された線形判別関数(3値)により予測されるラベルの図示
+    #' 格子点は再計算する必要がある
+    range_x <- range(tw_subset3[["temp"]])  # 気温の値域
+    range_y <- range(tw_subset3[["humid"]]) # 湿度の値域
+    grid_x <- pretty(range_x, 100) # 気温の値域の格子点を作成
+    grid_y <- pretty(range_y, 100) # 湿度の値域の格子点を作成
+    grid_xy <- expand.grid(temp = grid_x,
+                           humid = grid_y) # 2次元の格子点を作成
+    tw_lda3_grid <- predict(tw_lda3, # 格子点上の判別関数値を計算
+                            newdata = grid_xy)
+    as_tibble(grid_xy) |> 
+      mutate(predict = tw_lda3_grid[["class"]]) |>
+      ggplot(aes(x = temp, y = humid)) +
+      geom_tile(aes(fill = predict), alpha = 0.3) +
+      geom_point(data = tw_subset3,
+                 aes(x = temp, y = humid, colour = month)) +
+      labs(x = "温度", y = "湿度",
+           fill = "予測", colour = "真値",
+           title = "多値判別")
+  #+end_src
+#+caption: 多値判別
+#+name: fig:08_multi
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/08_multi.png]]
 
 
-* 次週の予定
-  - 第1日 : 判別分析の考え方
-  - *第2日 : 分析の評価*
+* 次回の予定
+- 第1回 : 判別分析の考え方
+- *第2回 : 分析の評価*
+
 
 * Footnotes   
 * COMMENT ローカル変数
