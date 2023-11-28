@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-11-27 12:41:09 mura>
+# Time-stamp: <2023-11-28 11:05:41 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -822,7 +822,7 @@
   - グループでの比較 : 最大の組合せ数 \(2^{K}-2\)
 - \(K{-}1\) 個の特徴量への変換
   - 説明変数の線形結合による特徴量の構成
-  - 異なる\(K\)個の点(かたまり)を\(K{-}1\)次元空間に配置
+  - 異なる\(K\)種の点の集合を\(K{-}1\)次元空間に配置
   - *Fisher の線形判別*
 
 ** 変動の分解
@@ -970,11 +970,13 @@
   - クラス内変動を一定にしてクラス間変動を最大化する
 
 ** Fisherの線形判別の解
-- \(\boldsymbol{\alpha}\) は \(W^{-1}B\) の固有値 (主成分分析の導出と同様)
+- \(\boldsymbol{\alpha}\) は \(W^{-1}B\) の固有ベクトル (主成分分析と同様)
   - \(K=2\) の場合 : 最大固有値を用いる (線形判別と一致)
     #+begin_quote
     \begin{equation}
-      \boldsymbol{\alpha}\propto W^{-1}(\mu_{1}-\mu_2)
+      \boldsymbol{\alpha}\propto
+      W^{-1}(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_2)
+      =\Sigma^{-1}(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_2)
     \end{equation}
     #+end_quote
   - 一般の \(K\) の場合 : 第1から第 \(K{-}1\) 固有値を用いる
@@ -983,6 +985,8 @@
     1. \(d_{k}=\sum_{l=1}^{K{-}1}(\boldsymbol{\alpha}_l^{\mathsf{T}}\boldsymbol{x}-\boldsymbol{\alpha}_l^{\mathsf{T}}\boldsymbol{\mu}_{k})^2\) 
        を計算
     2. 最小の \(d_{k}\) となるクラス \(k\) に判別
+  - 特徴量 \(Z\) の空間をクラスごとの平均を用いて Voronoi 分割している
+
 
 
 * COMMENT 実習
@@ -1139,7 +1143,7 @@
 :PROPERTIES:
 :ID:       501D7D38-752C-46A6-A43B-D19B6533F359
 :END:
-- 10,11月のデータの散布図
+- 9,10月のデータの散布図
   #+begin_src R :file figs/08_pairs.png :exports results :results graphics
     #' 東京の気象データによる判別分析
     library(MASS) # パッケージの読み込み
