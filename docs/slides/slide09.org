@@ -1,129 +1,85 @@
-#+TITLE: 判別分析 
+#+TITLE: 判別分析
 #+SUBTITLE: 分析の評価
 #+AUTHOR: 村田 昇
-#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2022-11-29 10:30:30 mura>
+#+STARTUP: hidestars content indent
+# Time-stamp: <2023-12-02 16:43:53 mura>
 :REVEAL:
-#+INCLUDE: "./reveal.js/org/mycourse.org"
-#+PROPERTY: header-args:R :cache yes :session *R*
-# #+PROPERTY: header-args:R+ :exports both :results output
-#+PROPERTY: header-args:R+ :width 800 :height 800 :res 100
-#+PROPERTY: header-args:R+ :tangle no
-#+PROPERTY: header-args:latex :exports results :results raw
-#+STARTUP: hidestars content indent
-#+STARTUP: hidestars content indent
+#+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
 :END:
 
 * COMMENT メモ
-- 第3講以降は同じファイルを使うように整理する
-- 同じタイトルの項目にはメモを入れる
-- 演習の内容が異なるので演習は2つ作る形で対応
-
+[[file:README.org::第9講]]
+  
 * 講義の内容
+:PROPERTIES:
+:ID:       51934CE4-A9B9-4CAB-965A-9DFB4AFE7B7A
+:END:
 # 早稲田大学
 - 第1日 : 判別分析の考え方
 - *第2日 : 分析の評価*
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 第9講 資料
+#+begin_src R :exports none :tangle no
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/course")
+  ### 第9講 資料
+  library(conflicted)
+  conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+    yardstick::spec(),
+    yardstick::precision(),
+    yardstick::recall(),
+  )
+  library(tidyverse)
+  library(ggfortify)
+  library(MASS)
+  library(tidymodels)
+  #' 日本語表示・色の設定 (ggplot)
+  theme_set(theme_gray(base_size = 16))
+  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
+    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
+    else
+      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
+  library(see)
+  options(ggplot2.discrete.colour = function() scale_colour_material(),
+          ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
 * COMMENT 講義概要
+:PROPERTIES:
+:ID:       4BDC5A54-EE17-4A76-8EA7-06BEA1841BA7
+:END:
 # 東京大学
 - 第1日 : 判別分析の考え方
 - *第2日 : 分析の評価*
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 第9講 サンプルコード
-  ###
-#+end_src
-#+begin_src R :exports none
+#+begin_src R :exports none :tangle no
   setwd("~/Desktop/lectures/u-tokyo/autumn/course")
 #+end_src
-
-* COMMENT 演習 (早稲田大学雛型)
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-# 早稲田大学
-** 問題
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- について以下を示しなさい．
-  - である．
-    #+begin_quote
-    #+begin_src latex
-    #+end_src
-    #+end_quote
-
-** 解答例
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- いずれも定義にもとづいて計算すればよい
-  #+begin_quote
-  #+begin_src latex
-  #+end_src
-  #+end_quote
-
-* COMMENT 演習 (東京大学雛型)
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-# 東京大学
-** R : 概要
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- ほげほげな方法:
-  #+begin_src R :eval no
-  #+end_src
-  
-** データセット
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- 以下のデータセットを使用します
-  - ~xxx~
-    #+begin_quote
-    データの素性
-    #+end_quote
-    [[https://www.foo.com/]]
-
-** 練習問題
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- 構成しなさい
-  - データ
-    #+begin_quote
-    formulaなどを与える
-    #+end_quote
-
-#+begin_src R :eval no :exports none :tangle yes
-  ###
-  ### 練習問題 
-  ###
-
-  ## 
-  ## 分析
-  ##
+#+begin_src R :exports none 
+  ### 第9講 サンプルコード
+  library(conflicted)
+  conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+    yardstick::spec(),
+    yardstick::precision(),
+    yardstick::recall(),
+  )
+  library(tidyverse)
+  library(ggfortify)
+  library(MASS)
+  library(tidymodels)
 #+end_src
-
-** COMMENT 講義資料: 概略
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-- [[./code/bar.r][bar.r]] を確認してみよう
 
 
 * 判別分析の復習
@@ -135,11 +91,9 @@
 - *事後確率* : \(p_k(\boldsymbol{x})\) (posterior probability)
   - \(X=\boldsymbol{x}\) が与えられた後に予測されるクラス
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-        p_k(\boldsymbol{x})=P(Y=k|X=\boldsymbol{x})
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      p_k(\boldsymbol{x})=P(Y=k|X=\boldsymbol{x})
+    \end{equation}
     #+end_quote
   - 所属する確率が最も高いクラスに個体を分類
 
@@ -150,17 +104,15 @@
   - 事後確率最大のクラスにデータを分類
 - *判別関数* : \(\delta_k(\boldsymbol{x})\) (\(k=1,\dots,K\))
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      p_k(\boldsymbol{x}) 
-      < 
-      p_l(\boldsymbol{x})
-      \Leftrightarrow
-      \delta_k(\boldsymbol{x})
-      <
-      \delta_l(\boldsymbol{x})
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    p_k(\boldsymbol{x}) 
+    < 
+    p_l(\boldsymbol{x})
+    \Leftrightarrow
+    \delta_k(\boldsymbol{x})
+    <
+    \delta_l(\boldsymbol{x})
+  \end{equation}
   #+end_quote
   事後確率の順序を保存する計算しやすい関数
 - 判別関数 \(\delta_k(\boldsymbol{x})\) を最大化するようなクラス \(k\) に分類
@@ -171,28 +123,24 @@
   - 平均ベクトル \(\boldsymbol{\mu}_k\) : クラスごとに異なる
   - 共分散行列 \(\Sigma\) : *すべてのクラスで共通*
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	f_k(\boldsymbol{x})
-	=
-	\frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma}}
-	\exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
-	  \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      f_k(\boldsymbol{x})
+      =
+      \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma}}
+      \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+        \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
+    \end{equation}
     #+end_quote
 - 線形判別関数 : \(\boldsymbol{x}\) の1次式
   # (linear discriminant function)
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \delta_k(\boldsymbol{x})
-      =
-      \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
-      -\frac{1}{2}\boldsymbol{\mu}_k^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
-      +\log\pi_k
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \delta_k(\boldsymbol{x})
+    =
+    \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
+    -\frac{1}{2}\boldsymbol{\mu}_k^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_k
+    +\log\pi_k
+  \end{equation}
   #+end_quote
 
 ** 2次判別
@@ -201,28 +149,24 @@
   - 平均ベクトル \(\boldsymbol{\mu}_k\) : クラスごとに異なる
   - 共分散行列 \(\Sigma_k\) : *クラスごとに異なる*
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	f_k(\boldsymbol{x})
-	=
-	\frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_k}}
-	\exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
-	  \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      f_k(\boldsymbol{x})
+      =
+      \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_k}}
+      \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+        \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)\right)
+    \end{equation}
     #+end_quote
 - 2次判別関数 : \(\boldsymbol{x}\) の2次式
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \delta_k(\boldsymbol{x})
-      =
-      -\frac{1}{2}\det\Sigma_k
-      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
-      \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)
-      +\log\pi_k
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \delta_k(\boldsymbol{x})
+    =
+    -\frac{1}{2}\det\Sigma_k
+    -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
+    \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)
+    +\log\pi_k
+  \end{equation}
   #+end_quote
 
 ** Fisherの線形判別
@@ -232,12 +176,10 @@
   - クラス間では離れているほど良い (\(\boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}\)は大)
 - Fisherの基準
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \text{maximize}\quad \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
-      \quad\text{s.t.}\quad \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}=\text{const.}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \text{maximize}\quad \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
+    \quad\text{s.t.}\quad \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}=\text{const.}
+  \end{equation}
   #+end_quote
   - \(\boldsymbol{\alpha}\) は \(W^{-1}B\) の第1から第 \(K-1\) 固有ベクトル
   - 判別方法: 特徴量の距離を用いる
@@ -249,13 +191,11 @@
 ** 誤り率
 - 単純な誤り
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \text{(誤り率)}
-      =\frac{\text{(誤って判別されたデータ数)}}
-      {\text{(全データ数)}}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \text{(誤り率)}
+    =\frac{\text{(誤って判別されたデータ数)}}
+    {\text{(全データ数)}}
+  \end{equation}
   #+end_quote
 - 判別したいラベル : 陽性 (positive)
   - *真陽性* : 正しく陽性と判定 (true positive; TP)
@@ -264,106 +204,125 @@
   - *真陰性* : 正しく陰性と判定 (true negative; TN) 
 
 ** 混同行列
-|------------+-------------------------+-------------------------|
-|            | 真値は陽性              | 真値は陰性              |
-|------------+-------------------------+-------------------------|
+#+html: <font size=6>
+|----------+-----------------------+-----------------------|
+|          | 真値は陽性              | 真値は陰性              |
+|----------+-----------------------+-----------------------|
 | 判別は陽性 | 真陽性 (True Positive)  | 偽陽性 (False Positive) |
 | 判別は陰性 | 偽陰性 (False Negative) | 真陰性 (True Negative)  |
-|------------+-------------------------+-------------------------|
+|----------+-----------------------+-----------------------|
+#+html: </font>
 - *confusion matrix*
-- 転置で書く流儀もあるので注意
+- 各条件にあてはまるデータ数を記載
+- 転置で書く流儀もあるので注意 (次頁)
 
-** 混同行列
-|------------+-------------------------+-------------------------|
-|            | 判別は陽性              | 判別は陰性              |
-|------------+-------------------------+-------------------------|
+** 混同行列 (転置したもの)
+#+html: <font size=6>
+|----------+-----------------------+-----------------------|
+|          | 判別は陽性              | 判別は陰性              |
+|----------+-----------------------+-----------------------|
 | 真値は陽性 | 真陽性 (True Positive)  | 偽陰性 (False Negative) |
 | 真値は陰性 | 偽陽性 (False Positive) | 真陰性 (True Negative)  |
-|------------+-------------------------+-------------------------|
+|----------+-----------------------+-----------------------|
+#+html: </font>
 - パターン認識や機械学習で多く見られた書き方
 - 誤差行列 (error matrix) とも呼ばれる
 
 ** 基本的な評価基準
 - 定義
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \text{(真陽性率)}
-      &=\frac{TP}{TP+FN} \qquad\text{(true positive rate)}\\
-      \text{(真陰性率)}
-      &=\frac{TN}{FP+TN} \qquad\text{(true negative rate)}\\
-      \text{(適合率)}
-      &=\frac{TP}{TP+FP} \qquad\text{(precision)}\\
-      \text{(正答率)}
-      &=\frac{TP+TN}{TP+FP+TN+FN} \qquad\text{(accuracy)}
-    \end{align}
-  #+end_src
+  \begin{align}
+    \text{(真陽性率)}
+    &=\frac{TP}{TP+FN} \qquad\text{(true positive rate)}\\
+    \text{(真陰性率)}
+    &=\frac{TN}{FP+TN} \qquad\text{(true negative rate)}\\
+    \text{(適合率)}
+    &=\frac{TP}{TP+FP} \qquad\text{(precision)}\\
+    \text{(正答率)}
+    &=\frac{TP+TN}{TP+FP+TN+FN} \qquad\text{(accuracy)}
+  \end{align}
   #+end_quote
 
 #+reveal: split
 - 別名 (分野で異なるので注意)
   - 感度 (sensitivity) あるいは 再現率 (recall)
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	\text{(真陽性率)}
-	=\frac{TP}{TP+FN}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \text{(真陽性率)}
+      =\frac{TP}{TP+FN}
+    \end{equation}
     #+end_quote
   - 特異度 (specificity)
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	\text{(真陰性率)}
-	=\frac{TN}{FP+TN}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \text{(真陰性率)}
+      =\frac{TN}{FP+TN}
+    \end{equation}
     #+end_quote
-  - 精度
+  - 精度 (accuracy)
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	\text{(正答率)}
-	=\frac{TP+TN}{TP+FP+TN+FN}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \text{(正答率)}
+      =\frac{TP+TN}{TP+FP+TN+FN}
+    \end{equation}
     #+end_quote
 
 ** F-値
-- *F-measure, F-score*
-- 定義
+- 定義 (*F-measure, F-score*)
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      F_{1}&=\frac{2}{{1}/{\text{(再現率)}}+{1}/{\text{(適合率)}}}\\
-      F_{\beta}&=\frac{\beta^{2}+1}{{\beta^{2}}/{\text{(再現率)}}+{1}/{\text{(適合率)}}}
-    \end{align}
-  #+end_src
+  \begin{align}
+    F_{1}&=\frac{2}{{1}/{\text{(再現率)}}+{1}/{\text{(適合率)}}}\\
+    F_{\beta}&=\frac{\beta^{2}+1}{{\beta^{2}}/{\text{(再現率)}}+{1}/{\text{(適合率)}}}
+  \end{align}
   #+end_quote
   - 再現率(真陽性率)と適合率の(重み付き)調和平均
 
 ** Cohen の kappa 値
-- Cohen's *kappa measure*
-- 定義
+- 定義 (Cohen's *kappa measure*)
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      p_{o}
-      &=\frac{TP+TN}{TP+FP+TN+FN} \qquad\text{(accuracy)}\\
-      p_{e}
-      &=\frac{TP+FP}{TP+FP+TN+FN}\cdot\frac{TP+FN}{TP+FP+TN+FN}\\
-      &\quad
-	+\frac{FN+TN}{TP+FP+TN+FN}\cdot\frac{FP+TN}{TP+FP+TN+FN}\\
-      \kappa
-      &=
-	\frac{p_{o}-p_{e}}{1-p_{e}}
-	=
-	1-\frac{1-p_{o}}{1-p_{e}}
-    \end{align}
-  #+end_src
+  \begin{align}
+    p_{o}
+    &=\frac{TP+TN}{TP+FP+TN+FN} \qquad\text{(accuracy)}\\
+    p_{e}
+    &=\frac{TP+FP}{TP+FP+TN+FN}\cdot\frac{TP+FN}{TP+FP+TN+FN}\\
+    &\quad
+      +\frac{FN+TN}{TP+FP+TN+FN}\cdot\frac{FP+TN}{TP+FP+TN+FN}\\
+    \kappa
+    &=
+      \frac{p_{o}-p_{e}}{1-p_{e}}
+      =
+      1-\frac{1-p_{o}}{1-p_{e}}
+  \end{align}
   #+end_quote
   - 観測された精度と偶然の精度の比較
+
+** 受信者動作特性曲線
+- *ROC曲線* (receiver operating characteristic curve)
+- 2値判別ルールの一般形
+  #+begin_quote
+  \begin{equation}
+    F(x)-c
+    \begin{cases}
+      >0,&C=\text{陽性}\\
+      <0,&C=\text{陰性}
+    \end{cases}
+  \end{equation}
+  #+end_quote
+- 真陽性率と偽陽性率
+  #+begin_quote
+  \begin{align}
+    &\mathrm{TPR}(c)=(C=\text{正しく陽性を判別した比率})\\
+    &\mathrm{FPR}(c)=(C=\text{誤って陽性と判別した比率})
+  \end{align}
+  #+end_quote
+
+#+reveal: split
+- *ROC曲線* : \(c\)を自由に動かし\(x\)軸に真陽性率，\(y\)軸に偽陽性率を描画したもの
+  - 定義から陽性率も偽陽性率もクラス事前分布によらない
+  - 一般にROC曲線は\((0,0)\)と\((1,1)\)を結ぶ右肩上りの曲線
+  - 曲線と\(x\)軸で囲まれた面積が広い \(\Leftrightarrow\) 良い判別
+- *AUC* : 上記の面積 (area under the ROC curve)
+  - 2値判別ルールの難しさを測る基準の一つ
 
 
 * 解析の事例
@@ -374,84 +333,78 @@
   - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
 
 ** 気温と湿度による月の判別
-- 温度と湿度による9/10月の線形判別
-  #+begin_src R :file figs/09_lda.png :exports results :results graphics :tangle yes
-    ### 東京の気象データによる判別分析
-    library(MASS)
-    library(caret)
-    myCol <- rainbow(12)[c(2,5,8)]
-    ## データの整理
-    target <- c(9,10)
-    tw_data <- read.csv("data/tokyo_weather.csv")
-    tw_subset  <- subset(tw_data,
-                         subset= month %in% target,
-                         select=c(temp,humid,month))
-    ## 線形判別関数を作成
-    tw_lda <- lda(month ~ temp + humid, data=tw_subset)
-    tw_lest <- predict(tw_lda)
-    tw_lerr <- which(tw_lest$class!=tw_subset$month)
-    ## 判別結果の図示
-    myLine <- function(z) { # 判別境界を引くための関数
-	a0<-as.vector(colMeans(z$means) %*% z$scaling)
-	a<-c(a0/z$scaling[2],-z$scaling[1]/z$scaling[2])
-	return(a)
-    }
-    with(tw_subset, 
-	 plot(temp, humid, # 試験データの散布図
-	      pch=month+6, col=myCol[month-8],
-	      xlab="temperature",ylab="humidity",
-	      main="linear discriminant"))
-    with(tw_subset[tw_lerr,], 
-	 points(temp, humid, # 訓練データの散布図
-		pch=1, col="orchid", cex=2, lwd=2))
-    abline(myLine(tw_lda), col="orange", lwd=2)
-    rx <- with(tw_subset,range(temp))
-    ry <- with(tw_subset,range(humid))
-    sx <- pretty(rx,100)
-    sy <- pretty(ry,100)
-    myGrid <- expand.grid(temp=sx,humid=sy)
-    ldesc <- predict(tw_lda,newdata=myGrid)
-    image(sx,sy,add=TRUE,
-	  matrix(as.numeric(ldesc$class),length(sx),length(sy)),
-	  col=c(rgb(1,0,0,0.2),rgb(0,1,0,0.2)))
+:PROPERTIES:
+:ID:       7D55297C-F111-419C-BF81-6FFE356B0666
+:END:
+- 温度と湿度による8,9月の線形判別
+  #+begin_src R :file figs/09_lda.png :exports results :results graphics
+    #' 東京の気象データによる判別分析
+    #' データの整理
+    tw_data <- read_csv("data/tokyo_weather.csv")
+    tw_subset  <- tw_data |> 
+      filter(month %in% c(8,9)) |> # 8,9月のデータ
+      select(temp, humid, month) |> # 気温・湿度・月を選択
+      mutate(month = as_factor(month)) # 月を因子化
+    #' 線形判別関数の推定
+    tw_formula <- month ~ temp + humid
+    tw_lda <- lda(formula = tw_formula, data = tw_subset)
+    tw_lda_fitted <- predict(tw_lda) # 判別関数によるクラス分類結果の取得
+    #' 判別関数により予測されるラベルの図示
+    range_x <- range(tw_subset[["temp"]])  # 気温の値域
+    range_y <- range(tw_subset[["humid"]]) # 湿度の値域
+    grid_x <- pretty(range_x, 100) # 気温の値域の格子点を作成
+    grid_y <- pretty(range_y, 100) # 湿度の値域の格子点を作成
+    grid_xy <- expand.grid(temp = grid_x,
+                           humid = grid_y) # 2次元の格子点を作成
+    tw_lda_grid <- predict(tw_lda, # 格子点上の判別関数値を計算
+                           newdata = grid_xy)
+    as_tibble(grid_xy) |> 
+      mutate(predict = tw_lda_grid[["class"]]) |>
+      ggplot(aes(x = temp, y = humid)) +
+      geom_tile(aes(fill = predict), alpha = 0.3) +
+      geom_point(data = tw_subset,
+                 aes(x = temp, y = humid, colour = month)) +
+      labs(x = "気温", y = "湿度",
+           fill = "予測", colour = "真値",
+           title = "線形判別")
   #+end_src
 
-#+CAPTION: 線形判別
-#+NAME: fig:09_lda
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: 線形判別
+#+name: fig:09_lda
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/09_lda.png]]
 
 #+reveal: split
-- 温度と湿度による9/10月の2次判別
-  #+begin_src R :file figs/09_qda.png :exports results :results graphics :tangle yes
-    ## 2次判別関数を作成
-    tw_qda <- qda(month ~ temp + humid, data=tw_subset)
-    tw_qest <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
-    tw_qerr <- which(tw_qest$class!=tw_subset$month)
-    ## 判別結果の図示
-    ## 判別境界を描くのは複雑なので，色と形で代用する
-    with(tw_subset, 
-	 plot(temp, humid, # 試験データの散布図
-	      pch=month+6, col=myCol[month-8],
-	      xlab="temperature",ylab="humidity",
-	      main="quadratic discriminant"))
-    with(tw_subset[tw_qerr,], 
-	 points(temp, humid, # 訓練データの散布図
-		pch=1, col="orchid", cex=2, lwd=2))
-    qdesc <- predict(tw_qda,newdata=myGrid)
-    image(sx,sy,add=TRUE,
-	  matrix(as.numeric(qdesc$class),length(sx),length(sy)),
-	  col=c(rgb(1,0,0,0.2),rgb(0,1,0,0.2)))
+- 温度と湿度による8,9月の2次判別
+  #+begin_src R :file figs/09_qda.png :exports results :results graphics
+    #' 2次判別関数を推定
+    tw_qda <- qda(formula = tw_formula, data = tw_subset)
+    tw_qda_fitted <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
+    #' 判別関数により予測されるラベルの図示
+    tw_qda_grid <- predict(tw_qda, # 格子点上の判別関数値を計算
+                           newdata = grid_xy)
+    as_tibble(grid_xy) |> 
+      mutate(predict = tw_qda_grid[["class"]]) |>
+      ggplot(aes(x = temp, y = humid)) +
+      geom_tile(aes(fill = predict), alpha = 0.3) +
+      geom_point(data = tw_subset,
+                 aes(x = temp, y = humid, colour = month)) +
+      labs(x = "温度", y = "湿度",
+           fill = "予測", colour = "真値",
+           title = "2次判別")
   #+end_src
   
-#+CAPTION: 2次判別
-#+NAME: fig:09_qda
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: 2次判別
+#+name: fig:09_qda
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/09_qda.png]]
 
-** 判別結果の比較
+** COMMENT 判別結果の比較
+:PROPERTIES:
+:ID:       07004E9C-4453-41B1-960A-82762FAD9890
+:END:
 - 線形判別の混同行列
   #+begin_src R :exports results :tangle yes
     foo <- confusionMatrix(tw_lest$class, factor(tw_subset$month))$table
@@ -491,7 +444,121 @@
     matrix(c(names(foo),signif(foo,digits=3)),2,length(foo),byrow=TRUE)
   #+end_src
 
-   
+** 混同行列の比較
+:PROPERTIES:
+:ID:       2CB3C1A2-92CC-4570-B264-F0169B4A6A7E
+:END:
+#+begin_src R :exports none
+  tw_lda_result <- tibble(true = tw_subset[["month"]],
+                          fitted = tw_lda_fitted[["class"]])
+  tw_qda_result <- tibble(true = tw_subset[["month"]],
+                          fitted = tw_qda_fitted[["class"]])
+#+end_src
+#+begin_src R :file figs/09_lda_confmat.png :exports results :results graphics
+  #' 線形判別関数の混同行列
+  tw_lda_cm <- tw_lda_result |>
+    yardstick::conf_mat(truth = true, estimate = fitted)
+  tw_lda_cm |>
+    autoplot(type = "heatmap") +
+    labs(title = "Linear Discriminant")
+#+end_src
+#+begin_src R :file figs/09_qda_confmat.png :exports results :results graphics
+  #' 2次判別関数の混同行列
+  tw_qda_cm <- tw_qda_result |>
+    yardstick::conf_mat(truth = true, estimate = fitted)
+  tw_qda_cm |>
+    autoplot(type = "heatmap") +
+    labs(title = "Quadratic Discriminant")
+#+end_src
+#+begin_leftcol
+#+caption: 線形判別の混同行列
+#+name: fig:09_lda_confmat
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_lda_confmat.png]]
+#+end_leftcol
+#+begin_rightcol
+#+caption: 2次判別の混同行列
+#+name: fig:09_qda_confmat
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_qda_confmat.png]]
+#+end_rightcol
+
+** さまざまな評価指標の比較
+:PROPERTIES:
+:ID:       2CB3C1A2-92CC-4570-B264-F0169B4A6A7E
+:END:
+#+begin_src R :exports none
+  tw_lda_result <- tibble(true = tw_subset[["month"]],
+                          fitted = tw_lda_fitted[["class"]])
+  tw_qda_result <- tibble(true = tw_subset[["month"]],
+                          fitted = tw_qda_fitted[["class"]])
+#+end_src
+#+begin_src R :file figs/09_lda_confmat.png :exports results :results graphics
+  #' 線形判別関数の混同行列
+  tw_lda_result |>
+    yardstick::conf_mat(truth = true, estimate = fitted) |>
+    autoplot(type = "heatmap") +
+    labs(title = "Linear Discriminant")
+#+end_src
+#+begin_src R :file figs/09_qda_confmat.png :exports results :results graphics
+  #' 2次判別関数の混同行列
+    tw_qda_result |>
+      yardstick::conf_mat(truth = true, estimate = fitted) |>
+      autoplot(type = "heatmap") +
+      labs(title = "Quadratic Discriminant")
+#+end_src
+#+begin_leftcol
+#+html: <font size=5>
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  data.frame(指標=summary(tw_lda_cm)[[".metric"]],
+             値=summary(tw_lda_cm)[[".estimate"]]) |>
+    stargazer::stargazer(summary = FALSE,
+                         rownames = FALSE,
+                         digits = 3,
+                         title = "線形判別",
+                         type = "html")
+#+end_src
+#+html: </font>
+#+begin_src R :exports results :results output latex :tangle no
+  #' データの表示(latex用)
+  data.frame(指標=summary(tw_lda_cm)[[".metric"]],
+             値=summary(tw_lda_cm)[[".estimate"]]) |>
+    stargazer::stargazer(summary = FALSE,
+                         rownames = FALSE,
+                         digits = 3,
+                         title = "線形判別",
+                         font.size = "small", type = "latex")
+#+end_src
+#+end_leftcol
+#+begin_rightcol
+#+html: <font size=5>
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  data.frame(指標=summary(tw_qda_cm)[[".metric"]],
+             値=summary(tw_qda_cm)[[".estimate"]]) |>
+    stargazer::stargazer(summary = FALSE,
+                         rownames = FALSE,
+                         digits = 3,
+                         title = "2次判別",
+                         type = "html")
+#+end_src
+#+html: </font>
+#+begin_src R :exports results :results output latex :tangle no
+  #' データの表示(latex用)
+  data.frame(指標=summary(tw_qda_cm)[[".metric"]],
+             値=summary(tw_qda_cm)[[".estimate"]]) |>
+    stargazer::stargazer(summary = FALSE,
+                         rownames = FALSE,
+                         digits = 3,
+                         title = "2次判別",
+                         font.size = "small", type = "latex")
+#+end_src
+#+end_rightcol
+
+
 * 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -514,90 +581,78 @@
 :END:
 - 最大最小と平均の関係から以下が成り立つ
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \min(\text{再現率},\text{適合率})
-      \le F_{1}
-      \le\max(\text{再現率},\text{適合率})
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \min(\text{再現率},\text{適合率})
+    \le F_{1}
+    \le\max(\text{再現率},\text{適合率})
+  \end{equation}
   さらに相加・相乗平均の関係から
-  #+begin_src latex
-    \begin{equation}
-      F_{1}
-      \le\text{(相乗平均)}
-      \le\text{(相加平均)}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    F_{1}
+    \le\text{(相乗平均)}
+    \le\text{(相加平均)}
+  \end{equation}
   も成り立つ
   #+end_quote
 
 #+reveal: split
 - 相関係数の定義に従って計算すればよい
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \rho
-      =
-      \frac{\mathrm{Cov}(Y,\hat{Y})}
-      {\sqrt{\mathrm{Var}(Y)\mathrm{Var}(\hat{Y})}}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \rho
+    =
+    \frac{\mathrm{Cov}(Y,\hat{Y})}
+    {\sqrt{\mathrm{Var}(Y)\mathrm{Var}(\hat{Y})}}
+  \end{equation}
   #+end_quote
 
 #+reveal: split
 - 例えば分子の共分散は以下のように計算される
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \mathrm{Cov}(Y,\hat{Y})
-      &=
-        \mathbb{E}[(Y-\mathbb{E}[Y])(\hat{Y}-\mathbb{E}[\hat{Y}])]\\
-      &=
-        \mathbb{E}[Y\hat{Y}]-\mathbb{E}[Y]\mathbb{E}[\hat{Y}]\\
-      &=
-        \frac{TP}{N}-\frac{TP+FN}{N}\frac{TP+FP}{N}\\
-      &=
-        \frac{TP(TP+FN+FP+TN)}{N^{2}}\\
-      &\qquad-
-        \frac{(TP+FN)(TP+FP)}{N^{2}}\\
-      &=
-        \frac{TP\cdot TN - FP\cdot FN}{N^{2}}
-    \end{align}
-  #+end_src
+  \begin{align}
+    \mathrm{Cov}(Y,\hat{Y})
+    &=
+      \mathbb{E}[(Y-\mathbb{E}[Y])(\hat{Y}-\mathbb{E}[\hat{Y}])]\\
+    &=
+      \mathbb{E}[Y\hat{Y}]-\mathbb{E}[Y]\mathbb{E}[\hat{Y}]\\
+    &=
+      \frac{TP}{N}-\frac{TP+FN}{N}\frac{TP+FP}{N}\\
+    &=
+      \frac{TP(TP+FN+FP+TN)}{N^{2}}\\
+    &\qquad-
+      \frac{(TP+FN)(TP+FP)}{N^{2}}\\
+    &=
+      \frac{TP\cdot TN - FP\cdot FN}{N^{2}}
+  \end{align}
   #+end_quote
   - 平均は標本平均で置き換えた
 
 #+reveal: split
 - 同様に分母の分散は以下のようになる
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \mathrm{Var}(Y)
-      &=
-        \mathbb{E}[Y^{2}]-\mathbb{E}[Y]^{2}\\
-      &=
-        \frac{(TP+FN)(TN+FP)}{N^{2}}\\
-      \mathrm{Var}(\hat{Y})
-      &=
-        \mathbb{E}[\hat{Y}^{2}]-\mathbb{E}[\hat{Y}]^{2}\\
-      &=
-        \frac{(TP+FP)(TN+FN)}{N^{2}}
-    \end{align}
-  #+end_src
+  \begin{align}
+    \mathrm{Var}(Y)
+    &=
+      \mathbb{E}[Y^{2}]-\mathbb{E}[Y]^{2}\\
+    &=
+      \frac{(TP+FN)(TN+FP)}{N^{2}}\\
+    \mathrm{Var}(\hat{Y})
+    &=
+      \mathbb{E}[\hat{Y}^{2}]-\mathbb{E}[\hat{Y}]^{2}\\
+    &=
+      \frac{(TP+FP)(TN+FN)}{N^{2}}
+  \end{align}
   #+end_quote
 
 #+reveal: split
 - したがって以下のようにまとめられる
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \rho
-      =
-      \frac{TP\cdot TN-FP\cdot FN}
-      {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \rho
+    =
+    \frac{TP\cdot TN-FP\cdot FN}
+    {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
+  \end{equation}
   #+end_quote
   - これは Matthews correlation coefficient (MCC)
     と呼ばれる評価指標の一つである
@@ -612,113 +667,281 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下のデータセットを使用します
+- 以下のデータセットを使用
   - ~winequality-red.csv~
     #+begin_quote
     UC Irvine Machine Learning Repository で公開されている
     Wine Quality Data Set の一部
     #+end_quote
     [[https://archive.ics.uci.edu/ml/datasets/Wine+Quality]]
-  - 以下に download せずに読み込む方法を紹介します
-    #+begin_src R :eval no
-      wq_org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-			 sep=";") # データの区切りが ";" となっている
-      wq_data <- transform(wq_org,
-			   quality=as.factor( # qualityを再分類
-                               ifelse(quality %in% 7:10, "A",
-                               ifelse(quality %in% 5:6, "B" ,"C"))))
+  - 以下に download せずに読み込む方法を紹介する
+    #+begin_src R :eval no :tangle no
+      wq_data <-
+        read_delim("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
+                   delim = ";") |> # 区切り文字が';'
+        mutate(grade = factor(case_when( # quality を A,B,C,D に割り当てる
+                 quality >= 7 ~ "A",
+                 quality >= 6 ~ "B",
+                 quality >= 5 ~ "C",
+                 .default = "D")))
     #+end_src
 
-** R : 混同行列 ~caret::confusionMatrix()~
+** R : 判別結果の評価
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       122E64CD-BC8C-4ECB-96C9-29443B23443D
+:END:
+- 評価のための枠組
+  - *caret* : Max Kuhn @Rstudio によるパッケージ
+    - https://topepo.github.io/caret/
+  - *tidymodels* : Max Kuhn, Hadley Wickham @RStudio による ~tidyverse~ 向けに再設計されたパッケージ
+    - https://www.tidymodels.org
+- 本講義では tidymodels を中心に説明
+- パッケージ集の利用には以下が必要
+  #+begin_src R :exports code :tangle no
+    #' 最初に一度だけ以下のいずれかを実行しておく
+    #'  - Package タブから tidymodels をインストール
+    #'  - コンソール上で次のコマンドを実行 'install.packages("tidymodels")'
+    #' tidymodels パッケージの読み込み
+    library(tidymodels)
+  #+end_src
+** COMMENT R : 混同行列 ~caret::confusionMatrix()~
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - ~caret~: 評価のためのパッケージ
 - 判別結果の評価
-  #+begin_src R :eval no
-    install.packages("caret") # 右下ペインの package タブから install
-    library(caret) # または require(caret) 
-    confusionMatrix(data, reference)
-    ## data: 判別関数による予測ラベル (factor)
-    ## referenc: 真のラベル (上と同じfactorである必要がある)
+  #+begin_src R :eval no :tangle no
+    #' 必要であれば 'install.packages("caret")' を実行
+    library(caret) 
+    confusionMatrix(data, reference,
+                    positive = NULL, dnn = c("Prediction", "Reference"),
+                    prevalence = NULL, mode = "sens_spec", ...)
+    #' data: 判別関数による予測ラベル (factor)
+    #' reference: 真のラベル (上と同じfactorである必要がある)
+    #' 詳細は '?caret::confusionMatrix' を参照
+  #+end_src
+
+** R : 混同行列
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 関数 ~yardstick::conf_mat()~ による計算
+  #+begin_src R :eval no :tangle no
+    conf_mat(data, truth, estimate,
+      dnn = c("Prediction", "Truth"), case_weights = NULL, ...)
+    #' data: 真値と予測値が含まれるデータフレーム
+    #' trush: 真値(ラベル)の列名
+    #' estimate: 予測値(ラベル)の列名
+    #' 詳細は '?yardstick::conf_mat' を参照
+  #+end_src
+- 集計や視覚化のために補助的な関数
+  #+begin_src R :eval no :tangle no
+    #' object: conf_mat の出力
+    #' 様々な評価指標を tibble 形式で出力
+    #' 詳細は '?yardstick::summary.conf_mat' を参照
+    summary(object,
+      prevalence = NULL, beta = 1, estimator = NULL,
+      event_level = yardstick_event_level(), ...)
+    #' 混同行列を図示
+    autoplot(object, type = c("mosaic", "heatmap"))
+  #+end_src
+
+** R : ROC曲線
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 関数 ~yardstick::roc_curve()~ による計算
+  #+begin_src R :eval no :tangle no
+    roc_curve(data, truth, ...,
+      na_rm = TRUE, event_level = yardstick_event_level(),
+      case_weights = NULL, options = list())
+    #' data: 真値と予測値が含まれるデータフレーム
+    #' trush: 真値(ラベル)の列名
+    #' ...: 予測値(ラベル)の事後確率を与える列名
+    #' 詳細は '?yardstick::roc_curve' を参照
+  #+end_src
+- 視覚化のために補助的な関数
+  #+begin_src R :eval no :tangle no
+    #' object: roc_curve の出力
+    #' ROC曲線を図示
+    autoplot(object)
+  #+end_src
+
+#+reveal: split
+- 関数 ~yardstick::roc_auc()~ によるAUCの計算
+  #+begin_src R :eval no :tangle no
+    roc_auc(data, truth, ..., estimator = NULL,
+            na_rm = TRUE,  event_level = yardstick_event_level(),
+            case_weights = NULL, options = list())
+    #' data: 真値と予測値が含まれるデータフレーム
+    #' trush: 真値(ラベル)の列名
+    #' ...: 予測値(ラベル)の事後確率を与える列名
+    #' 詳細は '?yardstick::roc_auc' を参照
   #+end_src
 
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       9F846B79-8CD0-461D-9CB5-D50E7DD7CDDF
 :END:
 - 前回と同様に東京の気候データの線形判別を行い，
   以下を確認しなさい
-  - 10月と11月の気温と湿度のデータを抽出する
-    #+begin_src R :eval no
-      tw_data <- read.csv("data/tokyo_weather.csv")
-      tw_subset  <- transform(subset(tw_data,
-				     subset= month %in% c("10","11"),
-				     select=c(temp,humid,month)),
-			      month=as.factor(month)) # 因子にする
+  - 9月と10月の気温と湿度のデータを抽出する
+    #+begin_src R :eval no :tangle no
+      tw_data <- read_csv("data/tokyo_weather.csv") 
+      tw_subset  <- tw_data |>
+        filter(month %in% c(9,10)) |>
+        select(temp, humid, month) |>
+        mutate(month = as_factor(month)) # 月を因子化
     #+end_src
   - 全てデータを用いて線形判別関数を構成する
   - 構成した判別関数の評価を行う
+  - ROC曲線を描画し，AUCを求める
+
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 判別結果の評価
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 東京の気象データによる線形判別分析
+  #' 9月と10月の判別の例
+  tw_data <- read_csv("data/tokyo_weather.csv")
+  tw_subset  <- tw_data |> 
+    filter(month %in% c(9,10)) |> # 9,10月のデータ
+    select(temp, humid, month) |> # 気温・湿度・月を選択
+    mutate(month = as_factor(month)) # 月を因子化
+  #' 判別関数を作成
+  tw_lda <- lda(formula = month ~ temp + humid,
+                data = tw_subset)
+  #' 判別結果の評価
+  tw_lda_fitted <- predict(tw_lda)
+  tw_lda_cm <- tw_subset |>
+    bind_cols(fitted = tw_lda_fitted[["class"]]) |>
+    conf_mat(truth = month, estimate = fitted)
+  tw_lda_cm # 表示
+  summary(tw_lda_cm) # 詳細表示
+  autoplot(tw_lda_cm, type = "mosaic") # モザイクプロット
+  autoplot(tw_lda_cm, type = "heatmap") # 行列表示
+  #' ROC曲線とAUCの計算
+  tw_subset |>
+    bind_cols(tw_lda_fitted[["posterior"]]) |>
+    roc_curve(truth = month, `9`) |> # 9月への判別を陽性とする
+    autoplot()
+  tw_subset |>
+    bind_cols(tw_lda_fitted[["posterior"]]) |>
+    roc_auc(truth = month, `9`)
+
+  #' 12ヶ月分のデータを用いた例 (説明変数は適宜選択せよ)
+  tw_subset12  <- tw_data |>
+    select(temp, solar, wind, humid, month) |>
+    mutate(month = as_factor(month))
+  #' 判別関数を作成
+  tw_lda12 <- lda(month ~ ., # 右辺の . は month 以外の全てを説明変数として指定
+                  data = tw_subset12)
+  #' 判別結果の評価
+  tw_lda12_fitted <- predict(tw_lda12)
+  tw_lda12_cm <- tw_subset12 |>
+    bind_cols(fitted = tw_lda12_fitted[["class"]]) |>
+    conf_mat(truth = month, estimate = fitted)
+  tw_lda12_cm # 表示
+  summary(tw_lda12_cm) # 詳細表示
+  autoplot(tw_lda12_cm, type = "mosaic") # モザイクプロット
+  autoplot(tw_lda12_cm, type = "heatmap") # 行列表示
+  tw_subset12 |>
+    bind_cols(tw_lda12_fitted[["posterior"]]) |>
+    roc_curve(truth = month, `1`:`12`) |> 
+    autoplot()
+  tw_subset12 |> 
+    bind_cols(tw_lda12_fitted[["posterior"]]) |>
+    roc_auc(truth = month, `1`:`12`)
+#+end_src
+    
+** R : 訓練・試験データの分割
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 関数 ~rsample::initial_split~ による分割
+  #+begin_src R :eval no :tangle no
+    initial_split(data, prop = 3/4,
+                  strata = NULL, breaks = 4, pool = 0.1, ...)
+    #' data: データフレーム
+    #' prop: 訓練データの比率
+    #' strata: 層別に分割する場合の変数
+    #' 詳細は '?rsample::initial_split' を参照
+  #+end_src
+- 訓練・試験データの取得
+  #+begin_src R :eval no :tangle no
+    #' x : initial_split の出力
+    #' 訓練データの取得
+    training(x, ...)
+    #' 試験データの取得
+    testing(x, ...)
+  #+end_src
 
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       6AD1140D-37E2-4B04-96C3-5083C64F40BE
 :END:
 - Wine Quality Data Set を用いて
   以下を確認しなさい
-  - 全てデータを用いて線形判別関数を構成し，評価を行う
-  - 全てデータを用いて2次判別関数を構成し，評価を行う
+  - 8:2の比率で訓練データと試験データに分割する 
+  - 訓練データを用いて線形・2次判別関数を構成する
+  - 訓練データを用いて評価を行う
+  - 試験データを用いて評価を行う
 
 #+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 判別結果の評価
-  ###
+  #' Wine Quality Data Set を用いた判別分析
+  wq_data <-
+    read_delim("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
+               delim = ";") |>
+    mutate(grade = factor(case_when( # quality を A,B,C,D に割り当てる
+             quality >= 7 ~ "A",
+             quality >= 6 ~ "B",
+             quality >= 5 ~ "C",
+             .default = "D"
+           )))
+  #' データを分割する
+  set.seed(987987) # 適宜シード値は設定する
+  wq_split <- initial_split(wq_data, prop = 0.8,
+                            strata = grade)
+  #' gradeで層別の指定すると分割したデータのgradeの比率が保たれる
 
-  ### 東京の気象データによる線形判別分析
-  library(MASS)
-  library(caret)
+  #' 判別関数を作成 (gradeのもとになっているqualityは除く)
+  wq_formula <- grade ~ . - quality
+  wq_lda <- lda(formula = wq_formula, data = training(wq_split))
+  wq_qda <- qda(formula = wq_formula, data = training(wq_split))
 
-  ## 10月と11月の判別の例
-  ## データの整理
-  tw_data <- read.csv("data/tokyo_weather.csv")
-  tw_subset  <- transform(subset(tw_data,
-                                 subset= month %in% c("10","11"),
-                                 select=c(temp,humid,month)),
-                          month=as.factor(month)) # 因子にする
-  ## 判別関数を作成
-  tw_lda <- lda(month ~ temp + humid, data=tw_subset)
-  ## 判別結果の評価
-  tw_est <- predict(tw_lda)
-  confusionMatrix(tw_est$class, tw_subset$month)
+  #' 訓練データによる判別結果の評価
+  wq_lda_train_cm <- training(wq_split) |>
+    bind_cols(fitted = predict(wq_lda)[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  summary(wq_lda_train_cm) # 線形判別の評価
+  autoplot(wq_lda_train_cm, type = "heatmap") +
+    labs(title = "Linear Discriminant (training data)")
+  wq_qda_train_cm <- training(wq_split) |>
+    bind_cols(fitted = predict(wq_qda)[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  summary(wq_qda_train_cm) # 2次判別の評価
+  autoplot(wq_qda_train_cm, type = "heatmap") +
+    labs(title = "Quadratic Discriminant (training data)")
 
-  ## 12ヶ月分のデータを用いた例 (説明変数は適宜選択せよ)
-  tw_subset  <- transform(subset(tw_data,
-                                 select=c(temp,solar,wind,humid,month)),
-                          month=as.factor(month)) 
-  ## 判別関数を作成
-  tw_lda <- lda(month ~ ., # 右辺の . は month 以外の全てを説明変数として指定
-                data=tw_subset)
-  ## 判別結果の評価
-  tw_est <- predict(tw_lda)
-  confusionMatrix(tw_est$class, tw_subset$month)
-  confusionMatrix(tw_est$class, tw_subset$month)$table
-  confusionMatrix(tw_est$class, tw_subset$month)$overall
-  confusionMatrix(tw_est$class, tw_subset$month)$byClass
-
-  ## Wine Quality Data Set を用いた判別分析
-  wq_org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-                     sep=";")
-  table(wq_org$quality) 
-  wq_data <- transform(wq_org,
-                       quality=as.factor(
-                           ifelse(quality %in% 7:10, "A",
-                           ifelse(quality %in% 5:6, "B" ,"C"))))
-  ## 判別関数を作成
-  wq_lda <- lda(quality ~ ., data=wq_data)
-  wq_qda <- qda(quality ~ ., data=wq_data)
-  ## 判別結果の評価
-  confusionMatrix(predict(wq_lda)$class, wq_data$quality)
-  confusionMatrix(predict(wq_qda)$class, wq_data$quality)
+  #' 試験データによる判別結果の評価
+  wq_lda_test_cm <- testing(wq_split) |>
+    bind_cols(fitted = predict(wq_lda,
+                               newdata = testing(wq_split))[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  summary(wq_lda_test_cm) # 線形判別の評価
+  autoplot(wq_lda_test_cm, type = "heatmap") +
+    labs(title = "Linear Discriminant (test data)")
+  wq_qda_test_cm <- testing(wq_split) |>
+    bind_cols(fitted = predict(wq_qda,
+                               newdata = testing(wq_split))[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  summary(wq_qda_test_cm) # 2次判別の評価
+  autoplot(wq_qda_test_cm, type = "heatmap") +
+    labs(title = "Quadratic Discriminant (test data)")
 #+end_src
 
 ** COMMENT 演習: さまざまな評価値
@@ -771,24 +994,112 @@
 ** R : LOO交叉検証法
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       319FA54A-CA0C-4B02-A18B-ED5036192953
 :END:
 - 関数 ~lda()~ と ~qda()~ はオプションで LOO交叉検証を行うことができる
 - オプションの指定方法
-  #+begin_src R :eval no
-    est <- lda(formula, data, CV=TRUE)
-    est$class # LOO CV による予測結果
-    ## 特定のデータを除いて判別関数を構成し，そのデータの予測を行っている
-    est <- qda(formula, data, CV=TRUE)
-    est$class # LOO CV による予測結果
-    ## 2次判別についても同様
+  #+begin_src R :eval no :tangle no
+    toy_lda <- lda(formula, toy_data, CV = TRUE)
+    toy_lda[["class"]] # LOO CV による予測結果
+    #' 特定のデータを除いて判別関数を構成し，そのデータの予測を行っている
+    toy_qda <- qda(formula, toy_data, CV = TRUE)
+    toy_qda[["class"]] # LOO CV による予測結果
+    #' 2次判別についても同様
   #+end_src
 
-** R : k-重交叉検証法 ~caret::train()~
+** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       C4BC3222-EB7C-48EF-90B4-215A2DB5E75E
+:END:
+- MASS::biopsy を用いて2次判別の分析を行いなさい
+  - 全てのデータを用いて訓練誤差を評価する
+  - LOO交叉検証法を用いて予測誤差を評価する
+
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 予測誤差の評価
+#+end_src
+#+begin_src R :eval no :exports none
+  #' MASS::biopsy による誤差の評価
+  #' データの整理
+  bio_data <- as_tibble(biopsy) |>
+    na.omit() |> # NA を除く
+    select(-ID)  # IDを除く
+
+  bio_data |>
+    GGally::ggpairs(aes(colour = class))
+
+  #' 2次判別の LOO CV による評価の例 (線形判別も同様)
+  bio_formula <- class ~ . 
+  bio_qda <- qda(formula = bio_formula, data = bio_data) 
+  bio_qda_loo <- qda(formula = bio_formula, data = bio_data, CV = TRUE)
+  #' 訓練誤差の評価
+  bio_qda_cm <- bio_data |>
+    bind_cols(fitted = predict(bio_qda)[["class"]]) |>
+    conf_mat(truth = class, estimate = fitted)
+  summary(bio_qda_cm) # 2次判別によるあてはめ値の評価(訓練誤差)
+  autoplot(bio_qda_cm, type = "heatmap") +
+    labs(title = "Training Error")
+  bio_qda_loo_cm <- bio_data |>
+    bind_cols(fitted = bio_qda_loo[["class"]]) |>
+    conf_mat(truth = class, estimate = fitted)
+  summary(bio_qda_loo_cm) # LOO CVによる予測の評価(予測誤差)
+  autoplot(bio_qda_loo_cm, type = "heatmap") +
+    labs(title = "Test Error (LOO CV)")
+  #' あてはめ値による評価は LOO CV より若干良くなっており
+  #' あてはめ値では精度を過剰に評価する可能性があることが示唆される
+#+end_src
+
+** COMMENT R : k-重交叉検証法 ~caret::train()~
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       D135DD1F-1AEE-4B1B-894E-6285C47748AF
 :END:
 - ~caret~ パッケージの関数 ~train()~ で実行可能
-  #+begin_src R :eval no
+  #+begin_src R :eval no :tangle no
+    train(formula, data,
+	  method,
+	  trControl=trainControl(method="cv", number))
+    ## formula: Rの式 
+    ## data: データフレーム
+    ## method: 推定を行う関数 method="lda"/"qda" などを指定
+    ## trControl: 学習方法の指定
+    ## trainControl のオプション
+    ##  method: 評価方法など指定 method="cv"/"LOOCV"
+    ##  number: k-重交叉検証のブロック数 (k)
+  #+end_src
+
+** R : k-重交叉検証法
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       D135DD1F-1AEE-4B1B-894E-6285C47748AF
+:END:
+- ~tidymodels~ パッケージの関数群で実行
+  #+begin_src R :eval no :tangle no
+    #' 交叉検証用のデータ分割 
+    #' 詳細は 'rsample::vfold_cv' を参照
+    vfold_cv(data, v = 10, repeats = 1,
+             strata = NULL, breaks = 4, pool = 0.1, ...)
+    #' 最も簡単な処理の流れ(以下の関数を組わ合せ)
+    #' 詳細は 'workflows::workflow'
+    #' および 'tune::fit_resamples' を参照
+    workflow() |> 
+      add_formula(目的変数 ~ 説明変数) |>
+      add_model(推定に用いるモデル) |> 
+      fit_resamples(resamples = vfold_cvの出力)
+    #' 評価の取得
+    #' 詳細は 'tune::collect_metrics' を参照
+    collect_metrics(fit_resamplesの出力)
+  #+end_src
+
+** COMMENT R : k-重交叉検証法 ~caret::train()~
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       D135DD1F-1AEE-4B1B-894E-6285C47748AF
+:END:
+- ~caret~ パッケージの関数 ~train()~ で実行可能
+  #+begin_src R :eval no :tangle no
     train(formula, data,
 	  method,
 	  trControl=trainControl(method="cv", number))
@@ -804,59 +1115,85 @@
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
+:ID:       D85D18DD-2820-457F-8CC9-84F994D4CC33
 :END:
-- Wine Quality Data Set を用いた
-  線形判別と2次判別に関して，以下を行いなさい
-  - LOO交叉検証法を用いて予測誤差の評価を行いなさい
-  - k-重交叉検証法を用いて予測誤差の評価を行いなさい
+- Wine Quality Data Set を用いて
+  線形判別と2次判別の分析を行いなさい
+  - LOO交叉検証法を用いて予測誤差を評価する
+  - k-重交叉検証法を用いて予測誤差を評価する
 
 #+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 予測誤差の評価
-  ###
+  #' Wine Quality Data Set による誤差の評価
+  #' 既に整理してある 'wq_data/wq_split' を用いる
 
-  ### Wine Quality Data Set による誤差の評価
-  library(MASS)  # 既に読み込んでいれば不要
-  library(caret) # 既に読み込んでいれば不要
+  #' 線形判別の LOO CV
+  #' 'wq_lda' と比較する
+  wq_lda_loo <- lda(formula = wq_formula, data = training(wq_split),
+                    CV = TRUE)
+  training(wq_split) |> # 訓練誤差による評価
+    bind_cols(fitted = predict(wq_lda)[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted) |>
+    autoplot(type = "heatmap") +
+    labs(title = "Training Error (LDA)")
+  wq_lda_loo_cm <- training(wq_split) |> # LOO CV 予測誤差による評価
+    bind_cols(fitted = wq_lda_loo[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  wq_lda_loo_cm |> autoplot(type = "heatmap") +
+    labs(title = "LOO CV Error (LDA)")
+  #' 線形判別の過学習は微小
 
-  ## データの整理 (既に整理してあれば不要)
-  wq_org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-                     sep=";")
-  wq_data <- transform(wq_org,
-                       quality=as.factor(
-                           ifelse(quality %in% 7:10, "A",
-                           ifelse(quality %in% 5:6, "B" ,"C"))))
+  #' 2次判別の LOO CV 
+  #' 'wq_qda' と比較する
+  wq_qda_loo <- qda(formula = wq_formula, data = training(wq_split),
+                    CV = TRUE)
+  training(wq_split) |> # 訓練誤差による評価
+    bind_cols(fitted = predict(wq_qda)[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted) |>
+    autoplot(type = "heatmap") +
+    labs(title = "Training Error (QDA)")
+  wq_qda_loo_cm <- training(wq_split) |> # LOO CV 予測誤差による評価
+    bind_cols(fitted = wq_qda_loo[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  wq_qda_loo_cm |> autoplot(type = "heatmap") +
+    labs(title = "LOO CV Error (QDA)")
+  #' 2次判別は若干過学習している
 
-  ## LOO CV の例 (lda/qdaは標準で装備している)
-  ## 線形判別
-  wq_lda <- lda(quality ~ ., data=wq_data) 
-  wq_ldloo <- lda(quality ~ ., data=wq_data, CV=TRUE)
-  confusionMatrix(predict(wq_lda)$class, wq_data$quality)$table
-  confusionMatrix(wq_ldloo$class, wq_data$quality)$table
-  ## 線形判別の過学習は微小
+  #' LOO CV による線形・2次判別の予測誤差の比較
+  summary(wq_lda_loo_cm) # 線形
+  summary(wq_qda_loo_cm) # 2次
+  #' 予測誤差の観点からは線形判別の方が良さそう
 
-  ## 2次判別
-  wq_qda <- qda(quality ~ ., data=wq_data) 
-  wq_qdloo <- qda(quality ~ ., data=wq_data, CV=TRUE)
-  confusionMatrix(predict(wq_qda)$class, wq_data$quality)$table
-  confusionMatrix(wq_qdloo$class, wq_data$quality)$table
-  ## 2次判別は若干過学習している
-
-  ## 予測誤差の比較
-  confusionMatrix(wq_ldloo$class, wq_data$quality)$overall
-  confusionMatrix(wq_qdloo$class, wq_data$quality)$overall
-  ## 予測誤差の観点からは線形判別の方が良さそう
-
-  ## k-重交叉検証は caret package の機能を利用して求めることができる
-  (train(quality ~., data=wq_data, method="lda",
-         trControl=trainControl(method="cv", number=10)))
-  (train(quality ~., data=wq_data, method="qda",
-         trControl=trainControl(method="cv", number=10)))
-  ## LOO CV も利用することができるが，計算は遅い
-  (train(quality ~., data=wq_data, method="lda",
-         trControl=trainControl(method="LOOCV")))
-  (train(quality ~., data=wq_data, method="qda",
-         trControl=trainControl(method="LOOCV")))
+  #' tidymodels による k-重交叉検証
+  #' 'lda/qda' を tidymodels 用に宣言
+  library(discrim) # 以下の判別モデルを設定するために必要
+  tidy_qda <- discrim_quad() |> set_engine("MASS") |> set_mode("classification")
+  tidy_lda <- discrim_linear() |> set_engine("MASS") |> set_mode("classification")
+  #' 交叉検証用にデータ分割を行う
+  wq_folds <- vfold_cv(training(wq_split),
+                       v = 10) # 10-fold を指定 (既定値)
+  #' 評価指標を設定
+  wq_metrics <- metric_set(accuracy, # 精度
+                           sens, # 感度 (真陽性率)
+                           spec, # 特異度 (真陰性率)
+                           precision, # 適合率
+                           recall, # 再現率(sensと同じ)
+                           roc_auc, # AUC
+                           kap, # kappa
+                           f_meas) # f値
+  wq_workflow <- workflow() |> # 共通の処理を定義
+    add_formula(wq_formula) 
+  #' 線形判別
+  wq_lda_cv <- wq_workflow |>
+    add_model(tidy_lda) |> 
+    fit_resamples(resamples = wq_folds,
+                  metrics = wq_metrics)
+  wq_lda_cv |> collect_metrics()
+  #' 2次判別
+  wq_qda_cv <- wq_workflow |>
+    add_model(tidy_qda) |>
+    fit_resamples(resamples = wq_folds,
+                  metrics = wq_metrics)
+  wq_qda_cv |> collect_metrics()
 #+end_src
   
 ** COMMENT 演習: 予測誤差の評価
@@ -881,6 +1218,9 @@
 * 解析の事例
 # 早稲田大学
 ** データについて
+:PROPERTIES:
+:ID:       A70DF5E2-81AD-450B-8071-543ECCAC7AB3
+:END:
 - UC Irvine Machine Learning Repository の公開データ
   - [[https://archive.ics.uci.edu/ml/datasets/Wine+Quality]]
     #+begin_quote
@@ -890,7 +1230,7 @@
     Modeling wine preferences by data mining from physicochemical properties.
     In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
     #+end_quote
-    以下では ~winequality-red.csv~ を利用
+    - 以下では ~winequality-red.csv~ を利用
 
 #+reveal: split
 - データ概要
@@ -913,34 +1253,163 @@
     #+begin_quote
     12 - quality (score between 0 and 10) \\
     #+end_quote
-    - ただし解析では A,B,C の3値に集計
+    - ただし解析では A,B,C,D の4値に集計
 
 #+reveal: split
 - 実際のデータの一部
-  #+begin_src R :exports results :tangle yes
-    ## データの整理 (既に整理してあれば不要)
-    wq_org <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-                       sep=";")
-    wq_data <- transform(wq_org,
-                         quality=as.factor(
-                             ifelse(quality %in% 7:10, "A",
-                             ifelse(quality %in% 5:6, "B" ,"C"))))
-    rbind(names(wq_data)[1:4],data.frame(head(wq_data[,1:4], 10)))
+  #+begin_src R :exports none
+    #' Wine Quality Data Set を用いた判別分析
+    wq_data <-
+      read_delim("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
+                 delim = ";") |>
+      mutate(grade = factor(case_when( # quality を A,B,C,D に割り当てる
+               quality >= 7 ~ "A",
+               quality >= 6 ~ "B",
+               quality >= 5 ~ "C",
+               .default = "D"
+             )))
+    #' データを分割する
+    set.seed(987987) # 適宜シード値は設定する
+    wq_split <- initial_split(wq_data, prop = 0.8,
+                              strata = grade)
+    #' 判別関数を作成 (gradeのもとになっているqualityは除く)
+    wq_formula <- grade ~ . - quality
+    wq_lda <- lda(formula = wq_formula, data = training(wq_split))
+    wq_qda <- qda(formula = wq_formula, data = training(wq_split))
+  #+end_src
+  #+html: <font size=4>
+  #+begin_src R :exports results :results output html :tangle no
+    #' データの表示(reveal用)
+    wq_data |>
+      slice(1:20) |>
+      as.data.frame() |>
+      stargazer::stargazer(summary = FALSE,
+                           rownames = FALSE,
+                           type = "html")
+  #+end_src  
+  #+html: </font>
+  #+begin_src R :exports results :results output latex :tangle no
+    #' データの表示(latex用)
+    wq_data |>
+      slice(1:20) |>
+      as.data.frame() |>
+      stargazer::stargazer(summary = FALSE,
+                           rownames = FALSE,
+                           font.size = "tiny", type = "latex")
   #+end_src
 
-#+reveal: split
-- 実際のデータの一部 (続き)
-  #+begin_src R :exports results :tangle yes
-    rbind(names(wq_data)[5:8],data.frame(head(wq_data[,5:8], 10)))
-  #+end_src
+** 線形判別の訓練誤差と予測誤差
+#+begin_leftcol
+#+begin_src R :file figs/09_lda_train_cm.png :exports results :results graphics
+  wq_lda_train_cm <- training(wq_split) |>
+    bind_cols(fitted = predict(wq_lda)[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  #' summary(wq_lda_train_cm) # 線形判別の評価
+  autoplot(wq_lda_train_cm, type = "heatmap") +
+    labs(title = paste("LDA (training data) : acc =",
+                       signif(summary(wq_lda_train_cm)[1,3], digits = 3)))
+#+end_src
+#+caption: 訓練誤差
+#+name: fig:09_lda_train_cm
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_lda_train_cm.png]]
+#+end_leftcol
+#+begin_rightcol
+#+begin_src R :file figs/09_lda_test_cm.png :exports results :results graphics
+  wq_lda_test_cm <- testing(wq_split) |>
+    bind_cols(fitted = predict(wq_lda,
+                               newdata = testing(wq_split))[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  #' summary(wq_lda_test_cm) # 線形判別の評価
+  autoplot(wq_lda_test_cm, type = "heatmap") +
+    labs(title = paste("LDA (test data) : acc =",
+                       signif(summary(wq_lda_test_cm)[1,3], digits = 3)))
+#+end_src
+#+caption: 予測誤差
+#+name: fig:09_lda_test_cm
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_lda_test_cm.png]]
+#+end_rightcol
 
-#+reveal: split
-- 実際のデータの一部 (続き) 
-  #+begin_src R :exports results :tangle yes
-    rbind(names(wq_data)[9:ncol(wq_data)],data.frame(head(wq_data[,9:ncol(wq_data)], 10)))
-  #+end_src
+** 2次判別の訓練誤差と予測誤差
+#+begin_leftcol
+#+begin_src R :file figs/09_qda_train_cm.png :exports results :results graphics
+  wq_qda_train_cm <- training(wq_split) |>
+    bind_cols(fitted = predict(wq_qda)[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  #' summary(wq_qda_train_cm) # 2次判別の評価
+  autoplot(wq_qda_train_cm, type = "heatmap") +
+    labs(title = paste("QDA (training data) : acc =",
+                       signif(summary(wq_qda_train_cm)[1,3], digits = 3)))
+#+end_src
+#+caption: 訓練誤差
+#+name: fig:09_qda_train_cm
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_qda_train_cm.png]]
+#+end_leftcol
+#+begin_rightcol
+#+begin_src R :file figs/09_qda_test_cm.png :exports results :results graphics
+  wq_qda_test_cm <- testing(wq_split) |>
+    bind_cols(fitted = predict(wq_qda,
+                               newdata = testing(wq_split))[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  #' summary(wq_qda_test_cm) # 2次判別の評価
+  autoplot(wq_qda_test_cm, type = "heatmap") +
+    labs(title = paste("QDA (test data) : acc =",
+                       signif(summary(wq_qda_test_cm)[1,3], digits = 3)))
+#+end_src
+#+caption: 予測誤差
+#+name: fig:09_qda_test_cm
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_qda_test_cm.png]]
+#+end_rightcol
 
 ** LOO交叉検証による予測誤差の評価
+#+begin_leftcol
+#+begin_src R :file figs/09_lda_loo_cm.png :exports results :results graphics
+  wq_lda_loo <- lda(formula = wq_formula, data = training(wq_split),
+                    CV = TRUE)
+  wq_lda_loo_cm <- training(wq_split) |> # LOO CV 予測誤差による評価
+    bind_cols(fitted = wq_lda_loo[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  wq_lda_loo_cm |> autoplot(type = "heatmap") +
+    labs(title = paste("LDA (loo cv error) : acc =",
+                       signif(summary(wq_lda_loo_cm)[1,3], digits = 3)))
+  #' 線形判別の過学習は微小
+#+end_src
+#+caption: 線形判別
+#+name: fig:09_lda_loo_cm
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_lda_loo_cm.png]]
+#+end_leftcol
+#+begin_rightcol
+#+begin_src R :file figs/09_qda_loo_cm.png :exports results :results graphics
+  wq_qda_loo <- qda(formula = wq_formula, data = training(wq_split),
+                    CV = TRUE)
+  wq_qda_loo_cm <- training(wq_split) |> # LOO CV 予測誤差による評価
+    bind_cols(fitted = wq_qda_loo[["class"]]) |>
+    conf_mat(truth = grade, estimate = fitted)
+  wq_qda_loo_cm |> autoplot(type = "heatmap") +
+    labs(title = paste("QDA (loo cv error) : acc =",
+                       signif(summary(wq_qda_loo_cm)[1,3], digits = 3)))
+  #' 2次判別は若干過学習している
+#+end_src
+#+caption: 2次判別
+#+name: fig:09_qda_loo_cm
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_qda_loo_cm.png]]
+#+end_rightcol
+
+** COMMENT LOO交叉検証による予測誤差の評価
+:PROPERTIES:
+:ID:       18A9C143-00DD-445A-A350-1282B334A76B
+:END:
 - 線形判別 (訓練誤差/予測誤差)
   #+begin_src R :exports results :tangle yes
     wq_lda <- lda(quality ~ ., data=wq_data) 
@@ -1013,9 +1482,10 @@
   - 予測誤差の観点からは線形判別の方が良さそう
 
     
-* 次週の予定
+* 次回の予定
 - *第1日 : クラスタ分析の考え方と階層的方法*
 - 第2日 : 非階層的方法と分析の評価
+
 
 * Footnotes
 * COMMENT ローカル変数

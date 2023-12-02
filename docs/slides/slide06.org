@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-11-14 11:14:20 mura>
+# Time-stamp: <2023-11-18 13:18:14 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -18,7 +18,7 @@
 - 演習の内容が異なるので演習は2つ作る形で対応
 - 東大は2次元，3次元の実験をするので，4次元などを考えてもらえばよい
 
-* 講義の内容
+* COMMENT 講義の内容
 :PROPERTIES:
 :ID:       C3082D24-D65A-44C7-9BA4-41B059058A2E
 :END:
@@ -45,7 +45,7 @@
           ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
-* COMMENT 講義概要
+* 講義概要
 :PROPERTIES:
 :ID:       6A88B213-CE1B-4A41-B601-5E0DAD4A37FB
 :END:
@@ -119,7 +119,7 @@
   - 次元縮約 : 入力をできるだけ少ない変数で表現
 
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -342,7 +342,7 @@
   - 集合 \(\{\boldsymbol{a}\in\mathbb{R}^p:\|\boldsymbol{a}\|=1\}\) はコンパクト(有界閉集合)
 
     
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -428,7 +428,7 @@
 
 
 * 第1主成分の解
-** COMMENT 行列による表現
+** 行列による表現
 # 東京大学
 - 中心化したデータ行列
   #+begin_quote
@@ -460,7 +460,7 @@
   #+end_quote
   # - 回帰分析の Gram 行列を参照
 
-** ベクトル \(\boldsymbol{a}\) の解
+** COMMENT ベクトル \(\boldsymbol{a}\) の解
 # 早稲田大学
 - 最適化問題
   #+begin_quote
@@ -484,7 +484,7 @@
   \end{equation}
   #+end_quote
 
-** COMMENT ベクトル \(\boldsymbol{a}\) の解
+** ベクトル \(\boldsymbol{a}\) の解
 # 東京大学
 - 最適化問題
   #+begin_quote
@@ -557,7 +557,7 @@
   #+end_quote
 
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -573,11 +573,13 @@
   - Gram 行列を計算し固有値・固有ベクトルを求める
     #+begin_src R :eval no
       #' 中心化を行う
-      X <- scale(toy_data, scale=FALSE) # help(scale) でオプション scale を確認
+      X <- scale(toy_data, scale = FALSE)
+      #' 詳細は '?base::scale' を参照
       #' Gram 行列を計算する
       G <- crossprod(X)
       #' 固有値・固有ベクトルを求める
-      eigen(G) # help(eigen) で返り値を確認
+      eigen(G) # 返り値 'values, vectors' を確認
+      #' 詳細は '?base::eigen' を参照
     #+end_src
 
 #+begin_src R :exports none
@@ -660,7 +662,7 @@
   - 固有値と固有ベクトルによる行列の表現
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -769,7 +771,7 @@
   #+end_quote
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -848,7 +850,7 @@
 
 
 * 第2主成分以降の解
-** COMMENT 行列による表現
+** 行列による表現
 # 東京大学
 - 中心化したデータ行列
   #+begin_quote
@@ -913,7 +915,7 @@
   に対応する固有ベクトル \(\boldsymbol{a}_k\)
 
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1046,7 +1048,7 @@
   - MASS::UScereal
 
 
-* 解析の事例
+* COMMENT 解析の事例
 # 早稲田大学
 ** データセットについて
 - 総務省統計局より取得した都道府県別の社会生活統計指標(自然環境・経済基盤)の一部

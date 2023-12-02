@@ -4,13 +4,9 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-11-07 17:07:17 mura>
+# Time-stamp: <2023-12-02 15:19:22 mura>
 :REVEAL:
-#+INCLUDE: "./reveal.js/org/mycourse.org"
-#+PROPERTY: header-args:R :cache yes :session *R*
-#+PROPERTY: header-args:R+ :exports both :results output
-#+PROPERTY: header-args:R+ :width 800 :height 800 :res 100
-#+PROPERTY: header-args:R+ :tangle yes
+#+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
@@ -177,7 +173,6 @@
                            type = "html")
   #+end_src
   #+html: </font>
-
   #+begin_src R :exports results :results output latex :tangle no
     #' データの表示(latex用)
     bar |> mutate(日付 = as.character(日付)) |>
@@ -300,7 +295,7 @@
                          ## report = "vc*st", # NULL,
                          single.row = TRUE, # FALSE,
                          title = "寄与率によるモデルの比較",
-                         font.size = "small", type = "latex")
+                         font.size = "footnotesize", type = "latex")
   #+end_src
   #+begin_src R :eval no :exports none
     #' 決定係数のまとめ
@@ -318,7 +313,7 @@
                          ## report = "vc*st", # NULL,
                          ## single.row = TRUE, # FALSE,
                          title = "寄与率によるモデルの比較",
-                         font.size = "footnotesize", type = "latex")
+                         type = "text")
   #+end_src
 
   # org に表を処理させる場合は以下のとおり
@@ -345,7 +340,6 @@
   # #+end_src
   # #+html: </font>
       
-
 ** COMMENT モデルの評価(古い)
 - 決定係数
   - モデル1 : 気温 = F(気圧)
@@ -399,7 +393,7 @@
                 ))
     #+end_src
 
-** \(F\)統計量による検定
+** @@latex:@@\(F\)統計量による検定
 - 説明変数のうち1つでも役に立つか否かを検定する
   - 帰無仮説 \(H_{0}\): \(\beta_1=\dotsb=\beta_p=0\)
   - 対立仮説 \(H_{1}\): \(\exists j\;\beta_j\neq0\) (少なくとも1つは役に立つ)
@@ -577,7 +571,7 @@
                 ))
     #+end_src
 
-** \(t\)統計量による検定
+** @@latex:@@\(t\)統計量による検定
 - 回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定する
   - 帰無仮説 \(H_{0}\): \(\beta_j=0\)
   - 対立仮説 \(H_{1}\): \(\beta_j\neq0\) (\(\beta_j\) は役に立つ)
@@ -1054,19 +1048,19 @@
 :ID:       7C42A122-D414-4962-873C-05B63214FAB6
 :END:
 - 関数 ~stats::predict()~ を用いた予測
-  #+begin_src R :eval no :tangle no
+  #+begin_src R :eval no :tangle no :tangle no
     #' モデルの作成
-    training_data <- tibble(x1 = ..., x2 = ..., y = ...)
-    estimated_lm  <- lm(y ~ x1 + x2, data = training_data) 
-    fitted_values  <- predict(estimated_lm) # あてはめ値の計算
+    toy_train <- tibble(x1 = ..., x2 = ..., y = ...)
+    toy_lm  <- lm(y ~ x1 + x2, data = toy_train) 
+    toy_train_fitted  <- predict(toy_lm) # あてはめ値の計算
     #' 新しいデータの予測
-    test_data <- tibble(x1 = ..., x2 = ...) # 予測したいデータの説明変数
-    predicted_values <- predict(estimated_lm, # 予測値の計算
-                                newdata = test_data) 
-    confidence_interval <- predict(est, newdata=test, # 信頼区間
-                                   interval="confidence", level=0.95) 
-    prediction_interval <- predict(est, newdata=test, # 予測区間
-                                   interval="prediction", level=0.95) 
+    toy_test <- tibble(x1 = ..., x2 = ...) # 予測したいデータの説明変数
+    toy_test_fitted <- predict(toy_lm, # 予測値の計算
+                               newdata = toy_test) 
+    toy_test_conf <- predict(toy_lm, newdata = toy_test, # 信頼区間
+                             interval="confidence", level=0.95) 
+    toy_test_pred <- predict(toy_lm, newdata = toy_test, # 予測区間
+                             interval="prediction", level=0.95) 
     #' 信頼区間，予測区間の水準の既定値は0.95
   #+end_src
 
@@ -1179,6 +1173,9 @@
               predict(tw_lm, newdata = tw_test, interval = "confidence"))
 
   #' 予測区間
+  tw_train_pred <- # あてはめ値と予測区間を付加
+    bind_cols(tw_train,
+              predict(tw_lm, interval = "prediction"))
   tw_test_pred <- # 新規データへのあてはめ値と予測区間を付加
     bind_cols(tw_test, 
               predict(tw_lm, newdata = tw_test, interval = "prediction"))
@@ -1188,15 +1185,26 @@
     ggplot(aes(x = day, y = temp)) +
     geom_point(colour = "red", shape = 16) +
     geom_point(aes(y = fit), colour = "blue") +
-    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "steelblue") +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "royalblue") +
+    ylim(c(20,34)) + # 以降4つのグラフの値域を揃える
     labs(x = "August", y = "Temperature", title = "Confidence Interval")
+
+  #' 8月のデータで推定したモデルで8月をあてはめた予測区間
+  tw_train_pred |>
+    ggplot(aes(x = day, y = temp)) +
+    geom_point(colour = "red", shape = 16) +
+    geom_point(aes(y = fit), colour = "blue") +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "steelblue") +
+    ylim(c(20,34)) + 
+    labs(x = "August", y = "Temperature", title = "Prediction Interval")
 
   #' 8月のモデルで9月をあてはめた信頼区間
   tw_test_conf |>
     ggplot(aes(x = day, y = temp)) +
     geom_point(colour = "red", shape = 16) +
     geom_point(aes(y = fit), colour = "blue") +
-    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "steelblue") +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "royalblue") +
+    ylim(c(20,34)) + 
     labs(x = "September", y = "Temperature", title = "Confidence Interval")
 
   #' 8月のモデルで9月をあてはめた予測区間
@@ -1204,7 +1212,8 @@
     ggplot(aes(x = day, y = temp)) +
     geom_point(colour = "red", shape = 16) +
     geom_point(aes(y = fit), colour = "blue") +
-    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "lightblue") +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), colour = "steelblue") +
+    ylim(c(20,34)) + 
     labs(x = "September", y = "Temperature", title = "Prediction Interval")
 #+end_src
 #+begin_src R :eval no :exports none
@@ -1854,6 +1863,7 @@
     - 雨の日の方が気温が低いことが支持される
 #+end_rightcol
 
+
 * COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -1889,10 +1899,10 @@
     X <- c("A", "S", "A", "B", "D")
     Y <- c(85, 100, 80, 70, 30)
     toy_data1 <- tibble(X, Y)
-    toy_data2 <- toy_data1 |>
-      mutate(X2 = factor(X)) # 因子化
+    toy_data2 <- toy_data1 |> # 因子化
+      mutate(X2 = factor(X))  # 関数as_factor()を用いてもよい
     str(toy_data2) # 作成したデータフレームの素性を見る
-    toy_data3 <- toy_data2 |> # 順序付きの因子化
+    toy_data3 <- toy_data2 |> # 順序付き(levels)の因子化
       mutate(X3 = factor(X, levels=c("S","A","B","C","D")))
     str(toy_data3) # toy_data2とはfactorの順序が異なる
     toy_data4 <- toy_data2 |>
@@ -1943,20 +1953,19 @@
 
   #' 最後のモデルの視覚的な評価 (診断プロット)
   autoplot(lm(temp ~ solar * press * humid, data = tw_subset))
-
-  #'# 雨と気温の関係の分析 (カテゴリカル変数)
-
-  #' 雨の有無をダミー化(因子化)する
-  tw_data <- tw_data |>
-    mutate(rain = factor(rain > 0)) 
-  summary(lm(temp ~ rain, data = tw_data))
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 雨と気温の関係の分析 (カテゴリカル変数)
+  #' 雨の有無および月(整数値)をダミー化(因子化)する
+  tw_data_fact <- tw_data |>
+    mutate(rain = factor(rain > 0),
+           month = factor(month)) 
+  summary(lm(temp ~ rain, data = tw_data_fact))
   #' 通年では雨と気温の関係は積極的に支持されない
 
-  #' 月毎の気温の差を考慮して月を表す変数(整数値)をダミー化する
-  tw_data <- tw_data |>
-    mutate(month = factor(month))
-  summary(lm(temp ~ rain + month, data = tw_data))
-  #' 月毎に比較すると雨の日の方が気温が低いことが支持される
+  summary(lm(temp ~ rain + month, data = tw_data_fact))
+  #' 月毎の気温の差を考慮した回帰式が推定される
+  #' 月毎に比較した結果，雨の日の方が気温が低いことが支持される
 #+end_src
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
@@ -1982,20 +1991,36 @@
 :ID:       3A4FFB4A-0F71-4B7A-B1FA-6CEB232B8976
 :END:
 - 変数が増えるとモデルの比較が困難
-- 関数 ~step()~ を用いて自動化することができる
+- 関数 ~stats::step()~ で自動化することができる
   #+begin_src R :eval no
     #' モデルの探索
     adv_data <- read_csv('https://www.statlearning.com/s/Advertising.csv')
     summary(lm(sales ~ radio, data = adv_data))
     summary(lm(sales ~ TV + radio, data = adv_data))
     summary(lm(sales ~ TV + radio + newspaper, data = adv_data))
-    summary(init <- lm(sales ~ TV * radio * newspaper, data = adv_data))
-    opt <- step(init) # step関数による探索 (最大のモデルから削減増加を行う)
-    summary(opt) # 探索された(準)最適なモデルの確認
+    summary(adv_init <- lm(sales ~ TV * radio * newspaper, data = adv_data))
+    adv_opt <- step(adv_init) # 最大のモデルから削減増加による探索
+    summary(adv_opt) # 探索された(準)最適なモデルの確認
   #+end_src
   - 全探索ではないので最適とは限らないことに注意は必要
 
-** R : car package
+** R : package::broom
+:PROPERTIES:
+:ID:       BF6291AA-8F48-4CA2-909E-249BF70CB440
+:END:
+- 関数 base::summary() の tidyverse 版
+- 関数 stats::lm() などの結果を tibble 形式で表示
+  - 関数 broom::tidy : 推定結果のまとめ
+  - 関数 broom::glance : 評価指標(統計量)のまとめ
+  - 関数 broom::augment : 入出力データのまとめ    
+  #+begin_src R :eval no
+    #' 推定結果の tibble 形式での表示
+    broom::tidy(adv_opt) # coef(summary(adv_opt)) と同じ内容
+    broom::glance(adv_opt) # 決定係数やF値などを整理
+    broom::augment(adv_opt) # あてはめ値・残差などを整理
+  #+end_src
+
+** R : package::car 
 - 回帰モデルの評価
   - 与えられたデータの再現
   - 新しいデータの予測

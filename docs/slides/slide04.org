@@ -4,8 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-30 12:15:19 mura>
-
+# Time-stamp: <2023-12-02 15:16:19 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -214,15 +213,22 @@
 
 
 * 解析の事例
-# 東京大学 (初)
-# 早稲田大学 (再)
 ** 実データによる例
 :PROPERTIES:
 :ID:       C513A101-EB45-4E7A-A4D3-1A8819EF6183
 :END:
-- 気象庁より取得した東京の気候データ 
+# 早稲田大学 (再)
+- 気象庁より取得した東京の気候データ (再掲)
   - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
   - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
+** COMMENT 実データによる例
+:PROPERTIES:
+:ID:       C513A101-EB45-4E7A-A4D3-1A8819EF6183
+:END:
+# 東京大学 (初)
+- 気象庁より取得した東京の気候データ (再掲)
+  - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
+  - データ [[https://noboru-murata.github.io/statistical-data-analysis2/data/data03.zip]]
 
 ** 東京の8月の気候の分析
 :PROPERTIES:
@@ -256,9 +262,8 @@
   #+begin_src R :exports none
     #' データの表示
     #' 列名を日本語にして表示する
-    foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
-                        c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
-    (bar <- tw_subset |> rename(all_of(foo)))
+    bar <- tw_subset |> 
+      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
   #+end_src
   #+begin_src R :eval no :exports none
     View(bar) # 左上ペインに表として表示
@@ -1543,19 +1548,18 @@
     tw_model5 <- temp ~ press + solar + cloud
 
     #' 推定
-    tw_lm1 <- lm(tw_model1, data=tw_subset, y=TRUE)
-    tw_lm2 <- lm(tw_model2, data=tw_subset, y=TRUE)
-    tw_lm3 <- lm(tw_model3, data=tw_subset, y=TRUE)
-    tw_lm4 <- lm(tw_model4, data=tw_subset, y=TRUE)
-    tw_lm5 <- lm(tw_model5, data=tw_subset, y=TRUE)
+    tw_lm1 <- lm(tw_model1, data=tw_subset, y = TRUE)
+    tw_lm2 <- lm(tw_model2, data=tw_subset, y = TRUE)
+    tw_lm3 <- lm(tw_model3, data=tw_subset, y = TRUE)
+    tw_lm4 <- lm(tw_model4, data=tw_subset, y = TRUE)
+    tw_lm5 <- lm(tw_model5, data=tw_subset, y = TRUE)
   #+end_src
 
   #+begin_src R :exports none
     #' データの表示
     #' 列名を日本語にして表示する
-    foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
-                        c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
-    (bar <- tw_subset |> rename(all_of(foo)))
+    bar <- tw_subset |> 
+      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
   #+end_src
   #+begin_src R :eval no :exports none
     View(bar) # 左上ペインに表として表示
@@ -1610,18 +1614,17 @@
     tw_model5 <- temp ~ press + solar + cloud
 
     #' 推定
-    tw_lm1 <- lm(tw_model1, data=tw_subset, y=TRUE)
-    tw_lm2 <- lm(tw_model2, data=tw_subset, y=TRUE)
-    tw_lm3 <- lm(tw_model3, data=tw_subset, y=TRUE)
-    tw_lm4 <- lm(tw_model4, data=tw_subset, y=TRUE)
-    tw_lm5 <- lm(tw_model5, data=tw_subset, y=TRUE)
+    tw_lm1 <- lm(tw_model1, data=tw_subset, y = TRUE)
+    tw_lm2 <- lm(tw_model2, data=tw_subset, y = TRUE)
+    tw_lm3 <- lm(tw_model3, data=tw_subset, y = TRUE)
+    tw_lm4 <- lm(tw_model4, data=tw_subset, y = TRUE)
+    tw_lm5 <- lm(tw_model5, data=tw_subset, y = TRUE)
   #+end_src
   #+begin_src R :exports none
     #' データの表示
     #' 列名を日本語にして表示する
-    foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
-                        c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
-    (bar <- tw_subset |> rename(all_of(foo)))
+    bar <- tw_subset |>
+      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
   #+end_src
   #+begin_src R :eval no :exports none
     View(bar) # 左上ペインに表として表示
@@ -1747,11 +1750,11 @@
     tw_model5 <- temp ~ press + solar + cloud
 
     ## 推定
-    tw_est1 <- lm(tw_model1, data=tw_subset, y=TRUE)
-    tw_est2 <- lm(tw_model2, data=tw_subset, y=TRUE)
-    tw_est3 <- lm(tw_model3, data=tw_subset, y=TRUE)
-    tw_est4 <- lm(tw_model4, data=tw_subset, y=TRUE)
-    tw_est5 <- lm(tw_model5, data=tw_subset, y=TRUE)
+    tw_est1 <- lm(tw_model1, data=tw_subset, y = TRUE)
+    tw_est2 <- lm(tw_model2, data=tw_subset, y = TRUE)
+    tw_est3 <- lm(tw_model3, data=tw_subset, y = TRUE)
+    tw_est4 <- lm(tw_model4, data=tw_subset, y = TRUE)
+    tw_est5 <- lm(tw_model5, data=tw_subset, y = TRUE)
   #+end_src
 
 #+reveal: split

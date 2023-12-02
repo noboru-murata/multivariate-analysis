@@ -4,13 +4,9 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-10-17 17:32:49 mura>
+# Time-stamp: <2023-12-02 15:06:35 mura>
 :REVEAL:
-#+INCLUDE: "./reveal.js/org/mycourse.org"
-#+PROPERTY: header-args:R :cache yes :session *R*
-#+PROPERTY: header-args:R+ :exports both :results output
-#+PROPERTY: header-args:R+ :width 800 :height 800 :res 100
-#+PROPERTY: header-args:R+ :tangle yes
+#+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
@@ -416,12 +412,12 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 関数 ~lm()~ による推定
+** R : 線形モデルの推定
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       2E34C154-BD9D-4380-82E0-2D53B97D9F1E
 :END:
-- 線形モデルの推定
+- 関数 ~stats::lm()~ による推定
   #+begin_src R :eval no :tangle no
     lm(formula, data, subset, weights, na.action,
        method = "qr", model = TRUE, x = FALSE, y = FALSE, qr = TRUE,
@@ -441,18 +437,19 @@
   - [[https://www.statlearning.com/s/Advertising.csv]]
     #+begin_quote
     広告費(TV,radio,newspapers)と売上の関係を調べたもの
-
-    "Datasets in this presentation are taken from "An
-    Introduction to Statistical Learning, with applications in R"
-    (Springer, 2013) with permission from the authors: G. James,
-    D. Witten, T. Hastie and R. Tibshirani "
     #+end_quote
-    https://www.statlearning.com
-  - ~tokyo_weather.csv~ 
+    - 参考 : https://www.statlearning.com
+      #+begin_quote
+      "Datasets in this presentation are taken from "An
+      Introduction to Statistical Learning, with applications in R"
+      (Springer, 2013) with permission from the authors: G. James,
+      D. Witten, T. Hastie and R. Tibshirani "
+      #+end_quote
+  - ~tokyo_weather.csv~ (配付)
     #+begin_quote
     気象庁より取得した東京の気候データを回帰分析用に整理したもの
     #+end_quote
-    https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
+    - 参考 : https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
 
 ** 練習問題
 :PROPERTIES:
@@ -461,19 +458,17 @@
 :END:
 - 前掲のデータセットを用いて回帰式を構成しなさい
   - 東京の8月の気候データ
-    #+begin_quote
-    formula = temp ~ solar + press
-    #+end_quote
+    #+begin_src R :eval no :tangle no
+      formula = temp ~ solar + press
+    #+end_src
   - 広告費と売上データ
-    #+begin_quote
-    formula = sales ~ TV 
+    #+begin_src R :eval no :tangle no
+      formula = sales ~ TV 
+      formula = sales ~ radio
+      formula = sales ~ TV + radio
+    #+end_src
 
-    formula = sales ~ radio
-
-    formula = sales ~ TV + radio
-    #+end_quote
-
-#+begin_src R :eval no :exports none
+#+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 回帰係数の推定
 #+end_src
@@ -523,9 +518,9 @@
   tw_data <- read_csv("data/tokyo_weather.csv")
 
   #' モデルの推定: 8月の"気温"を目的変数，"日射量・気圧"を説明変数とする
-  tw_model <- temp ~ solar + press # モデル式の定義 
-  class(tw_model)                  # formula class であることを確認
-  (tw_lm <- lm(tw_model, # 回帰係数の推定
+  tw_formula <- temp ~ solar + press # モデル式の定義 
+  class(tw_formula)                  # formula class であることを確認
+  (tw_lm <- lm(tw_formula, # 回帰係数の推定
                data = tw_data, 
                subset =  month==8)) # 8月のデータの抽出
   (tw_df <- as_tibble(model.frame(tw_lm))) # 推定に用いたデータフレームの抽出
@@ -543,7 +538,7 @@
               draw_polygon = TRUE, # 平面の塗り潰しの設定
               polygon_args = list(col = rgb(0,0,1,0.1))) 
 #+end_src
-#+begin_src R :eval no :exports none
+#+begin_src R :exports none
   #' ---------------------------------------------------------------------------
 #+end_src
   
@@ -664,18 +659,10 @@
     #' データフレームを行列に変換する場合は全て同じデータ型でなくてはならない
   #+end_src
   
-
 ** R : 行列とベクトルの計算
 :PROPERTIES:
 :ID:       EDD9427D-C9BB-4971-91A7-A2352AE47708
 :END:
-- \(X^{\mathsf{T}}Y\) および \(X^{\mathsf{T}}X\) の計算
-  #+begin_src R :eval no :tangle no
-    crossprod(X, Y) # cross product の略
-    #' X: 行列 (またはベクトル)
-    #' Y: 行列 (またはベクトル)
-    crossprod(X) # 同じものを掛ける場合は引数は1つで良い
-  #+end_src
 - 行列 \(A,B\) の積 \(AB\) および
   ベクトル \(a,b\) の内積 \(a\cdot b\)
   #+begin_src R :eval no :tangle no
@@ -685,6 +672,20 @@
 - 正方行列 \(A\) の逆行列 \(A^{-1}\)
   #+begin_src R :eval no :tangle no
     solve(A) # 他にもいくつか関数はある
+  #+end_src
+- \(X^{\mathsf{T}}Y\) および \(X^{\mathsf{T}}X\) の計算
+  #+begin_src R :eval no :tangle no
+    crossprod(X, Y) # cross product の略
+    #' X: 行列 (またはベクトル)
+    #' Y: 行列 (またはベクトル)
+    crossprod(X) # 同じものを掛ける場合は引数は1つで良い
+  #+end_src
+  #+begin_src R :exports none
+    #' @notes
+    #' 行列の転置を計算する関数t()と積を組み合わせてもよい
+    #'   crossprod(X,Y) = t(X) %*% Y
+    #' XY^T = (X^TY)^T を計算する関数 tcrossprod() もある
+    #'   tcrossprod(X,Y) = X %*% t(Y)
   #+end_src
 
 ** 練習問題
@@ -949,9 +950,9 @@
 #+end_src
 #+begin_src R :eval no :exports none
   #' 東京の気候データ
-  tw_model # モデルの確認
+  tw_formula # モデルの確認
   #' 以下は目的変数を推定結果に含める方法
-  tw_lm <- lm(tw_model,
+  tw_lm <- lm(tw_formula,
               data = tw_data, 
               subset = month == 8, # 8月のデータの抽出
                y = TRUE) # 目的変数をyとして返すように指定
@@ -1104,21 +1105,17 @@
 :END:
 - 決定係数を用いてモデルの比較を行いなさい
   - 東京の8月の気候データ
-    #+begin_quote
-    temp ~ solar
-
-    temp ~ solar + press
-
-    temp ~ solar + press + cloud
-    #+end_quote
+    #+begin_src R :eval no :tangle no
+      temp ~ solar
+      temp ~ solar + press
+      temp ~ solar + press + cloud
+    #+end_src
   - 広告費と売上データ
-    #+begin_quote
-    sales ~ TV
-
-    sales ~ radio
-
-    sales ~ TV + radio
-    #+end_quote
+    #+begin_src R :eval no :tangle no
+      sales ~ TV
+      sales ~ radio
+      sales ~ TV + radio
+    #+end_src
 
 #+begin_src R :eval no :exports none
   #' ---------------------------------------------------------------------------
@@ -1128,12 +1125,12 @@
   #' 広告費と売上データ
 
   #' モデルの比較
-  adv_model1 <- sales ~ TV
-  adv_model2 <- sales ~ radio
-  adv_model3 <- sales ~ TV + radio
-  adv_lm1 <- lm(adv_model1, data=adv_data, y=TRUE)
-  adv_lm2 <- lm(adv_model2, data=adv_data, y=TRUE)
-  adv_lm3 <- lm(adv_model3, data=adv_data, y=TRUE)
+  adv_formula1 <- sales ~ TV
+  adv_formula2 <- sales ~ radio
+  adv_formula3 <- sales ~ TV + radio
+  adv_lm1 <- lm(adv_formula1, data=adv_data, y = TRUE)
+  adv_lm2 <- lm(adv_formula2, data=adv_data, y = TRUE)
+  adv_lm3 <- lm(adv_formula3, data=adv_data, y = TRUE)
   summary(adv_lm1)$adj.r.squared # 自由度調整済み決定係数
   summary(adv_lm2)$adj.r.squared # (model1より減少)
   summary(adv_lm3)$adj.r.squared # (model1より上昇)
@@ -1155,12 +1152,12 @@
 
   #' モデルの比較
   tw_subset <- tw_data |> filter(month == 8) # 8月のデータの抽出
-  tw_model1 <- temp ~ solar
-  tw_model2 <- temp ~ solar + press
-  tw_model3 <- temp ~ solar + press + cloud
-  tw_lm1 <- lm(tw_model1, data=tw_subset, y=TRUE)
-  tw_lm2 <- lm(tw_model2, data=tw_subset, y=TRUE)
-  tw_lm3 <- lm(tw_model3, data=tw_subset, y=TRUE)
+  tw_formula1 <- temp ~ solar
+  tw_formula2 <- temp ~ solar + press
+  tw_formula3 <- temp ~ solar + press + cloud
+  tw_lm1 <- lm(tw_formula1, data=tw_subset, y = TRUE)
+  tw_lm2 <- lm(tw_formula2, data=tw_subset, y = TRUE)
+  tw_lm3 <- lm(tw_formula3, data=tw_subset, y = TRUE)
   summary(tw_lm1)$adj.r.squared # 自由度調整済み決定係数
   summary(tw_lm2)$adj.r.squared # (model1より上昇)
   summary(tw_lm3)$adj.r.squared # (model2より上昇)
@@ -1221,26 +1218,29 @@
       select(-c(year,month,day,day_of_week))
 
     #' モデル式
-    tw_model1 <- temp ~ press
-    tw_model2 <- temp ~ solar
-    tw_model3 <- temp ~ press + solar
-    tw_model4 <- temp ~ press + solar + humid
-    tw_model5 <- temp ~ press + solar + cloud
+    tw_formula1 <- temp ~ press
+    tw_formula2 <- temp ~ solar
+    tw_formula3 <- temp ~ press + solar
+    tw_formula4 <- temp ~ press + solar + humid
+    tw_formula5 <- temp ~ press + solar + cloud
 
     #' 推定
-    tw_lm1 <- lm(tw_model1, data=tw_subset, y=TRUE)
-    tw_lm2 <- lm(tw_model2, data=tw_subset, y=TRUE)
-    tw_lm3 <- lm(tw_model3, data=tw_subset, y=TRUE)
-    tw_lm4 <- lm(tw_model4, data=tw_subset, y=TRUE)
-    tw_lm5 <- lm(tw_model5, data=tw_subset, y=TRUE)
+    tw_lm1 <- lm(tw_formula1, data=tw_subset, y = TRUE)
+    tw_lm2 <- lm(tw_formula2, data=tw_subset, y = TRUE)
+    tw_lm3 <- lm(tw_formula3, data=tw_subset, y = TRUE)
+    tw_lm4 <- lm(tw_formula4, data=tw_subset, y = TRUE)
+    tw_lm5 <- lm(tw_formula5, data=tw_subset, y = TRUE)
   #+end_src
 
   #+begin_src R :exports none
     #' データの表示
     #' 列名を日本語にして表示する
-    foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
-                     c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
-    (bar <- tw_subset |> rename(all_of(foo)))
+    bar <- tw_subset |> # 列名を日本語に変更
+      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+    #' 記録を残すのであれば以下のようにすればよい
+    #' foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
+    #'                     c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+    #' (bar <- tw_subset |> rename(all_of(foo)))
   #+end_src
   #+begin_src R :eval no :exports none
     View(bar) # 左上ペインに表として表示
@@ -1457,6 +1457,7 @@
   # #+end_src
   # #+html: </font>
       
+
 * 次回の予定
 - 第1回 : 回帰モデルの考え方と推定
 - *第2回 : モデルの評価*
