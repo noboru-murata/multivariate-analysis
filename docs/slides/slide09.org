@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-12-02 16:43:53 mura>
+# Time-stamp: <2023-12-05 11:09:11 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -298,31 +298,131 @@
 
 ** 受信者動作特性曲線
 - *ROC曲線* (receiver operating characteristic curve)
-- 2値判別ルールの一般形
+- 2値判別における判別関数を用いた判定方法の一般形
   #+begin_quote
   \begin{equation}
-    F(x)-c
+    H(x;c) =
     \begin{cases}
-      >0,&C=\text{陽性}\\
-      <0,&C=\text{陰性}
+      \text{陽性},&\delta(x)>c\\
+      \text{陰性},&\text{それ以外}
     \end{cases}
   \end{equation}
   #+end_quote
 - 真陽性率と偽陽性率
   #+begin_quote
   \begin{align}
-    &\mathrm{TPR}(c)=(C=\text{正しく陽性を判別した比率})\\
-    &\mathrm{FPR}(c)=(C=\text{誤って陽性と判別した比率})
+    \mathrm{TPR}(c)
+    &=P(\text{陽性を正しく陽性と判別})\\
+    \mathrm{FPR}(c)&=P(\text{陰性を誤って陽性と判別})\\
+    &=1-P(\text{陰性を正しく陰性と判別})\\
   \end{align}
   #+end_quote
 
 #+reveal: split
-- *ROC曲線* : \(c\)を自由に動かし\(x\)軸に真陽性率，\(y\)軸に偽陽性率を描画したもの
+- *ROC曲線* : \(H(x;c)\)の\(c\)を自由に動かし\(x\)軸に偽陽性率，\(y\)軸に真陽性率を描画したもの
   - 定義から陽性率も偽陽性率もクラス事前分布によらない
   - 一般にROC曲線は\((0,0)\)と\((1,1)\)を結ぶ右肩上りの曲線
-  - 曲線と\(x\)軸で囲まれた面積が広い \(\Leftrightarrow\) 良い判別
+  - 曲線と\(x\)軸で囲まれた面積が広い \(\Leftrightarrow\) 良い判別方法
 - *AUC* : 上記の面積 (area under the ROC curve)
-  - 2値判別ルールの難しさを測る基準の一つ
+  - 2値判別の難しさを測る基準の一つ
+
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 早稲田大学
+** 問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 以下の問に答えなさい
+  - F-値，再現率，適合率の大小関係はどのようになるか
+  - 2値判別(陽性 \(=1\),陰性 \(=0\) とする)において
+    正解ラベル\(Y\)と予測ラベル\(\hat{Y}\)の相関係数を
+    \(TP,FP,TN,FN\)およびデータ数\(N\)
+    を用いて表せ
+
+** 解答例
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 最大最小と平均の関係から以下が成り立つ
+  #+begin_quote
+  \begin{equation}
+    \min(\text{再現率},\text{適合率})
+    \le F_{1}
+    \le\max(\text{再現率},\text{適合率})
+  \end{equation}
+  さらに相加・相乗平均の関係から
+  \begin{equation}
+    F_{1}
+    \le\text{(相乗平均)}
+    \le\text{(相加平均)}
+  \end{equation}
+  も成り立つ
+  #+end_quote
+
+#+reveal: split
+- 相関係数の定義に従って計算すればよい
+  #+begin_quote
+  \begin{equation}
+    \rho
+    =
+    \frac{\mathrm{Cov}(Y,\hat{Y})}
+    {\sqrt{\mathrm{Var}(Y)\mathrm{Var}(\hat{Y})}}
+  \end{equation}
+  #+end_quote
+
+#+reveal: split
+- 例えば分子の共分散は以下のように計算される
+  #+begin_quote
+  \begin{align}
+    \mathrm{Cov}(Y,\hat{Y})
+    &=
+      \mathbb{E}[(Y-\mathbb{E}[Y])(\hat{Y}-\mathbb{E}[\hat{Y}])]\\
+    &=
+      \mathbb{E}[Y\hat{Y}]-\mathbb{E}[Y]\mathbb{E}[\hat{Y}]\\
+    &=
+      \frac{TP}{N}-\frac{TP+FN}{N}\frac{TP+FP}{N}\\
+    &=
+      \frac{TP(TP+FN+FP+TN)}{N^{2}}\\
+    &\qquad-
+      \frac{(TP+FN)(TP+FP)}{N^{2}}\\
+    &=
+      \frac{TP\cdot TN - FP\cdot FN}{N^{2}}
+  \end{align}
+  #+end_quote
+  - 平均は標本平均で置き換えた
+
+#+reveal: split
+- 同様に分母の分散は以下のようになる
+  #+begin_quote
+  \begin{align}
+    \mathrm{Var}(Y)
+    &=
+      \mathbb{E}[Y^{2}]-\mathbb{E}[Y]^{2}\\
+    &=
+      \frac{(TP+FN)(TN+FP)}{N^{2}}\\
+    \mathrm{Var}(\hat{Y})
+    &=
+      \mathbb{E}[\hat{Y}^{2}]-\mathbb{E}[\hat{Y}]^{2}\\
+    &=
+      \frac{(TP+FP)(TN+FN)}{N^{2}}
+  \end{align}
+  #+end_quote
+
+#+reveal: split
+- したがって以下のようにまとめられる
+  #+begin_quote
+  \begin{equation}
+    \rho
+    =
+    \frac{TP\cdot TN-FP\cdot FN}
+    {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
+  \end{equation}
+  #+end_quote
+  - これは Matthews correlation coefficient (MCC)
+    と呼ばれる評価指標の一つである
 
 
 * 解析の事例
@@ -558,104 +658,47 @@
 #+end_src
 #+end_rightcol
 
-
-* 演習
+** ROC曲線の比較
 :PROPERTIES:
-:reveal_background: #fef4f4
+:ID:       2CB3C1A2-92CC-4570-B264-F0169B4A6A7E
 :END:
-# 早稲田大学
-** 問題
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- 以下の問に答えなさい
-  - F-値，再現率，適合率の大小関係はどのようになるか
-  - 2値判別(陽性 \(=1\),陰性 \(=0\) とする)において
-    正解ラベル\(Y\)と予測ラベル\(\hat{Y}\)の相関係数を
-    \(TP,FP,TN,FN\)およびデータ数\(N\)
-    を用いて表せ
+#+begin_src R :file figs/09_lda_roc.png :exports results :results graphics
+  #' 線形判別関数のROC曲線
+  foo <- tw_subset |>
+    bind_cols(tw_lda_fitted[["posterior"]]) |>
+    roc_auc(truth = month, `8`)
+  tw_subset |>
+    bind_cols(tw_lda_fitted[["posterior"]]) |>
+    roc_curve(truth = month, `8`) |> # 8月への判別を陽性とする
+    autoplot() +
+    labs(title = paste("Linear Discriminant : AUC =", signif(foo[3], digits = 3)))
+#+end_src
+#+begin_src R :file figs/09_qda_roc.png :exports results :results graphics
+  #' 2次判別関数のROC曲線
+  bar <- tw_subset |>
+    bind_cols(tw_qda_fitted[["posterior"]]) |>
+    roc_auc(truth = month, `8`)
+  tw_subset |>
+    bind_cols(tw_qda_fitted[["posterior"]]) |>
+    roc_curve(truth = month, `8`) |> # 8月への判別を陽性とする
+    autoplot() +
+    labs(title = paste("Quadratic Discriminant : AUC =", signif(bar[3], digits = 3)))
+#+end_src
+#+begin_leftcol
+#+caption: 線形判別のROC曲線
+#+name: fig:09_lda_roc
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_lda_roc.png]]
+#+end_leftcol
+#+begin_rightcol
+#+caption: 2次判別の混同行列
+#+name: fig:09_qda_roc
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/09_qda_roc.png]]
+#+end_rightcol
 
-** 解答例
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- 最大最小と平均の関係から以下が成り立つ
-  #+begin_quote
-  \begin{equation}
-    \min(\text{再現率},\text{適合率})
-    \le F_{1}
-    \le\max(\text{再現率},\text{適合率})
-  \end{equation}
-  さらに相加・相乗平均の関係から
-  \begin{equation}
-    F_{1}
-    \le\text{(相乗平均)}
-    \le\text{(相加平均)}
-  \end{equation}
-  も成り立つ
-  #+end_quote
-
-#+reveal: split
-- 相関係数の定義に従って計算すればよい
-  #+begin_quote
-  \begin{equation}
-    \rho
-    =
-    \frac{\mathrm{Cov}(Y,\hat{Y})}
-    {\sqrt{\mathrm{Var}(Y)\mathrm{Var}(\hat{Y})}}
-  \end{equation}
-  #+end_quote
-
-#+reveal: split
-- 例えば分子の共分散は以下のように計算される
-  #+begin_quote
-  \begin{align}
-    \mathrm{Cov}(Y,\hat{Y})
-    &=
-      \mathbb{E}[(Y-\mathbb{E}[Y])(\hat{Y}-\mathbb{E}[\hat{Y}])]\\
-    &=
-      \mathbb{E}[Y\hat{Y}]-\mathbb{E}[Y]\mathbb{E}[\hat{Y}]\\
-    &=
-      \frac{TP}{N}-\frac{TP+FN}{N}\frac{TP+FP}{N}\\
-    &=
-      \frac{TP(TP+FN+FP+TN)}{N^{2}}\\
-    &\qquad-
-      \frac{(TP+FN)(TP+FP)}{N^{2}}\\
-    &=
-      \frac{TP\cdot TN - FP\cdot FN}{N^{2}}
-  \end{align}
-  #+end_quote
-  - 平均は標本平均で置き換えた
-
-#+reveal: split
-- 同様に分母の分散は以下のようになる
-  #+begin_quote
-  \begin{align}
-    \mathrm{Var}(Y)
-    &=
-      \mathbb{E}[Y^{2}]-\mathbb{E}[Y]^{2}\\
-    &=
-      \frac{(TP+FN)(TN+FP)}{N^{2}}\\
-    \mathrm{Var}(\hat{Y})
-    &=
-      \mathbb{E}[\hat{Y}^{2}]-\mathbb{E}[\hat{Y}]^{2}\\
-    &=
-      \frac{(TP+FP)(TN+FN)}{N^{2}}
-  \end{align}
-  #+end_quote
-
-#+reveal: split
-- したがって以下のようにまとめられる
-  #+begin_quote
-  \begin{equation}
-    \rho
-    =
-    \frac{TP\cdot TN-FP\cdot FN}
-    {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
-  \end{equation}
-  #+end_quote
-  - これは Matthews correlation coefficient (MCC)
-    と呼ばれる評価指標の一つである
 
 
 * COMMENT 実習
@@ -963,6 +1006,7 @@
 - 既知データの判別に特化している可能性がある
   - 過適応 (over-fitting)
   - 過学習 (over-training)
+- 予測誤差が小さい \(\Leftrightarrow\) 良い判別方法
 
 ** 交叉検証
 - データを訓練データと試験データに分割して用いる
