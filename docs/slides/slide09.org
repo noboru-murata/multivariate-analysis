@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-12-05 11:09:11 mura>
+# Time-stamp: <2023-12-05 11:24:38 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -1343,6 +1343,9 @@
   #+end_src
 
 ** 線形判別の訓練誤差と予測誤差
+:PROPERTIES:
+:ID:       72427A84-486A-497A-A9CD-4B97BD9EBECF
+:END:
 #+begin_leftcol
 #+begin_src R :file figs/09_lda_train_cm.png :exports results :results graphics
   wq_lda_train_cm <- training(wq_split) |>
@@ -1378,6 +1381,9 @@
 #+end_rightcol
 
 ** 2次判別の訓練誤差と予測誤差
+:PROPERTIES:
+:ID:       95088833-1548-41D5-90CD-3674C70A6836
+:END:
 #+begin_leftcol
 #+begin_src R :file figs/09_qda_train_cm.png :exports results :results graphics
   wq_qda_train_cm <- training(wq_split) |>
@@ -1413,6 +1419,9 @@
 #+end_rightcol
 
 ** LOO交叉検証による予測誤差の評価
+:PROPERTIES:
+:ID:       3B6446DA-2C59-4B8B-9F8D-23AF1CA99F22
+:END:
 #+begin_leftcol
 #+begin_src R :file figs/09_lda_loo_cm.png :exports results :results graphics
   wq_lda_loo <- lda(formula = wq_formula, data = training(wq_split),
