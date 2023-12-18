@@ -46,8 +46,8 @@
 
 </section>
 <section>
-<section id="slide-orge5a5e33">
-<h2 id="orge5a5e33">講義の内容</h2>
+<section id="slide-orge7a7cd5">
+<h2 id="orge7a7cd5">講義の内容</h2>
 <ul>
 <li><b>第1回 : 基本的な考え方と階層的方法</b></li>
 <li>第2回 : 非階層的方法と分析の評価</li>
@@ -57,26 +57,37 @@
 </section>
 </section>
 <section>
-<section id="slide-orgb3762f5">
-<h2 id="orgb3762f5">事例</h2>
-<div class="outline-text-2" id="text-orgb3762f5">
+<section id="slide-orgd4c3f38">
+<h2 id="orgd4c3f38">事例</h2>
+<div class="outline-text-2" id="text-orgd4c3f38">
 </div>
 </section>
-<section id="slide-orgd70bb1a">
-<h3 id="orgd70bb1a">実データによる例</h3>
+<section id="slide-orgbe2c413">
+<h3 id="orgbe2c413">実データによる例</h3>
 <ul>
 <li>総務省統計局より取得した都道府県別の社会生活統計指標の一部
 <ul>
 <li>総務省 <a href="https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&amp;cycode=0">https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&amp;cycode=0</a></li>
-<li>データ <a href="https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv">https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv</a></li>
+<li><p>
+データ <a href="https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv">https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv</a>
+</p>
+<pre class="example" id="org3ae65b9">
+Pref : 都道府県名
+Forest : 森林面積割合 (%) 2014年
+Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+Ratio : 全国総人口に占める人口割合 (%) 2015年
+Land : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+Area : 地方区分
+</pre></li>
 
 </ul></li>
 
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org66d1357">
-<h3 id="org66d1357">データの概要</h3>
+<section id="slide-org2128a8f">
+<h3 id="org2128a8f">データの概要</h3>
 <font size=5>
 
 <table style="text-align:center"><caption><strong>社会生活統計指標</strong></caption>
@@ -101,10 +112,10 @@
 </font>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org4c479e7">
-<h3 id="org4c479e7">分析の目的</h3>
+<section id="slide-org429a420">
+<h3 id="org429a420">分析の目的</h3>
 
-<div id="org85cf67c" class="figure">
+<div id="org85637c3" class="figure">
 <p><img src="figs/10_pairs.png" alt="10_pairs.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>散布図</p>
@@ -114,7 +125,7 @@
 </section>
 <section>
 
-<div id="org2884092" class="figure">
+<div id="orgf9fe55e" class="figure">
 <p><img src="figs/10_pcaplot.png" alt="10_pcaplot.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>主成分得点による散布図</p>
@@ -124,7 +135,7 @@
 </section>
 <section>
 
-<div id="org0f190c2" class="figure">
+<div id="orgb34060a" class="figure">
 <p><img src="figs/10_clusplot.png" alt="10_clusplot.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>散布図上のクラスタ構造 (クラスタ分析の概念図)</p>
@@ -133,13 +144,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orgd44fdbc">
-<h2 id="orgd44fdbc">クラスタ分析の考え方</h2>
-<div class="outline-text-2" id="text-orgd44fdbc">
+<section id="slide-orgee1a435">
+<h2 id="orgee1a435">クラスタ分析の考え方</h2>
+<div class="outline-text-2" id="text-orgee1a435">
 </div>
 </section>
-<section id="slide-org91a47de">
-<h3 id="org91a47de">クラスタ分析</h3>
+<section id="slide-orgac2bf93">
+<h3 id="orgac2bf93">クラスタ分析</h3>
 <ul>
 <li><p>
 クラスタ分析 (<b>cluster analysis</b>) の目的
@@ -163,8 +174,8 @@
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org579ac2b">
-<h3 id="org579ac2b">クラスタ分析の考え方</h3>
+<section id="slide-org55c17d3">
+<h3 id="org55c17d3">クラスタ分析の考え方</h3>
 <ul>
 <li>階層的方法
 <ul>
@@ -190,13 +201,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org7610388">
-<h2 id="org7610388">階層的方法</h2>
-<div class="outline-text-2" id="text-org7610388">
+<section id="slide-orgeb09b59">
+<h2 id="orgeb09b59">階層的方法</h2>
+<div class="outline-text-2" id="text-orgeb09b59">
 </div>
 </section>
-<section id="slide-org829e9b8">
-<h3 id="org829e9b8">凝集的クラスタリング</h3>
+<section id="slide-org397d927">
+<h3 id="org397d927">凝集的クラスタリング</h3>
 <ol>
 <li>データ・クラスタ間の距離を定義する
 <ul>
@@ -217,8 +228,8 @@
 </ol>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgd2fa4b3">
-<h3 id="orgd2fa4b3">事例</h3>
+<section id="slide-org9e662df">
+<h3 id="org9e662df">事例</h3>
 <ul>
 <li><p>
 <span style="color:green;">社会生活統計指標の一部(関東)</span>
@@ -227,7 +238,7 @@
 </ul>
 
 
-<div id="org2fdb5a3" class="figure">
+<div id="org0cca619" class="figure">
 <p><img src="figs/10_hclst0.png" alt="10_hclst0.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>凝集的クラスタリング</p>
@@ -237,7 +248,7 @@
 </section>
 <section>
 
-<div id="org77f88e9" class="figure">
+<div id="orgeb77574" class="figure">
 <p><img src="figs/10_hclst1.png" alt="10_hclst1.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>クラスタリングの手続き (その1)</p>
@@ -247,7 +258,7 @@
 </section>
 <section>
 
-<div id="orgd2faf50" class="figure">
+<div id="orgcb3ec73" class="figure">
 <p><img src="figs/10_hclst2.png" alt="10_hclst2.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>クラスタリングの手続き (その2)</p>
@@ -257,7 +268,7 @@
 </section>
 <section>
 
-<div id="org0b6e66c" class="figure">
+<div id="org698d5f3" class="figure">
 <p><img src="figs/10_hclst3.png" alt="10_hclst3.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>クラスタリングの手続き (その3)</p>
@@ -267,7 +278,7 @@
 </section>
 <section>
 
-<div id="org9b50f0a" class="figure">
+<div id="orgcaa7a2b" class="figure">
 <p><img src="figs/10_hclst4.png" alt="10_hclst4.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>クラスタリングの手続き (その4)</p>
@@ -278,7 +289,7 @@
 </section>
 <section>
 
-<div id="org65a6c69" class="figure">
+<div id="org0ca9e9d" class="figure">
 <p><img src="figs/10_hclst5.png" alt="10_hclst5.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>クラスタリングの手続き (その5)</p>
@@ -289,7 +300,7 @@
 </section>
 <section>
 
-<div id="org03df06d" class="figure">
+<div id="org6aa8fc6" class="figure">
 <p><img src="figs/10_hclst6.png" alt="10_hclst6.png" />
 </p>
 <p><span class="figure-number">Figure 10: </span>クラスタリングの手続き (その6)</p>
@@ -299,7 +310,7 @@
 </section>
 <section>
 
-<div id="org318ee16" class="figure">
+<div id="orgd16665e" class="figure">
 <p><img src="figs/10_dendro.png" alt="10_dendro.png" />
 </p>
 <p><span class="figure-number">Figure 11: </span>デンドログラムによるクラスタ構造の表示</p>
@@ -308,13 +319,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orgd1780b1">
-<h2 id="orgd1780b1">データ間の距離</h2>
-<div class="outline-text-2" id="text-orgd1780b1">
+<section id="slide-orgfc827f2">
+<h2 id="orgfc827f2">データ間の距離</h2>
+<div class="outline-text-2" id="text-orgfc827f2">
 </div>
 </section>
-<section id="slide-org9194bf2">
-<h3 id="org9194bf2">データ間の距離</h3>
+<section id="slide-org013576e">
+<h3 id="org013576e">データ間の距離</h3>
 <ul>
 <li><p>
 データ : 変数の値を成分としてもつベクトル
@@ -340,8 +351,8 @@
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org9bb53aa">
-<h3 id="org9bb53aa">Euclide 距離</h3>
+<section id="slide-org2295d9a">
+<h3 id="org2295d9a">Euclid 距離</h3>
 <ul>
 <li>最も一般的な距離</li>
 <li><p>
@@ -360,8 +371,8 @@
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5e5b79e">
-<h3 id="org5e5b79e">Manhattan 距離</h3>
+<section id="slide-org0b3240f">
+<h3 id="org0b3240f">Manhattan 距離</h3>
 <ul>
 <li>後述する Minkowski 距離の \(p=1\) の場合</li>
 <li><p>
@@ -380,8 +391,8 @@
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orge91143f">
-<h3 id="orge91143f">Minkowski 距離</h3>
+<section id="slide-org85952f1">
+<h3 id="org85952f1">Minkowski 距離</h3>
 <ul>
 <li>Euclid 距離を \(p\) 乗に一般化した距離</li>
 <li><p>
@@ -400,8 +411,8 @@
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgfc3b6a4">
-<h3 id="orgfc3b6a4">その他の距離</h3>
+<section id="slide-orgec3411d">
+<h3 id="orgec3411d">その他の距離</h3>
 <ul>
 <li>類似度や乖離度などデータ間に自然に定義されるものを用いることは可能
 <ul>
@@ -416,12 +427,12 @@
 </section>
 </section>
 <section>
-<section id="slide-org05cd3d5" data-background="#fef4f4">
-<h2 id="org05cd3d5">演習</h2>
+<section id="slide-orgefda02f" data-background="#fef4f4">
+<h2 id="orgefda02f">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org7cb1887" data-background="#fef4f4">
-<h3 id="org7cb1887">問題</h3>
+<section id="slide-orgdc433c4" data-background="#fef4f4">
+<h3 id="orgdc433c4">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -446,8 +457,8 @@ Minkowski 距離において
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org8d03860" data-background="#fef4f4">
-<h3 id="org8d03860">解答例</h3>
+<section id="slide-orgd9e4c8c" data-background="#fef4f4">
+<h3 id="orgd9e4c8c">解答例</h3>
 <ul>
 <li><p>
 2変数の実数値関数で以下の3つの条件を満たす
@@ -573,13 +584,13 @@ Minkowski 距離において
 </section>
 </section>
 <section>
-<section id="slide-org6f7ab70">
-<h2 id="org6f7ab70">クラスタ間の距離</h2>
-<div class="outline-text-2" id="text-org6f7ab70">
+<section id="slide-org6c3e5f2">
+<h2 id="org6c3e5f2">クラスタ間の距離</h2>
+<div class="outline-text-2" id="text-org6c3e5f2">
 </div>
 </section>
-<section id="slide-org9e7d0f1">
-<h3 id="org9e7d0f1">クラスタ間の距離</h3>
+<section id="slide-org4018f15">
+<h3 id="org4018f15">クラスタ間の距離</h3>
 <ul>
 <li><p>
 クラスタ : いくつかのデータ点からなる集合
@@ -611,8 +622,8 @@ Minkowski 距離において
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org38dab95">
-<h3 id="org38dab95">最短距離法</h3>
+<section id="slide-orge48377a">
+<h3 id="orge48377a">最短距離法</h3>
 <ul>
 <li><p>
 最も近い対象間の距離を用いる方法
@@ -643,8 +654,8 @@ Minkowski 距離において
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org11bd196">
-<h3 id="org11bd196">最長距離法</h3>
+<section id="slide-orgb171f51">
+<h3 id="orgb171f51">最長距離法</h3>
 <ul>
 <li><p>
 最も遠い対象間の距離を用いる方法
@@ -675,8 +686,8 @@ Minkowski 距離において
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgdb53654">
-<h3 id="orgdb53654">群平均法</h3>
+<section id="slide-orgf40f46a">
+<h3 id="orgf40f46a">群平均法</h3>
 <ul>
 <li><p>
 全ての対象間の平均距離を用いる方法
@@ -711,8 +722,8 @@ Minkowski 距離において
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org1df4952">
-<h3 id="org1df4952">距離計算に関する注意</h3>
+<section id="slide-org8a83200">
+<h3 id="org8a83200">距離計算に関する注意</h3>
 <ul>
 <li>データの性質に応じて距離は適宜使い分ける
 <ul>
@@ -733,12 +744,12 @@ Minkowski 距離において
 </section>
 </section>
 <section>
-<section id="slide-orgb71fc6b" data-background="#fef4f4">
-<h2 id="orgb71fc6b">演習</h2>
+<section id="slide-orgc2726ab" data-background="#fef4f4">
+<h2 id="orgc2726ab">演習</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-orge6fe798" data-background="#fef4f4">
-<h3 id="orge6fe798">問題</h3>
+<section id="slide-org46275c8" data-background="#fef4f4">
+<h3 id="org46275c8">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -776,8 +787,8 @@ Minkowski 距離において
 </ul>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org2261212" data-background="#fef4f4">
-<h3 id="org2261212">解答例</h3>
+<section id="slide-orgb835564" data-background="#fef4f4">
+<h3 id="orgb835564">解答例</h3>
 <ul>
 <li><p>
 定義に従って計算する
@@ -844,17 +855,17 @@ Minkowski 距離において
 </section>
 </section>
 <section>
-<section id="slide-org7f550bc">
-<h2 id="org7f550bc">解析事例</h2>
+<section id="slide-org91a754f">
+<h2 id="org91a754f">解析事例</h2>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org93fa8dd">
-<h3 id="org93fa8dd">都道府県別の社会生活統計指標</h3>
+<section id="slide-org1a26837">
+<h3 id="org1a26837">都道府県別の社会生活統計指標</h3>
 <ul>
 <li><p>
 各データを正規化
 </p>
-<pre class="example" id="orgc6aeb36">
+<pre class="example" id="org4e85812">
 Forest : 森林面積割合 (%) 2014年
 Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
 Ratio : 全国総人口に占める人口割合 (%) 2015年
@@ -869,7 +880,7 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 </section>
 <section>
 
-<div id="org9a9af9d" class="figure">
+<div id="orgdce7082" class="figure">
 <p><img src="figs/10_jsclst.png" alt="10_jsclst.png" />
 </p>
 <p><span class="figure-number">Figure 12: </span>社会生活統計指標のクラスタ分析 (デンドログラム)</p>
@@ -880,15 +891,15 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 </section>
 <section>
 
-<div id="orge29e586" class="figure">
+<div id="org9fd5de9" class="figure">
 <p><img src="figs/10_jscut.png" alt="10_jscut.png" />
 </p>
 <p><span class="figure-number">Figure 13: </span>5分割の例</p>
 </div>
 <div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5b4e964">
-<h3 id="org5b4e964">都道府県別好きなおむすびの具</h3>
+<section id="slide-org5ce1b72">
+<h3 id="org5ce1b72">都道府県別好きなおむすびの具</h3>
 <ul>
 <li>Webアンケート
 <ul>
@@ -907,10 +918,9 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 <li><p>
 アンケート概要 (Q2の結果を利用)
 </p>
-<pre class="example" id="orgeff17c5">
+<pre class="example" id="orgca741f1">
 【応募期間】 2009年1月4日～2009年2月28日
 【応募方法】 インターネット、携帯ウェブ
-
 【内　　容】
  Q1. おむすびを最近１週間に、何個食べましたか？
      そのうち市販のおむすびは何個でしたか？
@@ -920,13 +930,12 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
      A.おにぎり B.おむすび C.その他
  Q4. おむすびといえば、どういう形ですか？
      A.三角形 B.丸形 C.俵形 D.その他
-
 【回答者数】
  男性     9,702人     32.0%
  女性    20,616人     68.0%
  総数    30,318人    100.0%
 </pre></li>
-<li>分析方法 : Hellinger 距離 + 群平均法</li>
+<li>分析方法 : Hellinger距離(確率分布の距離) + 群平均法</li>
 
 </ul>
 
@@ -934,7 +943,7 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 </section>
 <section>
 
-<div id="org3eb97b7" class="figure">
+<div id="orgb008493" class="figure">
 <p><img src="figs/10_ombar.png" alt="10_ombar.png" />
 </p>
 <p><span class="figure-number">Figure 14: </span>データの概要</p>
@@ -944,7 +953,7 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 </section>
 <section>
 
-<div id="orgf47f199" class="figure">
+<div id="org0551589" class="figure">
 <p><img src="figs/10_ompairs.png" alt="10_ompairs.png" />
 </p>
 <p><span class="figure-number">Figure 15: </span>データの散布図</p>
@@ -954,7 +963,7 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 </section>
 <section>
 
-<div id="org973ae58" class="figure">
+<div id="orgf5e1a7e" class="figure">
 <p><img src="figs/10_omclst.png" alt="10_omclst.png" />
 </p>
 <p><span class="figure-number">Figure 16: </span>デンドログラム</p>
@@ -963,8 +972,8 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 </section>
 </section>
 <section>
-<section id="slide-orga2b934e">
-<h2 id="orga2b934e">次回の予定</h2>
+<section id="slide-org3ea2369">
+<h2 id="org3ea2369">次回の予定</h2>
 <ul>
 <li>第1回 : 基本的な考え方と階層的方法</li>
 <li><b>第2回 : 非階層的方法と分析の評価</b></li>
