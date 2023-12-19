@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-12-18 16:13:00 mura>
+# Time-stamp: <2023-12-19 11:21:43 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -42,11 +42,10 @@
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
-    ## if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
-    theme_update(text = element_text(family = "BIZUDGothic-Regular"))
-    ##    else
-    ## theme_update(text = element_text(family = "HiraMaruProN-W4"))
-  }
+    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
+    else
+      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
   library(see)
   options(ggplot2.discrete.colour = function() scale_colour_material(),
           ggplot2.discrete.fill = function() scale_fill_material())
@@ -288,7 +287,7 @@
     \sum_{l=1}^k\frac{1}{n_l}\sum_{i:C(i)=l}\sum_{i':C(i')=l}\|\boldsymbol{x}_i-\boldsymbol{x}_{i'}\|^2
   \end{equation}
   #+end_quote
-  # (\(n_l\) はクラスタ \(l\) に属する個体の総数)
+#  - (\(n_l\) はクラスタ \(l\) に属する個体数)
 
 ** @@latex:@@\(k\)-平均法の性質
 - クラスタ \(l\) に属する個体の平均
@@ -296,7 +295,8 @@
   \begin{equation}
     \bar{\boldsymbol{x}}_l
     =
-    \frac{1}{n_l}\sum_{i:C(i)=l}\boldsymbol{x}_i
+    \frac{1}{n_l}\sum_{i:C(i)=l}\boldsymbol{x}_i,
+    \quad\text{(\(n_l\) はクラスタ \(l\) に属する個体数)}
   \end{equation}
   #+end_quote
 - 損失関数 \(W(C)\) の等価な表現
@@ -1413,10 +1413,12 @@ file:figs/11_jsdendroman.png
       select(ume:etc,jp) |>
       column_to_rownames(var = "jp") |>
       sqrt() # Hellinger dist.用
+    om_sil <- tibble(k = 4:10, sil = NULL)
     cat("シルエット係数\n")
-    for(k in 4:10){
-      cat("k =",k," ")
-      print(pam(om_data_hel, k = k)$silinfo$avg.width, digits = 3)
+    for(i in 1:nrow(om_sil)){
+      k <- om_sil[i,][["k"]]
+      om_sil[i,"sil"] <- round(pam(om_data_hel, k = k)$silinfo$avg.width, digits = 3)
+      cat(om_sil[i,][["sil"]], " (k = ",k,")\n", sep="")
     }
   #+end_src
 
@@ -1427,7 +1429,7 @@ file:figs/11_jsdendroman.png
     silhouette() |>
     autoplot() +
     labs(x = "都道府県(クラスタ)",
-         y = paste("シルエット係数")
+         y = "シルエット係数")
 #+end_src
 #+caption: シルエット係数の分布 (k=7)
 #+name: fig:11_omsil7
@@ -1442,7 +1444,7 @@ file:figs/11_omsil7.png
     silhouette() |>
     autoplot() +
     labs(x = "都道府県(クラスタ)",
-         y = paste("シルエット係数")
+         y = "シルエット係数")
 #+end_src
 #+caption: シルエット係数の分布 (k=8)
 #+name: fig:11_omsil8
@@ -1457,7 +1459,7 @@ file:figs/11_omsil8.png
     silhouette() |>
     autoplot() +
     labs(x = "都道府県(クラスタ)",
-         y = paste("シルエット係数")
+         y = "シルエット係数")
 #+end_src
 #+caption: シルエット係数の分布 (k=9)
 #+name: fig:11_omsil9
@@ -1486,8 +1488,9 @@ file:figs/11_omsil9.png
 
 
 * 次回の予定
-- *第1日 : 時系列の基本モデル*
-- 第2日 : モデルの推定と予測  
+- *第1回 : 時系列の基本モデル*
+- 第2回 : モデルの推定と予測  
+
 
 * Footnotes
 * COMMENT ローカル変数
