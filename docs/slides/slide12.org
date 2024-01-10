@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-01-10 17:38:31 mura>
+# Time-stamp: <2024-01-10 17:40:25 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -16,6 +16,9 @@
 [[file:README.org::第12講]]
 
 * 講義の内容
+:PROPERTIES:
+:ID:       80D38122-6D21-4493-B8F9-B89F29097EFE
+:END:
 # 早稲田大学
 - *第1回 : 時系列の基本モデル*
 - 第2回 : モデルの推定と予測
