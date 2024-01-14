@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-01-10 17:40:25 mura>
+# Time-stamp: <2024-01-14 17:55:51 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -35,7 +35,9 @@
     dplyr::lag(),
     )
   library(tidyverse)
-  library(forecast)
+  library(fable)
+  library(tsibble)
+  library(feasts)
   library(scales)
   library(patchwork)
   library(gt)
@@ -62,6 +64,7 @@
 #+begin_src R :exports none :tangle no
   setwd("~/Desktop/lectures/u-tokyo/autumn/course")
   library(gt)
+  library(patchwork)
 #+end_src
 #+begin_src R :exports none
   ### 第12講 サンプルコード
@@ -72,16 +75,17 @@
     dplyr::lag(),
     )
   library(tidyverse)
-  library(forecast)
-  library(patchwork)
-  library(scales)
+  library(fable)
+  library(tsibble)
+  library(feasts)
 #+end_src
+
 
 * 事例
 ** データの概要
 - 米国の航空機旅客量の変遷データ
   - ~datasets::AirPassengers~ (Rに標準で収録)
-  - 1949年から1960年までの月別
+  - 1949年から1960年までの月別の集計データ
   - 出典
     #+begin_quote
     Box, G. E. P., Jenkins, G. M. and Reinsel, G. C. (1976) Time
@@ -111,7 +115,7 @@
 #+reveal: split
 #+name: fig:12_ap_display
 #+begin_src R :file figs/12_ap_display.png :exports results :results graphics :tangle no
-  ggtsdisplay(AirPassengers)
+  AirPassengers |> as_tsibble() |> gg_tsdisplay()
 #+end_src
 #+caption: 航空機旅客量データと自己・偏自己相関
 #+attr_html: height 100%
@@ -121,7 +125,11 @@
 #+reveal: split
 #+name: fig:12_ap_decompose
 #+begin_src R :file figs/12_ap_decompose.png :exports results :results graphics :tangle no
-  decompose(AirPassengers, "multiplicative") |> autoplot()
+  AirPassengers |> as_tsibble() |>
+    model(stl = STL(value)) |>
+    components() |>
+    autoplot()
+
 #+end_src
 #+caption: 時系列の分解による表現
 #+attr_html: height 100%
@@ -131,11 +139,13 @@
 ** データのモデル化
 #+name: fig:12_ap_arima
 #+begin_src R :file figs/12_ap_arima.png :exports results :results graphics :tangle no
-  tibble(data = AirPassengers,
-         fitted = auto.arima(AirPassengers) |> fitted()) |>
-    ts() |>
-    autoplot(ylab = NULL, main = "ARIMA model") +
-    theme(legend.position = c(0.9,0.1))
+  ap_arima <- AirPassengers |> as_tsibble() |>
+    model(arma = ARIMA(log(value) ~ pdq(d=1) + PDQ(D=1)))
+  ap_arima |>
+    augment() |>
+    autoplot(value) +
+    geom_line(aes(y = .fitted), colour = "red") +
+    labs(title = "ARIMA model") 
 #+end_src
 #+caption: モデルの推定とあてはめ
 #+attr_html: height 100%
@@ -145,12 +155,16 @@
 ** モデルにもとづく予測
 #+name: fig:12_ap_predict
 #+begin_src R :file figs/12_ap_predict.png :exports results :results graphics :tangle no
-  auto.arima(AirPassengers) |> forecast(h = 36) |> autoplot(ylab = NULL)
+  ap_arima |>
+    forecast(h = 36) |>
+    autoplot(AirPassengers) +
+    labs(title = "Forecast from ARIMA model")
 #+end_src
 #+caption: 航空機旅客量の予測
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/12_ap_predict.png]]
+
 
 * 時系列解析の概要
 ** 時系列解析とは
@@ -218,10 +232,10 @@
   K <- 4 # 生成する時系列の数
   ts(replicate(K, # K回以下の関数を実行する
                rnorm(Tmax, sd = 2))) |>
-    autoplot(facets = FALSE) +
-    theme(legend.position = "none") + #' 凡例を削除
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
     labs(title = expression(X[t] == epsilon[t]), # 数式で表示
-         x = "Time", y = "Observation")
+         x = "Time", y = "Observations")
 #+end_src
 #+caption: ホワイトノイズ (標準正規分布)
 #+attr_html: height 100%
@@ -255,10 +269,10 @@
   set.seed(123)
   ts(replicate(K,
                rnorm(Tmax, sd = 2) -1 + 0.05*(1:Tmax))) |>
-    autoplot(facets = FALSE) +
-    theme(legend.position = "none") + 
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
     labs(title = expression(X[t] == -1 + 0.05 * t + epsilon[t]),
-         x = "Time", y = "Observation")
+           x = "Time", y = "Observations")
 #+end_src
 #+caption: トレンドのあるホワイトノイズ
 #+attr_html: height 100%
@@ -288,10 +302,10 @@
   set.seed(123)
   ts(replicate(K,
                cumsum(rnorm(Tmax, sd=2)))) |>
-    autoplot(facets = FALSE) +
-    theme(legend.position = "none") + 
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
     labs(title = expression(X[t] == X[t-1] + epsilon[t]),
-         x = "Time", y = "Observation")
+         x = "Time", y = "Observations")
 #+end_src
 #+caption: ランダムウォーク
 #+attr_html: height 100%
@@ -440,7 +454,7 @@
 
 * COMMENT 実習
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
 :END:
 # 東京大学
 ** R : 時系列データの扱い
@@ -451,14 +465,14 @@
   - *stats* : base R の基本的な統計に関するパッケージ
     - 関数 ~ts()~, ~acf()~ など
     - 標準でインストールされている
-  - *forecast* : 時系列モデルの推定・予測のためのパッケージ
-    - 関数 ~forecast()~, ~Acf()~, ~autoplot()~ など
+  - *fable/tsibble/feasts* : 時系列のためのパッケージ
+    - 関数 ~ARIMA()~, ~ACF()~, ~autoplot()~ など
     #+begin_src R :exports code :tangle no
       #' 最初に一度だけ以下のいずれかを実行しておく
-      #'  - Package タブから forecast をインストール
-      #'  - コンソール上で次のコマンドを実行 'install.packages("forecast")'
+      #'  - Package タブから fable/tsibble/feasts をインストール
+      #'  - コンソール上で次のコマンドを実行 'install.packages(c("fable","tsibble","feasts")'
     #+end_src
-    - ~zoo~, ~xts~ などの時系列パッケージも同時にインストールされる
+    - ~forecast~ パッケージの tidyverse 版
     - ~ggfortify~ でも時系列を扱うことはできるが挙動が微妙に異なる
 
 ** R : 時系列の作成
@@ -512,25 +526,26 @@
 :reveal_background: #fef4f4
 :ID:       10AAB94B-BC6A-4B39-9DFF-A31B8C960646
 :END:
-- 関数 forecast::autoplot()
+- 関数 fabletools::autoplot()
   #+begin_src R :eval no :tangle no
-    autoplot(object,
-      colour = TRUE, facets = FALSE,
-      xlab = "Time", ylab = deparse(substitute(object)),
-      main = NULL, ...)
-    #' 詳細は '?forecast::autoplot.ts()'を参照
+    autoplot(object, .vars = NULL, ...)
+    #' 詳細は '?fabletools::autoplot.tbl_ts()'を参照
   #+end_src
   - [[color:green][典型的な使い方]]
     #+begin_src R :eval no :tangle yes
       #' 単一時系列の描画
       x <- rnorm(240) # 正規分布のホワイトノイズ
-      autoplot(ts(x, start = c(2000,1), frequency = 12)) # 2000年1月から毎月のデータ
+      ts(x, start = c(2000,1), frequency = 12) |> # 2000年1月から毎月のデータ
+          as_tsibble() |> # tsibbleクラスに変換
+          autoplot(value) # value (as_tsibbleによる時系列データの列名の規定値) を描画
       #' 複数の系列を表示する場合
       y <- rt(240, df=4) # t-分布のホワイトノイズ
-      z <- ts(tibble(x,y), start = c(2000,1), frequency = 12) 
-      autoplot(z) # 既定値では同一のグラフで色を変えて描画
-      autoplot(z, facets = TRUE) # facetsを真とすれば個別のグラフ
-      autoplot(z, facets = TRUE, colour = TRUE) # 色を変えることも可能
+      z <- ts(tibble(x,y), start = c(2000,1), frequency = 12)
+      z |> as_tsibble() |>
+          autoplot(value) # 同一のグラフで色を変えて描画
+      z |> as_tsibble() |>
+          autoplot(value) + # 別にする場合は facet を指定すればよい
+          facet_grid(key ~ .)
     #+end_src
 
 ** COMMENT 演習: ホワイトノイズを作ってみる
@@ -559,7 +574,7 @@
 
 ** 練習問題
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
 :ID:       2C8D3738-900E-4637-8FDB-7C6F827F07E9
 :END:
 - 指定された確率過程を生成して図示しなさい
@@ -580,20 +595,22 @@
   #' ホワイトノイズの生成と図示
   x <- ts(rnorm(Tmax, sd=2)) # 分散4=標準偏差2
   #' x <- ts(rt(n, df=4)) # 正規分布ではなく，例えば自由度4のt分布の場合
-  autoplot(x)
+  x |> as_tsibble() |>
+      autoplot(value)
   #' @notes
   #' 色や線種を指定することもできる
-  autoplot(x,
-           colour = "blue",
-           linetype = "dotted",
-           xlab = "Time", ylab = "Observation")
+  x |> as_tsibble() |>
+      autoplot(value,
+               colour = "blue",
+               linetype = "dotted")
   #' ggplot オブジェクトとして修飾することも可能
-  autoplot(x, colour = "blue") +
-    labs(x = "time", y = "observation")
+  x |> as_tsibble() |>
+      autoplot(value, colour = "blue") +
+      labs(x = "time", y = "observation")
 
   #' トレンドのあるホワイトノイズ
   x <- ts(rnorm(Tmax, sd=2) -1 + 0.05*(1:Tmax))
-  autoplot(x)
+  x |> as_tsibble() |> autoplot(value)
 
   #' ランダムウォーク
   #' 定義に則って再帰的に計算する
@@ -601,40 +618,44 @@
   for(t in 2:Tmax) {
     x[t] <- x[t-1] + x[t] # 順に足し合わせていく
   }
-  autoplot(x)
+  x |> as_tsibble() |> autoplot(value)
 
   #' 同じ演算をする関数が用意されている
   x <- ts(cumsum(rnorm(Tmax, sd=2))) # 逐次的に加算を行う関数
-  autoplot(x)
+  x |> as_tsibble() |> autoplot(value)
   #' 書き方はいろいろあるので考えてみて下さい
 
   #' 複数の系列を表示する場合
   #' ホワイトノイズの生成と図示
   z <- ts(replicate(K, # K回以下の関数を実行する
                     rnorm(Tmax, sd = 2)))
-  autoplot(z) # 同じグラフに重ね描きする
-  autoplot(z, show.legend = FALSE) # 凡例を削除 
-  autoplot(z, facets = TRUE) # 各系列を個別に表示する
-  autoplot(z, facets = TRUE,
-           main = "white noise", # タイトル，軸ラベルの指定
-           xlab = "time", ylab = "observation") 
-  autoplot(z, show.legend = FALSE) +
-    labs(title = expression(X[t] == epsilon[t]), # 数式で表示
-         y = "Observations")
+  z |> as_tsibble() |>
+      autoplot(value) # 同じグラフに重ね描きする
+  z |> as_tsibble() |>
+      autoplot(value, show.legend = FALSE) # 凡例を削除 
+  z |> as_tsibble() |>
+      autoplot(value, show.legend = FALSE) +
+      facet_grid(key ~ .) # 各系列を個別に表示する
+  z |> as_tsibble() |>
+      autoplot(value, show.legend = FALSE) +
+      labs(title = expression(X[t] == epsilon[t]), # 数式で表示
+           x = "Time", y = "Observations")
 
   #' トレンドのあるホワイトノイズ
   z <- ts(replicate(K,
                     rnorm(Tmax, sd = 2) -1 + 0.05*(1:Tmax)))
-  autoplot(z, show.legend = FALSE) +
-    labs(title = expression(X[t] == -1 + 0.05 * t + epsilon[t]),
-         y = "Observations")
+  z |> as_tsibble() |>
+      autoplot(value, show.legend = FALSE) +
+      labs(title = expression(X[t] == -1 + 0.05 * t + epsilon[t]),
+           x = "Time", y = "Observations")
 
   #' ランダムウォーク
   z <- ts(replicate(K,
                     cumsum(rnorm(Tmax, sd=2))))
-  autoplot(z, show.legend = FALSE) +
-    labs(title = expression(X[t] == X[t-1] + epsilon[t]),
-         y = "Observations")
+  z |> as_tsibble() |>
+      autoplot(value, show.legend = FALSE) +
+      labs(title = expression(X[t] == X[t-1] + epsilon[t]),
+           x = "Time", y = "Observations")
 #+end_src
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
@@ -677,8 +698,8 @@
     return(x) # 計算結果のxを返す
   }
   ts(replicate(K, my_ar(a = a, epsilon = rnorm(Tmax)))) |>
-    autoplot(facets = FALSE) +
-    theme(legend.position = "none") + 
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
     labs(title = expression(X[t] == 0.67*X[t-1] + 0.26*X[t-2] + epsilon[t]),
          x = "Time", y = "Observation")
 #+end_src
@@ -723,8 +744,8 @@
     return(x)
   }
   ts(replicate(K, my_ma(b = b, epsilon = rnorm(Tmax)))) |>
-    autoplot(facets = FALSE) +
-    theme(legend.position = "none") + 
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
     labs(title = expression(X[t] == 0.44*epsilon[t-1] + 0.08*epsilon[t-2] + epsilon[t]),
          x = "Time", y = "Observation")
 #+end_src
@@ -777,8 +798,8 @@
     return(x)
   }
   ts(replicate(K, my_arma(a = a, b = b, epsilon = rnorm(Tmax)))) |>
-    autoplot(facets = FALSE) +
-    theme(legend.position = "none") + 
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
     labs(title = expression(X[t] == 0.8*X[t-1] - 0.64*X[t-2] - 0.5*epsilon[t-1] + epsilon[t]),
          x = "Time", y = "Observation")
 #+end_src
@@ -933,7 +954,7 @@
 
 * COMMENT 実習
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
 :END:
 # 東京大学
 ** COMMENT 演習: AR過程を作ってみる
@@ -956,7 +977,7 @@
 
 ** 練習問題
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
 :ID:       DB3D47F3-9943-40AF-8F81-DAEB96F54966
 :END:
 - 平均0，分散1のホワイトノイズを用いて，
@@ -983,8 +1004,7 @@
   for(t in 3:Tmax) {
     x[t] <- a %*% x[t-1:2] + epsilon[t] # %*% はベクトルの内積計算
   }
-  x |> ts() |> # tsオブジェクトに変換して表示
-    autoplot(ylab = "Observation")
+  x |> ts() |> as_tsibble() |> autoplot(value)
 
   #' 複数の系列を表示
   my_ar <- function(a, epsilon){ # 以下に一連の手続きを記述して関数化しておく
@@ -999,8 +1019,7 @@
   }
   #' 使い方は a と epsilon(ホワイトノイズ)を指定する
   x <- my_ar(a = c(0.6, 0.3, 0.1), epsilon = rnorm(100))
-  x |> ts() |> 
-    autoplot(ylab = "Observation")
+  x |> ts() |> as_tsibble() |> autoplot(value)
   #' @notes
   #' 関数の引数として Tmax を指定する方法もあるが
   #' 様々な分布のホワイトノイズを試したい場合もあるので
@@ -1009,9 +1028,9 @@
   #' データフレームを作成して表示
   #' (後の演習で作成した時系列データを利用する)
   ts_ar <- ts(replicate(K, my_ar(a = a, epsilon = rnorm(Tmax))))
-  ts_ar |>
-    autoplot(show.legend = FALSE) +
-    labs(title = "AR(2)", y = "Observations")
+  ts_ar |> as_tsibble() |>
+      autoplot(value, show.legend = FALSE) +
+      labs(title = "AR(2)", x = "Time", y = "Observations")
 
   #' MA(2)モデルのシミュレーション
   b <- c(0.44, 0.08) # MAの係数
@@ -1021,8 +1040,7 @@
   for(t in 3:Tmax) {
     x[t] <- b %*% epsilon[t-1:2] + epsilon[t]
   }
-  x |> ts() |>
-    autoplot(ylab = "Observation")
+  x |> ts() |> as_tsibble() |> autoplot(value)
 
   #' 複数の系列を表示
   my_ma <- function(b, epsilon){
@@ -1036,9 +1054,9 @@
     return(x)
   }
   ts_ma <- ts(replicate(K, my_ma(b = b, epsilon = rnorm(Tmax))))
-  ts_ma |>
-    autoplot(show.legend = FALSE) +
-    labs(title = "MA(2)", y = "Observations")
+  ts_ma |> as_tsibble() |>
+      autoplot(value, show.legend = FALSE) +
+      labs(title = "MA(2)", x = "Time", y = "Observations")
 
   #' ARMA(2,1)モデルのシミュレーション
   a <- c(0.8, -0.64) # ARの係数
@@ -1050,8 +1068,7 @@
     x[t] <- a %*% x[t-1:2] + b %*% epsilon[t-1] + epsilon[t]
     #' bは1次元なのでこの問題では b*epsilon でも可
   }
-  x |> ts() |>
-    autoplot(ylab = "Observation")
+  x |> ts() |> as_tsibble() |> autoplot(value)
 
   #' 複数の系列を表示
   my_arma <- function(a, b, epsilon){
@@ -1067,9 +1084,10 @@
     return(x)
   }
   ts_arma <- ts(replicate(K, my_arma(a = a, b = b, epsilon = rnorm(Tmax))))
-  ts_arma |>
-    autoplot(show.legend = FALSE) +
-    labs(title = "ARMA(2,1)", y = "Observation")
+  ts_arma |> as_tsibble() |>
+      autoplot(value, show.legend = FALSE) +
+      labs(title = "ARMA(2,1)", x = "Time", y = "Observations")
+
   #' @notes
   #' ここでは時系列の生成過程を知ってもらうために自作の関数を作成したが，
   #' 関数 stats::arima.sim() や stats::filter() などを利用することもできる
@@ -1214,8 +1232,8 @@
   patch <- list()
   for(i in 1:K) {
     patch[[i]] <-
-      ggAcf(my_ar(a = a, epsilon = rnorm(Tmax)),
-            colour = hue_pal()(K)[i]) +
+      forecast::ggAcf(my_ar(a = a, epsilon = rnorm(Tmax)),
+            colour = scales::hue_pal()(K)[i]) +
       ylim(-0.25,1) +
       labs(title = paste("Series:", i))
   }
@@ -1234,8 +1252,8 @@
   b <- c(0.438, 0.078) # MAの係数
   for(i in 1:K) {
     patch[[i]] <-
-      ggAcf(my_ma(b = b, epsilon = rnorm(Tmax)),
-            colour = hue_pal()(K)[i]) +
+      forecast::ggAcf(my_ma(b = b, epsilon = rnorm(Tmax)),
+            colour = scales::hue_pal()(K)[i]) +
       ylim(-0.2,0.4) +
       labs(title = paste("Series:", i))
   }
@@ -1255,8 +1273,8 @@
   b <- -0.5          # MAの係数
   for(i in 1:K) {
     patch[[i]] <-
-      ggAcf(my_arma(a = a, b = b, epsilon = rnorm(Tmax)),
-            colour = hue_pal()(K)[i]) +
+      forecast::ggAcf(my_arma(a = a, b = b, epsilon = rnorm(Tmax)),
+            colour = scales::hue_pal()(K)[i]) +
       ylim(-0.5,0.3) +
       labs(title = paste("Series:", i))
   }
@@ -1369,30 +1387,31 @@
   - 引数 ~plot~ の真偽で描画(graphics系)・計算のみを制御できる
 
 #+reveal: split
-- 関数 forecast::Acf()
+- 関数 feats::ACF()
   #+begin_src R :eval no :tangle no
-    Acf(x, lag.max = NULL,
-        type = c("correlation", "covariance", "partial"),
-        plot = TRUE, na.action = na.contiguous, demean = TRUE, ...)
-    #' x: 時系列データ
-    #' lag.max: 計算するラグの最大値
+    ACF(.data,  y, ...,  lag_max = NULL,
+      type = c("correlation", "covariance", "partial"),
+      na.action = na.contiguous, demean = TRUE, tapered = FALSE)
+    #' .data: 時系列データ (tsibbleクラス)
+    #' y: 計算対象の列名
     #' type: 標準は相関, 共分散と偏相関を選ぶこともできる
-    #' plot: 描画するか否か
     #' na.action: 欠損値の処理，標準は欠損を含むと計算しない
     #' demean: 共分散の計算において平均を引くか否か
   #+end_src
   - 関数 ~acf()~ とほぼ同様(lag=0を表示しない)に描画(graphics系)・計算を行う
-  - ggplot系の関数 ~ggAcf()~ もある(指定できるオプションは描画以外は同じ)
+  - 返値を ~autoplot()~ に渡せばグラフを描画する
   - [[color:green][典型的な使い方]]
     #+begin_src R :eval no :tangle yes
-      ggAcf(arima.sim(model = list(ar = c(0.8, -0.64),
-                                   ma = c(-0.5)),
-                      n = 200))
+      toy_acf <- arima.sim(model = list(ar = c(0.8, -0.64),
+                                        ma = c(-0.5)),
+                           n = 200) |>
+        as_tsibble() |> ACF(value) 
+      toy_acf |> autoplot()
     #+end_src
     
 ** 練習問題
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
 :ID:       EB3F9793-345E-44E2-B8D9-A4D66898B140
 :END:
 - 以下の問に答えなさい
@@ -1406,70 +1425,27 @@
   #' @practice 自己相関
 #+end_src
 #+begin_src R :eval no :exports none
-  K <- 4 # 表示する時系列の数 (4つを並べて比較する)
+  K <- 4 # 格子状に表示する時系列の数 (4つを並べて比較する)
+
   #' AR(2)モデルの自己相関
-  for(i in 1:K) { # graphics系での描画
-    Acf(ts_ar[,i]) # 時系列オブジェクト名がそのままタイトルになる
-  }
-  #' 引数 main/xlab/ylab などが利用できる
-  for(i in 1:K) { 
-    Acf(ts_ar[,i], 
-        main = paste("AR series", i)) # タイトルはセンタリングされる
-  }
+  ts_ar |> as_tsibble() |> ACF(value) # 計算結果はtsibbleクラスになる
+  ts_ar |> as_tsibble() |> ACF(value) |> autoplot()
+  ts_ar[,1:K] |> as_tsibble() |> ACF(value) |>
+      autoplot() + # 格子状に並べるには facet を指定する
+      facet_wrap(key ~ ., nrow = 2) +
+      labs(title = "AR(2)")
 
   #' MA(2)モデルの自己相関
-  for(i in 1:K) { # ggplot系での描画(こちらを推奨)
-    p <- # ggplot系の関数をblock内で使う場合は明示的にprintする必要がある
-      ggAcf(ts_ma[,i]) 
-    print(p) 
-  }
-  #' ggplotオブジェクトとして修飾できる
-  for(i in 1:K) {
-    p <- 
-      ggAcf(ts_ma[,i],
-            colour = "orange") + # 引数 colour で色を変更
-      ylim(-0.5,1) + # 値域を固定
-      labs(title = paste("MA series", i)) # タイトルを変更
-    print(p) 
-  }
+  ts_ma[,1:K] |> as_tsibble() |> ACF(value) |>
+      autoplot() + 
+      facet_wrap(key ~ ., nrow = 2) +
+      labs(title = "MA(2)")
 
   #' ARMA(2,1)モデルの自己相関
-  for(i in 1:K) { # 計算結果を利用して描画することもできる
-    autoplot(Acf(ts_arma[,i], plot = FALSE)) |>
-      print() # pipe演算子で関数print()に渡しても良い
-  }
-  #' autoplotの出力もggplotオブジェクトとして修飾できる
-  for(i in 1:K) { 
-    (autoplot(Acf(ts_arma[,i], plot = FALSE)) +
-     labs(title = paste("ARMA series", i))) |>
-      print() # 修飾を含めてpipe演算子に渡す場合は()でオブジェクト全体を括る
-  }
-  #' @notes
-  #' 図ごとにグラフを色を変える場合にはcolourオプションを指定する
-  #' ggplot の標準色で色分けするには関数scales::hue_pal()を利用して
-  #' 例えば以下のようにすれば良い
-  for(i in 1:K) {
-    p <- 
-      ggAcf(ts_arma[,i], 
-            ## パレットhue_pal()をK分割してi番目の色を指定する
-            colour = scales::hue_pal()(K)[i]) +
-      labs(main = paste("ARMA series", i))
-    print(p)
-  }
-  #' @notes
-  #' patchworkパッケージを利用してggplotオブジェクトを複数並べることができる
-  library(patchwork)
-  patch <- list()
-  for(i in 1:K) { # ggplotオブジェクトをリストに保存する
-    patch[[i]] <- ggAcf(ts_arma[,i], 
-                        colour = scales::hue_pal()(K)[i])
-  }
-  patch[[1]] + patch[[2]] # 1と2を横に並べる
-  patch[[3]] / patch[[4]] # 3と4を縦に並べる
-  patch[[1]] + patch[[2]] + patch[[3]] + patch[[4]] # 多数あると適宜配分
-  #' オブジェクトが多い場合は関数stats::do.callを利用すればよい
-  do.call("wrap_plots", patch) # patchwork::wrap_plotsがリストpatchを処理
-  do.call("wrap_plots", patch) + plot_layout(ncol = 1) # layoutの指定
+  ts_arma[,1:K] |> as_tsibble() |> ACF(value) |>
+      autoplot() + 
+      facet_wrap(key ~ ., nrow = 2) +
+      labs(title = "ARMA(2,1)")
 #+end_src
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
