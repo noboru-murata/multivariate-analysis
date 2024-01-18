@@ -1,123 +1,83 @@
 #+TITLE: 時系列解析
 #+SUBTITLE: モデルの推定と予測
 #+AUTHOR: 村田 昇
-#+EMAIL: noboru.murata@eb.waseda.ac.jp
+#+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2023-01-16 17:34:28 mura>
-:REVEAL:
-#+INCLUDE: "./reveal.js/org/mycourse.org"
 #+STARTUP: hidestars content indent
+# Time-stamp: <2024-01-18 12:17:24 mura>
+:REVEAL:
+#+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
 :END:
 
 * COMMENT メモ
-- 第3講以降は同じファイルを使うように整理する
-- 同じタイトルの項目にはメモを入れる
-- 演習の内容が異なるので演習は2つ作る形で対応
+[[file:README.org::第13講]]
 
 * 講義の内容
+:PROPERTIES:
+:ID:       5C729A97-F442-48A4-A49D-CB1782F2F0B6
+:END:
 # 早稲田大学
-- 第1日 : 時系列の基本モデル
-- *第2日 : モデルの推定と予測*
+- 第1回 : 時系列の基本モデル
+- *第2回 : モデルの推定と予測*
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 第13講 資料
+#+begin_src R :exports none :tangle no
+  setwd("~/Desktop/lectures/mva/course")
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/mva/course")
+  ### 第13講 資料
+  library(conflicted)
+  conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+    )
+  library(tidyverse)
+  library(fable)
+  library(tsibble)
+  library(feasts)
+  library(patchwork)
+  library(gt)
+  #' 日本語表示・色の設定 (ggplot)
+  theme_set(theme_gray(base_size = 16))
+  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
+    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
+    else
+      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
+  library(see)
+  options(ggplot2.discrete.colour = function() scale_colour_material(),
+          ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
 * COMMENT 講義概要
+:PROPERTIES:
+:ID:       38F6EBC0-B399-4DE1-AA44-338CBEBB0455
+:END:
 # 東京大学
-- 第1日 : 時系列の基本モデル
-- *第2日 : モデルの推定と予測*
+- 第1回 : 時系列の基本モデル
+- *第2回 : モデルの推定と予測*
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 第13講 サンプルコード
-  ###
+#+begin_src R :exports none :tangle no
+  setwd("~/Desktop/lectures/u-tokyo/autumn/course")
+  library(gt)
+  library(patchwork)
 #+end_src
 #+begin_src R :exports none
-  setwd("~/Desktop/lectures/u-tokyo/autumn/course")
+  ### 第13講 サンプルコード
+  library(conflicted)
+  conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+  )
+  library(tidyverse)
+  library(fable)
+  library(tsibble)
+  library(feasts)
 #+end_src
-
-* COMMENT 演習 (早稲田大学雛型)
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-# 早稲田大学
-** 問題
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- について以下を示しなさい．
-  - である．
-    #+begin_quote
-    #+begin_src latex
-    #+end_src
-    #+end_quote
-
-** 解答例
-:PROPERTIES:
-:reveal_background: #fef4f4
-:END:
-- いずれも定義にもとづいて計算すればよい
-  #+begin_quote
-  #+begin_src latex
-  #+end_src
-  #+end_quote
-
-* COMMENT 演習 (東京大学雛型)
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
-# 東京大学
-** R: 概要
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
-- ほげほげな方法:
-  #+begin_src R :eval no
-  #+end_src
-  
-** データセット
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
-- 以下のデータセットを使用します
-  - ~xxx~
-    #+begin_quote
-    データの素性
-    #+end_quote
-    [[https://www.foo.com/]]
-
-** 練習問題
-:PROPERTIES:
-:reveal_background: #f4fef4
-:END:
-- 構成しなさい
-  - データ
-    #+begin_quote
-    formulaなどを与える
-    #+end_quote
-
-#+begin_src R :eval no :exports none :tangle yes
-  ###
-  ### 練習問題 
-  ###
-
-  ## 
-  ## 分析
-  ##
-#+end_src
-
-** COMMENT 講義資料: 概略
-:PROPERTIES:
-:reveal_background: #EEEEFF
-:END:
-- [[./code/bar.r][bar.r]] を確認してみよう
 
 
 * 時系列解析の復習
@@ -136,11 +96,9 @@
 - *確率過程*
   #+begin_quote
   時間を添え字として持つ確率変数列
-  #+begin_src latex
-    \begin{equation}
-      X_{t},\;t=1,\dotsc,T
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t},\;t=1,\dotsc,T
+  \end{equation}
   #+end_quote
 - *弱定常過程* : 以下の性質をもつ確率過程 \(X_t\)
   - \(X_{t}\)の平均は時点\(t\)によらない
@@ -157,16 +115,14 @@
   である確率変数の
   確率分布\(P\)からの
   独立かつ同分布な確率変数列
-  #+begin_src latex
-    \begin{equation}
-      X_{t}
-      =
-      \epsilon_{t},
-      \quad
-      \epsilon_{t}
-      \overset{i.i.d.}{\sim} P
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t}
+    =
+    \epsilon_{t},
+    \quad
+    \epsilon_{t}
+    \overset{i.i.d.}{\sim} P
+  \end{equation}
   #+end_quote
   - 記号 \(\mathrm{WN}(0,\sigma^{2})\) で表記
   - *定常* な確率過程
@@ -175,15 +131,13 @@
 - 定義
   #+begin_quote
   \(\mu,\alpha\) を定数として
-  #+begin_src latex
-    \begin{equation}
-      X_{t}=\mu+\alpha t+\epsilon_{t},
-      \quad
-      \epsilon_{t}
-      \sim
-      \mathrm{WN}(0,\sigma^2)
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t}=\mu+\alpha t+\epsilon_{t},
+    \quad
+    \epsilon_{t}
+    \sim
+    \mathrm{WN}(0,\sigma^2)
+  \end{equation}
   で定義される確率過程
   #+end_quote
   - *非定常* な確率過程
@@ -193,15 +147,13 @@
 - 定義
   #+begin_quote
   \(X_0\) を定数もしくは確率変数として
-  #+begin_src latex
-    \begin{equation}
-      X_{t}=X_{t-1}+\epsilon_{t},
-      \quad
-      \epsilon_{t}
-      \sim
-      \mathrm{WN}(0,\sigma^2)
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t}=X_{t-1}+\epsilon_{t},
+    \quad
+    \epsilon_{t}
+    \sim
+    \mathrm{WN}(0,\sigma^2)
+  \end{equation}
   で帰納的に定義される確率過程
   #+end_quote
   - 分散が時間とともに増加・記憶のあるモデル
@@ -212,15 +164,13 @@
   #+begin_quote
   \(a_1,\dotsc,a_p\)を定数とし，
   \(X_1,\dotsc,X_p\)が初期値として与えられたとき，
-  #+begin_src latex
-    \begin{equation}
-      X_{t}=a_1X_{t-1}+\cdots+a_pX_{t-p}+\epsilon_{t},
-      \quad
-      \epsilon_{t}
-      \sim
-      \mathrm{WN}(0,\sigma^2)
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t}=a_1X_{t-1}+\cdots+a_pX_{t-p}+\epsilon_{t},
+    \quad
+    \epsilon_{t}
+    \sim
+    \mathrm{WN}(0,\sigma^2)
+  \end{equation}
   で帰納的に定義される確率過程
   #+end_quote
   - ランダムウォークの一般化
@@ -232,17 +182,15 @@
   #+begin_quote
   \(b_1,\dotsc,b_q\)を定数とし，
   \(X_1,\dotsc,X_q\)が初期値として与えられたとき
-  #+begin_src latex
-    \begin{equation}
-      X_{t}
-      =
-      b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}+\epsilon_{t},
-      \quad
-      \epsilon_{t}
-      \sim
-      \mathrm{WN}(0,\sigma^2)
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t}
+    =
+    b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}+\epsilon_{t},
+    \quad
+    \epsilon_{t}
+    \sim
+    \mathrm{WN}(0,\sigma^2)
+  \end{equation}
   で定義される確率過程
   #+end_quote
   - 有限長の記憶のあるモデル
@@ -253,20 +201,18 @@
   #+begin_quote
   \(a_1,\dotsc,a_p,b_1,\dotsc,b_q\) を定数とし，
   \(X_1,\dotsc,X_{\max\{p,q\}}\) が初期値として与えられたとき
-  #+begin_src latex
-    \begin{align}
-      X_{t}
-      &=
-	a_1X_{t-1}+\cdots+a_pX_{t-p}\\
-      &\quad+
-	b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}
-	+\epsilon_{t},\\
-      &\quad
-	\epsilon_{t}
-	\sim
-	\mathrm{WN}(0,\sigma^2)
-    \end{align}
-  #+end_src
+  \begin{align}
+    X_{t}
+    &=
+      a_1X_{t-1}+\cdots+a_pX_{t-p}\\
+    &\quad+
+      b_1\epsilon_{t-1}+\cdots+b_q\epsilon_{t-q}
+      +\epsilon_{t},\\
+    &\quad
+      \epsilon_{t}
+      \sim
+      \mathrm{WN}(0,\sigma^2)
+  \end{align}
   で帰納的に定まる確率過程
   #+end_quote
   - AR・MAモデルの一般化・基本的な時系列モデル
@@ -277,148 +223,223 @@
   - \(X_{t}\) と \(X_{t+h}\) の共分散は時点\(t\)によらずラグ\(h\)のみで定まる
     #+begin_quote
     *自己共分散* (定常過程の性質よりラグは\(h\ge0\)を考えればよい)
-    #+begin_src latex
-      \begin{equation}
-	\gamma(h)
-	=
-	\mathrm{Cov}(X_{t},X_{t+h})
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \gamma(h)
+      =
+      \mathrm{Cov}(X_{t},X_{t+h})
+    \end{equation}
     #+end_quote
   - \(X_{t}\) と \(X_{t+h}\) の相関も\(t\)によらずラグ\(h\)のみで定まる
     #+begin_quote
     *自己相関*
-    #+begin_src latex
-      \begin{equation}
-	\rho(h)
-	=\gamma(h)/\gamma(0)
-	=
-	\mathrm{Cov}(X_{t},X_{t+h})/\mathrm{Var}(X_{t})
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \rho(h)
+      =\gamma(h)/\gamma(0)
+      =
+      \mathrm{Cov}(X_{t},X_{t+h})/\mathrm{Var}(X_{t})
+    \end{equation}
     #+end_quote
 - 異なる時点間での観測データの従属関係を要約するための最も基本的な統計量
 
+** 標本自己共分散・標本自己相関
+- 観測データ \(X_1,\dotsc,X_{T}\) からの推定
+  - ラグ\(h\)の自己共分散の推定 : 標本自己共分散
+    #+begin_quote
+    \begin{equation}
+      \hat\gamma(h)
+      =
+      \frac{1}{T}\sum_{t=1}^{T-h}(X_{t}-\bar{X})(X_{t+h}-\bar{X})
+    \end{equation}
+    #+end_quote
+    \(\bar{X}=\frac{1}{T}\sum_{t=1}^TX_{t}\) は標本平均
+  - ラグ\(h\)での自己相関の推定 : 標本自己相関
+    #+begin_quote
+    \begin{equation}
+      \hat\gamma(h)/\hat\gamma(0)
+      =
+      \frac{\sum_{t=1}^{T-h}(X_{t}-\bar{X})(X_{t+h}-\bar{X})}{\sum_{t=1}^T(X_{t}-\bar{X})^2}
+    \end{equation}
+    #+end_quote
+
 #+reveal: split
-#+begin_src R :file figs/13_ar.png :exports results :results graphics :tangle yes
-  ## ARMA過程を生成する関数
-  myARMA <- function(a, b, epsilon){
-    p <- length(a)
-    q <- length(b)
-    r <- max(p,q)
-    Tmax <- length(epsilon) # 時系列の長さを取得
-    x <- double(Tmax)
-    x[1:r] <- epsilon[1:r]
-    for(t in (r+1):Tmax) {
-      x[t] <- a %*% x[t-1:p] + b %*% epsilon[t-1:q] + epsilon[t]
-    }
-    return(x)
-  }
-  
-  set.seed(1234) # 乱数のシード
+#+begin_src R :file figs/13_ar.png :exports results :results graphics :tangle no
+  #' 時系列の生成
+  set.seed(12345) # 乱数のシード
   Tmax <- 500 # 時系列の長さ t=1,..,Tmax
   K <- 4 # 表示する時系列の数 (4つを並べて比較する)
-  library(RColorBrewer)
-  my_col <- brewer.pal(K,"Dark2")
-  df.ar <- ts(replicate(K, myARMA(a=c(0.67, 0.26), b=c(0),
-				  epsilon=rnorm(Tmax))))
-  df.ma <- ts(replicate(K, myARMA(a=c(0), b=c(0.44, 0.08),
-				  epsilon=rnorm(Tmax))))
-  df.arma <- ts(replicate(K, myARMA(a=c(0.8, -0.64), b=c(-0.5),
-				    epsilon=rnorm(Tmax))))
-  
-  plot(x=df.ar, plot.type="single",
-       ylab="value", col=my_col,
-       main=expression(X[t] == 0.67*X[t-1] + 0.26*X[t-2] + epsilon[t]))
+  ts_ar <- ts(replicate(K, arima.sim(list(ar = c(0.67, 0.26)),
+                                     n = Tmax,
+                                     innov = rnorm(Tmax))))
+  ts_ma <- ts(replicate(K, arima.sim(list(ma = c(0.44, -0.28)),
+                                     n = Tmax,
+                                     innov = rnorm(Tmax))))
+  ts_arma <- ts(replicate(K, arima.sim(list(ar = c(0.8, -0.64),
+                                            ma = c(-0.5)),
+                                     n = Tmax,
+                                     innov = rnorm(Tmax))))
+  ts_arima <- ts(replicate(K, arima.sim(list(order = c(2,1,1),
+                                             ar = c(0.8, -0.64),
+                                             ma = c(-0.5)),
+                                     n = Tmax,
+                                     innov = rnorm(Tmax))))
+  #' AR(2)の描画
+  ts_ar |>
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
+    labs(title = expression(X[t] == 0.67*X[t-1] + 0.26*X[t-2] + epsilon[t]),
+         x = "Time", y = "Observation")
 #+end_src
-   
-#+CAPTION: 同じモデルに従うAR過程の例
-#+NAME: fig:13_ar
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: 同じモデルに従うAR過程の例
+#+name: fig:13_ar
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_ar.png]]
 
 #+reveal: split
-#+begin_src R :file figs/13_aracf.png :exports results :results graphics :tangle yes
-  ### AR(2)モデルの自己相関
-  orgpar <- par(mfrow=c(2,2)) # グラフを2x2(行方向の順)に並べる
+#+begin_src R :file figs/13_aracf.png :exports results :results graphics :tangle no
+  #' AR(2)モデルの自己相関
+  patch <- list()
   for(i in 1:K) {
-    acf(df.ar[,i], col=my_col[i], main=paste("AR series",i))
+    patch[[i]] <-
+      forecast::ggAcf(ts_ar[,i],
+            colour = scales::hue_pal()(K)[i]) +
+      ylim(-0.25,1) +
+      labs(title = paste("Series:", i))
   }
-  par(orgpar)
+  do.call("wrap_plots", patch)
 #+end_src
-
-#+CAPTION: AR過程の自己相関
-#+NAME: fig:13_aracf
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: AR過程の自己相関
+#+name: fig:13_aracf
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_aracf.png]]
    
 #+reveal: split
-#+begin_src R :file figs/13_ma.png :exports results :results graphics :tangle yes
-  plot(x=df.ma, plot.type="single",
-       ylab="value", col=my_col,
-       main=expression(X[t] == 0.44*epsilon[t-1] + 0.08*epsilon[t-2] + epsilon[t]))
+#+begin_src R :file figs/13_ma.png :exports results :results graphics :tangle no
+  #' MA(2)の描画
+  ts_ma |>
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
+    labs(title = expression(X[t] == 0.44*epsilon[t-1] + 0.08*epsilon[t-2] + epsilon[t]),
+         x = "Time", y = "Observation")
 #+end_src
-
-#+CAPTION: 同じモデルに従うMA過程の例
-#+NAME: fig:13_ma
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: 同じモデルに従うMA過程の例
+#+name: fig:13_ma
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_ma.png]]
 
 #+reveal: split
-#+begin_src R :file figs/13_maacf.png :exports results :results graphics :tangle yes
-  ### MA(2)モデルの自己相関
-  orgpar <- par(mfrow=c(2,2))
+#+begin_src R :file figs/13_maacf.png :exports results :results graphics :tangle no
+  #' MA(2)モデルの自己相関
   for(i in 1:K) {
-      acf(df.ma[,i], col=my_col[i], main=paste("MA series",i))
+    patch[[i]] <-
+      forecast::ggAcf(ts_ma[,i],
+            colour = scales::hue_pal()(K)[i]) +
+      ylim(-0.2,0.4) +
+      labs(title = paste("Series:", i))
   }
-  par(orgpar)
+  do.call("wrap_plots", patch)
 #+end_src
-   
-#+CAPTION: MA過程の自己相関
-#+NAME: fig:13_maacf
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: MA過程の自己相関
+#+name: fig:13_maacf
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_maacf.png]]
 
 #+reveal: split
-#+begin_src R :file figs/13_arma.png :exports results :results graphics :tangle yes
-  plot(x=df.arma, plot.type="single",
-       ylab="value", col=my_col,
-       main=expression(X[t] == 0.8*X[t-1] - 0.64*X[t-2] - 0.5*epsilon[t-1] + epsilon[t]))
+#+begin_src R :file figs/13_arma.png :exports results :results graphics :tangle no
+  #' ARMA(2,1)の描画
+  ts_arma |>
+    as_tsibble() |>
+    autoplot(value, show.legend = FALSE) +
+    labs(title = expression(X[t] == 0.8*X[t-1] - 0.64*X[t-2] - 0.5*epsilon[t-1] + epsilon[t]),
+         x = "Time", y = "Observation")
 #+end_src
-
-#+CAPTION: 同じモデルに従うARMA過程の例
-#+NAME: fig:13_arma
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: 同じモデルに従うARMA過程の例
+#+name: fig:13_arma
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_arma.png]]
 
 #+reveal: split
-#+begin_src R :file figs/13_armaacf.png :exports results :results graphics :tangle yes
-  ### ARMA(2,1)モデルの自己相関
-  orgpar <- par(mfrow=c(2,2))
+#+begin_src R :file figs/13_armaacf.png :exports results :results graphics :tangle no
+  #' ARMA(2,1)モデルの自己相関
   for(i in 1:K) {
-      acf(df.arma[,i], col=my_col[i], main=paste("ARMA series",i))
+    patch[[i]] <-
+      forecast::ggAcf(ts_arma[,i],
+            colour = scales::hue_pal()(K)[i]) +
+      ylim(-0.5,0.3) +
+      labs(title = paste("Series:", i))
   }
-  par(orgpar)
+  do.call("wrap_plots", patch)
 #+end_src
-
-#+CAPTION: ARMA過程の自己相関
-#+NAME: fig:13_armaacf
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: ARMA過程の自己相関
+#+name: fig:13_armaacf
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_armaacf.png]]
    
    
 * COMMENT 実習(復習)
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 関数 ~acf()~
+** R : 自己相関・自己共分散の計算・描画
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       53DE1CC8-0CB7-45DE-9186-B05CDAD42779
+:END:
+- 関数 feats::ACF()
+  #+begin_src R :eval no :tangle no
+    ACF(.data,  y, ...,  lag_max = NULL,
+      type = c("correlation", "covariance", "partial"),
+      na.action = na.contiguous, demean = TRUE, tapered = FALSE)
+    #' .data: 時系列データ (tsibbleクラス)
+    #' y: 計算対象の列名
+    #' type: 標準は相関, 共分散と偏相関を選ぶこともできる
+    #' na.action: 欠損値の処理，標準は欠損を含むと計算しない
+    #' demean: 共分散の計算において平均を引くか否か
+  #+end_src
+  - 関数 ~acf()~ と違いlag=0を表示しない
+  - 返値を ~autoplot()~ に渡せばグラフを描画する
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :eval no :tangle yes
+      toy_acf <- arima.sim(model = list(ar = c(0.8, -0.64),
+                                        ma = c(-0.5)),
+                           n = 200) |>
+        as_tsibble() |> ACF(value) 
+      toy_acf |> autoplot()
+    #+end_src
+** COMMENT R : 自己相関・自己共分散の計算・描画
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       53DE1CC8-0CB7-45DE-9186-B05CDAD42779
+:END:
+- 関数 forecast::ggAcf()
+  #+begin_src R :eval no :tangle no
+    ggAcf(x, lag.max = NULL,
+        type = c("correlation", "covariance", "partial"),
+        plot = TRUE, na.action = na.contiguous, demean = TRUE, ...)
+    #' x: 時系列データ
+    #' lag.max: 計算するラグの最大値
+    #' type: 標準は相関, 共分散と偏相関を選ぶこともできる
+    #' plot: 描画するか否か
+    #' na.action: 欠損値の処理，標準は欠損を含むと計算しない
+    #' demean: 共分散の計算において平均を引くか否か
+  #+end_src
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise 自己相関・自己共分散の計算・描画
+    #+end_src
+    #+begin_src R :eval no :tangle yes
+      ggAcf(arima.sim(model = list(ar = c(0.8, -0.64),
+                                   ma = c(-0.5)),
+                      n = 200))
+    #+end_src
+    
+** COMMENT R : 関数 ~acf()~
 - 自己相関・自己共分散の計算
   #+begin_src R :eval no
     acf(x, lag.max = NULL,
@@ -435,64 +456,56 @@
 
 ** 練習問題
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
+:ID:       7158EAD0-BAC6-4447-9EEC-17643CFB43F0
 :END:
 - 以下の問に答えなさい
   - 同じAR過程のモデルから生成した時系列の自己相関を比較しなさい
-    (前の練習問題を利用すればよい)
+    (前回の練習問題を利用すればよい)
   - MA過程についても同様な比較を行いなさい
   - ARMA過程についても同様な比較を行いなさい
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 自己相関
-  ### 
-  
-  ## ARMA過程を生成する関数
-  myARMA <- function(a, b, epsilon){
-      p <- length(a)
-      q <- length(b)
-      r <- max(p,q)
-      Tmax <- length(epsilon) # 時系列の長さを取得
-      x <- double(Tmax)
-      x[1:r] <- epsilon[1:r]
-      for(t in (r+1):Tmax) {
-          x[t] <- a %*% x[t-1:p] + b %*% epsilon[t-1:q] + epsilon[t]
-      }
-      return(x)
-  }
-  
-  Tmax <- 200 # 時系列の長さ t=1,..,Tmax
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 自己相関
+#+end_src
+#+begin_src R :eval no :exports none
+  #' 前回作成した自作の関数 my_arma() を利用しても良いが
+  #' 今回は関数 arima.sim() を用いた方法を紹介する
+  Tmax <- 500 # 時系列の長さ t=1,..,Tmax
   K <- 4 # 表示する時系列の数 (4つを並べて比較する)
-  library(RColorBrewer)
-  my_col <- brewer.pal(K,"Dark2") 
-  df.ar <- ts(replicate(K, myARMA(a=c(0.67, 0.26), b=c(0),
-                                  epsilon=rnorm(Tmax))))
-  df.ma <- ts(replicate(K, myARMA(a=c(0), b=c(0.44, 0.08),
-                                  epsilon=rnorm(Tmax))))
-  df.arma <- ts(replicate(K, myARMA(a=c(0.8, -0.64), b=c(-0.5),
-                                    epsilon=rnorm(Tmax))))
-  
-  ### AR(2)モデルの自己相関
-  orgpar <- par(mfrow=c(2,2)) # グラフを2x2(行方向の順)に並べる
-  for(i in 1:K) {
-      acf(df.ar[,i], col=my_col[i], main=paste("AR series",i))
-  }
-  par(orgpar) # もとのparの内容に戻す
-  
-  ### MA(2)モデルの自己相関
-  orgpar <- par(mfrow=c(2,2))
-  for(i in 1:K) {
-      acf(df.ma[,i], col=my_col[i], main=paste("MA series",i))
-  }
-  par(orgpar) # もとのparの内容に戻す
-  
-  ### ARMA(2,1)モデルの自己相関
-  orgpar <- par(mfrow=c(2,2))
-  for(i in 1:K) {
-      acf(df.arma[,i], col=my_col[i], main=paste("ARMA series",i))
-  }
-  par(orgpar) # もとのparの内容に戻す
+  ts_ar <- ts(replicate(K, arima.sim(list(ar = c(0.67, 0.26)),
+                                     n = Tmax,
+                                     innov = rnorm(Tmax))))
+  ts_ma <- ts(replicate(K, arima.sim(list(ma = c(0.44, -0.28)),
+                                     n = Tmax,
+                                     innov = rnorm(Tmax))))
+  ts_arma <- ts(replicate(K, arima.sim(list(ar = c(0.8, -0.64),
+                                            ma = c(-0.5)),
+                                       n = Tmax,
+                                       innov = rnorm(Tmax))))
+
+  #' AR(2)モデルの自己相関
+  ts_ar |> as_tsibble() |> ACF(value) |> autoplot()
+  ts_ar |> as_tsibble() |> ACF(value) |>
+      autoplot() + # 格子状に並べるには facet を指定する
+      facet_wrap(key ~ .) + # 適宜調整してくれる
+      labs(title = "AR(2)")
+
+  #' MA(2)モデルの自己相関
+  ts_ma |> as_tsibble() |> ACF(value) |>
+      autoplot() + 
+      facet_wrap(key ~ .) +
+      labs(title = "MA(2)")
+
+  #' ARMA(2,1)モデルの自己相関
+  ts_arma |> as_tsibble() |> ACF(value) |>
+      autoplot() + 
+      facet_wrap(key ~ .) +
+      labs(title = "ARMA(2,1)")
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
@@ -502,102 +515,93 @@
   - \(X_{t}\) と \(X_{t+h}\) の共分散は時点\(t\)によらずラグ\(h\)のみで定まる
     #+begin_quote
     *自己共分散* 
-    #+begin_src latex
-      \begin{equation}
-	\gamma(h)
-	=
-	\mathrm{Cov}(X_{t},X_{t+h})
-	=
-	\mathbb{E}[X_{t}X_{t+h}]
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \gamma(h)
+      =
+      \mathrm{Cov}(X_{t},X_{t+h})
+      =
+      \mathbb{E}[X_{t}X_{t+h}]
+    \end{equation}
     #+end_quote
   - \(X_{t}\)と\(X_{t+h}\)の相関も\(t\)によらずラグ\(h\)のみで定まる
     #+begin_quote
     *自己相関係数*
-    #+begin_src latex
-      \begin{equation}
-	\rho(h)
-	=\mathrm{Cov}(X_{t},X_{t+h})/\mathrm{Var}(X_{t})
-	=\gamma(h)/\gamma(0)
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \rho(h)
+      =\mathrm{Cov}(X_{t},X_{t+h})/\mathrm{Var}(X_{t})
+      =\gamma(h)/\gamma(0)
+    \end{equation}
     #+end_quote
 
 ** 自己共分散とARモデル
 - AR(p)モデル : 
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      X_{t}
-      =
-      a_{1}X_{t-1}+a_{2}X_{t-2}+\dotsb+a_{p}X_{t-p}+\epsilon_{t}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t}
+    =
+    a_{1}X_{t-1}+a_{2}X_{t-2}+\dotsb+a_{p}X_{t-p}+\epsilon_{t}
+  \end{equation}
   #+end_quote
 - 係数と自己共分散の関係
   # ラグ\(h>0\)の自己共分散
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \gamma(h)
-      &=
-	\mathbb{E}[X_{t}X_{t+h}]\\
-      &=
-	\mathbb{E}[X_{t}(a_{1}X_{t+h-1}+\dotsb+a_{p}X_{t+h-p}+\epsilon_{t+h})]\\
-      &=
-	a_{1}\mathbb{E}[X_{t}X_{t+h-1}]
-	+\dotsb
-	+a_{p}\mathbb{E}[X_{t}X_{t+h-p}]
-	+\mathbb{E}[X_{t}\epsilon_{t+h}]\\
-      &=
-	a_{1}\gamma(h-1)
-	+\dotsb+
-	a_{p}\gamma(h-p)
-    \end{align}
-  #+end_src
+  \begin{align}
+    \gamma(h)
+    &=
+      \mathbb{E}[X_{t}X_{t+h}]\\
+    &=
+      \mathbb{E}[X_{t}(a_{1}X_{t+h-1}+\dotsb+a_{p}X_{t+h-p}+\epsilon_{t+h})]\\
+    &=
+      a_{1}\mathbb{E}[X_{t}X_{t+h-1}]
+      +\dotsb
+      +a_{p}\mathbb{E}[X_{t}X_{t+h-p}]
+      +\mathbb{E}[X_{t}\epsilon_{t+h}]\\
+    &=
+      a_{1}\gamma(h-1)
+      +\dotsb+
+      a_{p}\gamma(h-p)
+  \end{align}
   #+end_quote
 
 ** Yule-Walker方程式
 - \(1\le h\le p\) を考えると以下の関係が成り立つ
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      \begin{pmatrix}
-	\gamma(1)\\
-	\gamma(2)\\
-	\vdots\\
-	\gamma(p)
-      \end{pmatrix}
-      =
-      \begin{pmatrix}
-	\gamma(0)&\gamma(-1)&\dots&\gamma(-p+1)\\
-	\gamma(1)&\gamma(0)&\dots&\gamma(-p+2)\\
-	\vdots&\vdots&\ddots&\vdots\\
-	\gamma(p-1)&\gamma(p-2)&\dots&\gamma(0)
-      \end{pmatrix}
-      \begin{pmatrix}
-	a_{1}\\
-	a_{2}\\
-	\vdots\\
-	a_{p}
-      \end{pmatrix}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \begin{pmatrix}
+      \gamma(1)\\
+      \gamma(2)\\
+      \vdots\\
+      \gamma(p)
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      \gamma(0)&\gamma(-1)&\dots&\gamma(-p+1)\\
+      \gamma(1)&\gamma(0)&\dots&\gamma(-p+2)\\
+      \vdots&\vdots&\ddots&\vdots\\
+      \gamma(p-1)&\gamma(p-2)&\dots&\gamma(0)
+    \end{pmatrix}
+    \begin{pmatrix}
+      a_{1}\\
+      a_{2}\\
+      \vdots\\
+      a_{p}
+    \end{pmatrix}
+  \end{equation}
   #+end_quote
   - 行列は Toeplitz 行列と呼ばれる
   - 行列が正則ならばARの係数は一意に求まる
 
 ** 偏自己相関
+:PROPERTIES:
+:ID:       F1F5B535-A2CF-487F-8336-BC172FCAAFF9
+:END:
 - AR(p)モデル
   #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      X_{t}
-      =
-      a_{1}X_{t-1}+a_{2}X_{t-2}+\dotsb+a_{p}X_{t-p}+\epsilon_{t}
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t}
+    =
+    a_{1}X_{t-1}+a_{2}X_{t-2}+\dotsb+a_{p}X_{t-p}+\epsilon_{t}
+  \end{equation}
   #+end_quote
   - ラグ\(p\)の *偏自己相関係数*
     #+begin_quote
@@ -607,66 +611,70 @@
   - ラグ\(p\)の特別な *自己相関係数* 
     #+begin_quote
     \(a_{1}=a_{2}=\dotsb=a_{p-1}=0\)のときの\(a_{p}\) (*特殊なモデルにおける解釈*)
-    #+begin_src latex
-      \begin{equation}
-	\mathbb{E}[X_{t}X_{t+p}]=a_{p}\mathbb{E}[X_{t}X_{t}]
-	\;\Rightarrow\; \gamma(p)=a_{p}\gamma(0)
-	\;\Rightarrow\; \rho(p)=a_{p}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      \mathbb{E}[X_{t}X_{t+p}]=a_{p}\mathbb{E}[X_{t}X_{t}]
+      \;\Rightarrow\; \gamma(p)=a_{p}\gamma(0)
+      \;\Rightarrow\; \rho(p)=a_{p}
+    \end{equation}
     #+end_quote
 
 #+reveal: split
-#+begin_src R :file figs/13_arpacf.png :exports results :results graphics :tangle yes
-  ### AR(2)モデルの偏自己相関
-  orgpar <- par(mfrow=c(2,2)) # グラフを2x2(行方向の順)に並べる
+#+begin_src R :file figs/13_arpacf.png :exports results :results graphics :tangle no
+  #' AR(2)モデルの偏自己相関
   for(i in 1:K) {
-      pacf(df.ar[,i], col=my_col[i], main=paste("AR series",i))
+    patch[[i]] <-
+      forecast::ggPacf(ts_ar[,i], 
+                       colour = scales::hue_pal()(K)[i]) +
+      ylim(-0.2,1) +
+      labs(title = paste("AR series:", i))
   }
-  par(orgpar)
+  do.call("wrap_plots", patch)
 #+end_src
-
-#+CAPTION: AR過程の偏自己相関
-#+NAME: fig:13_arpacf
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: AR過程の偏自己相関
+#+name: fig:13_arpacf
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_arpacf.png]]
 
 #+reveal: split
-#+begin_src R :file figs/13_mapacf.png :exports results :results graphics :tangle yes
-  ### MA(2)モデルの偏自己相関
-  orgpar <- par(mfrow=c(2,2))
+#+begin_src R :file figs/13_mapacf.png :exports results :results graphics :tangle no
+  #' MA(2)モデルの偏自己相関
   for(i in 1:K) {
-      pacf(df.ma[,i], col=my_col[i], main=paste("MA series",i))
+    patch[[i]] <-
+      forecast::ggPacf(ts_ma[,i], 
+                       colour = scales::hue_pal()(K)[i]) +
+      ylim(-0.4,0.4) +
+      labs(title = paste("MA series:", i))
   }
-  par(orgpar)
+  do.call("wrap_plots", patch)
 #+end_src
-
-#+CAPTION: MA過程の偏自己相関
-#+NAME: fig:13_mapacf
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+caption: MA過程の偏自己相関
+#+name: fig:13_mapacf
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_mapacf.png]]
 
 #+reveal: split
-#+begin_src R :file figs/13_armapacf.png :exports results :results graphics :tangle yes
-  ### ARMA(2,1)モデルの偏自己相関
-  orgpar <- par(mfrow=c(2,2))
+#+begin_src R :file figs/13_armapacf.png :exports results :results graphics :tangle no
+  #' ARMA(2,1)モデルの偏自己相関
   for(i in 1:K) {
-      pacf(df.arma[,i], col=my_col[i], main=paste("ARMA series",i))
+    patch[[i]] <-
+      forecast::ggPacf(ts_arma[,i], 
+                       colour = scales::hue_pal()(K)[i]) +
+      ylim(-0.6,0.4) +
+      labs(title = paste("ARMA series:", i))
   }
-  par(orgpar)
+  do.call("wrap_plots", patch)
 #+end_src
-
-#+CAPTION: ARMA過程の偏自己相関
-#+NAME: fig:13_armapacf
-#+ATTR_HTML: height 100%
-#+ATTR_LATEX: :width 0.6\linewidth
+#+name: fig:13_armapacf
+#+caption: ARMA過程の偏自己相関
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
 [[file:figs/13_armapacf.png]]
    
 ** モデルの推定に関する補足
 - ARMAモデルの推定方法は主に以下の3つ
-  - Yule-Walker方程式
+  - Yule-Walker方程式 (AR過程)
   - 最小二乗
     - 予測誤差の平方和の最小化
     - 回帰と同じだが，従属系列のため多重共線性に注意
@@ -674,6 +682,30 @@
     - WNの分布を仮定して同時尤度関数を設定
     - 非線形最適化を行う
 - 一般にモデルは近似なので，どの推定が良いかは問題による
+** 非定常過程の変換
+- 定常過程とみなせるように変換して分析
+  - 階差の利用
+    #+begin_quote
+    \begin{equation}
+      X_{t}=X_{t-1}+\epsilon_{t}
+      \quad\Rightarrow\quad
+      Y_{t}=X_{t}-X_{t-1}=\epsilon_{t}
+    \end{equation}
+    #+end_quote
+    - ランダムウォーク : 階差をとるとホワイトノイズ(定常過程)
+    - *ARIMA過程* : 階差をとるとARMA過程になる確率過程 
+  - 対数変換の利用
+    #+begin_quote
+    \begin{equation}
+      X_{t}=(1+\epsilon_{t})X_{t-1}
+      \quad\Rightarrow\quad
+      Y_{t}=\log(X_{t})-\log(X_{t-1})
+      =\log(1+\epsilon_{t})
+      \simeq\epsilon_{t}
+    \end{equation}
+    #+end_quote
+    - 対数変換と階差で微小な比率の変動を抽出
+
 
 
 * 演習
@@ -686,17 +718,15 @@
 :reveal_background: #fef4f4
 :END:
 - 以下で定義されるMA(1)について問に答えなさい
-  #+begin_src latex
-    \begin{equation}
-      X_{t}
-      =
-      b_{1}\epsilon_{t-1}+\epsilon_{t},
-      \quad
-      \epsilon_{t}
-      \sim
-      \mathrm{WN}(0,\sigma^2)
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    X_{t}
+    =
+    b_{1}\epsilon_{t-1}+\epsilon_{t},
+    \quad
+    \epsilon_{t}
+    \sim
+    \mathrm{WN}(0,\sigma^2)
+  \end{equation}
   - ラグ2までの自己共分散係数を求めなさい
   - 自己相関係数とパラメタ\(b_{1}\)が満すべき方程式を求めなさい
 
@@ -706,81 +736,135 @@
 :END:
 - 平均0であることに注意して定義通り計算する
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \gamma(0)
-      &=
-	\mathbb{E}[X_{t}X_{t}]
-	=
-	\mathbb{E}[(b_{1}\epsilon_{t-1}+\epsilon_{t})^{2}]\\
-      &=
-	b_{1}^{2}\mathbb{E}[\epsilon_{t-1}^{2}]
-	+2b_{1}\mathbb{E}[\epsilon_{t-1}\epsilon_{t}]
-	+\mathbb{E}[\epsilon_{t}^{2}]\\
-      &=
-	(b_{1}^{2}+1)\sigma^{2}\\
-      \gamma(1)
-      &=
-	\mathbb{E}[X_{t}X_{t+1}]
-	=
-	\mathbb{E}[(b_{1}\epsilon_{t-1}+\epsilon_{t})(b_{1}\epsilon_{t}+\epsilon_{t+1})]\\
-      &=
-	b_{1}^{2}\mathbb{E}[\epsilon_{t-1}\epsilon_{t}]
-	+b_{1}\mathbb{E}[\epsilon_{t-1}\epsilon_{t+1}]
-	+b_{1}\mathbb{E}[\epsilon_{t}\epsilon_{t}]
-	+\mathbb{E}[\epsilon_{t}\epsilon_{t+1}]\\
-      &=
-	b_{1}\sigma^{2}\\
-      \gamma(2)
-      &=
-	\mathbb{E}[X_{t}X_{t+2}]
-	=
-	\mathbb{E}[(b_{1}\epsilon_{t-1}+\epsilon_{t})(b_{1}\epsilon_{t+1}+\epsilon_{t+2})]\\
-      &=
-	b_{1}^{2}\mathbb{E}[\epsilon_{t-1}\epsilon_{t+1}]
-	+b_{1}\mathbb{E}[\epsilon_{t-1}\epsilon_{t+2}]
-	+b_{1}\mathbb{E}[\epsilon_{t}\epsilon_{t+1}]
-	+\mathbb{E}[\epsilon_{t}\epsilon_{t+2}]\\
-      &=
-	0
-    \end{align}
-  #+end_src
+  \begin{align}
+    \gamma(0)
+    &=
+      \mathbb{E}[X_{t}X_{t}]
+      =
+      \mathbb{E}[(b_{1}\epsilon_{t-1}+\epsilon_{t})^{2}]\\
+    &=
+      b_{1}^{2}\mathbb{E}[\epsilon_{t-1}^{2}]
+      +2b_{1}\mathbb{E}[\epsilon_{t-1}\epsilon_{t}]
+      +\mathbb{E}[\epsilon_{t}^{2}]\\
+    &=
+      (b_{1}^{2}+1)\sigma^{2}\\
+    \gamma(1)
+    &=
+      \mathbb{E}[X_{t}X_{t+1}]
+      =
+      \mathbb{E}[(b_{1}\epsilon_{t-1}+\epsilon_{t})(b_{1}\epsilon_{t}+\epsilon_{t+1})]\\
+    &=
+      b_{1}^{2}\mathbb{E}[\epsilon_{t-1}\epsilon_{t}]
+      +b_{1}\mathbb{E}[\epsilon_{t-1}\epsilon_{t+1}]
+      +b_{1}\mathbb{E}[\epsilon_{t}\epsilon_{t}]
+      +\mathbb{E}[\epsilon_{t}\epsilon_{t+1}]\\
+    &=
+      b_{1}\sigma^{2}\\
+    \gamma(2)
+    &=
+      \mathbb{E}[X_{t}X_{t+2}]
+      =
+      \mathbb{E}[(b_{1}\epsilon_{t-1}+\epsilon_{t})(b_{1}\epsilon_{t+1}+\epsilon_{t+2})]\\
+    &=
+      b_{1}^{2}\mathbb{E}[\epsilon_{t-1}\epsilon_{t+1}]
+      +b_{1}\mathbb{E}[\epsilon_{t-1}\epsilon_{t+2}]
+      +b_{1}\mathbb{E}[\epsilon_{t}\epsilon_{t+1}]
+      +\mathbb{E}[\epsilon_{t}\epsilon_{t+2}]\\
+    &=
+      0
+  \end{align}
   #+end_quote
 
 #+reveal: split
 - ラグ3以降も自己共分散は0となることに注意する
   #+begin_quote
-  #+begin_src latex
-    \begin{align}
-      \gamma(0)
-      &=
-	(b_{1}^{2}+1)\sigma^{2}\\
-      \gamma(1)
-      &=
-	b_{1}\sigma^{2}
-    \end{align}
-  #+end_src
+  \begin{align}
+    \gamma(0)
+    &=
+      (b_{1}^{2}+1)\sigma^{2}\\
+    \gamma(1)
+    &=
+      b_{1}\sigma^{2}
+  \end{align}
   \(\sigma^{2}\)を消去して以下が得られる
-  #+begin_src latex
-    \begin{equation}
-      \gamma(1)/\gamma(0)
-      =\frac{b_{1}}{b_{1}^{2}+1}
-      =\rho(1)
-    \end{equation}
-    \begin{equation}
-      \rho(1)b_{1}^{2}-b_{1}+\rho(1)=0
-    \end{equation}
-  #+end_src
+  \begin{equation}
+    \gamma(1)/\gamma(0)
+    =\frac{b_{1}}{b_{1}^{2}+1}
+    =\rho(1)
+  \end{equation}
+  \begin{equation}
+    \rho(1)b_{1}^{2}-b_{1}+\rho(1)=0
+  \end{equation}
   \(\rho(1)\)の値によっては解が求められない場合もある
   #+end_quote
      
      
 * COMMENT 実習
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : ARモデルの推定 ~ar()~ 
+** R : ARモデルの推定
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
+:END:
+- 関数 ~fabletools::model()~ 
+  #+begin_src R :eval no :tangle no
+    model(.data, ...)
+    #' .data: 時系列データ (tsibbleクラス)
+    #' ...: モデルを指定
+  #+end_src
+- 関数 ~fable::AR()~ 
+  #+begin_src R :eval no :tangle no
+    AR(formula, ic = c("aicc", "aic", "bic"), ...)
+    #' formula: 時系列モデル
+    #' ic: モデル選択のための情報量規準
+  #+end_src
+  - ~stats::ar.ols()~ と同様の実装
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise ARモデルの推定
+    #+end_src
+    #+begin_src R :eval no
+      toy_ar <- arima.sim(model = list(ar = c(0.7,-0.6, 0.5)),
+                          n = 1000) |> as_tsibble()
+      toy_ar |> model(AR(value)) # モデルを自動選択する場合
+      toy_ar |> model(AR(value ~ order(3))) # モデルの次数を指定する場合
+      toy_ar |> model(AR(value ~ 0 + order(3))) # 平均項を含めない場合
+    #+end_src
+    - 既定値ではAIC(情報量規準)を用いて次数が自動的に決定される
+
+** COMMENT R : ARモデルの推定
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
+:END:
+- 関数 ~stats::ar()~ 
+  #+begin_src R :eval no :tangle no
+    ar(x, aic = TRUE, order.max = NULL,
+       method = c("yule-walker", "burg", "ols", "mle", "yw"),
+       na.action, series, ...)
+    #' x: 時系列データ (ts クラスが望ましい)
+    #' aic: AICを計算するか否か
+    #' order.max: 計算すべき最大次数 (既定値は時系列の長さから規則的に計算)
+    #' method: 係数の推定方法
+  #+end_src
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise ARモデルの推定
+    #+end_src
+    #+begin_src R :eval no
+      x <- arima.sim(model = list(ar = c(0.7,-0.6, 0.5)), n = 1000)
+      ar(x) 
+      ar(x, method = "mle") 
+    #+end_src
+    - 既定値ではAIC(情報量規準)を用いて次数が自動的に決定される
+
+** COMMENT R : ARモデルの推定 ~ar()~ 
+:PROPERTIES:
+:ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
+:END:
 - 定常ARモデルのあてはめ
   #+begin_src R :eval no
     ar(x, aic = TRUE, order.max = NULL, method = "yule-walker")
@@ -799,7 +883,10 @@
 :END:
 - [[./code/14-arest.r][14-arest.r]] を確認してみよう
 
-** R : ARIMAモデルの推定 ~arima()~
+** COMMENT R : ARIMAモデルの推定 ~arima()~
+:PROPERTIES:
+:ID:       8919C8B8-B3C6-41C8-B269-CED9C1C66AE9
+:END:
 - 階差系列への定常ARMAモデルのあてはめ: ~stats::arima()~
   #+begin_src R :eval no
     arima(x, order = c(0L, 0L, 0L),
@@ -811,7 +898,10 @@
   - 関数 ~arima()~ には次数の決定機能はない
   - 試行錯誤による次数の決定が必要
 
-** R : ARIMAモデルの推定 ~forecast::auto.arima()~
+** COMMENT R : ARIMAモデルの推定 ~forecast::auto.arima()~
+:PROPERTIES:
+:ID:       3B3582E5-28F9-4565-8DA9-18C17CEE2F81
+:END:
 - パッケージ ~forecast~ の利用
   #+begin_src R :eval no
     ## 右下ペインの package タブから forecast をインストール
@@ -824,6 +914,170 @@
   #+end_src
   - 次数を自動決定することができる
 
+** COMMENT R : ARIMAモデルの推定
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
+:END:
+- 関数 ~forecast::auto.arima()~ 
+  #+begin_src R :eval no :tangle no
+    auto.arima(y, d = NA, D = NA, max.X, start.X, 
+               stationary = FALSE, seasonal = TRUE, ic = c("aicc", "aic", "bic"),
+               method = NULL, allowdrift = TRUE, allowmean = TRUE, ...)
+    #' y: 時系列データ
+    #' d,D: 階差の次数(Dは季節成分)．指定しなければ適切な範囲で探索する．
+    #' max.X, start.X: 探索範囲を指定するための変数 (X = p,q,P,Q,d,D)
+    #' stationary: 定常なモデルに限定して探索するか否か
+    #' seasonal: 季節成分を含むモデルを探索するか否か
+    #' mathod/allowdrif/allowmeans: '?forecast::Arima()' を参照
+  #+end_src
+  - 個別のモデルの推定には関数 ~forecast::Arima()~ が利用される
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise ARIMAモデルの推定
+    #+end_src
+    #+begin_src R :eval no
+      x <- arima.sim(model = list(ar = c(0.7,-0.6,0.5)), n = 1000)
+      auto.arima(x)  
+      y <- arima.sim(list(order = c(2,1,1), ar = c(0.8,-0.64), ma = c(-0.5)), n = 1000)
+      auto.arima(y) 
+    #+end_src
+
+** R : ARIMAモデルの推定
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
+:END:
+- 関数 ~fable::ARIMA()~ 
+  #+begin_src R :eval no :tangle no
+    ARIMA(formula, ic = c("aicc", "aic", "bic"),
+      stepwise = TRUE, greedy = TRUE, approximation = NULL, ...)
+    #' formula: 時系列モデル
+    #' ic: モデル選択のための情報量規準
+    #' stepwise/greedy/approximation: モデル探索のための設定
+    #' その他詳細は '?fable::ARIMA' を参照
+  #+end_src
+  - ~stats::arima()~ と同様の実装
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise ARIMAモデルの推定
+    #+end_src
+    #+begin_src R :eval no
+      toy_arima <- arima.sim(model = list(order = c(2,1,2),
+                                       ar = c(0.8,-0.5),
+                                       ma = c(-0.2,0.2)),
+                          n = 1000) |> as_tsibble()
+      toy_arima |> model(ARIMA(value)) # 自動選択
+      toy_arima |> model(ARIMA(value ~ 0 + pdq(2,1,2))) # 次数を指定 
+    #+end_src
+
+** COMMENT R : モデルを扱うための補助的な関数
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 関数 ~stats::fitted()~ あてはめ値の取り出し  
+  #+begin_src R :eval no :tangle no
+    fitted(object, ...) 
+    #' object: 推定された時系列モデル．関数ar(),auto.arima()などの返値
+  #+end_src
+  - fitted.values() でも可
+- 関数 ~stats::residuals()~ 残差の取り出し 
+  #+begin_src R :eval no :tangle no
+    residuals(object, ...) 
+    #' object: 推定された時系列モデル
+  #+end_src
+  - resid() でも可
+
+** R : モデルを扱うための補助的な関数
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 関数 ~fabletools::report()~
+  - モデルの情報
+  #+begin_src R :eval no :tangle no
+    report(object, ...) 
+    #' object: 推定された時系列モデル
+  #+end_src
+  - fitted.values() でも可
+- 関数 ~fabletools::tidy.mdl_df()~ 
+  - 係数の取得
+  #+begin_src R :eval no :tangle no
+    tidy(object, ...) 
+    #' object: 推定された時系列モデル
+  #+end_src
+  - ~coef()~ でも可
+
+#+reveal: split    
+- 関数 ~fabletools::augment.mdl_df()~
+  - あてはめ値・残差などの取得
+  #+begin_src R :eval no :tangle no
+    augment(object, ...) 
+    #' object: 推定された時系列モデル
+  #+end_src
+  - あてはめ値は ~fitted()/fitted.values()~ でも可 
+  - 残差は ~residuals()/resid()~ でも可
+
+** R : モデルの評価
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       39D2C3C7-DE66-4A8C-A4D3-500348BD5C28
+:END:
+- 関数 ~fabletools::accuracy.mdl_df()~
+  - 精度評価の取得
+  #+begin_src R :eval no :tangle no
+    accuracy(object, ...) 
+    #' object: 推定された時系列モデル
+  #+end_src
+- 関数 ~fabletools::glance.mdl_df()~
+  - 情報量規準などの取得
+  #+begin_src R :eval no :tangle no
+    glance(object, ...) 
+    #' object: 推定された時系列モデル
+  #+end_src
+
+#+reveal: split
+- 関数 ~feasts::gg_tsresiduals()~ 
+  #+begin_src R :eval no :tangle no
+    gg_tsresiduals(data, type = "innovation", ...)
+    #' data: 推定された時系列モデル
+  #+end_src
+  - 描画には関数 ~feasts::gg_tsdisplay()~ が利用される
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise モデルの評価
+    #+end_src
+    #+begin_src R :eval no
+      toy_fit <- toy_arima |> model(ARIMA(value))
+      toy_fit |> accuracy()
+      toy_fit |> glance()
+      toy_fit |> gg_tsresiduals()
+    #+end_src
+
+** COMMENT R : モデルの評価
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       39D2C3C7-DE66-4A8C-A4D3-500348BD5C28
+:END:
+- 関数 ~forecast::checkresiduals()~ 
+  #+begin_src R :eval no :tangle no
+    checkresiduals(object, lag, test, plot = TRUE, ...)
+    #' object: 推定された時系列モデル．関数ar(),auto.arima()などの返値
+    #' lag: 検定に用いるラグの長さ
+    #' test: 検定方法の設定，あるいは検定の有無
+    #' plot: 描画するか否か
+  #+end_src
+  - 描画には関数 ~forecast::ggtsdisplay()~ が利用される
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise モデルの評価
+    #+end_src
+    #+begin_src R :eval no
+      y <- arima.sim(list(order = c(2,1,1), ar = c(0.8,-0.64), ma = c(-0.5)), n = 1000)
+      z <- auto.arima(y)
+      summary(z) # 推定されたモデルの概要
+      checkresiduals(z) # 残差の描画と検定
+    #+end_src
+
 ** COMMENT 演習: ARIMAモデルの推定
 :PROPERTIES:
 :reveal_background: #EEEEFF
@@ -832,101 +1086,140 @@
 
 ** 練習問題
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
+:ID:       A889F721-75F9-4138-A718-65634969BE1B
 :END:
-- 先週作成した関数 ~myARMA()~ を利用して以下の問に答えなさい
-  - AR過程を生成し，関数 ~ar()~ を用いて係数を推定しなさい
-  - ARMA過程を生成し，関数 ~arima()~ および
-    関数 ~auto.arima()~ を用いて係数を推定しなさい
+- 以下の問に答えなさい
+  - AR過程を生成し，関数 ~AR()~ を用いて係数を推定しなさい
+  - ARMA過程を生成し，関数 ~ARIMA()~ を用いて係数を推定しなさい
   - 推定結果の妥当性を残差の自己相関係数を調べることによって確認しなさい
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 ARMAモデルの推定
-  ### 
-  
-  ## ARMA過程を生成する関数
-  myARMA <- function(a, b, epsilon){
-      p <- length(a)
-      q <- length(b)
-      r <- max(p,q)
-      Tmax <- length(epsilon) # 時系列の長さを取得
-      x <- double(Tmax)
-      x[1:r] <- epsilon[1:r]
-      for(t in (r+1):Tmax) {
-          x[t] <- a %*% x[t-1:p] + b %*% epsilon[t-1:q] + epsilon[t]
-      }
-      return(x)
-  }
-  
-  ## AR(2)過程の生成 (以下は前回の例を利用，自由に変更せよ)
-  x.ar <- ts(myARMA(a=c(0.67, 0.26),
-                    b=0,
-                    epsilon=rnorm(1000))) # 時系列の長さも自由に変更せよ
-  ## 関数 ar による自動推定
-  est.ar <- ar(x.ar) 
-  print(est.ar) # ある程度長い系列であれば良い推定が得られる
-  
-  ## ARMA(2,1)過程の生成
-  x.arma <- ts(myARMA(a=c(0.8, -0.64),
-                      b=c(-0.5),
-                      epsilon=rnorm(1000))) 
-  ## 関数 arima による手動推定
-  est.arma0 <- arima(x.arma, order=c(2, 0, 1)) # 正しいモデル
-  est.arma1 <- arima(x.arma, order=c(3, 0, 1))
-  est.arma2 <- arima(x.arma, order=c(2, 0, 2))
-  print(est.arma0)
-  print(est.arma1)
-  print(est.arma2)
-  ## 尤度(likelihood)は大きい方が観測データへのあてはまりは良い
-  ## AICは小さい方が良い予測が良いことが期待される
-  
-  ## 関数 auto.arima による自動推定
-  ## パッケージの読み込み
-  library(forecast) # 既に読み込んでいれば不要 
-  est.arma <- auto.arima(x.arma, d=0, D=0)
-  print(est.arma)
-  ## 必ずしも正しいモデルが推定される訳ではないことに注意
-  ## 特に短い時系列では推定が難しい場合が多い
-  ## 生成する系列の長さを変えて実験してみよう
-  
-  ## 自己相関係数による評価
-  plot(x.arma) # 元の時系列
-  acf(x.arma)  # 元の時系列の自己相関
-  plot(resid(est.arma)) # 推定されたモデルの残差
-  acf(resid(est.arma))  # 推定されたモデルの残差の自己相関
-  ## 残差は無相関になっていることが確認できる
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice AR/ARMAモデルの推定
+#+end_src
+#+begin_src R :eval no :exports none
+  #' AR(2)過程の生成
+  toy_ar <- arima.sim(model = list(ar = c(0.67, 0.26)),
+                         n = 5000) |> # 時系列の長さも自由に変更せよ
+      as_tsibble()
+  #' 関数 fabletools::model() + fable::AR() による推定
+  toy_ar_fit <- # 自動的に推定されたモデルを保存
+      toy_ar |> model(AR(value)) 
+  toy_ar_fit |> report()   # 推定されたモデル
+  toy_ar_fit |> tidy()     # 推定された係数とその評価
+  toy_ar_fit |> accuracy() # 推定されたモデルのあてはまりの評価
+  toy_ar_fit |> glance()   # 推定されたモデルの情報量規準など
+  #' ある程度長い系列であれば良い推定が得られる
+  #' n = 1000 などとして試してみよ
+
+  #' ARMA(2,1)過程の生成
+  toy_arma <- arima.sim(model = list(ar = c(0.67, 0.26), ma = c(-0.5)),
+                        n = 2000) |> 
+      as_tsibble()
+  #' 関数 fabletools::model() + fable::ARIMA() による推定
+  toy_arma_fit <- # 自動的に推定されたモデルを保存
+      toy_arma |> model(
+                      model0 = ARIMA(value ~ pdq(2,0,1)), # 正しいモデル
+                      model1 = ARIMA(value ~ pdq(3,0,1)), # 間違ったモデル
+                      model2 = ARIMA(value ~ pdq(2,0,2)), # 間違ったモデル
+                      auto0  = ARIMA(value ~ pdq(d = 0)), # ARMAで自動推定(階差を取らない)
+                      auto1  = ARIMA(value), # ARIMA全体で自動推定(モデルとしてはかなり冗長)
+                      )
+  toy_arma_fit # 推定されたモデルの表示
+  toy_arma_fit |> glance() # 推定されたモデルの評価
+  toy_arma_fit |> glance() |> arrange(AIC) # AIC順に並べる
+  #' 対数尤度(log_lik)は大きい方が観測データへのあてはまりは良い
+  #' AICは小さい方が良い予測が良いことが期待される
+  #' 自動推定では必ずしも正しいモデルが推定される訳ではないことに注意
+  #' 特に短い時系列では推定が難しい場合が多い
+  #' 生成する系列の長さを変えて実験してみよう
+
+  #' 残差の評価
+  toy_arma_fit |> select(model0) |> # 正しいモデル
+      gg_tsresiduals()
+  toy_arma_fit |> select(auto0) |>  # 自動推定されたARMAモデル
+      gg_tsresiduals()
+  #' 残差は無相関になっていることが確認できる
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
-** 非定常過程の変換
+** COMMENT 非定常過程の変換
 - 定常過程とみなせるように変換して分析
   - 階差の利用
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	X_{t}=X_{t-1}+\epsilon_{t}
-	\quad\Rightarrow\quad
-	Y_{t}=X_{t}-X_{t-1}=\epsilon_{t}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      X_{t}=X_{t-1}+\epsilon_{t}
+      \quad\Rightarrow\quad
+      Y_{t}=X_{t}-X_{t-1}=\epsilon_{t}
+    \end{equation}
     #+end_quote
     - ランダムウォーク : 階差をとるとホワイトノイズ(定常過程)
     - *ARIMA過程* : 階差をとるとARMA過程になる確率過程 
   - 対数変換の利用
     #+begin_quote
-    #+begin_src latex
-      \begin{equation}
-	X_{t}=(1+\epsilon_{t})X_{t-1}
-	\quad\Rightarrow\quad
-	Y_{t}=\log(X_{t})-\log(X_{t-1})
-	=\log(1+\epsilon_{t})
-	\simeq\epsilon_{t}
-      \end{equation}
-    #+end_src
+    \begin{equation}
+      X_{t}=(1+\epsilon_{t})X_{t-1}
+      \quad\Rightarrow\quad
+      Y_{t}=\log(X_{t})-\log(X_{t-1})
+      =\log(1+\epsilon_{t})
+      \simeq\epsilon_{t}
+    \end{equation}
     #+end_quote
     - 対数変換と階差で微小な比率の変動を抽出
 
-** R : 関数 ~zoo()~
+** R : 時系列クラスの作成(再掲)
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       0BCEEF10-A8C6-49F1-9AC4-E9BCA8005756
+:END:
+- 関数 ~tsibble::tsibble()~
+  #+begin_src R :eval no :tangle no
+    tsibble(..., key = NULL, index, regular = TRUE, .drop = TRUE)
+    #' ...: データ
+    #' key: indexの補助情報(同じ時間の異なるデータを表す)
+    #' index: 時間情報を表す列を設定
+  #+end_src
+- 関数 ~tsibble::as_tsibble()~
+  #+begin_src R :eval no :tangle no
+    as_tsibble(x, key = NULL, index,
+               regular = TRUE, validate = TRUE, .drop = TRUE, ...)
+    #' x: データ(時系列オブジェクトやデータフレーム)
+  #+end_src
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :eval no :tangle yes
+      tsibble(date = as_date("2024-01-01") + 0:9,
+              value = rnorm(10))
+      tibble(year = 2001:2020,
+             value = rnorm(20)) |>
+        as_tsibble(index = year) # yearを時間情報に指定
+      AirPassengers |> as_tsibble() # 時系列オブジェクトの変換
+    #+end_src
+
+** R : 部分系列の切り出し
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       BED95133-44EC-4FD9-85F1-B398EAF628DD
+:END:
+- 関数 ~tsibble::filter_index()~
+  #+begin_src R :eval no :tangle no
+    filter_index(.data, ..., .preserve = FALSE)
+    #' .data: tsibbleオブジェクト
+    #' ...: 区間を表す式 (~ end, start ~ end, start ~ .)
+  #+end_src
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :eval no :tangle yes
+      AirPassengers |>
+        as_tsibble() |>
+        filter_index("1955-10" ~ "1956-03")
+    #+end_src
+
+** COMMENT R : 関数 ~zoo()~
+:PROPERTIES:
+:ID:       0BCEEF10-A8C6-49F1-9AC4-E9BCA8005756
+:END:
 - 時系列クラス ~zoo~ を作成する関数
   #+begin_src R :eval no
     library(zoo) # forecast を利用すると自動的に読み込まれる
@@ -942,7 +1235,10 @@
   #+end_src
   - その他の詳細は ~?zoo~ を参照
 
-** R : 関数 ~window()~
+** COMMENT R : 関数 ~window()~
+:PROPERTIES:
+:ID:       BED95133-44EC-4FD9-85F1-B398EAF628DD
+:END:
 - 時系列から部分系列を切り出す関数
   #+begin_src R :eval no
     window(x, start = NULL, end = NULL)
@@ -957,50 +1253,72 @@
 
 ** 練習問題
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
+:ID:       999544D3-132B-4F98-B199-2C626228B967
 :END:
 - 東京の気候データを用いて以下の問に答えなさい
   #+begin_src R :eval no
-    tw_data <- read.csv("data/tokyo_weather.csv")
+    tw_data <- read_csv("data/tokyo_weather.csv")
   #+end_src
-  - 気温のデータを ~zoo~ クラスに変換しなさい
+  - 気温のデータを ~tsibble~ クラスに変換しなさい
   - 気温のデータおよびその階差の性質を検討しなさい
-  - 関数 ~auto.arima()~ を用いてモデルを作成しなさい
+  - ARIMAモデルを作成しなさい
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 東京の気温データの時系列モデル
-  ### 
-  
-  ## パッケージの読み込み (既に読み込んでいれば不要 )
-  library(zoo) 
-  library(forecast)
-  tw_data <- read.csv("data/tokyo_weather.csv")
-  tw_zoo <- with(tw_data,
-                 zoo(temp,
-                     order.by = as.Date(paste(year,month,day,sep="-"))))
-  
-  ## データの視覚化を行う
-  plot(tw_zoo, col="red",
-       xlab="month", ylab="degree", main="Temperature in Tokyo")
-  plot(window(tw_zoo, # 一部を切り出して視覚化する
-              start=as.Date("2021-06-01"),
-              end=as.Date("2021-07-31")),
-       col="red",
-       xlab="date", ylab="degree", main="Temperature (June-July)")
-  acf(tw_zoo)       # 減衰が遅いので差分をとった方が良さそう
-  plot(diff(tw_zoo)) # 階差系列の視覚化
-  acf(diff(tw_zoo))  # 階差系列の自己相関
-  
-  ## 階差系列にARMAモデルをあてはめる (d=1)
-  tw_fit <- auto.arima(tw_zoo, d=1, D=0)
-  summary(tw_fit) # 推定されたモデルの仕様を表示
-  acf(resid(tw_fit)) # そこそこあてはまりは良さそう
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 東京の気温データの時系列モデル
+#+end_src
+#+begin_src R :eval no :exports none
+  #' データの整理
+  tw_data <- read_csv("data/tokyo_weather.csv")
+  tw_tsbl <- tw_data |>
+      mutate(date = as.Date(paste(year, month, day, sep = "-"))) |>
+      select(date, temp) |>
+      as_tsibble(index = date) # date を時系列の index に指定
+
+  #' データの視覚化
+  tw_tsbl |>
+      autoplot(temp, colour = "red") +
+      labs(title = "Temperature in Tokyo",
+           x = "date", y = "temperature")
+  tw_tsbl |> # 一部を切り出して視覚化する
+      filter_index("2022-06-01" ~ "2022-07-31") |>
+      autoplot(temp, colour = "red") +
+      labs(title = "Temperature in Tokyo",
+           x = "date", y = "temperature")
+
+  #' データの性質を確認
+  tw_tsbl |> ACF(temp) |> # 自己相関
+      autoplot() # 減衰が遅いので差分をとった方が良さそう
+  tw_tsbl |> 
+      autoplot(difference(temp), colour = "orange")
+  tw_tsbl |> ACF(difference(temp)) |> # 階差系列の自己相関
+      autoplot() 
+
+  #' 階差系列にARMAモデルをあてはめる (d=1)
+  tw_fit <- tw_tsbl |>
+    model(ARIMA(temp ~ pdq(d = 1) + PDQ(D = 0)))
+  report(tw_fit) # 推定されたモデルの仕様を表示
+  tw_fit |> # 残差の評価
+    gg_tsresiduals() # そこそこあてはまりは良さそう
+  tw_fit |> # データとあてはめ値の比較
+      augment() |>
+      autoplot(temp) +
+      geom_line(aes(y = .fitted), # y軸にあてはめ値を指定
+                colour = "blue", alpha = 0.3) +
+      labs(title = "Fitted by ARIMA model",
+           x = "date", y = "temperature")
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
 * モデルによる予測
-** モデルによる予測
+** ARMAモデルによる予測
+:PROPERTIES:
+:ID:       3D649D96-40B4-463D-9C38-4CD6D35C3E54
+:END:
 - 推定したモデルを用いて\(n\)期先を予測
   - ARモデル : 観測時点までの観測値を用いて回帰
   - MAモデル : 観測時点までのホワイトノイズで回帰
@@ -1009,27 +1327,99 @@
 - 階差による変換は累積(階差の逆変換)により推定
 
 #+reveal: split
+#+begin_src R :file figs/13_ap_arima.png :exports results :results graphics :tangle no
+  ap_tsbl <- AirPassengers |> as_tsibble()
+  ap_train <- ap_tsbl |> filter_index(~ "1958-12") # 訓練データ
+  ap_test  <- ap_tsbl |> filter_index("1959-01" ~ .) # 試験データ(2年分)
+  ap_fit <-
+    ap_train |>
+    model(
+      arima = ARIMA(log(value)),
+      ets = ETS(log(value)),
+      )
+  ap_fit |> select(arima) |>
+    forecast(h = nrow(ap_test)) |>
+    autoplot(ap_train) +
+    autolayer(ap_test, value, colour = "purple") +
+    labs(title = "Forecast by SARIMA model",
+         x = "Year", y = "Passengers/1000")
+#+end_src
+#+name: fig:13_ap_arima
+#+caption: ARIMAモデル(階差ありARMA)による予測
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/13_ap_arima.png]]
 
+** 分解モデルによる予測
+- トレンド成分+季節成分+ランダム成分への分解
+  #+begin_quote
+  \begin{equation}
+    X_{t}=T_{t}+S_{t}+R_{t}
+  \end{equation}
+  あるいは
+  \begin{equation}
+    X_{t}=T_{t}\times S_{t}\times R_{t}\qquad
+    (\log X_{t}=\log T_{t} + \log S_{t} + \log R_{t})
+  \end{equation}
+  #+end_quote
+  - トレンド成分 : 時間の関数やランダムウォークなどを想定
+  - 季節成分 : 周期的な関数を想定
+  - ランダム成分 : ARMAモデルなどを想定
+- 分解の考え方
+  - ランダム成分 : 適切な幅の移動平均が0
+  - 季節成分 : 1周期の平均が0
+
+#+reveal: split
+#+begin_src R :file figs/13_ap_ets.png :exports results :results graphics :tangle no
+  ap_fit |> select(ets) |>
+    forecast(h = nrow(ap_test)) |>
+    autoplot(ap_train) +
+    autolayer(ap_test, value, colour = "purple") +
+    labs(title = "Forecast by ETS model",
+         x = "Year", y = "Passengers/1000")
+#+end_src
+#+name: fig:13_ap_ets
+#+caption: ETSモデル(expornential smoothing)による予測
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/13_ap_ets.png]]
+
+** COMMENT 数値例
 #+name: fig:13_pred_wn
-#+begin_src R :file figs/13_pred_wn.png :exports results :results graphics
-  library(forecast)
-  library(tidyverse)
-  library(ggfortify)
-  ## ARMA過程を生成する関数
-  myARMA <- function(a, b, epsilon){
-    p <- length(a)
-    q <- length(b)
-    r <- max(p,q)
-    Tmax <- length(epsilon) # 時系列の長さを取得
-    x <- double(Tmax)
-    x[1:r] <- epsilon[1:r]
-    for(t in (r+1):Tmax) {
-      x[t] <- a %*% x[t-1:p] + b %*% epsilon[t-1:q] + epsilon[t]
-    }
-    return(x)
-  }
-  ## ホワイトノイズの予測
-  autoplot(forecast(myARMA(a=c(0),b=c(0),rnorm(180)),h=20),col=2)
+#+begin_src R :file figs/13_pred_wn.png :exports results :results graphics :tangle no
+  ## library(forecast)
+  ## library(tidyverse)
+  ## library(ggfortify)
+  ## ## ARMA過程を生成する関数
+  ## myARMA <- function(a, b, epsilon){
+  ##   p <- length(a)
+  ##   q <- length(b)
+  ##   r <- max(p,q)
+  ##   Tmax <- length(epsilon) # 時系列の長さを取得
+  ##   x <- double(Tmax)
+  ##   x[1:r] <- epsilon[1:r]
+  ##   for(t in (r+1):Tmax) {
+  ##     x[t] <- a %*% x[t-1:p] + b %*% epsilon[t-1:q] + epsilon[t]
+  ##   }
+  ##   return(x)
+  ## }
+  ## ## ホワイトノイズの予測
+  ## autoplot(forecast(myARMA(a=c(0),b=c(0),rnorm(180)),h=20),col=2)
+  Tmax <- 180 # 時系列の長さ
+  Hmax <- 20  # 予測系列の長さ
+  foo <-
+    arima.sim(list(order = c(0,0,0)),
+              n = Tmax)
+  bar <-
+    auto.arima(foo)
+  foo |>
+    forecast(h = Hmax, model = bar) |>
+    autoplot(ylab = "Observation")
+  ## arima.sim(list(order = c(0,0,0)),
+  ##           n = Tmax) |>
+  ##   forecast(h = Hmax, model = "Arima") |>
+  ##   autoplot(main = "Forecasts from WN",
+  ##            ylab = "Observation")
 #+end_src
 #+caption: ホワイトノイズの予測
 #+attr_html: height 100%
@@ -1049,7 +1439,6 @@
 [[file:figs/13_pred_rw.png]]
 
 #+reveal: split
-
 #+name: fig:13_pred_arma
 #+begin_src R :file figs/13_pred_arma.png :exports results :results graphics
   ## ARMA 過程の予測
@@ -1060,22 +1449,6 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/13_pred_arma.png]]
 
-** 分解による予測
-- トレンド成分+季節成分+ランダム成分への分解
-  #+begin_quote
-  #+begin_src latex
-    \begin{equation}
-      X_{t}=T_{t}+S_{t}+R_{t}
-    \end{equation}
-  #+end_src
-  #+end_quote
-  - トレンド成分 : 時間の関数やランダムウォークなどを想定
-  - 季節成分 : 周期的な関数を想定
-  - ランダム成分 : ARMAモデルなどを想定
-- 分解の考え方
-  - ランダム成分 : 適切な幅の移動平均が0
-  - 季節成分 : 1周期の平均が0
-
 
 * 解析事例
 ** COVID-19 の感染者数の分析
@@ -1085,11 +1458,14 @@
   - 死者数 (推移・性別・年齢別・累積)
   - 入院治療等を要する者等推移
   - 集団感染等発生状況
-- 以下で用いるデータ
+- 以下の解析で用いるデータ
   - 日毎の全国・各都道府県の新規陽性者数 (感染者数)
     [[https://covid19.mhlw.go.jp/public/opendata/newly_confirmed_cases_daily.csv]]
 
-** 感染者数の推移
+** COMMENT 感染者数の推移
+:PROPERTIES:
+:ID:       6BF5B848-B937-491B-A6EB-F88AEAC7AB81
+:END:
 #+name: fig:13_patients
 #+begin_src R :file figs/13_patients.png :exports results :results graphics
   ### 基本的な時系列モデルによる予測
@@ -1132,26 +1508,62 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/13_patients.png]]
 
+** 感染者数の推移
+:PROPERTIES:
+:ID:       6BF5B848-B937-491B-A6EB-F88AEAC7AB81
+:END:
+#+name: fig:13_patients
+#+begin_src R :file figs/13_patients.png :exports results :results graphics :tangle no
+  ### 基本的な時系列モデルによる予測
+  ### 厚生労働省のCOVID-19の感染者数データを用いた例
+
+  #' データの取得と整理 
+  cp_tbl <-
+      read_csv("https://covid19.mhlw.go.jp/public/opendata/newly_confirmed_cases_daily.csv") |>
+      select(1:2) |>
+      set_names(c("date","patients")) |>
+      mutate(date = as_date(date))
+
+  #' 時系列データ(tsibbleクラス)への変更
+  cp_tsbl <-
+      cp_tbl |>
+      as_tsibble(index = date)
+
+  #' データ(全国・全期間)の表示
+  cp_tsbl |>
+      autoplot(patients, colour = "skyblue") +
+      geom_col(fill = "skyblue") + # 塗り潰しを行う
+      labs(title = "COVID-19 patients in Japan",
+           x = "date",
+           y = "number of patients")
+#+end_src
+#+caption: 全国の感染者数
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/13_patients.png]]
+
 ** 第3波における感染者数の推移
+:PROPERTIES:
+:ID:       8E4BB386-DA4E-4E9A-8526-2924F22CC03F
+:END:
 #+name: fig:13_3wave_patients
-#+begin_src R :file figs/13_3wave_patients.png :exports results :results graphics
-  ## 第3波 (2020/9/15-2021/1/31)
-  p <-
-    ggplot(data = fortify(window(patients,
-                                 start="2020-09-15",
-                                 end="2021-01-31"),
-                          melt = TRUE),
-           mapping = aes(x = Index,
-                         y = Value)) +
-    scale_x_date(labels = date_format("%y-%m-%d"), # 年月日表示
-                 breaks = date_breaks("1 week")) + # 週毎
-    theme(axis.text.x = element_text(angle = 90, 
-                                     vjust = 0.5, hjust=1)) +
-    labs(title = "COVID-19 patients in Japan",
-         x = "date",
-         y = "number of patients")
-  ## 棒グラフ
-  print(p + geom_col(fill="skyblue")) # グラフ出力
+#+begin_src R :file figs/13_3wave_patients.png :exports results :results graphics :tangle no
+  #'
+  #' 第3波 (2020/9/15-2021/1/31) に着目する
+  #' 
+  cp_3rd_train <- # 訓練データ
+      cp_tsbl |>
+      filter_index("2020-09-15" ~ "2020-11-30")
+  cp_3rd_test <-  # 試験データ
+      cp_tsbl |>
+      filter_index("2020-12-01" ~ "2021-01-31")
+  #' 第3波の表示
+  bind_rows(cp_3rd_train,cp_3rd_test) |>
+      autoplot(patients, colour = "skyblue") +
+      geom_col(fill = "skyblue") + # 塗り潰しを行う
+      labs(title = "COVID-19 patients in Japan",
+           x = "date",
+           y = "number of patients")
 #+end_src
 #+caption: 第3波の感染者数
 #+attr_html: height 100%
@@ -1159,19 +1571,16 @@
 [[file:figs/13_3wave_patients.png]]
 
 ** 基礎分析 (分析対象 : 2020/9/15-11/30)
+:PROPERTIES:
+:ID:       475BB63E-C3DE-4893-94BB-32B4BC65B1CF
+:END:
 #+name: fig:13_3wave
-#+begin_src R :file figs/13_3wave.png :exports results :results graphics
-  ## 9月以降の第3波を対象とする
-  train <- window(patients,
-                  start="2020-09-15",
-                  end="2020-11-30")
-  test <- window(patients,
-                 start="2020-12-01")
-
-  ## 階差系列の性質
-  autoplot(diff(train)) +
-    labs(x = "date",
-         y = "D(patients)")
+#+begin_src R :file figs/13_3wave.png :exports results :results graphics :tangle no
+  #' 階差系列の描画
+  cp_3rd_train |>
+      gg_tsdisplay(difference(patients),
+                   plot_type = "partial")
+  #' 7日周期の影響があることがわかる
 #+end_src
 #+caption: 時系列 (階差)
 #+attr_html: height 100%
@@ -1179,49 +1588,13 @@
 [[file:figs/13_3wave.png]]
 
 #+reveal: split
-
-#+name: fig:13_3wave_acf
-#+begin_src R :file figs/13_3wave_acf.png :exports results :results graphics
-  autoplot(acf(diff(train), plot = FALSE), # 自己相関
-           conf.int.fill = "royalblue",
-           conf.int.alpha =0.2,
-           conf.int.value = 0.7,
-           conf.int.type = "ma") +
-    labs(title = "D(patients)") +
-    ylim(c(-0.5,1.0))
-#+end_src
-#+name: fig:13_3wave_pacf
-#+begin_src R :file figs/13_3wave_pacf.png :exports results :results graphics
-  autoplot(pacf(diff(train), plot = FALSE), # 偏自己相関
-           conf.int.fill = "royalblue",
-           conf.int.alpha =0.2,
-           conf.int.value = 0.7) +
-    labs(title = "D(patients)",
-         y = "PACF") +
-    ylim(c(-0.5,1.0))
-#+end_src
-#+begin_leftcol
-#+caption: 自己相関 (階差)
-#+attr_html: width 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/13_3wave_acf.png]]
-#+end_leftcol
-#+begin_rightcol
-#+caption: 偏自己相関 (階差)
-#+attr_html: width 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/13_3wave_pacf.png]]
-#+end_rightcol
-
-#+reveal: split
-
 #+name: fig:13_3wave_log
-#+begin_src R :file figs/13_3wave_log.png :exports results :results graphics
-  ## 対数変換を確認する
-  ltrain <- log(train)
-  autoplot(diff(ltrain)) +
-      labs(x = "date",
-           y = "D(log(patients))")
+#+begin_src R :file figs/13_3wave_log.png :exports results :results graphics :tangle no
+  #' 対数変換+階差系列の描画
+  cp_3rd_train |>
+      gg_tsdisplay(difference(log(patients)),
+                   plot_type = "partial")
+  #' やはり7日周期の影響があることがわかる
 #+end_src
 #+caption: 時系列 (対数変換+階差)
 #+attr_html: height 100%
@@ -1229,181 +1602,75 @@
 [[file:figs/13_3wave_log.png]]
 
 #+reveal: split
-
-#+name: fig:13_3wave_log_acf
-#+begin_src R :file figs/13_3wave_log_acf.png :exports results :results graphics
-  autoplot(acf(diff(ltrain), plot = FALSE), # 自己相関
-           conf.int.fill = "royalblue",
-           conf.int.alpha =0.2,
-           conf.int.value = 0.7,
-           conf.int.type = "ma") +
-    labs(title = "D(log(patients))") +
-    ylim(c(-0.5,1.0))
-#+end_src
-#+name: fig:13_3wave_log_pacf
-#+begin_src R :file figs/13_3wave_log_pacf.png :exports results :results graphics
-  autoplot(pacf(diff(ltrain), plot = FALSE), # 偏自己相関
-           conf.int.fill = "royalblue",
-           conf.int.alpha =0.2,
-           conf.int.value = 0.7) +
-    labs(title = "D(log(patients))",
-         y = "PACF") +
-    ylim(c(-0.5,1.0))
-#+end_src
-#+begin_leftcol
-#+caption: 自己相関 (対数変換+階差)
-#+attr_html: width 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/13_3wave_log_acf.png]]
-#+end_leftcol
-#+begin_rightcol
-#+caption: 偏自己相関 (対数変換+階差)
-#+attr_html: width 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/13_3wave_log_pacf.png]]
-#+end_rightcol
-
-#+reveal: split
-
 #+name: fig:13_3wave_log7
-#+begin_src R :file figs/13_3wave_log7.png :exports results :results graphics
-  ## 7日の周期性を確認する
-  autoplot(diff(diff(ltrain), lag=7)) +
-      labs(x = "date",
-           y = "D7*D(log(patients))")
+#+begin_src R :file figs/13_3wave_log7.png :exports results :results graphics :tangle no
+  #' 7日の周期(季節成分)での階差系列の描画
+  cp_3rd_train |>
+      gg_tsdisplay(difference(difference(log(patients), lag = 7)),
+                   lag_max = 21,
+                   plot_type = "partial")
+  #' 7日の相関は負になっているので，季節階差は取らなくても良さそう
 #+end_src
 #+caption: 時系列 (対数変換+階差+7日階差)
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/13_3wave_log7.png]]
 
-#+reveal: split
-
-#+name: fig:13_3wave_log7_acf
-#+begin_src R :file figs/13_3wave_log7_acf.png :exports results :results graphics
-  autoplot(acf(diff(diff(ltrain), lag=7), plot = FALSE), # 自己相関
-           conf.int.fill = "royalblue",
-           conf.int.alpha =0.2,
-           conf.int.value = 0.7,
-           conf.int.type = "ma") +
-    labs(title = "D7*D(log(patients))") +
-    ylim(c(-0.5,1.0))
-#+end_src
-#+name: fig:13_3wave_log7_pacf
-#+begin_src R :file figs/13_3wave_log7_pacf.png :exports results :results graphics
-  autoplot(pacf(diff(diff(ltrain), lag=7), plot = FALSE), # 偏自己相関
-           conf.int.fill = "royalblue",
-           conf.int.alpha =0.2,
-           conf.int.value = 0.7) +
-    labs(title = "D7*D(log(patients))",
-         y = "PACF") +
-    ylim(c(-0.5,1.0))
-#+end_src
-#+begin_leftcol
-#+caption: 自己相関 (対数変換+階差+7日階差)
-#+attr_html: width 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/13_3wave_log7_acf.png]]
-#+end_leftcol
-#+begin_rightcol
-#+caption: 偏自己相関 (対数変換+階差+7日階差)
-#+attr_html: width 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/13_3wave_log7_pacf.png]]
-#+end_rightcol
-
 ** ARIMA モデルによる推定
+:PROPERTIES:
+:ID:       12282669-CF83-4E1C-A1F4-C4C72769F467
+:END:
 - 推定された ARIMA モデル
-#+begin_src R :exports results :results output
-  ## drift付きのARIMAモデルの次数を自動推定
-  est.arima <- forecast::auto.arima(ltrain)
-  ## 推定されたモデルを表示
-  print(est.arima)
-  ## SARIMAモデルを当て嵌める場合は周期を指定する．
-  ## frequency(ltrain) <- 7 # 7日周期の成分を仮定
-  ## (est.arima7 <- auto.arima(ltrain))
-  ## このデータではモデルの推定はうまくいかない
+#+begin_src R :exports results :results output :tangle no
+  #' 以下では対数変換した系列に対してARIMAモデルをあてはめる
+  cp_3rd_arima <-
+      cp_3rd_train |>
+      model(ARIMA(log(patients) ~ PDQ(D = 0)))
+  #' 推定結果の検討
+  cp_3rd_arima |> report()
+  ## cp_3rd_arima |> accuracy()
+  ## cp_3rd_arima |> glance()
 #+end_src
 
 #+reveal: split
-
-#+name: fig:13_3wave_arima_est
-#+begin_src R :file figs/13_3wave_arima_est.png :exports results :results graphics
-  ## モデルによる当て嵌めの視覚化
-  p <- 
-    ggplot(data = fortify(est.arima) %>%
-             dplyr::mutate(Index=as.Date(Index)),
-           mapping = aes(x = Index,
-                         y = Data)) +
-    geom_line(colour = "skyblue") +
-    geom_line(mapping = aes(y = Fitted),
-              colour = "orange") +
-    scale_x_date(labels = date_format("%y-%m-%d"), 
-                 breaks = date_breaks("1 week")) + 
-    theme(axis.text.x = element_text(angle = 90,
-                                     vjust = 0.5, hjust=1)) +
-    labs(title = "Fitted by ARIMA model",
-         x = "date",
-         y = "log(patients)")
-  print(p)
+#+begin_src R :file figs/13_3wave_arima_est.png :exports results :results graphics :tangle no
+  #' データとあてはめ値を表示
+  cp_3rd_arima |>
+      augment() |>
+      autoplot(patients, colour = "skyblue") +
+      geom_line(aes(y = .fitted), colour = "orange") +
+      labs(title = "Fitted by ARIMA model",
+           x = "date", y = "log(patients)")
 #+end_src
+#+name: fig:13_3wave_arima_est
 #+caption: あてはめ値
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/13_3wave_arima_est.png]]
 
 #+reveal: split
-
-#+name: fig:13_3wave_arima_diag
-#+begin_src R :file figs/13_3wave_arima_diag.png :exports results :results graphics
-  ## 診断プロット
-  tsdiag(est.arima)
-  ## 残差に相関が残っているので，優れたモデルという訳ではない
+#+begin_src R :file figs/13_3wave_arima_diag.png :exports results :results graphics :tangle no
+  #' 残差の診断
+  cp_3rd_arima |> gg_tsresiduals()
+  #' 残差の相関はだいぶ消えているので，そこそこ良いモデルといえそう
 #+end_src
+#+name: fig:13_3wave_arima_diag
 #+caption: 診断プロット
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/13_3wave_arima_diag.png]]
 
 #+reveal: split
-
 #+name: fig:13_3wave_arima_pred
-#+begin_src R :file figs/13_3wave_arima_pred.png :exports results :results graphics
-  ## 12月以降(最大60日)を予測してみる
-  p <- 
-    ggplot(data = fortify(forecast(est.arima,
-                                   h=min(length(test),60))) %>%
-             dplyr::mutate(Index=as.Date(Index)) %>%
-             left_join(fortify(test), by = "Index"), 
-           mapping = aes(x = Index,
-                         y = exp(Data)),
-           na.rm = TRUE) +
-    geom_line(colour = "skyblue",
-              na.rm = TRUE) +
-    geom_line(mapping = aes(y = test),
-              colour = "red",
-              na.rm = TRUE) +
-    geom_line(mapping = aes(y = exp(`Point Forecast`)),
-              colour = "royalblue",
-              na.rm = TRUE) +
-    geom_ribbon(mapping = aes(ymin = exp(`Lo 80`),
-                              ymax = exp(`Hi 80`)),
-                fill = "royalblue", alpha = 0.3,
-                na.rm = TRUE) +
-    ## geom_ribbon(mapping = aes(ymin = exp(`Lo 95`),
-    ##   			ymax = exp(`Hi 95`)),
-    ##   	  fill = "royalblue", alpha = 0.1,
-    ##   	  na.rm = TRUE) +
-    scale_x_date(labels = date_format("%y-%m-%d"), 
-                 breaks = date_breaks("1 week")) + 
-    theme(axis.text.x = element_text(angle = 90,
-                                     vjust = 0.5, hjust=1)) +
-    labs(title = "Prediction by ARIMA model",
-         x = "date",
-         y = "number of patients")
-  print(p)
+#+begin_src R :file figs/13_3wave_arima_pred.png :exports results :results graphics :tangle no
+  #' 後半を予測してみる
+  cp_3rd_arima |> 
+    forecast(h = nrow(cp_3rd_test)) |>
+    autoplot(cp_3rd_train, level = 80) +
+    autolayer(cp_3rd_test, .vars = patients, colour = "red") +
+    labs(title = "Prediction by ARIMA model")
 #+end_src
-#+caption: 予測値 (60日分)
+#+caption: 予測値 (60日分，80%信頼区間)
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/13_3wave_arima_pred.png]]
@@ -1510,7 +1777,10 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/13_3wave_sts_pred.png]]
 
-** 第8波における感染者数の推移
+** COMMENT 第8波における感染者数の推移
+:PROPERTIES:
+:ID:       CF34CC7C-19C1-4250-85F1-A84C3BFA5894
+:END:
 #+name: fig:13_8wave_patients
 #+begin_src R :file figs/13_8wave_patients.png :exports results :results graphics
   ## 第8波 (2022/10/10-現在)
@@ -1535,7 +1805,10 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/13_8wave_patients.png]]
 
-** ARIMA モデルによる推定 
+** COMMENT ARIMA モデルによる推定 
+:PROPERTIES:
+:ID:       CA50EA98-2F37-47A8-A986-F4F1EF37D56F
+:END:
 - ARIMA モデルのあてはめ
   - (対象区間 : 2022/11/01-11/30)
 #+begin_src R :exports results :results output
@@ -1762,10 +2035,13 @@
 
 * COMMENT 実習
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 時系列の予測 ~predict()~
+** COMMENT R : 時系列の予測 ~predict()~
+:PROPERTIES:
+:ID:       F206C668-B7F6-4AA1-AE7D-407563ECB078
+:END:
 - 推定されたモデルによる予測
   #+begin_src R :eval no
     predict(object, newdata, n.ahead = 1, se.fit = TRUE, ...)
@@ -1780,7 +2056,10 @@
   #+end_src
   - 詳細は ~?predict.ar, ?precidt.Arima~ を参照
 
-** R : 時系列の予測 ~forecast()~
+** COMMENT R : 時系列の予測 ~forecast()~
+:PROPERTIES:
+:ID:       F44EE2C7-D0B3-4915-B891-53F8C7D70BB4
+:END:
 - パッケージ ~forecast~ の利用
   #+begin_src R :eval no
     forecast(object, h)
@@ -1793,7 +2072,58 @@
   #+end_src
   - 詳細は ~?forecast~ を参照
 
-** R : 時系列の分解 ~StructTS()~
+** R : 時系列の予測
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       F44EE2C7-D0B3-4915-B891-53F8C7D70BB4
+:END:
+- 関数 ~fable::forecast()~ 
+  #+begin_src R :eval no :tangle no
+    forecast(object, h, ...)
+    #' object: モデルの推定結果
+    #' h: h期先の予測
+  #+end_src
+  - 詳細は ~?fable::forecast.X~ (Xはモデル名)を参照
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise 時系列の予測
+    #+end_src
+    #+begin_src R :eval no
+      as_tsibble(AirPassengers) |>
+        model(ARIMA(log(value))) |>
+        forecast(h = 36) |> autoplot(AirPassengers)
+    #+end_src
+    - 描画には ~fabletools::aotoplot.fbl_ts()~ が利用される
+
+** R : 分解モデルの推定
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
+:END:
+- 関数 ~fable::ETS()~ 
+  #+begin_src R :eval no :tangle no
+    ETS(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
+        nmse = 3, bounds = c("both", "usual", "admissible"),
+        ic = c("aicc", "aic", "bic"), restrict = TRUE, ...)
+    #' formula: 時系列モデル
+    #' opt_crit: モデルの最適化の指標
+    #' ic: モデル選択のための情報量規準
+    #' その他詳細は '?fable::ETS' を参照
+  #+end_src
+  - [[color:green][典型的な使い方]]
+    #+begin_src R :exports none
+      #' @excercise ETSモデルの推定
+    #+end_src
+    #+begin_src R :eval no
+      as_tsibble(AirPassengers) |>
+        model(ETS(value ~ season("M"))) |>
+        components() |> autoplot()
+    #+end_src
+
+** COMMENT R : 時系列の分解 ~StructTS()~
+:PROPERTIES:
+:ID:       4915693F-A8EB-457B-88C5-8FE4969ABDED
+:END:
 - トレンドの構造を仮定して分解する関数
   #+begin_src R :eval no
     StructTS(x, type = "level", fixed = NULL, ...)
@@ -1821,9 +2151,10 @@
 :END:
 - [[./code/14-airpass.r][14-airpass.r]] を確認してみよう
 
-** 練習問題
+** COMMENT 練習問題
 :PROPERTIES:
 :reveal_background: #f4fef4
+:ID:       2296B003-A9A0-46B0-8226-CF1A0A3BC5ED
 :END:
 - 東京の気候データを用いて以下の問に答えなさい
   - 6月までのデータを用いて適切なモデルを推定しなさい
@@ -1896,215 +2227,274 @@
      
 ** 練習問題
 :PROPERTIES:
-:reveal_background: #f4fef4
+:reveal_background: #fef4f4
+:ID:       F7A8D68B-3003-4D17-8920-C799A2E1752A
 :END:
 - 以下の問に答えなさい
-  - ~AirPassengers~ データを用いて分析・予測を行いなさい
   - COVID-19のデータを用いて分析・予測を行いなさい
     [[https://covid19.mhlw.go.jp/public/opendata/newly_confirmed_cases_daily.csv]]
+  - ~AirPassengers~ データを用いて分析・予測を行いなさい
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 AirPassengersデータの分析
-  ### 
-
-  ## AirPassengersデータの読み込み
-  library(forecast)
-  data(AirPassengers)
-  tsp(AirPassengers) # データの時間に関する情報を表示 (月ごとのデータ)
-  plot(AirPassengers, col="blue") # データの表示
-  plot(log(AirPassengers), col="blue") # 対数変換データの表示
-  ## 対数変換により分散変動が安定化していることがわかる
-  
-  ## 以下では対数変換したデータを扱う
-  ap_train <- window(log(AirPassengers), end=c(1957,12))  # 訓練データ
-  ap_test  <- window(log(AirPassengers), start=c(1958,1)) # 試験データ
-  
-  ## まずトレンド(明らかな上昇傾向)について考察
-  ## 階差を取ることにより定常化できるか検討
-  plot(diff(ap_train), col="blue") 
-  acf(diff(ap_train))  # 自己相関
-  pacf(diff(ap_train)) # 偏自己相関
-  ## lag=1(1年)に強い(偏)自己相関(季節成分)がある
-  
-  ## 季節成分について考察
-  ## 12ヶ月で階差を取って同様に検討
-  plot(diff(diff(ap_train), lag=12), col="blue")
-  acf(diff(diff(ap_train), lag=12), lag.max=24)  # 自己相関
-  pacf(diff(diff(ap_train), lag=12), lag.max=24) # 偏自己相関
-  
-  ## lag=1/12,3/12,1 に若干偏自己相関が残っている
-  ## lag=2 (2年) まで見ると自己相関も偏自己相関も誤差内
-  
-  ## SARIMAモデルの作成
-  ##  階差系列については ARMA(1-3)，
-  ##  季節成分 については ARMA(1-2)
-  ## あたりを考える必要がありそう
-  
-  ## 関数arimaを用いる場合
-  ## 季節成分によるARMA項の指定はseasonalオプションを用いる
-  ## 例えば seasonal=list(order=c(0,1,2),period=12) で
-  ## 差分(1階)= e(t) + b(12)*e(t-12) + b(24)*e(t-24) のMA(2)モデルを指定
-  ## orderとseasonal/orderでそれぞれ1ヶ月階差と12ヶ月階差を取ることに注意
-  ## seasonalのperiodは既定値では時系列のfrequencyを用いるので通常は指定不要
-  ## 例
-  (ap_arima <- arima(ap_train,
-                     order=c(0,1,2), # 階差1のMA(2)
-                     seasonal=list(order=c(0,1,1)))) # 12ヶ月階差1のMA(1)
-  tsdiag(ap_arima) # 時系列モデルの診断図
-  
-  ## 自動的にモデル選択を行う
-  (ap_auto <- auto.arima(ap_train, d=1, D=1))
-  tsdiag(ap_auto) # 時系列モデルの診断図
-  ## AIC最小のモデルは以下となる
-  ## arima(x, order=c(0,1,1), seasonal=list(order=c(0,1,1)))
-  
-  ## 予測値と標準偏差の計算
-  plot(forecast(ap_auto, h=length(ap_test))) # 対数変換していることに注意
-  lines(ap_test, col="red") # 真の値
-  
-  ## 関数 predict を利用して元のデータ空間に戻す
-  ap_pred <- predict(ap_auto, n.ahead=length(ap_test))
-  
-  ## 対数データにおける予測+/-標準偏差の表示
-  library(tseries)
-  seqplot.ts(x=ap_train, y=ap_test,
-             colx="gray", coly="red", 
-             ylab="passengers/month (log)")
-  with(ap_pred,
-       lines(pred, col="blue", lwd=2))
-  with(ap_pred, lines(pred+1.96*se, col="darkblue")) # 95%の信頼区間
-  with(ap_pred, lines(pred-1.96*se, col="darkblue")) # 1.28なら80%
-  
-  ## もとのデータの空間に戻してみる (指数変換 <-> 対数変換)
-  seqplot.ts(x=exp(ap_train), y=exp(ap_test),
-             colx="gray", coly="red",
-             ylab="passengers/month")
-  with(ap_pred,
-       lines(exp(pred), col="blue", lwd=2))
-  with(ap_pred, lines(exp(pred+1.96*se), col="darkblue")) 
-  with(ap_pred, lines(exp(pred-1.96*se), col="darkblue"))
-  
-  ## 時系列の分解
-  ## basic structure model による分析
-  ## トレンド(level+slope) + 季節(12ヶ月周期) + ランダム
-  ## 自動的にモデル選択を行う
-  (ap_sts <- StructTS(ap_train, type="BSM"))
-  plot(cbind(obs=ap_train, fit=fitted(ap_sts))) # 分解結果の視覚化
-  tsdiag(ap_sts) # 時系列モデルの診断図
-  ## slopeの変動が季節成分の影響を受けて大きいので，推定に制限を付ける
-  (ap_sts <- StructTS(ap_train, type="BSM",
-                      fixed=c(NA,0,NA,NA))) # slopeの推定を滑らかに
-  plot(cbind(obs=ap_train, fit=fitted(ap_sts))) 
-  tsdiag(ap_sts) 
-  ## fixed=c(0,0,NA,NA) とすればlevelの推定も滑らかになる
-  
-  ## 予測値と標準偏差の計算
-  plot(forecast(ap_sts, h=length(ap_test))) # 対数変換していることに注意
-  lines(ap_test, col="red") # 真の値
-  
-  ## 関数 predict を利用して元のデータ空間に戻す
-  ap_psts <- predict(ap_sts, n.ahead=length(ap_test))
-  seqplot.ts(x=exp(ap_train), y=exp(ap_test),
-             colx="gray", coly="red",
-             ylab="passengers/month")
-  with(ap_psts,
-       lines(exp(pred), col="blue", lwd=2))
-  with(ap_psts, lines(exp(pred+1.96*se), col="darkblue")) 
-  with(ap_psts, lines(exp(pred-1.96*se), col="darkblue"))
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 時系列の予測
 #+end_src
+#+begin_src R :eval no :exports none
+  #' 厚生労働省のCOVID-19の感染者数データ
+  #' 以下は解析事例で紹介した内容
+  #' データの取得と整理 
+  cp_tbl <-
+    read_csv("https://covid19.mhlw.go.jp/public/opendata/newly_confirmed_cases_daily.csv") |>
+    select(1:2) |>
+    set_names(c("date","patients")) |>
+    mutate(date = as_date(date))
+  #' 時系列データ(tsibbleクラス)への変更
+  cp_tsbl <-
+    cp_tbl |>
+    as_tsibble(index = date)
+  #' データ(全国・全期間)の表示
+  cp_tsbl |>
+    autoplot(patients, colour = "skyblue") +
+    geom_col(fill = "skyblue") + # 塗り潰しを行う
+    labs(title = "COVID-19 patients in Japan",
+         x = "date",
+         y = "number of patients")
+  #'
+  #' 第3波 (2020/9/15-2021/1/31) に着目する
+  #' 
+  cp_3rd_train <- # 訓練データ
+    cp_tsbl |>
+    filter_index("2020-09-15" ~ "2020-11-30")
+  cp_3rd_test <-  # 試験データ
+    cp_tsbl |>
+    filter_index("2020-12-01" ~ "2021-01-31")
+  #' 第3波の表示
+  bind_rows(cp_3rd_train,cp_3rd_test) |>
+    autoplot(patients, colour = "skyblue") +
+    geom_col(fill = "skyblue") + # 塗り潰しを行う
+    labs(title = "COVID-19 patients in Japan",
+         x = "date",
+         y = "number of patients")
+  #' 階差系列の描画
+  cp_3rd_train |>
+    gg_tsdisplay(difference(patients),
+                 plot_type = "partial")
+  #' 7日周期の影響があることがわかる
+  #' 対数変換+階差系列の描画
+  cp_3rd_train |>
+    gg_tsdisplay(difference(log(patients)),
+                 plot_type = "partial")
+  #' やはり7日周期の影響があることがわかる
+  #' 7日の周期(季節成分)での階差系列の描画
+  cp_3rd_train |>
+    gg_tsdisplay(difference(difference(log(patients), lag = 7)),
+                 lag_max = 21,
+                 plot_type = "partial")
+  #' 7日の相関は負になっているので，季節階差は取らなくても良さそう
+  #' 以下では対数変換した系列に対してARIMAモデルをあてはめる
+  cp_3rd_arima <-
+    cp_3rd_train |>
+    model(ARIMA(log(patients) ~ PDQ(D = 0)))
+  #' 推定結果の検討
+  cp_3rd_arima |> report()
+  cp_3rd_arima |> accuracy()
+  cp_3rd_arima |> glance()
+  #' データとあてはめ値を表示
+  cp_3rd_arima |>
+    augment() |>
+    autoplot(patients, colour = "skyblue") +
+    geom_line(aes(y = .fitted), colour = "orange") +
+    labs(title = "Fitted by ARIMA model",
+         x = "date", y = "log(patients)")
+  #' 残差の診断
+  cp_3rd_arima |> gg_tsresiduals()
+  #' 残差の相関はだいぶ消えているので，そこそこ良いモデルといえそう
+  #' 後半を予測してみる
+  cp_3rd_arima |> 
+    forecast(h = nrow(cp_3rd_test)) |>
+    autoplot(cp_3rd_train, level = 80) +
+    autolayer(cp_3rd_test, .vars = patients, colour = "red") +
+    labs(title = "Prediction by ARIMA model")
+  #' 感染が収まるまでの増加傾向を上手く推定できている
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 厚生労働省のCOVID-19の感染者数データ
-  ### 
+  #' 
+  #' 第8波 (2022/11/01-2023/1/31) に着目する
+  #' 
+  cp_8th_train <- # 訓練データ
+    cp_tsbl |>
+    filter_index("2022-11-01" ~ "2022-11-30")
+  cp_8th_test <-  # 試験データ
+    cp_tsbl |>
+    filter_index("2022-12-01" ~ "2023-01-31")
+  #' 第8波の表示
+  bind_rows(cp_8th_train,cp_8th_test) |>
+    autoplot(patients, colour = "skyblue") +
+    geom_col(fill = "skyblue") + # 塗り潰しを行う
+    labs(title = "COVID-19 patients in Japan",
+         x = "date",
+         y = "number of patients")
+  #' 階差系列の描画
+  cp_8th_train |>
+    gg_tsdisplay(difference(patients),
+                 plot_type = "partial")
+  #' 対数変換+階差系列の描画
+  cp_8th_train |>
+    gg_tsdisplay(difference(log(patients)),
+                 plot_type = "partial")
+  #' 7日の周期(季節成分)での階差系列の描画
+  cp_8th_train |>
+    gg_tsdisplay(difference(difference(log(patients), lag = 7)),
+                 lag_max = 21,
+                 plot_type = "partial")
+  #' 対数変換した系列に対してARIMAモデルをあてはめる
+  cp_8th_arima <-
+    cp_8th_train |>
+    model(ARIMA(log(patients) ~ PDQ(D = 0)))
+  #' 推定結果の検討
+  cp_8th_arima |> report()
+  cp_8th_arima |> accuracy()
+  cp_8th_arima |> glance()
+  #' データとあてはめ値を表示
+  cp_8th_arima |>
+    augment() |>
+    autoplot(patients, colour = "skyblue") +
+    geom_line(aes(y = .fitted), colour = "orange") +
+    labs(title = "Fitted by ARIMA model",
+         x = "date", y = "log(patients)")
+  #' 残差の診断
+  cp_8th_arima |> gg_tsresiduals()
+  #' 後半の予測
+  cp_8th_arima |> 
+    forecast(h = nrow(cp_8th_test)) |>
+    autoplot(cp_8th_train, level = 80) +
+    autolayer(cp_8th_test, .vars = patients, colour = "red") +
+    labs(title = "Prediction by ARIMA model")
+  #'
+  #' その他の方法
+  #' fableに実装されているいくつかの方法で予測してみる
+  cp_8th_models <-
+    cp_8th_train |>
+    model( # 自動推定
+      naive  = NAIVE(log(patients)),  # random walk model
+      arima  = ARIMA(log(patients) ~ pdq() + PDQ(0,0,0)),
+      sarima = ARIMA(log(patients) ~ pdq() + PDQ(D = 0)),
+      ets    = ETS(log(patients)),    # exponential smoothing
+      )
+  cp_8th_models |>
+    forecast(h = nrow(cp_8th_test)) |>
+    autoplot(cp_8th_train, level = NULL) +
+    autolayer(cp_8th_test, .vars = patients, colour = "gray") +
+    labs(title = "Prediction by various models")
+#+end_src
+#+begin_src R :eval no :exports none
+  #' AirPassengersデータの分析
+  #' データの時間に関する情報を表示 (月ごとのデータ)
+  AirPassengers |> tsp()
+  #' データの表示
+  AirPassengers |> as_tsibble() |>
+      autoplot(value) +
+      labs(title = "AirPassengers",
+           x = "Year", y = "Passengers/1000")
+  #' ほぼ線形のトレンドと増大する分散変動があることがわかる
+  #' 対数変換データの表示
+  AirPassengers |> log() |> as_tsibble() |>
+      autoplot(value) +
+      labs(title = "AirPassengers",
+           x = "Year", y = "log(Passengers/1000)")
+  #' 対数変換により分散変動が安定化していることがわかる
+  #' 以下では対数変換したデータを扱う
+  ap_tsbl <- AirPassengers |> as_tsibble()
+  ap_train <- ap_tsbl |> filter_index(~ "1958-12") # 訓練データ
+  ap_test  <- ap_tsbl |> filter_index("1959-01" ~ .) # 試験データ(2年分)
 
-  ## データの取得と整理 
-  cp_data <- subset(
-      x = read.csv("https://covid19.mhlw.go.jp/public/opendata/newly_confirmed_cases_daily.csv"),
-      select = 1:2)
-  names(cp_data) <- c("date","patients")
-  cp_data$date <- as.Date(cp_data$date)
-  head(cp_data)
-  
-  ## 時系列データ(zooクラス)への変更
-  cp_zoo <- with(cp_data,zoo(x=patients, order.by=date))
-  plot(cp_zoo, col="blue")
-  
-  ## 対象を限定する
-  cp_sub <- window(cp_zoo, start="2022-06-01")
-  
-  plot(diff(cp_sub), col="blue") 
-  acf(diff(cp_sub))  # 自己相関
-  pacf(diff(cp_sub)) # 偏自己相関
-  ## 7日周期の影響があることがわかる
-  plot(diff(diff(cp_sub), lag=7), col="blue")
-  acf(diff(diff(cp_sub), lag=7), lag.max=21)
-  pacf(diff(diff(cp_sub), lag=7), lag.max=21)
-  
-  ## 対数変換を確認する
-  cp_log <- log(cp_sub)
-  plot(diff(cp_log), col="blue") 
-  acf(diff(cp_log))  # 自己相関
-  pacf(diff(cp_log)) # 偏自己相関
-  plot(diff(diff(cp_log), lag=7), col="blue")
-  acf(diff(diff(cp_log), lag=7), lag.max=21)
-  pacf(diff(diff(cp_log), lag=7), lag.max=21)
-  
-  ## cp_log にもとづいて予測を行う
-  
-  ## auto.arima による方法
-  ## 周期を指定して分析してみる
-  frequency(cp_log) <- 7 # 7日周期の成分を仮定
-  (cp_auto <- auto.arima(cp_log))
-  ## モデルの推定としてはうまくいかない，おそらく周期性が曖昧なため
-  frequency(cp_log) <- 1 # 周期なしとして推定
-  (cp_auto <- auto.arima(cp_log))
-  ## ARIMA(3,1,4)としてモデル化
-  tsdiag(cp_auto)
-  ## 残差に相関が残っているので，優れたモデルという訳ではない
-  plot(cp_log, col="blue", ylab="log(patients)")
-  lines(fitted(cp_auto), col="orange")
-  ## 50日先まで予測してみる
-  cp_date <- seq(from=start(cp_zoo), to=as.Date("2023-03-31"), by=1)
-  plot(forecast(cp_auto, h=50), xaxt="n")
-  axis(side=1, 
-       at=cp_date, labels=cp_date, las=2, 
-       cex.axis=0.7) 
-  ## 対数変換
-  cp_fauto <- forecast(cp_auto, h=50)
-  seqplot.ts(x=as.ts(cp_sub), y=exp(with(cp_fauto, mean)),
-             colx="gray", coly="red",
-             ylab="patients")
-  with(cp_fauto, lines(exp(lower[,1]), col="darkblue")) # 80%信頼区間
-  with(cp_fauto, lines(exp(upper[,1]), col="darkblue")) 
-  
-  ## StructTS による方法
-  (cp_sts <- StructTS(cp_log))
-  plot(fitted(cp_sts))
-  plot(forecast(cp_sts, h=50), xaxt="n")
-  lines(cp_log)
-  axis(side=1, 
-       at=cp_date, labels=cp_date, las=2, 
-       cex.axis=0.7)
-  ## 対数変換
-  ## StructTSの返値は少し整理が必要なので注意 (別の書き方の例)
-  cp_fsts <- forecast(cp_sts, h=50)
-  plot(c(exp(cp_log), # zooクラスを連結する
-         zoo(exp(with(cp_fsts, upper[,1])), 
-             order.by=as.Date(with(cp_fsts, index(mean))))),
-       col="white", ylab="patients", xlab="", xaxt="n")
-  axis(side=1, 
-       at=cp_date, labels=cp_date, las=2, 
-       cex.axis=0.7)
-  lines(exp(cp_log), col="gray")
-  with(cp_fsts, lines(exp(mean), col="blue"))
-  with(cp_fsts, lines(ts(exp(lower[,1]),
-                         start=with(cp_fsts, start(mean))),
-                      col="darkblue")) # 80%信頼区間
-  with(cp_fsts, lines(ts(exp(upper[,1]),
-                         start=with(cp_fsts, start(mean))),
-                      col="darkblue")) # 80%信頼区間
+  #' まずトレンド(明らかな上昇傾向)について考察
+  #' 階差を取ることにより定常化できるか検討
+  ap_train |> 
+      gg_tsdisplay(difference(log(value)),
+                   plot_type = "partial") 
+  #' lag=12(1年),24(2年)に強い自己相関(季節成分)がある
+  #' lag=12(1年)に偏自己相関は残っている
+  #' 季節成分について考察
+  #' 12ヶ月で階差を取って同様に検討
+  ap_train |> 
+      gg_tsdisplay(difference(difference(log(value), lag = 12)),
+                   lag_max = 36,
+                   plot_type = "partial")
+  #' lag=1,3,12(1年) に若干偏自己相関が残っている
+  #' lag=36(3年) まで見ると上記以外の偏自己相関は誤差内
+  #' SARIMAモデルの作成
+  #' 階差および季節成分の自己相関・偏自己相関から
+  #'  階差系列については ARMA(pまたはq=1-3)，
+  #'  季節成分 については ARMA(pまたはq=1-2)
+  #' あたりを考える必要がありそう
+  #' いくつかのARIMAモデルの推定
+  ap_fit <-
+      ap_train |>
+      model( # 名前に特殊な文字を含む場合は``で括る
+          `arima(0,1,2)(0,1,1)` = ARIMA(log(value) ~ pdq(0,1,2) + PDQ(0,1,1)),
+          `arima d=1 D=1` = ARIMA(log(value) ~ pdq(d = 1) + PDQ(D = 1)),
+          `arima auto` = ARIMA(log(value)),
+          `ets` = ETS(log(value)),
+          )
+  #' 次数を指定したモデル order=pdq(0,1,2), seasonal=PDQ(0,1,1)
+  ap_fit |> select(`arima(0,1,2)(0,1,1)`) |> report() # 推定されたモデルの概要
+  ap_fit |> select(`arima(0,1,2)(0,1,1)`) |>
+      gg_tsresiduals() # 残差の診断(モデルの診断)
+  ap_fit |> select(`arima(0,1,2)(0,1,1)`) |>
+      augment() |> features(.innov, ljung_box, lag = 12) # Ljung-Box検定
+  #' 残差の自己相関は小さいが残差の正規性は低い
+  #' 残差に関する Ljung-Box 検定は
+  #' - 帰無仮説 : 残差は無作為
+  #' - 対立仮説 : 残差は無作為でない
+  #' であるので，p値が高い方が良い
+  #' 検討結果を踏まえ階差・季節成分の階差を指定した推定
+  ap_fit |> select(`arima d=1 D=1`) |> report() 
+  ap_fit |> select(`arima d=1 D=1`) |>
+      gg_tsresiduals() 
+  ap_fit |> select(`arima d=1 D=1`) |>
+      augment() |> features(.innov, ljung_box, lag = 12)
+  #' 自動的にモデル選択を行う
+  ap_fit |> select(`arima auto`) |> report() 
+  #' いずれにせよAIC最小のモデルは以下となる
+  #' order = pdq(0,1,1), seasonal = PDQ(0,1,1)
+  #' 以降，このモデルを利用する
+  #' 予測値と信頼区間の描画
+  ap_fit |> select(`arima auto`) |>
+      forecast(h = nrow(ap_test)) |>
+      autoplot(ap_train) +
+      autolayer(ap_test, value, colour = "purple") +
+      labs(title = "Forecast from SARIMA model",
+           x = "Year", y = "Passengers/1000")
+  #' 時系列の分解
+  #' ETS (exponential smoothing) モデル
+  #' トレンド(level+slope) + 季節(12ヶ月周期) + ランダム
+  ap_fit |> select(`ets`) |> report() 
+  ap_fit |> select(`ets`) |> gg_tsresiduals() 
+  ap_fit |> select(`ets`) |> augment() |> features(.innov, ljung_box, lag = 12)
+  #' 残差に周期構造が残っているので帰無仮説が棄却される
+  #' 予測値と信頼区間の描画
+  ap_fit |> select(`ets`) |>
+      forecast(h = nrow(ap_test)) |>
+      autoplot(ap_train) +
+      autolayer(ap_test, value, colour = "purple") +
+      labs(title = "Forecast from ETS model",
+           x = "Year", y = "Passengers/1000")
+  #' ARIMAとETSの比較
+  ap_train |>
+      autoplot(value) +
+      geom_line(aes(y = .fitted, colour = .model),
+                data = ap_fit |> select(`arima auto`,`ets`) |> augment()) +
+      labs(title = "ARIMA vs ETS (fitted)",
+           x = "Year", y = "Passengers/1000")
+  ap_fit |> select(`arima auto`,`ets`) |>
+      forecast(h = nrow(ap_test)) |>
+      autoplot(ap_train, level = NULL) +
+      autolayer(ap_test, value, colour = "violet") +
+      labs(title = "ARIMA vs ETS (forecast)",
+           x = "Year", y = "Passengers/1000")
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
