@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-01-18 12:17:24 mura>
+# Time-stamp: <2024-01-23 15:30:32 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -320,7 +320,7 @@
   ts_ma |>
     as_tsibble() |>
     autoplot(value, show.legend = FALSE) +
-    labs(title = expression(X[t] == 0.44*epsilon[t-1] + 0.08*epsilon[t-2] + epsilon[t]),
+    labs(title = expression(X[t] == 0.44*epsilon[t-1] - 0.28*epsilon[t-2] + epsilon[t]),
          x = "Time", y = "Observation")
 #+end_src
 #+caption: 同じモデルに従うMA過程の例
@@ -336,7 +336,7 @@
     patch[[i]] <-
       forecast::ggAcf(ts_ma[,i],
             colour = scales::hue_pal()(K)[i]) +
-      ylim(-0.2,0.4) +
+      ylim(-0.3,0.4) +
       labs(title = paste("Series:", i))
   }
   do.call("wrap_plots", patch)
@@ -369,7 +369,7 @@
     patch[[i]] <-
       forecast::ggAcf(ts_arma[,i],
             colour = scales::hue_pal()(K)[i]) +
-      ylim(-0.5,0.3) +
+      ylim(-0.6,0.4) +
       labs(title = paste("Series:", i))
   }
   do.call("wrap_plots", patch)
@@ -610,7 +610,7 @@
     #+end_quote
   - ラグ\(p\)の特別な *自己相関係数* 
     #+begin_quote
-    \(a_{1}=a_{2}=\dotsb=a_{p-1}=0\)のときの\(a_{p}\) (*特殊なモデルにおける解釈*)
+    \(a_{1}=a_{2}=\dotsb=a_{p-1}=0\)のときの\(\rho(p)\) (*特殊なモデルにおける解釈*)
     \begin{equation}
       \mathbb{E}[X_{t}X_{t+p}]=a_{p}\mathbb{E}[X_{t}X_{t}]
       \;\Rightarrow\; \gamma(p)=a_{p}\gamma(0)
@@ -625,7 +625,7 @@
     patch[[i]] <-
       forecast::ggPacf(ts_ar[,i], 
                        colour = scales::hue_pal()(K)[i]) +
-      ylim(-0.2,1) +
+      ylim(-0.25,1) +
       labs(title = paste("AR series:", i))
   }
   do.call("wrap_plots", patch)

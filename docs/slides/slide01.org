@@ -4,13 +4,9 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-09-30 13:49:09 mura>
+# Time-stamp: <2024-09-29 16:33:25 mura>
 :REVEAL:
-#+INCLUDE: "./reveal.js/org/mycourse.org"
-#+PROPERTY: header-args:R :cache yes :session *R*
-#+PROPERTY: header-args:R+ :exports both :results output
-#+PROPERTY: header-args:R+ :width 800 :height 800 :res 100
-#+PROPERTY: header-args:R+ :tangle yes
+#+SETUPFILE: "./reveal.js/org/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '

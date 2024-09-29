@@ -11,22 +11,19 @@
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
-
-<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
-
 <link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
-<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-state="no-toc-progress">
+<section id="sec-title-slide">
 <!-- This is an HTML template for the title slide. -->
 <!-- Embed logos as necessary. -->
 <!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
@@ -46,8 +43,8 @@
 
 </section>
 <section>
-<section id="slide-orgd060332">
-<h2 id="orgd060332">講義の内容</h2>
+<section id="slide-orge86f0d5">
+<h2 id="orge86f0d5">講義の内容</h2>
 <ul>
 <li>確率
 <ul>
@@ -71,17 +68,16 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgb2abe71">
-<h2 id="orgb2abe71">確率</h2>
-<div class="outline-text-2" id="text-orgb2abe71">
+<section id="slide-orga08f7f2">
+<h2 id="orga08f7f2">確率</h2>
+<div class="outline-text-2" id="text-orga08f7f2">
 </div>
 </section>
-<section id="slide-org2bcacde">
-<h3 id="org2bcacde">確率分布</h3>
+<section id="slide-org66ef431">
+<h3 id="org66ef431">確率分布</h3>
 <ul>
 <li><p>
 定義
@@ -109,10 +105,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orge145317">
-<h3 id="orge145317">確率質量関数</h3>
+<section id="slide-org02af7ec">
+<h3 id="org02af7ec">確率質量関数</h3>
 <ul>
 <li><p>
 離散分布を記述する方法
@@ -134,10 +129,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgdc40e53">
-<h3 id="orgdc40e53">確率密度関数</h3>
+<section id="slide-orgc11d4be">
+<h3 id="orgc11d4be">確率密度関数</h3>
 <ul>
 <li><p>
 連続分布を記述する方法
@@ -160,7 +154,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -187,20 +180,19 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgcc76fb1">
-<h3 id="orgcc76fb1">正規分布 (normal/Gaussian distribution)</h3>
-<div class="leftcol" id="orgfdca50b">
+<section id="slide-org156010c">
+<h3 id="org156010c">正規分布 (normal/Gaussian distribution)</h3>
+<div class="leftcol" id="org695bbaf">
 
-<div id="orgd0857b5" class="figure">
+<div id="orge4221eb" class="figure">
 <p><img src="figs/pdf_norm.png" alt="pdf_norm.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 1: </span>正規分布 (平均\(0\),分散\(1\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org0b24915">
+<div class="rightcol" id="org4e4cf52">
 <blockquote>
 <ul>
 <li>標本空間 : \((-\infty,\infty)\)</li>
@@ -223,10 +215,9 @@
 </blockquote>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org3f908cf">
-<h3 id="org3f908cf">多次元正規分布</h3>
+<section id="slide-orgff9ae8d">
+<h3 id="orgff9ae8d">多次元正規分布</h3>
 <ul>
 <li>標本空間 : \(\mathbb{R}^{p}\)</li>
 <li>母数 : 平均 \(\boldsymbol{\mu}\), 分散共分散行列 \(\Sigma\)</li>
@@ -244,10 +235,9 @@
 </div></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org37f4c48">
-<h3 id="org37f4c48">正規分布の特徴付け</h3>
+<section id="slide-org8cda6ef">
+<h3 id="org8cda6ef">正規分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -263,20 +253,19 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org30ac517">
-<h3 id="org30ac517">\(\chi^{2}\)分布 (\(\chi^{2}\)-distribution)</h3>
-<div class="leftcol" id="orgf2a90d1">
+<section id="slide-org87a1286">
+<h3 id="org87a1286">\(\chi^{2}\)分布 (\(\chi^{2}\)-distribution)</h3>
+<div class="leftcol" id="org67edc42">
 
-<div id="org234c8ae" class="figure">
+<div id="orgc09ea29" class="figure">
 <p><img src="figs/pdf_chisq.png" alt="pdf_chisq.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 2: </span>\(\chi^{2}\)分布 (自由度\(3\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org3674f1b">
+<div class="rightcol" id="org96a735a">
 <blockquote>
 <ul>
 <li>標本空間 : \([0,\infty)\)</li>
@@ -299,10 +288,9 @@
 </blockquote>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgebc59ac">
-<h3 id="orgebc59ac">\(\chi^{2}\)分布の特徴付け</h3>
+<section id="slide-org9136a8c">
+<h3 id="org9136a8c">\(\chi^{2}\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -333,20 +321,19 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0b4f402">
-<h3 id="org0b4f402">\(t\)分布 (Student&rsquo;s \(t\)-distribution)</h3>
-<div class="leftcol" id="orga4b9203">
+<section id="slide-org16bbcc2">
+<h3 id="org16bbcc2">\(t\)分布 (Student&rsquo;s \(t\)-distribution)</h3>
+<div class="leftcol" id="org667e693">
 
-<div id="orgce43ff9" class="figure">
+<div id="org62e2d04" class="figure">
 <p><img src="figs/pdf_t.png" alt="pdf_t.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 3: </span>\(t\)分布 (自由度\(3\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org0945061">
+<div class="rightcol" id="org05c1d57">
 <blockquote>
 <ul>
 <li>標本空間 : \((-\infty,\infty)\)</li>
@@ -371,10 +358,9 @@
 </blockquote>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org37c7aed">
-<h3 id="org37c7aed">\(t\)分布の特徴付け</h3>
+<section id="slide-org6c9ba3f">
+<h3 id="org6c9ba3f">\(t\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -406,20 +392,19 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org2094448">
-<h3 id="org2094448">\(F\)分布 (\(F\)-distribution)</h3>
-<div class="leftcol" id="org8335fff">
+<section id="slide-org2507960">
+<h3 id="org2507960">\(F\)分布 (\(F\)-distribution)</h3>
+<div class="leftcol" id="orgb141c0d">
 
-<div id="org7c2d707" class="figure">
+<div id="org4ec35dd" class="figure">
 <p><img src="figs/pdf_F.png" alt="pdf_F.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 4: </span>\(F\)分布 (自由度\(3,5\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org0c55550">
+<div class="rightcol" id="org9c16567">
 <blockquote>
 <ul>
 <li>標本空間 : \([0,\infty)\)</li>
@@ -443,10 +428,9 @@
 </blockquote>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org95797a1">
-<h3 id="org95797a1">\(F\)分布の特徴付け</h3>
+<section id="slide-org922bd99">
+<h3 id="org922bd99">\(F\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -476,16 +460,14 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org5445c28" data-background="#fef4f4">
-<h2 id="org5445c28">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org11acc0b" data-background="#fef4f4">
+<h2 id="org11acc0b">演習</h2>
 </section>
-<section id="slide-org81bcc52" data-background="#fef4f4">
-<h3 id="org81bcc52">問題</h3>
+<section id="slide-org2b07861" data-background="#fef4f4">
+<h3 id="org2b07861">問題</h3>
 <ul>
 <li><p>
 標準正規分布の密度関数
@@ -510,10 +492,9 @@
 1付近の値をとる確率の比を求めよ</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf620a9f" data-background="#fef4f4">
-<h3 id="orgf620a9f">解答例</h3>
+<section id="slide-orga7ea576" data-background="#fef4f4">
+<h3 id="orga7ea576">解答例</h3>
 <ul>
 <li><p>
 2つの標準正規分布の積を考えて，
@@ -539,7 +520,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -559,17 +539,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org8a413df">
-<h2 id="org8a413df">統計</h2>
-<div class="outline-text-2" id="text-org8a413df">
+<section id="slide-org41e601d">
+<h2 id="org41e601d">統計</h2>
+<div class="outline-text-2" id="text-org41e601d">
 </div>
 </section>
-<section id="slide-orgf57515e">
-<h3 id="orgf57515e">記述統計量</h3>
+<section id="slide-org4a698ed">
+<h3 id="org4a698ed">記述統計量</h3>
 <ul>
 <li><b>記述統計量</b> : (または要約統計量・基本統計量)
 <ul>
@@ -592,10 +571,9 @@
 <li>真の値と観測データによる推定には差が存在</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org6c89c26">
-<h3 id="org6c89c26">平均</h3>
+<section id="slide-org11004c1">
+<h3 id="org11004c1">平均</h3>
 <ul>
 <li>データの代表値を表す記述統計量</li>
 <li><p>
@@ -630,10 +608,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org4d239e2">
-<h3 id="org4d239e2">分散</h3>
+<section id="slide-org5baf2d2">
+<h3 id="org5baf2d2">分散</h3>
 <ul>
 <li>データのばらつき具合を表す記述統計量</li>
 <li><p>
@@ -663,10 +640,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org28f4870">
-<h3 id="org28f4870">標本平均・分散の不偏性</h3>
+<section id="slide-orga4c0ab5">
+<h3 id="orga4c0ab5">標本平均・分散の不偏性</h3>
 <ul>
 <li><p>
 標本平均は \(\mu\) の <b>不偏推定量である</b> 
@@ -696,10 +672,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgfd63b36">
-<h3 id="orgfd63b36">不偏分散</h3>
+<section id="slide-orgec0e14d">
+<h3 id="orgec0e14d">不偏分散</h3>
 <ul>
 <li>不偏性を担保した分散の推定量</li>
 <li><p>
@@ -719,10 +694,9 @@
 </p></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org8859272">
-<h3 id="org8859272">標準偏差</h3>
+<section id="slide-org1729359">
+<h3 id="org1729359">標準偏差</h3>
 <ul>
 <li><p>
 <b>標準偏差</b> (standard deviation) 
@@ -757,10 +731,9 @@
 <li>一般に \(s\) は標準偏差 \(\sigma\) の <b>不偏推定量ではない</b></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgbefb7ca">
-<h3 id="orgbefb7ca">標準化</h3>
+<section id="slide-orgf65b0dd">
+<h3 id="orgf65b0dd">標準化</h3>
 <ul>
 <li>複数データの分析のために単位や基準を揃える方法</li>
 <li><p>
@@ -783,10 +756,9 @@
 <li>\(Z_{i}\) : <b>標準得点</b> (standard score) あるいは <b>Zスコア</b> (Z-score) と呼ばれる</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org439df46">
-<h3 id="org439df46">偏差値</h3>
+<section id="slide-org9c32e79">
+<h3 id="org9c32e79">偏差値</h3>
 <ul>
 <li>別の基準での標準化
 <ul>
@@ -808,10 +780,9 @@
 <b>偏差値得点</b> あるいは <b>Tスコア</b> (T-score) と呼ばれる</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org698d7b8">
-<h3 id="org698d7b8">共分散</h3>
+<section id="slide-orgf350031">
+<h3 id="orgf350031">共分散</h3>
 <ul>
 <li>複数のデータ間の関係を知るための記述統計量</li>
 <li><p>
@@ -838,10 +809,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org6b177f2">
-<h3 id="org6b177f2">相関</h3>
+<section id="slide-orgf9d8ae0">
+<h3 id="orgf9d8ae0">相関</h3>
 <ul>
 <li>2種類のデータ間の比例関係の大きさ</li>
 <li><p>
@@ -869,10 +839,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgcc9beeb">
-<h3 id="orgcc9beeb">離散分布の尤度関数</h3>
+<section id="slide-org1390bde">
+<h3 id="org1390bde">離散分布の尤度関数</h3>
 <ul>
 <li>\(X_1=x_1,X_2=x_2,\dots,X_n=x_n\) の同時確率
 <ul>
@@ -900,7 +869,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -936,10 +904,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf7fa281">
-<h3 id="orgf7fa281">連続分布の尤度関数</h3>
+<section id="slide-org6f91b73">
+<h3 id="org6f91b73">連続分布の尤度関数</h3>
 <ul>
 <li>\(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta\) の同時確率
 <ul>
@@ -967,7 +934,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -999,10 +965,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgee9c3f1">
-<h3 id="orgee9c3f1">最尤法</h3>
+<section id="slide-org0dcdd6b">
+<h3 id="org0dcdd6b">最尤法</h3>
 <ul>
 <li><p>
 最尤法
@@ -1037,10 +1002,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org8df0d37">
-<h3 id="org8df0d37">Bayes の定理 (基本形)</h3>
+<section id="slide-org3069830">
+<h3 id="org3069830">Bayes の定理 (基本形)</h3>
 <ul>
 <li><p>
 定理
@@ -1063,10 +1027,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org82cbf2a">
-<h3 id="org82cbf2a">Bayes の定理 (一般形)</h3>
+<section id="slide-orge0398e9">
+<h3 id="orge0398e9">Bayes の定理 (一般形)</h3>
 <ul>
 <li><p>
 定理
@@ -1088,16 +1051,14 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orga7eba8f" data-background="#fef4f4">
-<h2 id="orga7eba8f">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org8c77e10" data-background="#fef4f4">
+<h2 id="org8c77e10">演習</h2>
 </section>
-<section id="slide-orgd6955e3" data-background="#fef4f4">
-<h3 id="orgd6955e3">問題</h3>
+<section id="slide-orge6e6a66" data-background="#fef4f4">
+<h3 id="orge6e6a66">問題</h3>
 <ul>
 <li><p>
 以下の問に答えなさい
@@ -1136,10 +1097,9 @@ A先生は大の野球ファンで，
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org61bac45" data-background="#fef4f4">
-<h3 id="org61bac45">解答例</h3>
+<section id="slide-org1a047f3" data-background="#fef4f4">
+<h3 id="org1a047f3">解答例</h3>
 <ul>
 <li><p>
 まず事象を定義する
@@ -1174,7 +1134,6 @@ A先生は大の野球ファンで，
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -1197,7 +1156,6 @@ A先生が機嫌が良いときに球団Hが勝った確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -1219,17 +1177,16 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgdbd22c7">
-<h2 id="orgdbd22c7">関数の微分</h2>
-<div class="outline-text-2" id="text-orgdbd22c7">
+<section id="slide-org65afa35">
+<h2 id="org65afa35">関数の微分</h2>
+<div class="outline-text-2" id="text-org65afa35">
 </div>
 </section>
-<section id="slide-org192cc47">
-<h3 id="org192cc47">ベクトルによる微分</h3>
+<section id="slide-orgc736296">
+<h3 id="orgc736296">ベクトルによる微分</h3>
 <ul>
 <li><p>
 \(d\) 次元ベクトル
@@ -1269,10 +1226,9 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org9b1d0a1">
-<h3 id="org9b1d0a1">ベクトルによる微分 (例題)</h3>
+<section id="slide-org5633009">
+<h3 id="org5633009">ベクトルによる微分 (例題)</h3>
 <ul>
 <li><p>
 問題
@@ -1288,7 +1244,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1332,7 +1287,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1357,10 +1311,9 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org50b270f">
-<h3 id="org50b270f">行列による微分</h3>
+<section id="slide-org798c9a1">
+<h3 id="org798c9a1">行列による微分</h3>
 <ul>
 <li><p>
 \(d\times d\) 行列
@@ -1383,7 +1336,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1413,10 +1365,9 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org6e8e4ea">
-<h3 id="org6e8e4ea">行列による微分 (例題1)</h3>
+<section id="slide-org3506f8e">
+<h3 id="org3506f8e">行列による微分 (例題1)</h3>
 <ul>
 <li><p>
 問題
@@ -1439,7 +1390,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1483,10 +1433,9 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0adb90b">
-<h3 id="org0adb90b">行列による微分 (例題2)</h3>
+<section id="slide-orgfbcece5">
+<h3 id="orgfbcece5">行列による微分 (例題2)</h3>
 <ul>
 <li><p>
 問題
@@ -1509,7 +1458,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1552,7 +1500,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1599,7 +1546,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1633,16 +1579,14 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orga57a047" data-background="#fef4f4">
-<h2 id="orga57a047">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-orge2f61e1" data-background="#fef4f4">
+<h2 id="orge2f61e1">演習</h2>
 </section>
-<section id="slide-org6c1fac7" data-background="#fef4f4">
-<h3 id="org6c1fac7">問題</h3>
+<section id="slide-org3c6e104" data-background="#fef4f4">
+<h3 id="org3c6e104">問題</h3>
 <ul>
 <li><p>
 行列(正方行列に限らない)のトレースに関して
@@ -1672,10 +1616,9 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgcf4c60a" data-background="#fef4f4">
-<h3 id="orgcf4c60a">解答例</h3>
+<section id="slide-org6a32614" data-background="#fef4f4">
+<h3 id="org6a32614">解答例</h3>
 <ul>
 <li><p>
 \(\mathrm{tr}AB\) より，行列 \(A,B\) の積は正方行列になることから，
@@ -1698,7 +1641,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -1729,7 +1671,6 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -1764,26 +1705,27 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </p></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org052711f">
-<h2 id="org052711f">次回の予定</h2>
+<section id="slide-org8c4bd43">
+<h2 id="org8c4bd43">次回の予定</h2>
 <ul>
 <li><b>第1日 : 回帰モデルの考え方と推定</b></li>
 <li>第2日 : モデルの評価</li>
 <li>第3日 : モデルによる予測と発展的なモデル</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </div>
 </div>
 <script src="./reveal.js/dist/reveal.js"></script>
 <script src="./reveal.js/plugin/notes/notes.js"></script>
 <script src="./reveal.js/plugin/search/search.js"></script>
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
-<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./reveal.js/plugin/menu/menu.js"></script>
+<script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
+<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -1796,7 +1738,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: false,
+mouseWheel: true,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1804,16 +1746,15 @@ overview: true,
 
 transition: 'fade',
 transitionSpeed: 'default',
-spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
-{ src: './reveal.js/plugin/menu/menu.js'},
-{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
-{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+]
 
 });
 </script>

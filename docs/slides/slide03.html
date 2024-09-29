@@ -11,22 +11,19 @@
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
-
-<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
-
 <link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
-<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-state="no-toc-progress">
+<section id="sec-title-slide">
 <!-- This is an HTML template for the title slide. -->
 <!-- Embed logos as necessary. -->
 <!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
@@ -46,25 +43,24 @@
 
 </section>
 <section>
-<section id="slide-org232cb41">
-<h2 id="org232cb41">講義の内容</h2>
+<section id="slide-orgc2bed83">
+<h2 id="orgc2bed83">講義の内容</h2>
 <ul>
 <li><b>第1回 : 回帰モデルの考え方と推定</b></li>
 <li>第2回 : モデルの評価</li>
 <li>第3回 : モデルによる予測と発展的なモデル</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgc444ea6">
-<h2 id="orgc444ea6">回帰分析の考え方</h2>
-<div class="outline-text-2" id="text-orgc444ea6">
+<section id="slide-orgb2aa8fc">
+<h2 id="orgb2aa8fc">回帰分析の考え方</h2>
+<div class="outline-text-2" id="text-orgb2aa8fc">
 </div>
 </section>
-<section id="slide-org6b3c273">
-<h3 id="org6b3c273">回帰分析</h3>
+<section id="slide-org0604f18">
+<h3 id="org0604f18">回帰分析</h3>
 <ul>
 <li>ある変量を別の変量で説明する関係式を構成する</li>
 <li>関係式 : <b>回帰式</b> (regression equation)
@@ -81,10 +77,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgdccb1a3">
-<h3 id="orgdccb1a3">一般の回帰の枠組</h3>
+<section id="slide-org65a85ce">
+<h3 id="org65a85ce">一般の回帰の枠組</h3>
 <ul>
 <li><b>説明変数</b> : \(x_1,\dotsc,x_p\) (p次元)</li>
 <li><b>目的変数</b> : \(y\) (1次元)</li>
@@ -112,10 +107,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orged7a200">
-<h3 id="orged7a200">線形回帰</h3>
+<section id="slide-orgb6b82aa">
+<h3 id="orgb6b82aa">線形回帰</h3>
 <ul>
 <li>任意の \(f\) では一般的すぎて分析に不向き</li>
 <li><p>
@@ -146,10 +140,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org59e80c9">
-<h3 id="org59e80c9">回帰係数</h3>
+<section id="slide-org427470f">
+<h3 id="org427470f">回帰係数</h3>
 <ul>
 <li><p>
 線形回帰式
@@ -175,10 +168,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org02e1454">
-<h3 id="org02e1454">回帰の確率モデル</h3>
+<section id="slide-org177ed1a">
+<h3 id="org177ed1a">回帰の確率モデル</h3>
 <ul>
 <li>回帰式の不確定性
 <ul>
@@ -210,17 +202,16 @@
 観測データから回帰係数を決定</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org8875536">
-<h2 id="org8875536">回帰係数の推定</h2>
-<div class="outline-text-2" id="text-org8875536">
+<section id="slide-orgcbf11b9">
+<h2 id="orgcbf11b9">回帰係数の推定</h2>
+<div class="outline-text-2" id="text-orgcbf11b9">
 </div>
 </section>
-<section id="slide-org7f68f4b">
-<h3 id="org7f68f4b">残差</h3>
+<section id="slide-org1a4da08">
+<h3 id="org1a4da08">残差</h3>
 <ul>
 <li><b>残差</b> (residual) :
 回帰式で説明できない変動</li>
@@ -241,10 +232,9 @@
 <li>残差 \(e_i(\boldsymbol{\beta})\) の絶対値が小さいほど当てはまりがよい</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org133b50a">
-<h3 id="org133b50a">最小二乗法</h3>
+<section id="slide-org589c555">
+<h3 id="org589c555">最小二乗法</h3>
 <ul>
 <li><p>
 <b>残差平方和</b> (residual sum of squares)
@@ -282,10 +272,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org07463c3">
-<h3 id="org07463c3">行列の定義</h3>
+<section id="slide-orgc87e042">
+<h3 id="orgc87e042">行列の定義</h3>
 <ul>
 <li><p>
 デザイン行列 (design matrix)
@@ -310,10 +299,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgcd2c249">
-<h3 id="orgcd2c249">ベクトルの定義</h3>
+<section id="slide-orga3238e9">
+<h3 id="orga3238e9">ベクトルの定義</h3>
 <ul>
 <li><p>
 目的変数，誤差，回帰係数のベクトル
@@ -353,10 +341,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgef92a69">
-<h3 id="orgef92a69">行列・ベクトルによる表現</h3>
+<section id="slide-orgc71571d">
+<h3 id="orgc71571d">行列・ベクトルによる表現</h3>
 <ul>
 <li><p>
 確率モデル
@@ -385,10 +372,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf6d66d6">
-<h3 id="orgf6d66d6">解の条件</h3>
+<section id="slide-orgaa2f064">
+<h3 id="orgaa2f064">解の条件</h3>
 <ul>
 <li><p>
 解 \(\boldsymbol{\beta}\) では残差平方和の勾配は零ベクトル
@@ -411,16 +397,14 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orga853ac2" data-background="#fef4f4">
-<h2 id="orga853ac2">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-orgfbbf464" data-background="#fef4f4">
+<h2 id="orgfbbf464">演習</h2>
 </section>
-<section id="slide-org7437186" data-background="#fef4f4">
-<h3 id="org7437186">問題</h3>
+<section id="slide-orgf678e13" data-background="#fef4f4">
+<h3 id="orgf678e13">問題</h3>
 <ul>
 <li>残差平方和
 \(S(\boldsymbol{\beta})\)
@@ -429,10 +413,9 @@
 で微分して解の条件を求めなさい</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf460982" data-background="#fef4f4">
-<h3 id="orgf460982">解答例</h3>
+<section id="slide-org16d8e13" data-background="#fef4f4">
+<h3 id="org16d8e13">解答例</h3>
 <ul>
 <li><p>
 残差平方和を展開しておく
@@ -480,7 +463,6 @@
 </ul>
 
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -510,10 +492,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgfb4d257" data-background="#fef4f4">
-<h3 id="orgfb4d257">補足</h3>
+<section id="slide-org14c774a" data-background="#fef4f4">
+<h3 id="org14c774a">補足</h3>
 <ul>
 <li><p>
 成分ごとの計算は以下のようになる
@@ -547,17 +528,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org344bc64">
-<h2 id="org344bc64">正規方程式</h2>
-<div class="outline-text-2" id="text-org344bc64">
+<section id="slide-org66a003a">
+<h2 id="org66a003a">正規方程式</h2>
+<div class="outline-text-2" id="text-org66a003a">
 </div>
 </section>
-<section id="slide-org21232ee">
-<h3 id="org21232ee">正規方程式</h3>
+<section id="slide-orga68dc29">
+<h3 id="orga68dc29">正規方程式</h3>
 <ul>
 <li><p>
 <b>正規方程式</b> (normal equation)
@@ -579,10 +559,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0b05cf0">
-<h3 id="org0b05cf0">正規方程式の解</h3>
+<section id="slide-org0a9896c">
+<h3 id="org0a9896c">正規方程式の解</h3>
 <ul>
 <li>正規方程式の基本的な性質
 <ul>
@@ -611,17 +590,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgc071bfc">
-<h2 id="orgc071bfc">最小二乗推定量の性質</h2>
-<div class="outline-text-2" id="text-orgc071bfc">
+<section id="slide-org9ab6564">
+<h2 id="org9ab6564">最小二乗推定量の性質</h2>
+<div class="outline-text-2" id="text-org9ab6564">
 </div>
 </section>
-<section id="slide-org71ae455">
-<h3 id="org71ae455">解析の上での良い条件</h3>
+<section id="slide-org36f0887">
+<h3 id="org36f0887">解析の上での良い条件</h3>
 <ul>
 <li><p>
 最小二乗推定量がただ一つだけ存在する条件 
@@ -638,10 +616,9 @@
 </p></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0c450f9">
-<h3 id="org0c450f9">解析の上での良くない条件</h3>
+<section id="slide-orgd236ecb">
+<h3 id="orgd236ecb">解析の上での良くない条件</h3>
 <ul>
 <li>説明変数が1次従属 : <b>多重共線性</b> (multicollinearity)</li>
 <li>多重共線性が強くならないように説明変数を選択
@@ -653,10 +630,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgfc31827">
-<h3 id="orgfc31827">推定の幾何学的解釈</h3>
+<section id="slide-orgb9b7d10">
+<h3 id="orgb9b7d10">推定の幾何学的解釈</h3>
 <ul>
 <li><p>
 <b>あてはめ値 / 予測値</b> (fitted values / predicted values)
@@ -678,13 +654,12 @@
 </ul>
 
 
-<div id="org245c3eb" class="figure">
+<div id="org05ffb9d" class="figure">
 <p><img src="./figs/projection.png" alt="projection.png" width="60%" />
 </p>
 <p><span class="figure-number">Figure 1: </span>\(n=3\) , \(p+1=2\) の場合の最小二乗法による推定</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -711,10 +686,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org42f3f12">
-<h3 id="org42f3f12">線形回帰式と標本平均</h3>
+<section id="slide-org935e9d2">
+<h3 id="org935e9d2">線形回帰式と標本平均</h3>
 <ul>
 <li>\(\boldsymbol{x}_i=(x_{i1},\dotsc,x_{ip})^{\mathsf{T}}\):
 \(i\) 番目の観測データの説明変数</li>
@@ -749,16 +723,14 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgdce00f8" data-background="#fef4f4">
-<h2 id="orgdce00f8">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org15e8f01" data-background="#fef4f4">
+<h2 id="org15e8f01">演習</h2>
 </section>
-<section id="slide-org32a3386" data-background="#fef4f4">
-<h3 id="org32a3386">問題</h3>
+<section id="slide-orgf29953d" data-background="#fef4f4">
+<h3 id="orgf29953d">問題</h3>
 <ul>
 <li>最小二乗推定量について以下を示しなさい
 <ul>
@@ -798,10 +770,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf51f02f" data-background="#fef4f4">
-<h3 id="orgf51f02f">解答例</h3>
+<section id="slide-org2753b76" data-background="#fef4f4">
+<h3 id="org2753b76">解答例</h3>
 <ul>
 <li><p>
 残差の表現を整理する
@@ -838,7 +809,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -876,17 +846,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgb5dd01a">
-<h2 id="orgb5dd01a">残差の分解</h2>
-<div class="outline-text-2" id="text-orgb5dd01a">
+<section id="slide-org2075cfe">
+<h2 id="org2075cfe">残差の分解</h2>
+<div class="outline-text-2" id="text-org2075cfe">
 </div>
 </section>
-<section id="slide-orgdd12c14">
-<h3 id="orgdd12c14">最小二乗推定量の残差</h3>
+<section id="slide-org9675708">
+<h3 id="org9675708">最小二乗推定量の残差</h3>
 <ul>
 <li><p>
 観測値と推定値 \(\boldsymbol{\hat{\beta}}\) による予測値の差
@@ -922,10 +891,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgd6b2ebb">
-<h3 id="orgd6b2ebb">平方和の分解</h3>
+<section id="slide-org92d90d2">
+<h3 id="org92d90d2">平方和の分解</h3>
 <ul>
 <li>\(\bar{\boldsymbol{y}}=\bar{y}\boldsymbol{1}=(\bar{y},\bar{y},\dotsc,\bar{y})^{\mathsf{T}}\) :
 標本平均のベクトル</li>
@@ -968,16 +936,14 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org4e49326" data-background="#fef4f4">
-<h2 id="org4e49326">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org25f110b" data-background="#fef4f4">
+<h2 id="org25f110b">演習</h2>
 </section>
-<section id="slide-org424c9c0" data-background="#fef4f4">
-<h3 id="org424c9c0">問題</h3>
+<section id="slide-orgba62e6e" data-background="#fef4f4">
+<h3 id="orgba62e6e">問題</h3>
 <ul>
 <li>以下の関係式を示しなさい
 <ul>
@@ -1010,10 +976,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org131a1e6" data-background="#fef4f4">
-<h3 id="org131a1e6">解答例</h3>
+<section id="slide-org5b62a11" data-background="#fef4f4">
+<h3 id="org5b62a11">解答例</h3>
 <ul>
 <li><p>
 残差の表現を整理する
@@ -1053,7 +1018,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -1093,17 +1057,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org33dc345">
-<h2 id="org33dc345">決定係数</h2>
-<div class="outline-text-2" id="text-org33dc345">
+<section id="slide-org23c5805">
+<h2 id="org23c5805">決定係数</h2>
+<div class="outline-text-2" id="text-org23c5805">
 </div>
 </section>
-<section id="slide-org5e1646c">
-<h3 id="org5e1646c">回帰式の寄与</h3>
+<section id="slide-orgb8809a3">
+<h3 id="orgb8809a3">回帰式の寄与</h3>
 <ul>
 <li><p>
 ばらつきの分解
@@ -1132,10 +1095,9 @@
 <li>回帰式のあてはまり具合を評価する代表的な指標</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgbef75c5">
-<h3 id="orgbef75c5">決定係数 (\(R^2\)値)</h3>
+<section id="slide-orga30d3da">
+<h3 id="orga30d3da">決定係数 (\(R^2\)値)</h3>
 <ul>
 <li><p>
 <b>決定係数</b> (R-squared)
@@ -1170,16 +1132,14 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgba7b37d">
-<h2 id="orgba7b37d">解析の事例</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-orgc68c1b7">
+<h2 id="orgc68c1b7">解析の事例</h2>
 </section>
-<section id="slide-org4c85961">
-<h3 id="org4c85961">実データによる例</h3>
+<section id="slide-org0461ca0">
+<h3 id="org0461ca0">実データによる例</h3>
 <ul>
 <li>気象庁より取得した東京の気候データ 
 <ul>
@@ -1189,10 +1149,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org608924b">
-<h3 id="org608924b">東京の8月の気候の分析</h3>
+<section id="slide-org6f343e3">
+<h3 id="org6f343e3">東京の8月の気候の分析</h3>
 <ul>
 <li><p>
 データの一部
@@ -1222,7 +1181,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1237,10 +1195,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5984133">
-<h3 id="org5984133">分析の視覚化</h3>
+<section id="slide-org69f0e87">
+<h3 id="org69f0e87">分析の視覚化</h3>
 <ul>
 <li><p>
 関連するデータの散布図
@@ -1249,13 +1206,12 @@
 </ul>
 
 
-<div id="orgf45bd5c" class="figure">
+<div id="orgf54a9cb" class="figure">
 <p><img src="figs/03_pairs.png" alt="03_pairs.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>散布図</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1266,13 +1222,12 @@
 </ul>
 
 
-<div id="org67541bc" class="figure">
+<div id="orgf798618" class="figure">
 <p><img src="figs/03_model1.png" alt="03_model1.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>モデル1</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1283,13 +1238,12 @@
 </ul>
 
 
-<div id="org14fc961" class="figure">
+<div id="orgceeffbf" class="figure">
 <p><img src="figs/03_model2.png" alt="03_model2.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>モデル2</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1300,13 +1254,12 @@
 </ul>
 
 
-<div id="org885d4d3" class="figure">
+<div id="orgf3b910d" class="figure">
 <p><img src="figs/03_model3.png" alt="03_model3.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>モデル3</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1317,15 +1270,14 @@
 </ul>
 
 
-<div id="orgdf1d3bd" class="figure">
+<div id="org1facef1" class="figure">
 <p><img src="figs/03_models.png" alt="03_models.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>モデルの比較</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf8b5f4d">
-<h3 id="orgf8b5f4d">モデルの比較</h3>
+<section id="slide-orgbf9bab0">
+<h3 id="orgbf9bab0">モデルの比較</h3>
 <ul>
 <li><p>
 決定係数(\(R^{2}\), Adjusted \(R^{2}\))
@@ -1349,26 +1301,27 @@
 </font></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org93c5348">
-<h2 id="org93c5348">次回の予定</h2>
+<section id="slide-org8e76e54">
+<h2 id="org8e76e54">次回の予定</h2>
 <ul>
 <li>第1回 : 回帰モデルの考え方と推定</li>
 <li><b>第2回 : モデルの評価</b></li>
 <li>第3回 : モデルによる予測と発展的なモデル</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </div>
 </div>
 <script src="./reveal.js/dist/reveal.js"></script>
 <script src="./reveal.js/plugin/notes/notes.js"></script>
 <script src="./reveal.js/plugin/search/search.js"></script>
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
-<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./reveal.js/plugin/menu/menu.js"></script>
+<script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
+<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -1381,7 +1334,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: false,
+mouseWheel: true,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1389,16 +1342,15 @@ overview: true,
 
 transition: 'fade',
 transitionSpeed: 'default',
-spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
-{ src: './reveal.js/plugin/menu/menu.js'},
-{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
-{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+]
 
 });
 </script>

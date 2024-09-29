@@ -11,22 +11,19 @@
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
-
-<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
-
 <link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
-<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-state="no-toc-progress">
+<section id="sec-title-slide">
 <!-- This is an HTML template for the title slide. -->
 <!-- Embed logos as necessary. -->
 <!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
@@ -46,24 +43,23 @@
 
 </section>
 <section>
-<section id="slide-org11ff6ac">
-<h2 id="org11ff6ac">講義の内容</h2>
+<section id="slide-org7573f34">
+<h2 id="org7573f34">講義の内容</h2>
 <ul>
 <li><b>第1日 : 主成分分析の考え方</b></li>
 <li>第2日 : 分析の評価と視覚化</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org41483a8">
-<h2 id="org41483a8">主成分分析の考え方</h2>
-<div class="outline-text-2" id="text-org41483a8">
+<section id="slide-org6fc8c81">
+<h2 id="org6fc8c81">主成分分析の考え方</h2>
+<div class="outline-text-2" id="text-org6fc8c81">
 </div>
 </section>
-<section id="slide-org131471b">
-<h3 id="org131471b">主成分分析</h3>
+<section id="slide-org66aaf8c">
+<h3 id="org66aaf8c">主成分分析</h3>
 <ul>
 <li>多数の変量のもつ情報の分析・視覚化
 <ul>
@@ -78,10 +74,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org4099e67">
-<h3 id="org4099e67">分析の枠組み</h3>
+<section id="slide-org233cf29">
+<h3 id="org233cf29">分析の枠組み</h3>
 <ul>
 <li>\(x_{1},\dotsc,x_{p}\) : <b>変数</b></li>
 <li>\(z_{1},\dotsc,z_{d}\) : <b>特徴量</b> ( \(d\leq p\) )</li>
@@ -112,10 +107,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5765d4f">
-<h3 id="org5765d4f">主成分分析の用語</h3>
+<section id="slide-org4cd1f4b">
+<h3 id="org4cd1f4b">主成分分析の用語</h3>
 <ul>
 <li>特徴量 \(z_k\)
 <ul>
@@ -131,10 +125,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org2e5fe2c">
-<h3 id="org2e5fe2c">分析の目的</h3>
+<section id="slide-org8bddf66">
+<h3 id="org8bddf66">分析の目的</h3>
 <ul>
 <li><p>
 目的
@@ -164,17 +157,16 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org4919dad">
-<h2 id="org4919dad">第1主成分の計算</h2>
-<div class="outline-text-2" id="text-org4919dad">
+<section id="slide-org3dc2d3b">
+<h2 id="org3dc2d3b">第1主成分の計算</h2>
+<div class="outline-text-2" id="text-org3dc2d3b">
 </div>
 </section>
-<section id="slide-org3e01b1a">
-<h3 id="org3e01b1a">記号の準備</h3>
+<section id="slide-orgb827cfd">
+<h3 id="orgb827cfd">記号の準備</h3>
 <ul>
 <li>変数 : \(x_{1},\dotsc,x_{p}\) (\(p\)次元)</li>
 <li><p>
@@ -198,10 +190,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org26aba23">
-<h3 id="org26aba23">係数ベクトルによる射影</h3>
+<section id="slide-orgab6fa8a">
+<h3 id="orgab6fa8a">係数ベクトルによる射影</h3>
 <ul>
 <li><p>
 データ \(\boldsymbol{x}_{i}\) の \(\boldsymbol{a}\) 方向成分の長さ
@@ -231,20 +222,18 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orga9092a0">
-<h3 id="orga9092a0">幾何学的描像</h3>
+<section id="slide-org8671750">
+<h3 id="org8671750">幾何学的描像</h3>
 
-<div id="org4525f7c" class="figure">
+<div id="orgd12d13e" class="figure">
 <p><img src="./figs/pca-figure.png" alt="pca-figure.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 1: </span>観測データの直交射影 (\(p=2,n=2\) の場合)</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgfd8ae7c">
-<h3 id="orgfd8ae7c">ベクトル \(\boldsymbol{a}\) の選択の指針</h3>
+<section id="slide-org86ace5b">
+<h3 id="org86ace5b">ベクトル \(\boldsymbol{a}\) の選択の指針</h3>
 <ul>
 <li><p>
 射影による特徴量の構成
@@ -288,10 +277,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgc88296f">
-<h3 id="orgc88296f">ベクトル \(\boldsymbol{a}\) の最適化</h3>
+<section id="slide-org131030a">
+<h3 id="org131030a">ベクトル \(\boldsymbol{a}\) の最適化</h3>
 <ul>
 <li><p>
 最適化問題
@@ -319,16 +307,14 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org4d91fb6" data-background="#fef4f4">
-<h2 id="org4d91fb6">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org0f05fe7" data-background="#fef4f4">
+<h2 id="org0f05fe7">演習</h2>
 </section>
-<section id="slide-org486a85f" data-background="#fef4f4">
-<h3 id="org486a85f">問題</h3>
+<section id="slide-org1392466" data-background="#fef4f4">
+<h3 id="org1392466">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -374,10 +360,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org8bed9c1" data-background="#fef4f4">
-<h3 id="org8bed9c1">解答例</h3>
+<section id="slide-orgd189c72" data-background="#fef4f4">
+<h3 id="orgd189c72">解答例</h3>
 <ul>
 <li><p>
 定義どおりに計算する
@@ -408,7 +393,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -449,17 +433,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org1df548a">
-<h2 id="org1df548a">第1主成分の解</h2>
-<div class="outline-text-2" id="text-org1df548a">
+<section id="slide-org6cf6f1d">
+<h2 id="org6cf6f1d">第1主成分の解</h2>
+<div class="outline-text-2" id="text-org6cf6f1d">
 </div>
 </section>
-<section id="slide-org7bbd8d1">
-<h3 id="org7bbd8d1">ベクトル \(\boldsymbol{a}\) の解</h3>
+<section id="slide-orga883fb3">
+<h3 id="orga883fb3">ベクトル \(\boldsymbol{a}\) の解</h3>
 <ul>
 <li><p>
 最適化問題
@@ -496,10 +479,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org8417d3d">
-<h3 id="org8417d3d">第1主成分</h3>
+<section id="slide-orgb019901">
+<h3 id="orgb019901">第1主成分</h3>
 <ul>
 <li><p>
 固有ベクトル\(\boldsymbol{a}\)に対する\(f(\boldsymbol{a})\)
@@ -535,17 +517,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org15903e3">
-<h2 id="org15903e3">Gram 行列の性質</h2>
-<div class="outline-text-2" id="text-org15903e3">
+<section id="slide-org75800c3">
+<h2 id="org75800c3">Gram 行列の性質</h2>
+<div class="outline-text-2" id="text-org75800c3">
 </div>
 </section>
-<section id="slide-org2b20250">
-<h3 id="org2b20250">Gram 行列の固有値</h3>
+<section id="slide-org805196f">
+<h3 id="org805196f">Gram 行列の固有値</h3>
 <ul>
 <li>\(X^{\mathsf{T}}X\) は非負定値対称行列</li>
 <li>\(X^{\mathsf{T}}X\) の固有値は0以上の実数
@@ -577,10 +558,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org9cc2103">
-<h3 id="org9cc2103">Gram 行列のスペクトル分解</h3>
+<section id="slide-org50925ab">
+<h3 id="org50925ab">Gram 行列のスペクトル分解</h3>
 <ul>
 <li><p>
 \(\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{p}\) は <b>互いに直交</b> するようとることができる
@@ -616,16 +596,14 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org3f96974" data-background="#fef4f4">
-<h2 id="org3f96974">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org1199442" data-background="#fef4f4">
+<h2 id="org1199442">演習</h2>
 </section>
-<section id="slide-orgdc6fe98" data-background="#fef4f4">
-<h3 id="orgdc6fe98">問題</h3>
+<section id="slide-orged99ab7" data-background="#fef4f4">
+<h3 id="orged99ab7">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -673,10 +651,9 @@ Gram 行列のスペクトル分解において
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgd04daf5" data-background="#fef4f4">
-<h3 id="orgd04daf5">解答例</h3>
+<section id="slide-org49138dd" data-background="#fef4f4">
+<h3 id="org49138dd">解答例</h3>
 <ul>
 <li><p>
 固有ベクトルの直交性に注意する
@@ -697,7 +674,6 @@ Gram 行列のスペクトル分解において
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -716,17 +692,16 @@ Gram 行列のスペクトル分解において
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgce2368c">
-<h2 id="orgce2368c">第2主成分以降の計算</h2>
-<div class="outline-text-2" id="text-orgce2368c">
+<section id="slide-org85db1ae">
+<h2 id="org85db1ae">第2主成分以降の計算</h2>
+<div class="outline-text-2" id="text-org85db1ae">
 </div>
 </section>
-<section id="slide-org489f6e9">
-<h3 id="org489f6e9">第2主成分の考え方</h3>
+<section id="slide-org1d08875">
+<h3 id="org1d08875">第2主成分の考え方</h3>
 <ul>
 <li>第1主成分
 <ul>
@@ -763,10 +738,9 @@ Gram 行列のスペクトル分解において
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgbd85bf8">
-<h3 id="orgbd85bf8">第2主成分の最適化</h3>
+<section id="slide-org1e9ab82">
+<h3 id="org1e9ab82">第2主成分の最適化</h3>
 <ul>
 <li><p>
 最適化問題
@@ -792,16 +766,14 @@ Gram 行列のスペクトル分解において
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org110d437" data-background="#fef4f4">
-<h2 id="org110d437">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org5ef1df0" data-background="#fef4f4">
+<h2 id="org5ef1df0">演習</h2>
 </section>
-<section id="slide-org548d3f6" data-background="#fef4f4">
-<h3 id="org548d3f6">問題</h3>
+<section id="slide-orgb37c1c5" data-background="#fef4f4">
+<h3 id="orgb37c1c5">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -843,10 +815,9 @@ Gram 行列のスペクトル分解において
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgd90e8e9" data-background="#fef4f4">
-<h3 id="orgd90e8e9">解答例</h3>
+<section id="slide-orgb3e81ca" data-background="#fef4f4">
+<h3 id="orgb3e81ca">解答例</h3>
 <ul>
 <li><p>
 定義どおりに計算する
@@ -870,7 +841,6 @@ Gram 行列のスペクトル分解において
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -904,17 +874,16 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\) を計算する
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgc533098">
-<h2 id="orgc533098">第2主成分以降の解</h2>
-<div class="outline-text-2" id="text-orgc533098">
+<section id="slide-orgcb46874">
+<h2 id="orgcb46874">第2主成分以降の解</h2>
+<div class="outline-text-2" id="text-orgcb46874">
 </div>
 </section>
-<section id="slide-org7ea71ba">
-<h3 id="org7ea71ba">第2主成分</h3>
+<section id="slide-orge1711d6">
+<h3 id="orge1711d6">第2主成分</h3>
 <ul>
 <li><p>
 Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
@@ -943,16 +912,14 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 に対応する固有ベクトル \(\boldsymbol{a}_k\)</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgccf7cf0">
-<h2 id="orgccf7cf0">解析の事例</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-orge8bed40">
+<h2 id="orge8bed40">解析の事例</h2>
 </section>
-<section id="slide-orga03502a">
-<h3 id="orga03502a">データセットについて</h3>
+<section id="slide-org25a8e99">
+<h3 id="org25a8e99">データセットについて</h3>
 <ul>
 <li>総務省統計局より取得した都道府県別の社会生活統計指標(自然環境・経済基盤)の一部
 <ul>
@@ -976,10 +943,9 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgb97dcab">
-<h3 id="orgb97dcab">社会生活統計指標の分析</h3>
+<section id="slide-org18fa890">
+<h3 id="org18fa890">社会生活統計指標の分析</h3>
 <ul>
 <li><p>
 データ(の一部)の内容
@@ -1009,7 +975,6 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1020,13 +985,12 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 </ul>
 
 
-<div id="org21f910e" class="figure">
+<div id="orgc5ed183" class="figure">
 <p><img src="figs/06_pairs.png" alt="06_pairs.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>散布図</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1037,13 +1001,12 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 </ul>
 
 
-<div id="org6eaebc1" class="figure">
+<div id="orge54af90" class="figure">
 <p><img src="figs/06_boxplot.png" alt="06_boxplot.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>箱ひげ図</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1075,7 +1038,6 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1086,13 +1048,12 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 </ul>
 
 
-<div id="org310d22e" class="figure">
+<div id="org54360a4" class="figure">
 <p><img src="figs/06_normalized_boxplot.png" alt="06_normalized_boxplot.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>箱ひげ図 (データを正規化)</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1120,7 +1081,6 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1131,30 +1091,31 @@ Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
 </ul>
 
 
-<div id="org0c23e02" class="figure">
+<div id="orgf41e671" class="figure">
 <p><img src="figs/06_pcaplot.png" alt="06_pcaplot.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>主成分得点による散布図</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org14b77c4">
-<h2 id="org14b77c4">次回の予定</h2>
+<section id="slide-org2c3871a">
+<h2 id="org2c3871a">次回の予定</h2>
 <ul>
 <li>第1日 : 主成分分析の考え方</li>
 <li><b>第2日 : 分析の評価と視覚化</b></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </div>
 </div>
 <script src="./reveal.js/dist/reveal.js"></script>
 <script src="./reveal.js/plugin/notes/notes.js"></script>
 <script src="./reveal.js/plugin/search/search.js"></script>
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
-<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./reveal.js/plugin/menu/menu.js"></script>
+<script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
+<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -1167,7 +1128,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: false,
+mouseWheel: true,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1175,16 +1136,15 @@ overview: true,
 
 transition: 'fade',
 transitionSpeed: 'default',
-spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
-{ src: './reveal.js/plugin/menu/menu.js'},
-{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
-{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+]
 
 });
 </script>

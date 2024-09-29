@@ -4,121 +4,121 @@
     <title>概要 on 多変量解析</title>
     <link>https://noboru-murata.github.io/multivariate-analysis/</link>
     <description>Recent content in 概要 on 多変量解析</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 18 Mar 2020 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 26 Sep 2023 00:00:00 +0900</lastBuildDate>
     <atom:link href="https://noboru-murata.github.io/multivariate-analysis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>第1講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture01/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture01/</guid>
-      <description>&amp;lt;2023-09-26 Tue&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide01.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide01.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide01.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第2講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture02/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture02/</guid>
-      <description>&amp;lt;2023-09-26 Tue&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide02.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide02.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide02.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第3講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture03/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture03/</guid>
-      <description>&amp;lt;2023-10-16 Mon&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file 付録 東京の気候データ </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide03.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide03.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide03.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;付録&#34;&gt;付録&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv&#34;&gt;東京の気候データ&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第4講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture04/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture04/</guid>
-      <description>&amp;lt;2023-10-16 Mon&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide04.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide04.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide04.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第5講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture05/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture05/</guid>
-      <description>&amp;lt;2023-11-07 Tue&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide05.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide05.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide05.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第6講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture06/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture06/</guid>
-      <description>&amp;lt;2023-11-13 Mon&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file 付録 都道府県別の社会生活統計指標データ </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide06.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide06.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide06.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;付録&#34;&gt;付録&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv&#34;&gt;都道府県別の社会生活統計指標データ&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第7講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture07/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture07/</guid>
-      <description>&amp;lt;2023-11-13 Mon&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide07.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide07.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide07.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第8講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture08/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture08/</guid>
-      <description>&amp;lt;2023-11-27 Mon&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide08.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide08.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide08.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第9講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture09/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture09/</guid>
-      <description>&amp;lt;2023-12-02 Sat&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide09.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide09.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide09.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第10講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture10/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture10/</guid>
-      <description>&amp;lt;2023-12-09 Sat&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file 付録 おむすびの具アンケート </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide10.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide10.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide10.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;付録&#34;&gt;付録&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/data/omusubi.csv&#34;&gt;おむすびの具アンケート&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第11講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture11/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture11/</guid>
-      <description>&amp;lt;2023-12-18 Mon&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide11.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide11.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide11.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第12講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture12/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture12/</guid>
-      <description>&amp;lt;2022-12-12 Mon&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide12.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide12.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide12.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>第13講</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/lecture13/</link>
       <pubDate>Wed, 26 Aug 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/lecture13/</guid>
-      <description>&amp;lt;2024-01-18 Thu&amp;gt; 更新&#xA;スライド full size ハンドアウト PDF file </description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2024-09-29 Sun&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;h2 id=&#34;スライド&#34;&gt;スライド&lt;/h2&gt;&#xA;&#xA;&lt;div style=&#34;position:relative;width:100%;padding-top:62.5%;&#34;&gt;&#xA;  &lt;iframe src=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide13.html&#34;&#xA;&#x9;  style=&#34;position:absolute;width:100%;height:100%;top:0;&#34;&#xA;&#x9;  frameborder=&#34;0&#34;&#xA;          allowfullscreen&gt;&#xA;  &lt;/iframe&gt;&#xA;&lt;/div&gt;&#xA;&lt;ul&gt;&#xA;  &lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/multivariate-analysis/slides/slide13.html&#34;&gt;full size&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&lt;h2 id=&#34;ハンドアウト&#34;&gt;ハンドアウト&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/slide13.pdf&#34;&gt;PDF file&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>講義資料</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/page/notes/</link>
       <pubDate>Tue, 26 Sep 2023 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/page/notes/</guid>
-      <description>&amp;lt;2023-09-26 Tue&amp;gt; 更新&#xA;以下は多変量解析の講義資料(随時更新)です．&#xA;多変量解析 必要な参考書については適宜講義中に指示します．</description>
+      <description>&lt;p&gt;&lt;span class=&#34;timestamp-wrapper&#34;&gt;&lt;span class=&#34;timestamp&#34;&gt;&amp;lt;2023-09-26 Tue&amp;gt; &lt;/span&gt;&lt;/span&gt; 更新&lt;/p&gt;&#xA;&lt;p&gt;以下は多変量解析の講義資料(随時更新)です．&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://noboru-murata.github.io/multivariate-analysis/pdfs/multivariate-analysis.pdf&#34;&gt;多変量解析&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;必要な参考書については適宜講義中に指示します．&lt;/p&gt;</description>
     </item>
     <item>
       <title>スライドの使い方</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/post/post1/</link>
       <pubDate>Mon, 21 Sep 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/post/post1/</guid>
-      <description>スライドは reveal.js を使って作っています．&#xA;スライドを click して &amp;ldquo;?&amp;rdquo; を入力すると shortcut key が表示されますが，これ以外にも以下の key などが使えます．&#xA;フルスクリーン f フルスクリーン表示 esc 元に戻る 黒板 w スライドと黒板の切り替え (toggle) x/y チョークの色の切り替え (巡回) c 消去 メモ書き e 編集モードの切り替え (toggle) x/y ペンの色の切り替え (巡回) c 消去 </description>
+      <description>&lt;p&gt;スライドは&#xA;&lt;a href=&#34;https://revealjs.com&#34;&gt;reveal.js&lt;/a&gt;&#xA;を使って作っています．&lt;/p&gt;&#xA;&lt;p&gt;スライドを click して &amp;ldquo;?&amp;rdquo; を入力すると&#xA;shortcut key が表示されますが，これ以外にも以下の key などが使えます．&lt;/p&gt;&#xA;&lt;h2 id=&#34;フルスクリーン&#34;&gt;フルスクリーン&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;f フルスクリーン表示&lt;/li&gt;&#xA;&lt;li&gt;esc 元に戻る&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>解析事例 (時系列)</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/post/post2/</link>
       <pubDate>Fri, 08 Jan 2021 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/post/post2/</guid>
-      <description>興味ある人は以下を参照して下さい．&#xA;https://github.com/noboru-murata/covid-19</description>
+      <description>&lt;p&gt;興味ある人は以下を参照して下さい．&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/noboru-murata/covid-19&#34;&gt;https://github.com/noboru-murata/covid-19&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

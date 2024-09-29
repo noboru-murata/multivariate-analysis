@@ -4,7 +4,7 @@
     <title>Posts on 多変量解析</title>
     <link>https://noboru-murata.github.io/multivariate-analysis/post/</link>
     <description>Recent content in Posts on 多変量解析</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 08 Jan 2021 00:00:00 +0900</lastBuildDate>
     <atom:link href="https://noboru-murata.github.io/multivariate-analysis/post/index.xml" rel="self" type="application/rss+xml" />
@@ -13,14 +13,14 @@
       <link>https://noboru-murata.github.io/multivariate-analysis/post/post1/</link>
       <pubDate>Mon, 21 Sep 2020 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/post/post1/</guid>
-      <description>スライドは reveal.js を使って作っています．&#xA;スライドを click して &amp;ldquo;?&amp;rdquo; を入力すると shortcut key が表示されますが，これ以外にも以下の key などが使えます．&#xA;フルスクリーン f フルスクリーン表示 esc 元に戻る 黒板 w スライドと黒板の切り替え (toggle) x/y チョークの色の切り替え (巡回) c 消去 メモ書き e 編集モードの切り替え (toggle) x/y ペンの色の切り替え (巡回) c 消去 </description>
+      <description>&lt;p&gt;スライドは&#xA;&lt;a href=&#34;https://revealjs.com&#34;&gt;reveal.js&lt;/a&gt;&#xA;を使って作っています．&lt;/p&gt;&#xA;&lt;p&gt;スライドを click して &amp;ldquo;?&amp;rdquo; を入力すると&#xA;shortcut key が表示されますが，これ以外にも以下の key などが使えます．&lt;/p&gt;&#xA;&lt;h2 id=&#34;フルスクリーン&#34;&gt;フルスクリーン&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;f フルスクリーン表示&lt;/li&gt;&#xA;&lt;li&gt;esc 元に戻る&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>解析事例 (時系列)</title>
       <link>https://noboru-murata.github.io/multivariate-analysis/post/post2/</link>
       <pubDate>Fri, 08 Jan 2021 00:00:00 +0900</pubDate>
       <guid>https://noboru-murata.github.io/multivariate-analysis/post/post2/</guid>
-      <description>興味ある人は以下を参照して下さい．&#xA;https://github.com/noboru-murata/covid-19</description>
+      <description>&lt;p&gt;興味ある人は以下を参照して下さい．&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/noboru-murata/covid-19&#34;&gt;https://github.com/noboru-murata/covid-19&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -11,22 +11,19 @@
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
-
-<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
-
 <link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
-<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-state="no-toc-progress">
+<section id="sec-title-slide">
 <!-- This is an HTML template for the title slide. -->
 <!-- Embed logos as necessary. -->
 <!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
@@ -46,25 +43,24 @@
 
 </section>
 <section>
-<section id="slide-org78c3256">
-<h2 id="org78c3256">講義の内容</h2>
+<section id="slide-orgc00af62">
+<h2 id="orgc00af62">講義の内容</h2>
 <ul>
 <li>第1回: 回帰モデルの考え方と推定</li>
 <li>第2回: モデルの評価</li>
 <li><b>第3回: モデルによる予測と発展的なモデル</b></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org94bfdf8">
-<h2 id="org94bfdf8">回帰分析の復習</h2>
-<div class="outline-text-2" id="text-org94bfdf8">
+<section id="slide-org8dd723f">
+<h2 id="org8dd723f">回帰分析の復習</h2>
+<div class="outline-text-2" id="text-org8dd723f">
 </div>
 </section>
-<section id="slide-org3cf3836">
-<h3 id="org3cf3836">線形回帰モデル</h3>
+<section id="slide-org5ae5c55">
+<h3 id="org5ae5c55">線形回帰モデル</h3>
 <ul>
 <li><b>目的変数</b> を <b>説明変数</b> で説明する関係式を構成
 <ul>
@@ -97,10 +93,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org749a3a3">
-<h3 id="org749a3a3">問題設定</h3>
+<section id="slide-org9fdf21d">
+<h3 id="org9fdf21d">問題設定</h3>
 <ul>
 <li><p>
 確率モデル
@@ -130,10 +125,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5038c18">
-<h3 id="org5038c18">解とその一意性</h3>
+<section id="slide-org1e04aa2">
+<h3 id="org1e04aa2">解とその一意性</h3>
 <ul>
 <li><p>
 解の条件 : <b>正規方程式</b>
@@ -163,17 +157,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org2c0de8e">
-<h2 id="org2c0de8e">解析の事例</h2>
-<div class="outline-text-2" id="text-org2c0de8e">
+<section id="slide-org951f3d2">
+<h2 id="org951f3d2">解析の事例</h2>
+<div class="outline-text-2" id="text-org951f3d2">
 </div>
 </section>
-<section id="slide-org88a1b35">
-<h3 id="org88a1b35">東京の8月の気候の分析</h3>
+<section id="slide-orgc4c55c5">
+<h3 id="orgc4c55c5">東京の8月の気候の分析</h3>
 <ul>
 <li><p>
 データの一部
@@ -202,7 +195,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -217,10 +209,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org96fa7a7">
-<h3 id="org96fa7a7">分析の視覚化</h3>
+<section id="slide-org0866cc9">
+<h3 id="org0866cc9">分析の視覚化</h3>
 <ul>
 <li><p>
 関連するデータの散布図
@@ -229,13 +220,12 @@
 </ul>
 
 
-<div id="orgebe394c" class="figure">
+<div id="org7d7b81e" class="figure">
 <p><img src="figs/05_pairs.png" alt="05_pairs.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>散布図</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -246,15 +236,14 @@
 </ul>
 
 
-<div id="org7147c2a" class="figure">
+<div id="org94bb288" class="figure">
 <p><img src="figs/05_models.png" alt="05_models.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>モデルの比較</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0e3ca1a">
-<h3 id="org0e3ca1a">寄与率</h3>
+<section id="slide-org0899eec">
+<h3 id="org0899eec">寄与率</h3>
 <ul>
 <li><p>
 <b>決定係数</b> (R-squared)
@@ -289,10 +278,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org23f06fd">
-<h3 id="org23f06fd">モデルの評価</h3>
+<section id="slide-orgefd3fb0">
+<h3 id="orgefd3fb0">モデルの評価</h3>
 <ul>
 <li><p>
 決定係数(\(R^{2}\), Adjusted \(R^{2}\))
@@ -316,10 +304,9 @@
 </font></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org8ed8702">
-<h3 id="org8ed8702">\(F\)統計量による検定</h3>
+<section id="slide-org73116c3">
+<h3 id="org73116c3">\(F\)統計量による検定</h3>
 <ul>
 <li>説明変数のうち1つでも役に立つか否かを検定する
 <ul>
@@ -342,10 +329,9 @@
 <li>\(p\)値: 自由度 \(p,n{-}p{-}1\) の \(F\)分布で計算</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf0b9f4b">
-<h3 id="orgf0b9f4b">モデルの評価</h3>
+<section id="slide-org751814f">
+<h3 id="org751814f">モデルの評価</h3>
 <ul>
 <li><p>
 \(F\)統計量
@@ -372,10 +358,9 @@
 </font></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org3984e70">
-<h3 id="org3984e70">\(t\)統計量による検定</h3>
+<section id="slide-org62c23ea">
+<h3 id="org62c23ea">\(t\)統計量による検定</h3>
 <ul>
 <li>回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定する
 <ul>
@@ -397,10 +382,9 @@
 <li>\(p\)値: 自由度 \(n{-}p{-}1\) の \(t\)分布を用いて計算</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orge1460e4">
-<h3 id="orge1460e4">モデルの評価</h3>
+<section id="slide-orge5c88fa">
+<h3 id="orge5c88fa">モデルの評価</h3>
 <ul>
 <li><p>
 \(t\)統計量
@@ -432,10 +416,9 @@
 </font></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org868e9ab">
-<h3 id="org868e9ab">診断プロットによる評価</h3>
+<section id="slide-orgffbcc41">
+<h3 id="orgffbcc41">診断プロットによる評価</h3>
 <ul>
 <li><p>
 モデル4
@@ -444,12 +427,11 @@
 </ul>
 
 
-<div id="org5463c1e" class="figure">
+<div id="org41945a8" class="figure">
 <p><img src="figs/05_diag_model4.png" alt="05_diag_model4.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>モデル4の診断</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -460,22 +442,21 @@
 </ul>
 
 
-<div id="org8f8b3a2" class="figure">
+<div id="orgd316af6" class="figure">
 <p><img src="figs/05_diag_model5.png" alt="05_diag_model5.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>モデル5の診断</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgd73eb0d">
-<h2 id="orgd73eb0d">回帰モデルによる予測</h2>
-<div class="outline-text-2" id="text-orgd73eb0d">
+<section id="slide-orgc0bc227">
+<h2 id="orgc0bc227">回帰モデルによる予測</h2>
+<div class="outline-text-2" id="text-orgc0bc227">
 </div>
 </section>
-<section id="slide-orgddfe6c9">
-<h3 id="orgddfe6c9">予測</h3>
+<section id="slide-org2d2fed7">
+<h3 id="org2d2fed7">予測</h3>
 <ul>
 <li><p>
 新しいデータ (説明変数) \(\boldsymbol{x}\) に対する <b>予測値</b>
@@ -520,10 +501,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgc4b2197">
-<h3 id="orgc4b2197">予測値の性質</h3>
+<section id="slide-orgbdc751e">
+<h3 id="orgbdc751e">予測値の性質</h3>
 <ul>
 <li><p>
 推定量は以下の性質をもつ多変量正規分布
@@ -561,16 +541,14 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgf6000f3" data-background="#fef4f4">
-<h2 id="orgf6000f3">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org1b4ac3d" data-background="#fef4f4">
+<h2 id="org1b4ac3d">演習</h2>
 </section>
-<section id="slide-org7eec438" data-background="#fef4f4">
-<h3 id="org7eec438">問題</h3>
+<section id="slide-org779877b" data-background="#fef4f4">
+<h3 id="org779877b">問題</h3>
 <ul>
 <li>誤差が平均0 分散 \(\sigma^{2}\) の正規分布に従うとき，
 以下の問に答えなさい
@@ -581,10 +559,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org3a03aa2" data-background="#fef4f4">
-<h3 id="org3a03aa2">解答例</h3>
+<section id="slide-org5bb979c" data-background="#fef4f4">
+<h3 id="org5bb979c">解答例</h3>
 <ul>
 <li><p>
 定義にもとづいて計算する
@@ -612,7 +589,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -650,17 +626,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgeb29bef">
-<h2 id="orgeb29bef">信頼区間</h2>
-<div class="outline-text-2" id="text-orgeb29bef">
+<section id="slide-org7eeae37">
+<h2 id="org7eeae37">信頼区間</h2>
+<div class="outline-text-2" id="text-org7eeae37">
 </div>
 </section>
-<section id="slide-org4c50fe2">
-<h3 id="org4c50fe2">最適な予測値との差</h3>
+<section id="slide-org3ec6aec">
+<h3 id="org3ec6aec">最適な予測値との差</h3>
 <ul>
 <li><p>
 差の分布は以下の平均・分散をもつ正規分布に従う
@@ -694,10 +669,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org98d5853">
-<h3 id="org98d5853">信頼区間</h3>
+<section id="slide-orgab36d8f">
+<h3 id="orgab36d8f">信頼区間</h3>
 <ul>
 <li><p>
 未知の分散を不偏分散で推定
@@ -743,16 +717,14 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org5c969ab" data-background="#fef4f4">
-<h2 id="org5c969ab">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org7baf55b" data-background="#fef4f4">
+<h2 id="org7baf55b">演習</h2>
 </section>
-<section id="slide-org1acfdcd" data-background="#fef4f4">
-<h3 id="org1acfdcd">問題</h3>
+<section id="slide-org7f937ec" data-background="#fef4f4">
+<h3 id="org7f937ec">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -773,10 +745,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgcdecc7d" data-background="#fef4f4">
-<h3 id="orgcdecc7d">解答例</h3>
+<section id="slide-org4a635e4" data-background="#fef4f4">
+<h3 id="org4a635e4">解答例</h3>
 <ul>
 <li><p>
 \(C_{\alpha}\) の定義にもとづいて計算すればよい
@@ -816,7 +787,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -851,17 +821,16 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgf62ad49">
-<h2 id="orgf62ad49">予測区間</h2>
-<div class="outline-text-2" id="text-orgf62ad49">
+<section id="slide-orgd4c2804">
+<h2 id="orgd4c2804">予測区間</h2>
+<div class="outline-text-2" id="text-orgd4c2804">
 </div>
 </section>
-<section id="slide-orge087653">
-<h3 id="orge087653">観測値との差</h3>
+<section id="slide-org23e31a3">
+<h3 id="org23e31a3">観測値との差</h3>
 <ul>
 <li><p>
 差の分布は以下の平均・分散をもつ正規分布に従う
@@ -900,10 +869,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org13df4f4">
-<h3 id="org13df4f4">予測区間</h3>
+<section id="slide-org23989ab">
+<h3 id="org23989ab">予測区間</h3>
 <ul>
 <li><p>
 未知の分散を不偏分散で推定
@@ -951,16 +919,14 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org7463df6">
-<h2 id="org7463df6">解析の事例</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org64431b7">
+<h2 id="org64431b7">解析の事例</h2>
 </section>
-<section id="slide-org641987f">
-<h3 id="org641987f">信頼区間と予測区間</h3>
+<section id="slide-orgb9facec">
+<h3 id="orgb9facec">信頼区間と予測区間</h3>
 <ul>
 <li>東京の気候データを用いて以下を試みる
 <ul>
@@ -978,56 +944,51 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org0d91528" class="figure">
+<div id="orgd40b484" class="figure">
 <p><img src="figs/05_aug_cint.png" alt="05_aug_cint.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>8月のあてはめ値の信頼区間</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org4f7c60e" class="figure">
+<div id="orgd73c9e8" class="figure">
 <p><img src="figs/05_aug_pred.png" alt="05_aug_pred.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>8月のあてはめ値の予測区間</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orged63d88" class="figure">
+<div id="org477d024" class="figure">
 <p><img src="figs/05_sep_cint.png" alt="05_sep_cint.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>8月モデルによる9月の予測値の信頼区間</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgee5cfae" class="figure">
+<div id="org2a9fda6" class="figure">
 <p><img src="figs/05_sep_pint.png" alt="05_sep_pint.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>8月モデルによる9月の予測値の予測区間</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgb6bb6b1">
-<h2 id="orgb6bb6b1">発展的なモデル</h2>
-<div class="outline-text-2" id="text-orgb6bb6b1">
+<section id="slide-org8fcb34e">
+<h2 id="org8fcb34e">発展的なモデル</h2>
+<div class="outline-text-2" id="text-org8fcb34e">
 </div>
 </section>
-<section id="slide-org180ae33">
-<h3 id="org180ae33">非線形性を含むモデル</h3>
+<section id="slide-orgeff2ff1">
+<h3 id="orgeff2ff1">非線形性を含むモデル</h3>
 <ul>
 <li>目的変数 \(y\)</li>
 <li>説明変数 \(x_1,\dotsc,x_p\)</li>
@@ -1039,10 +1000,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org2149a4a">
-<h3 id="org2149a4a">カテゴリカル変数を含むモデル</h3>
+<section id="slide-orgc735aa2">
+<h3 id="orgc735aa2">カテゴリカル変数を含むモデル</h3>
 <ul>
 <li>数値ではないデータ
 <ul>
@@ -1070,17 +1030,15 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org3bca840">
-<h2 id="org3bca840">解析の事例</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-orgd496d03">
+<h2 id="orgd496d03">解析の事例</h2>
 </section>
-<section id="slide-orgb91d054">
-<h3 id="orgb91d054">非線形変換による線形化</h3>
-<div class="leftcol" id="org7a239df">
+<section id="slide-orgd63c08d">
+<h3 id="orgd63c08d">非線形変換による線形化</h3>
+<div class="leftcol" id="orgbe9347c">
 <font size=5>
 
 <table style="text-align:center"><caption><strong>体重と脳の重さ(一部)</strong></caption>
@@ -1104,7 +1062,7 @@
 </font>
 
 </div>
-<div class="rightcol" id="orgbf7e3cc">
+<div class="rightcol" id="org83ee312">
 <ul>
 <li>様々な動物の体重と脳の重さの関係を調べる
 <ul>
@@ -1124,7 +1082,6 @@
 
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1135,13 +1092,12 @@
 </ul>
 
 
-<div id="orgd96839d" class="figure">
+<div id="org1459f2d" class="figure">
 <p><img src="figs/05_animals1.png" alt="05_animals1.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>散布図 (データの変換なし)</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1152,13 +1108,12 @@
 </ul>
 
 
-<div id="orgb4b5731" class="figure">
+<div id="org15c099c" class="figure">
 <p><img src="figs/05_animals2.png" alt="05_animals2.png" />
 </p>
 <p><span class="figure-number">Figure 10: </span>散布図 (体重を対数変換)</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1169,13 +1124,12 @@
 </ul>
 
 
-<div id="org4e70332" class="figure">
+<div id="org0e92553" class="figure">
 <p><img src="figs/05_animals3.png" alt="05_animals3.png" />
 </p>
 <p><span class="figure-number">Figure 11: </span>散布図 (体重と脳の重さを対数変換)</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1186,13 +1140,12 @@
 </ul>
 
 
-<div id="org81335e1" class="figure">
+<div id="org2c23476" class="figure">
 <p><img src="figs/05_animals4.png" alt="05_animals4.png" />
 </p>
 <p><span class="figure-number">Figure 12: </span>単回帰</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1203,15 +1156,14 @@
 </ul>
 
 
-<div id="org9256335" class="figure">
+<div id="orgc18e80c" class="figure">
 <p><img src="figs/05_animals5.png" alt="05_animals5.png" />
 </p>
 <p><span class="figure-number">Figure 13: </span>外れ値を除いた単回帰</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgd911025">
-<h3 id="orgd911025">非線形な関係の分析</h3>
+<section id="slide-org1911451">
+<h3 id="org1911451">非線形な関係の分析</h3>
 <ul>
 <li>東京の気候データを用いて
 気温に影響する変数の関係を検討する
@@ -1225,7 +1177,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1236,16 +1187,15 @@
 </ul>
 
 
-<div id="org4ba3e7d" class="figure">
+<div id="org30fb86f" class="figure">
 <p><img src="figs/05_interaction.png" alt="05_interaction.png" />
 </p>
 <p><span class="figure-number">Figure 14: </span>散布図 (気温・日射・気圧)</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5500080">
-<h3 id="org5500080">交互作用の効果</h3>
-<div class="leftcol" id="org0498fd3">
+<section id="slide-orgf72d1cf">
+<h3 id="orgf72d1cf">交互作用の効果</h3>
+<div class="leftcol" id="org6e1218b">
 <font size=4>
 
 <table style="text-align:center"><tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"></td><td colspan="2">目的変数</td></tr>
@@ -1267,7 +1217,7 @@
 </font>
 
 </div>
-<div class="rightcol" id="org0dc6543">
+<div class="rightcol" id="org74f0604">
 <ul>
 <li>気温への寄与
 <ul>
@@ -1290,10 +1240,9 @@
 </ul>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org548a0b1">
-<h3 id="org548a0b1">カテゴリカル変数の利用</h3>
+<section id="slide-orgfba69ac">
+<h3 id="orgfba69ac">カテゴリカル変数の利用</h3>
 <ul>
 <li>東京の気候データを用いて
 気温を回帰するモデルを検討する
@@ -1307,7 +1256,6 @@
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1318,16 +1266,15 @@
 </ul>
 
 
-<div id="orga1e53fa" class="figure">
+<div id="org7852694" class="figure">
 <p><img src="figs/05_categorical.png" alt="05_categorical.png" />
 </p>
 <p><span class="figure-number">Figure 15: </span>散布図 (気温・降雨・月)</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org1f346e1">
-<h3 id="org1f346e1">カテゴリカル変数の効果</h3>
-<div class="leftcol" id="org19885b2">
+<section id="slide-org8a6e2a1">
+<h3 id="org8a6e2a1">カテゴリカル変数の効果</h3>
+<div class="leftcol" id="orga152e72">
 <font size=4>
 
 <table style="text-align:center"><tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"></td><td colspan="2">目的変数</td></tr>
@@ -1358,7 +1305,7 @@
 </font>
 
 </div>
-<div class="rightcol" id="org1c0c09e">
+<div class="rightcol" id="org22da57d">
 <ul>
 <li>気温への寄与
 <ul>
@@ -1381,25 +1328,26 @@
 </ul>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org825b4f9">
-<h2 id="org825b4f9">次回の予定</h2>
+<section id="slide-orgdbc1783">
+<h2 id="orgdbc1783">次回の予定</h2>
 <ul>
 <li><b>第1回: 主成分分析の考え方</b></li>
 <li>第2回: 分析の評価と視覚化</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </div>
 </div>
 <script src="./reveal.js/dist/reveal.js"></script>
 <script src="./reveal.js/plugin/notes/notes.js"></script>
 <script src="./reveal.js/plugin/search/search.js"></script>
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
-<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./reveal.js/plugin/menu/menu.js"></script>
+<script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
+<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -1412,7 +1360,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: false,
+mouseWheel: true,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1420,16 +1368,15 @@ overview: true,
 
 transition: 'fade',
 transitionSpeed: 'default',
-spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
-{ src: './reveal.js/plugin/menu/menu.js'},
-{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
-{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+]
 
 });
 </script>

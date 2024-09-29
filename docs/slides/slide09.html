@@ -11,22 +11,19 @@
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
-
-<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
-
 <link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
-<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-state="no-toc-progress">
+<section id="sec-title-slide">
 <!-- This is an HTML template for the title slide. -->
 <!-- Embed logos as necessary. -->
 <!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
@@ -46,24 +43,23 @@
 
 </section>
 <section>
-<section id="slide-org3788998">
-<h2 id="org3788998">講義の内容</h2>
+<section id="slide-org2e91572">
+<h2 id="org2e91572">講義の内容</h2>
 <ul>
 <li>第1日 : 判別分析の考え方</li>
 <li><b>第2日 : 分析の評価</b></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgdb96351">
-<h2 id="orgdb96351">判別分析の復習</h2>
-<div class="outline-text-2" id="text-orgdb96351">
+<section id="slide-orgf3390ec">
+<h2 id="orgf3390ec">判別分析の復習</h2>
+<div class="outline-text-2" id="text-orgf3390ec">
 </div>
 </section>
-<section id="slide-orgdc72678">
-<h3 id="orgdc72678">判別分析</h3>
+<section id="slide-orgbb2634f">
+<h3 id="orgbb2634f">判別分析</h3>
 <ul>
 <li>個体の特徴量から
 その個体の属するクラスを予測する関係式を構成</li>
@@ -90,10 +86,9 @@
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org59441a5">
-<h3 id="org59441a5">判別関数</h3>
+<section id="slide-org4235843">
+<h3 id="org4235843">判別関数</h3>
 <ul>
 <li>判別の手続き
 <ul>
@@ -125,10 +120,9 @@
 <li>判別関数 \(\delta_k(\boldsymbol{x})\) を最大化するようなクラス \(k\) に分類</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org9948e4e">
-<h3 id="org9948e4e">線形判別</h3>
+<section id="slide-org31a9767">
+<h3 id="org31a9767">線形判別</h3>
 <ul>
 <li>\(f_k(\boldsymbol{x})\) の仮定
 <ul>
@@ -169,10 +163,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orge2ba5ba">
-<h3 id="orge2ba5ba">2次判別</h3>
+<section id="slide-org68d0be9">
+<h3 id="org68d0be9">2次判別</h3>
 <ul>
 <li>\(f_k(\boldsymbol{x})\) の仮定
 <ul>
@@ -213,10 +206,9 @@
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org24953b8">
-<h3 id="org24953b8">Fisherの線形判別</h3>
+<section id="slide-orgbf0166e">
+<h3 id="orgbf0166e">Fisherの線形判別</h3>
 <ul>
 <li>新しい特徴量 \(Z=\boldsymbol{\alpha}^{\mathsf{T}} X\) を考える</li>
 <li>良い \(Z\) の基準
@@ -246,17 +238,16 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgb466b42">
-<h2 id="orgb466b42">2値判別分析の評価</h2>
-<div class="outline-text-2" id="text-orgb466b42">
+<section id="slide-org051de47">
+<h2 id="org051de47">2値判別分析の評価</h2>
+<div class="outline-text-2" id="text-org051de47">
 </div>
 </section>
-<section id="slide-org47a87a9">
-<h3 id="org47a87a9">誤り率</h3>
+<section id="slide-orgf347a65">
+<h3 id="orgf347a65">誤り率</h3>
 <ul>
 <li><p>
 単純な誤り
@@ -281,10 +272,9 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgd02e73d">
-<h3 id="orgd02e73d">混同行列</h3>
+<section id="slide-orgabd628f">
+<h3 id="orgabd628f">混同行列</h3>
 <font size=6>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -324,10 +314,9 @@ Fisherの基準
 <li>転置で書く流儀もあるので注意 (次頁)</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org6acd7da">
-<h3 id="org6acd7da">混同行列 (転置したもの)</h3>
+<section id="slide-org226f79d">
+<h3 id="org226f79d">混同行列 (転置したもの)</h3>
 <font size=6>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -366,10 +355,9 @@ Fisherの基準
 <li>誤差行列 (error matrix) とも呼ばれる</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org3d37729">
-<h3 id="org3d37729">基本的な評価基準</h3>
+<section id="slide-orga0b9526">
+<h3 id="orga0b9526">基本的な評価基準</h3>
 <ul>
 <li><p>
 定義
@@ -392,7 +380,6 @@ Fisherの基準
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -438,10 +425,9 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org1c29e0b">
-<h3 id="org1c29e0b">F-値</h3>
+<section id="slide-orgcd61a19">
+<h3 id="orgcd61a19">F-値</h3>
 <ul>
 <li><p>
 定義 (<b>F-measure, F-score</b>)
@@ -461,10 +447,9 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5ee270d">
-<h3 id="org5ee270d">Cohen の kappa 値</h3>
+<section id="slide-org12c05a2">
+<h3 id="org12c05a2">Cohen の kappa 値</h3>
 <ul>
 <li><p>
 定義 (Cohen&rsquo;s <b>kappa measure</b>)
@@ -493,10 +478,9 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgae72894">
-<h3 id="orgae72894">受信者動作特性曲線</h3>
+<section id="slide-org0fd42fa">
+<h3 id="org0fd42fa">受信者動作特性曲線</h3>
 <ul>
 <li><b>ROC曲線</b> (receiver operating characteristic curve)</li>
 <li><p>
@@ -531,7 +515,6 @@ Fisherの基準
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -549,16 +532,14 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org726dc4a" data-background="#fef4f4">
-<h2 id="org726dc4a">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org0878060" data-background="#fef4f4">
+<h2 id="org0878060">演習</h2>
 </section>
-<section id="slide-org0fe603e" data-background="#fef4f4">
-<h3 id="org0fe603e">問題</h3>
+<section id="slide-orgdea19f3" data-background="#fef4f4">
+<h3 id="orgdea19f3">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -571,10 +552,9 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org585ec63" data-background="#fef4f4">
-<h3 id="org585ec63">解答例</h3>
+<section id="slide-org98603b5" data-background="#fef4f4">
+<h3 id="org98603b5">解答例</h3>
 <ul>
 <li><p>
 最大最小と平均の関係から以下が成り立つ
@@ -606,7 +586,6 @@ Fisherの基準
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -627,7 +606,6 @@ Fisherの基準
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -661,7 +639,6 @@ Fisherの基準
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -688,7 +665,6 @@ Fisherの基準
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -713,16 +689,14 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org410055b">
-<h2 id="org410055b">解析の事例</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org11fd88c">
+<h2 id="org11fd88c">解析の事例</h2>
 </section>
-<section id="slide-org1224485">
-<h3 id="org1224485">データについて</h3>
+<section id="slide-org3d6bfc6">
+<h3 id="org3d6bfc6">データについて</h3>
 <ul>
 <li>気象庁より取得した東京の気候データ <br />
 <ul>
@@ -732,10 +706,9 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgc0b5baf">
-<h3 id="orgc0b5baf">気温と湿度による月の判別</h3>
+<section id="slide-org9b37112">
+<h3 id="org9b37112">気温と湿度による月の判別</h3>
 <ul>
 <li><p>
 温度と湿度による8,9月の線形判別
@@ -744,13 +717,12 @@ Fisherの基準
 </ul>
 
 
-<div id="org7cc8415" class="figure">
+<div id="orgb8aeb26" class="figure">
 <p><img src="figs/09_lda.png" alt="09_lda.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>線形判別</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -761,38 +733,36 @@ Fisherの基準
 </ul>
 
 
-<div id="org120d70c" class="figure">
+<div id="org7b1d585" class="figure">
 <p><img src="figs/09_qda.png" alt="09_qda.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>2次判別</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org235c451">
-<h3 id="org235c451">混同行列の比較</h3>
-<div class="leftcol" id="org8dd5f63">
+<section id="slide-orgdb71fe2">
+<h3 id="orgdb71fe2">混同行列の比較</h3>
+<div class="leftcol" id="org7e6669f">
 
-<div id="org14f2a9b" class="figure">
+<div id="org5e58f09" class="figure">
 <p><img src="figs/09_lda_confmat.png" alt="09_lda_confmat.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>線形判別の混同行列</p>
 </div>
 
 </div>
-<div class="rightcol" id="org9819102">
+<div class="rightcol" id="org6deabd9">
 
-<div id="org56c8ede" class="figure">
+<div id="orgb8b4d25" class="figure">
 <p><img src="figs/09_qda_confmat.png" alt="09_qda_confmat.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>2次判別の混同行列</p>
 </div>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org4160bd9">
-<h3 id="org4160bd9">さまざまな評価指標の比較</h3>
-<div class="leftcol" id="org8db0f53">
+<section id="slide-orgf477850">
+<h3 id="orgf477850">さまざまな評価指標の比較</h3>
+<div class="leftcol" id="org9a0110a">
 <font size=5>
 
 <table style="text-align:center"><caption><strong>線形判別</strong></caption>
@@ -815,7 +785,7 @@ Fisherの基準
 </font>
 
 </div>
-<div class="rightcol" id="org145ff02">
+<div class="rightcol" id="org5091987">
 <font size=5>
 
 <table style="text-align:center"><caption><strong>2次判別</strong></caption>
@@ -838,39 +808,37 @@ Fisherの基準
 </font>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5e2c04b">
-<h3 id="org5e2c04b">ROC曲線の比較</h3>
-<div class="leftcol" id="orgdf04a06">
+<section id="slide-org4193c94">
+<h3 id="org4193c94">ROC曲線の比較</h3>
+<div class="leftcol" id="orgc03b075">
 
-<div id="org3a0f355" class="figure">
+<div id="org8e9ef36" class="figure">
 <p><img src="figs/09_lda_roc.png" alt="09_lda_roc.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>線形判別のROC曲線</p>
 </div>
 
 </div>
-<div class="rightcol" id="org5f2ddb7">
+<div class="rightcol" id="orgf33ea0f">
 
-<div id="org01221ea" class="figure">
+<div id="org8254e60" class="figure">
 <p><img src="figs/09_qda_roc.png" alt="09_qda_roc.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>2次判別の混同行列</p>
 </div>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orge1d9e10">
-<h2 id="orge1d9e10">予測誤差</h2>
-<div class="outline-text-2" id="text-orge1d9e10">
+<section id="slide-org98a1392">
+<h2 id="org98a1392">予測誤差</h2>
+<div class="outline-text-2" id="text-org98a1392">
 </div>
 </section>
-<section id="slide-org1957ee3">
-<h3 id="org1957ee3">訓練誤差と予測誤差</h3>
+<section id="slide-orgcd4a609">
+<h3 id="orgcd4a609">訓練誤差と予測誤差</h3>
 <ul>
 <li><b>訓練誤差</b> :
 既知データに対する誤り (training error)</li>
@@ -886,10 +854,9 @@ Fisherの基準
 <li>予測誤差が小さい \(\Leftrightarrow\) 良い判別方法</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org7c88102">
-<h3 id="org7c88102">交叉検証</h3>
+<section id="slide-org4e92ac1">
+<h3 id="org4e92ac1">交叉検証</h3>
 <ul>
 <li>データを訓練データと試験データに分割して用いる
 <ul>
@@ -904,10 +871,9 @@ Fisherの基準
 <li>&ldquo;交差&rdquo;と書く場合もある</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0f3350f">
-<h3 id="org0f3350f">交叉検証法</h3>
+<section id="slide-org082a04c">
+<h3 id="org082a04c">交叉検証法</h3>
 <ul>
 <li><b>cross-validation (CV)</b></li>
 <li>\(k\)-重交叉検証法 (\(k\)-fold cross-validation; \(k\)-fold CV)
@@ -925,16 +891,14 @@ Fisherの基準
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgb1bd8cf">
-<h2 id="orgb1bd8cf">解析の事例</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org010e95c">
+<h2 id="org010e95c">解析の事例</h2>
 </section>
-<section id="slide-orgae2be0a">
-<h3 id="orgae2be0a">データについて</h3>
+<section id="slide-org3568fa3">
+<h3 id="org3568fa3">データについて</h3>
 <ul>
 <li>UC Irvine Machine Learning Repository の公開データ
 <ul>
@@ -961,7 +925,6 @@ In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1003,7 +966,6 @@ In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
@@ -1038,91 +1000,89 @@ In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 </font></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org2e571b2">
-<h3 id="org2e571b2">線形判別の訓練誤差と予測誤差</h3>
-<div class="leftcol" id="org3dc2235">
+<section id="slide-org20ceea4">
+<h3 id="org20ceea4">線形判別の訓練誤差と予測誤差</h3>
+<div class="leftcol" id="org8e57978">
 
-<div id="orga395940" class="figure">
+<div id="org69a6f2e" class="figure">
 <p><img src="figs/09_lda_train_cm.png" alt="09_lda_train_cm.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>訓練誤差</p>
 </div>
 
 </div>
-<div class="rightcol" id="orgc9053ab">
+<div class="rightcol" id="orga878a41">
 
-<div id="org06c51a5" class="figure">
+<div id="org9ac7508" class="figure">
 <p><img src="figs/09_lda_test_cm.png" alt="09_lda_test_cm.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>予測誤差</p>
 </div>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf10e2ec">
-<h3 id="orgf10e2ec">2次判別の訓練誤差と予測誤差</h3>
-<div class="leftcol" id="org3778cf4">
+<section id="slide-org51f3e0d">
+<h3 id="org51f3e0d">2次判別の訓練誤差と予測誤差</h3>
+<div class="leftcol" id="org26c57c9">
 
-<div id="org83e5d90" class="figure">
+<div id="orgac9c70c" class="figure">
 <p><img src="figs/09_qda_train_cm.png" alt="09_qda_train_cm.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>訓練誤差</p>
 </div>
 
 </div>
-<div class="rightcol" id="orgb384eeb">
+<div class="rightcol" id="orgedc460b">
 
-<div id="org83efa95" class="figure">
+<div id="orgf8c3a99" class="figure">
 <p><img src="figs/09_qda_test_cm.png" alt="09_qda_test_cm.png" />
 </p>
 <p><span class="figure-number">Figure 10: </span>予測誤差</p>
 </div>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org1244d1a">
-<h3 id="org1244d1a">LOO交叉検証による予測誤差の評価</h3>
-<div class="leftcol" id="orgd5e95d6">
+<section id="slide-org9a6ed67">
+<h3 id="org9a6ed67">LOO交叉検証による予測誤差の評価</h3>
+<div class="leftcol" id="org12820f6">
 
-<div id="org188ab15" class="figure">
+<div id="org50a1dfe" class="figure">
 <p><img src="figs/09_lda_loo_cm.png" alt="09_lda_loo_cm.png" />
 </p>
 <p><span class="figure-number">Figure 11: </span>線形判別</p>
 </div>
 
 </div>
-<div class="rightcol" id="org1459e18">
+<div class="rightcol" id="org44aba4c">
 
-<div id="orgaf5c45b" class="figure">
+<div id="orga92bd11" class="figure">
 <p><img src="figs/09_qda_loo_cm.png" alt="09_qda_loo_cm.png" />
 </p>
 <p><span class="figure-number">Figure 12: </span>2次判別</p>
 </div>
 
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgcf2166a">
-<h2 id="orgcf2166a">次回の予定</h2>
+<section id="slide-orgd4eb0e8">
+<h2 id="orgd4eb0e8">次回の予定</h2>
 <ul>
 <li><b>第1日 : クラスタ分析の考え方と階層的方法</b></li>
 <li>第2日 : 非階層的方法と分析の評価</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </div>
 </div>
 <script src="./reveal.js/dist/reveal.js"></script>
 <script src="./reveal.js/plugin/notes/notes.js"></script>
 <script src="./reveal.js/plugin/search/search.js"></script>
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
-<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./reveal.js/plugin/menu/menu.js"></script>
+<script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
+<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -1135,7 +1095,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: false,
+mouseWheel: true,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1143,16 +1103,15 @@ overview: true,
 
 transition: 'fade',
 transitionSpeed: 'default',
-spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
-{ src: './reveal.js/plugin/menu/menu.js'},
-{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
-{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+]
 
 });
 </script>

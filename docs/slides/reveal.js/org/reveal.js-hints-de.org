@@ -34,6 +34,8 @@ erzeugt und nutzen das HTML-Framework
     dann in PDF-Datei drucken (Strg-p)
     - Reveal.js gibt an, dass dies mit dem Chromium/Chrome funktioniert,
       [[https://revealjs.com/pdf-export/][vorgeschlagene Einstellungen]]
+    - Neuere Projekte erstellen diese PDF-Variante möglicherweise direkt;
+      Lehrende geben dann einen entsprechenden Hinweis
   - Je nach Projekt sind möglicherweise bereits PDF-Dateien aus den
     Quelldateien generiert worden.  In diesem Fall kann die Endung
     ~.html~ der URL einer Präsentation durch ~.pdf~ ersetzt werden.
@@ -57,6 +59,9 @@ erzeugt und nutzen das HTML-Framework
         scheint überall zu funktionieren
     - Audio-Steuerung links unten (weitere Optionen wie
       Geschwindigkeit per Rechts-Klick)
+      - URL-Parameter ~audio-speed~ ändert die Geschwindigkeit für die
+        gesamte Präsentation, z. B. ~audio-speed=2.0~ für doppelte
+        Geschwindigkeit (Parameter existiert seit Juni 2022)
     - Start und Pause von Ton über Taste „+“ (oder „a“ für ältere Präsentationen)
 - Notizen
   - Folien enthalten Notizen, wenn das Ordner-Symbol dargestellt wird

@@ -11,22 +11,19 @@
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/toc-progress/toc-progress.css"/>
-
-<link rel="stylesheet" href="./reveal.js/dist/theme/toc-style.css"/>
-
 <link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/accessibility/helper.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
 
 <link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
-<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-state="no-toc-progress">
+<section id="sec-title-slide">
 <!-- This is an HTML template for the title slide. -->
 <!-- Embed logos as necessary. -->
 <!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
@@ -46,24 +43,23 @@
 
 </section>
 <section>
-<section id="slide-orge7a7cd5">
-<h2 id="orge7a7cd5">講義の内容</h2>
+<section id="slide-org3be7139">
+<h2 id="org3be7139">講義の内容</h2>
 <ul>
 <li><b>第1回 : 基本的な考え方と階層的方法</b></li>
 <li>第2回 : 非階層的方法と分析の評価</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgd4c3f38">
-<h2 id="orgd4c3f38">事例</h2>
-<div class="outline-text-2" id="text-orgd4c3f38">
+<section id="slide-org6d6f063">
+<h2 id="org6d6f063">事例</h2>
+<div class="outline-text-2" id="text-org6d6f063">
 </div>
 </section>
-<section id="slide-orgbe2c413">
-<h3 id="orgbe2c413">実データによる例</h3>
+<section id="slide-org3151cad">
+<h3 id="org3151cad">実データによる例</h3>
 <ul>
 <li>総務省統計局より取得した都道府県別の社会生活統計指標の一部
 <ul>
@@ -71,7 +67,7 @@
 <li><p>
 データ <a href="https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv">https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv</a>
 </p>
-<pre class="example" id="org3ae65b9">
+<pre class="example" id="org0430880">
 Pref : 都道府県名
 Forest : 森林面積割合 (%) 2014年
 Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
@@ -84,10 +80,9 @@ Area : 地方区分
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org2128a8f">
-<h3 id="org2128a8f">データの概要</h3>
+<section id="slide-orge6a69f0">
+<h3 id="orge6a69f0">データの概要</h3>
 <font size=5>
 
 <table style="text-align:center"><caption><strong>社会生活統計指標</strong></caption>
@@ -110,47 +105,43 @@ Area : 地方区分
 <tr><td colspan="7" style="border-bottom: 1px solid black"></td></tr></table>
 
 </font>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org429a420">
-<h3 id="org429a420">分析の目的</h3>
+<section id="slide-orgb7232bf">
+<h3 id="orgb7232bf">分析の目的</h3>
 
-<div id="org85637c3" class="figure">
+<div id="org8021650" class="figure">
 <p><img src="figs/10_pairs.png" alt="10_pairs.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>散布図</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgf9fe55e" class="figure">
+<div id="orgc043883" class="figure">
 <p><img src="figs/10_pcaplot.png" alt="10_pcaplot.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>主成分得点による散布図</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgb34060a" class="figure">
+<div id="org176a1f5" class="figure">
 <p><img src="figs/10_clusplot.png" alt="10_clusplot.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>散布図上のクラスタ構造 (クラスタ分析の概念図)</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgee1a435">
-<h2 id="orgee1a435">クラスタ分析の考え方</h2>
-<div class="outline-text-2" id="text-orgee1a435">
+<section id="slide-org91d6e05">
+<h2 id="org91d6e05">クラスタ分析の考え方</h2>
+<div class="outline-text-2" id="text-org91d6e05">
 </div>
 </section>
-<section id="slide-orgac2bf93">
-<h3 id="orgac2bf93">クラスタ分析</h3>
+<section id="slide-org5299120">
+<h3 id="org5299120">クラスタ分析</h3>
 <ul>
 <li><p>
 クラスタ分析 (<b>cluster analysis</b>) の目的
@@ -172,10 +163,9 @@ Area : 地方区分
 <li>教師なし学習の代表的な手法の一つ</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org55c17d3">
-<h3 id="org55c17d3">クラスタ分析の考え方</h3>
+<section id="slide-org3080633">
+<h3 id="org3080633">クラスタ分析の考え方</h3>
 <ul>
 <li>階層的方法
 <ul>
@@ -197,17 +187,16 @@ Area : 地方区分
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgeb09b59">
-<h2 id="orgeb09b59">階層的方法</h2>
-<div class="outline-text-2" id="text-orgeb09b59">
+<section id="slide-org63022b8">
+<h2 id="org63022b8">階層的方法</h2>
+<div class="outline-text-2" id="text-org63022b8">
 </div>
 </section>
-<section id="slide-org397d927">
-<h3 id="org397d927">凝集的クラスタリング</h3>
+<section id="slide-orgc094cce">
+<h3 id="orgc094cce">凝集的クラスタリング</h3>
 <ol>
 <li>データ・クラスタ間の距離を定義する
 <ul>
@@ -226,10 +215,9 @@ Area : 地方区分
 <li>クラスタ数が1つになるまで2-3の手続きを繰り返す</li>
 
 </ol>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org9e662df">
-<h3 id="org9e662df">事例</h3>
+<section id="slide-org9e6fd5d">
+<h3 id="org9e6fd5d">事例</h3>
 <ul>
 <li><p>
 <span style="color:green;">社会生活統計指標の一部(関東)</span>
@@ -238,94 +226,86 @@ Area : 地方区分
 </ul>
 
 
-<div id="org0cca619" class="figure">
+<div id="org313dd3c" class="figure">
 <p><img src="figs/10_hclst0.png" alt="10_hclst0.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>凝集的クラスタリング</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgeb77574" class="figure">
+<div id="orga1ca56f" class="figure">
 <p><img src="figs/10_hclst1.png" alt="10_hclst1.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>クラスタリングの手続き (その1)</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgcb3ec73" class="figure">
+<div id="orgb4db2b3" class="figure">
 <p><img src="figs/10_hclst2.png" alt="10_hclst2.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>クラスタリングの手続き (その2)</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org698d5f3" class="figure">
+<div id="orge901a44" class="figure">
 <p><img src="figs/10_hclst3.png" alt="10_hclst3.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>クラスタリングの手続き (その3)</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgcaa7a2b" class="figure">
+<div id="org504bb9f" class="figure">
 <p><img src="figs/10_hclst4.png" alt="10_hclst4.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>クラスタリングの手続き (その4)</p>
 </div>
 
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org0ca9e9d" class="figure">
+<div id="org1c2a1a5" class="figure">
 <p><img src="figs/10_hclst5.png" alt="10_hclst5.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>クラスタリングの手続き (その5)</p>
 </div>
 
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org6aa8fc6" class="figure">
+<div id="orgc4f31cb" class="figure">
 <p><img src="figs/10_hclst6.png" alt="10_hclst6.png" />
 </p>
 <p><span class="figure-number">Figure 10: </span>クラスタリングの手続き (その6)</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgd16665e" class="figure">
+<div id="org7f9fe16" class="figure">
 <p><img src="figs/10_dendro.png" alt="10_dendro.png" />
 </p>
 <p><span class="figure-number">Figure 11: </span>デンドログラムによるクラスタ構造の表示</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgfc827f2">
-<h2 id="orgfc827f2">データ間の距離</h2>
-<div class="outline-text-2" id="text-orgfc827f2">
+<section id="slide-orge6bd619">
+<h2 id="orge6bd619">データ間の距離</h2>
+<div class="outline-text-2" id="text-orge6bd619">
 </div>
 </section>
-<section id="slide-org013576e">
-<h3 id="org013576e">データ間の距離</h3>
+<section id="slide-org823c286">
+<h3 id="org823c286">データ間の距離</h3>
 <ul>
 <li><p>
 データ : 変数の値を成分としてもつベクトル
@@ -349,10 +329,9 @@ Area : 地方区分
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org2295d9a">
-<h3 id="org2295d9a">Euclid 距離</h3>
+<section id="slide-orgd3a2a22">
+<h3 id="orgd3a2a22">Euclid 距離</h3>
 <ul>
 <li>最も一般的な距離</li>
 <li><p>
@@ -369,10 +348,9 @@ Area : 地方区分
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org0b3240f">
-<h3 id="org0b3240f">Manhattan 距離</h3>
+<section id="slide-org0220210">
+<h3 id="org0220210">Manhattan 距離</h3>
 <ul>
 <li>後述する Minkowski 距離の \(p=1\) の場合</li>
 <li><p>
@@ -389,10 +367,9 @@ Area : 地方区分
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org85952f1">
-<h3 id="org85952f1">Minkowski 距離</h3>
+<section id="slide-org8beb5b4">
+<h3 id="org8beb5b4">Minkowski 距離</h3>
 <ul>
 <li>Euclid 距離を \(p\) 乗に一般化した距離</li>
 <li><p>
@@ -409,10 +386,9 @@ Area : 地方区分
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgec3411d">
-<h3 id="orgec3411d">その他の距離</h3>
+<section id="slide-org7a06419">
+<h3 id="org7a06419">その他の距離</h3>
 <ul>
 <li>類似度や乖離度などデータ間に自然に定義されるものを用いることは可能
 <ul>
@@ -423,16 +399,14 @@ Area : 地方区分
 <li>擬似的な距離でもアルゴリズムは動く</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgefda02f" data-background="#fef4f4">
-<h2 id="orgefda02f">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org6ed84c7" data-background="#fef4f4">
+<h2 id="org6ed84c7">演習</h2>
 </section>
-<section id="slide-orgdc433c4" data-background="#fef4f4">
-<h3 id="orgdc433c4">問題</h3>
+<section id="slide-org766f779" data-background="#fef4f4">
+<h3 id="org766f779">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -455,10 +429,9 @@ Minkowski 距離において
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgd9e4c8c" data-background="#fef4f4">
-<h3 id="orgd9e4c8c">解答例</h3>
+<section id="slide-org7b939dc" data-background="#fef4f4">
+<h3 id="org7b939dc">解答例</h3>
 <ul>
 <li><p>
 2変数の実数値関数で以下の3つの条件を満たす
@@ -498,7 +471,6 @@ Minkowski 距離において
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -519,7 +491,6 @@ Minkowski 距離において
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -562,7 +533,6 @@ Minkowski 距離において
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -580,17 +550,16 @@ Minkowski 距離において
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org6c3e5f2">
-<h2 id="org6c3e5f2">クラスタ間の距離</h2>
-<div class="outline-text-2" id="text-org6c3e5f2">
+<section id="slide-orgd724389">
+<h2 id="orgd724389">クラスタ間の距離</h2>
+<div class="outline-text-2" id="text-orgd724389">
 </div>
 </section>
-<section id="slide-org4018f15">
-<h3 id="org4018f15">クラスタ間の距離</h3>
+<section id="slide-orgaf49178">
+<h3 id="orgaf49178">クラスタ間の距離</h3>
 <ul>
 <li><p>
 クラスタ : いくつかのデータ点からなる集合
@@ -620,10 +589,9 @@ Minkowski 距離において
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orge48377a">
-<h3 id="orge48377a">最短距離法</h3>
+<section id="slide-org6bae1f3">
+<h3 id="org6bae1f3">最短距離法</h3>
 <ul>
 <li><p>
 最も近い対象間の距離を用いる方法
@@ -652,10 +620,9 @@ Minkowski 距離において
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgb171f51">
-<h3 id="orgb171f51">最長距離法</h3>
+<section id="slide-orgf0910f8">
+<h3 id="orgf0910f8">最長距離法</h3>
 <ul>
 <li><p>
 最も遠い対象間の距離を用いる方法
@@ -684,10 +651,9 @@ Minkowski 距離において
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgf40f46a">
-<h3 id="orgf40f46a">群平均法</h3>
+<section id="slide-org71fce65">
+<h3 id="org71fce65">群平均法</h3>
 <ul>
 <li><p>
 全ての対象間の平均距離を用いる方法
@@ -720,10 +686,9 @@ Minkowski 距離において
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org8a83200">
-<h3 id="org8a83200">距離計算に関する注意</h3>
+<section id="slide-org2745921">
+<h3 id="org2745921">距離計算に関する注意</h3>
 <ul>
 <li>データの性質に応じて距離は適宜使い分ける
 <ul>
@@ -740,16 +705,14 @@ Minkowski 距離において
 <li>データの性質を鑑みて適切に前処理</li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-orgc2726ab" data-background="#fef4f4">
-<h2 id="orgc2726ab">演習</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org81d73b4" data-background="#fef4f4">
+<h2 id="org81d73b4">演習</h2>
 </section>
-<section id="slide-org46275c8" data-background="#fef4f4">
-<h3 id="org46275c8">問題</h3>
+<section id="slide-orgf8f895d" data-background="#fef4f4">
+<h3 id="orgf8f895d">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -785,10 +748,9 @@ Minkowski 距離において
 </ul></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-orgb835564" data-background="#fef4f4">
-<h3 id="orgb835564">解答例</h3>
+<section id="slide-org73efaf1" data-background="#fef4f4">
+<h3 id="org73efaf1">解答例</h3>
 <ul>
 <li><p>
 定義に従って計算する
@@ -816,7 +778,6 @@ Minkowski 距離において
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section data-background="#fef4f4">
 <ul>
@@ -851,21 +812,19 @@ Minkowski 距離において
 </blockquote></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org91a754f">
-<h2 id="org91a754f">解析事例</h2>
-<div class="slide-footer"><br></div>
+<section id="slide-org10b2ca1">
+<h2 id="org10b2ca1">解析事例</h2>
 </section>
-<section id="slide-org1a26837">
-<h3 id="org1a26837">都道府県別の社会生活統計指標</h3>
+<section id="slide-orgeea461e">
+<h3 id="orgeea461e">都道府県別の社会生活統計指標</h3>
 <ul>
 <li><p>
 各データを正規化
 </p>
-<pre class="example" id="org4e85812">
+<pre class="example" id="org45b7b2c">
 Forest : 森林面積割合 (%) 2014年
 Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
 Ratio : 全国総人口に占める人口割合 (%) 2015年
@@ -876,30 +835,27 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgdce7082" class="figure">
+<div id="org9ff6c1e" class="figure">
 <p><img src="figs/10_jsclst.png" alt="10_jsclst.png" />
 </p>
 <p><span class="figure-number">Figure 12: </span>社会生活統計指標のクラスタ分析 (デンドログラム)</p>
 </div>
 
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org9fd5de9" class="figure">
+<div id="org55b3b4b" class="figure">
 <p><img src="figs/10_jscut.png" alt="10_jscut.png" />
 </p>
 <p><span class="figure-number">Figure 13: </span>5分割の例</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
-<section id="slide-org5ce1b72">
-<h3 id="org5ce1b72">都道府県別好きなおむすびの具</h3>
+<section id="slide-org11719da">
+<h3 id="org11719da">都道府県別好きなおむすびの具</h3>
 <ul>
 <li>Webアンケート
 <ul>
@@ -911,14 +867,13 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 <ul>
 <li><p>
 アンケート概要 (Q2の結果を利用)
 </p>
-<pre class="example" id="orgca741f1">
+<pre class="example" id="org6f71d20">
 【応募期間】 2009年1月4日～2009年2月28日
 【応募方法】 インターネット、携帯ウェブ
 【内　　容】
@@ -939,54 +894,52 @@ Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当た
 
 </ul>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgb008493" class="figure">
+<div id="org0e86a8c" class="figure">
 <p><img src="figs/10_ombar.png" alt="10_ombar.png" />
 </p>
 <p><span class="figure-number">Figure 14: </span>データの概要</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="org0551589" class="figure">
+<div id="org0642ede" class="figure">
 <p><img src="figs/10_ompairs.png" alt="10_ompairs.png" />
 </p>
 <p><span class="figure-number">Figure 15: </span>データの散布図</p>
 </div>
 
-<div class="slide-footer"><br></div>
 </section>
 <section>
 
-<div id="orgf5e1a7e" class="figure">
+<div id="org02f8ce5" class="figure">
 <p><img src="figs/10_omclst.png" alt="10_omclst.png" />
 </p>
 <p><span class="figure-number">Figure 16: </span>デンドログラム</p>
 </div>
-<div class="slide-footer"><br></div>
 </section>
 </section>
 <section>
-<section id="slide-org3ea2369">
-<h2 id="org3ea2369">次回の予定</h2>
+<section id="slide-org0af166d">
+<h2 id="org0af166d">次回の予定</h2>
 <ul>
 <li>第1回 : 基本的な考え方と階層的方法</li>
 <li><b>第2回 : 非階層的方法と分析の評価</b></li>
 
 </ul>
-<div class="slide-footer"><br></div>
 </div>
 </div>
 <script src="./reveal.js/dist/reveal.js"></script>
 <script src="./reveal.js/plugin/notes/notes.js"></script>
 <script src="./reveal.js/plugin/search/search.js"></script>
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
-<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./reveal.js/plugin/menu/menu.js"></script>
+<script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
+<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -999,7 +952,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: false,
+mouseWheel: true,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1007,16 +960,15 @@ overview: true,
 
 transition: 'fade',
 transitionSpeed: 'default',
-spotlight: { size: 90, initialPresentationMode: false }, chalkboard: { toggleChalkboardButton: { left: '80px' }, toggleNotesButton: { left: '130px'}}, keyboard: { 69: function() { RevealChalkboard.toggleNotesCanvas() }, 87: function() { RevealChalkboard.toggleChalkboard() }, 67: function() { RevealChalkboard.clear() }, 82: function() { RevealChalkboard.reset() }, 68: function() { RevealChalkboard.download() }, 88: function() { RevealChalkboard.colorNext() }, 89: function() { RevealChalkboard.colorPrev() }, 84: function() { RevealSpotlight.toggleSpotlight() }, 81: function() { RevealSpotlight.togglePresentationMode()}},
+showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
+spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealHighlight ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
-{ src: './reveal.js/plugin/menu/menu.js'},
-{ src: './reveal.js/plugin/chalkboard/chalkboard.js'},
-{ src: './reveal.js/plugin/spotlight/spotlight.js'}]
+]
 
 });
 </script>
