@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-10-06 20:45:26 mura>
+# Time-stamp: <2024-10-14 17:22:02 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -386,8 +386,8 @@
          \quad\text{(標準正規分布)}
     \end{align}
     #+end_quote
-  - 正規分布に従う確率変数の不偏分散は
-    \(\chi^{2}\)分布に従う確率変数の定数倍となる
+  - 分散\(\sigma^{2}\)の正規分布に従う確率変数の不偏分散は
+    \(\chi^{2}\)分布に従う確率変数の\(\sigma^{2}\)倍となる
 - 用途
   - 分散の大きさに関する検定に用いられる
   - 独立性検定・適合度検定などの検定でも用いられる
@@ -441,7 +441,7 @@
     \end{align}
     #+end_quote
   - 正規分布に従う確率変数の標本平均と真の値の差は
-    不偏分散で正規化すると\(t\)分布に従う確率変数となる
+    不偏分散で標準化すると\(t\)分布に従う確率変数となる
 - 用途
   - 平均値を推定する問題の検定に利用される
   - 信頼区間の構成に利用される
@@ -526,6 +526,65 @@
   として利用される．
 #+end_quote
 #+end_rightcol  
+
+** 大数の強法則
+- 定理
+  #+begin_quote
+  \(\{X_n\}\) を確率変数列として
+  \begin{equation}
+    S_n=\sum_{k=1}^n X_k
+  \end{equation}
+  とする．
+  \(\{X_n\}\) が独立で，
+  \(\{\mathrm{Var}(X_n)\}\) が有界ならば
+  \begin{equation}
+    \frac{S_n-\mathbb{E}[S_n]}{n}\to 0 \text{ a.s.}
+  \end{equation}
+  が成り立つ．
+  #+end_quote
+
+** 同分布の中心極限定理
+- 定理
+  #+begin_quote
+  \(\{X_n\}\) は独立で，
+  平均 \(\mu\) ，標準偏差 \(\sigma\) 
+  の同じ分布に従うとする．
+  このとき，すべての実数 \(a < b\) に対して
+  \begin{equation}
+    P\Bigl(a\leq\frac{\sqrt{n}(\bar{X}_n-\mu)}{\sigma}\leq b \Bigr)
+    \to\frac{1}{\sqrt{2\pi}}\int_a^be^{-\frac{x^2}{2}}dx\quad
+    (n\to\infty)
+  \end{equation}
+  が成り立つ．
+  #+end_quote
+
+#+reveal: split
+- 定理の意味
+  #+begin_quote
+  \(X_i\) の分布が何であっても，
+  サンプル数 \(n\) が十分大きければ，
+  標本平均と真の平均の差
+  \(\bar{X}_n-\mu\) 
+  の分布は，
+  *標準正規分布* を利用して
+  \begin{equation}
+    P\Bigl(a\frac{\sigma}{\sqrt{n}}\leq\bar{X}_n-\mu\leq
+    b\frac{\sigma}{\sqrt{n}} \Bigr)
+    \simeq
+    \frac{1}{\sqrt{2\pi}}\int_a^be^{-\frac{x^2}{2}}dx
+  \end{equation}
+  で近似できる．
+  #+end_quote
+
+** 推定量の漸近正規性
+- *漸近正規性*
+  #+begin_quote
+  多くの推定量 \(\hat{\theta}\) の分布は正規分布で近似できる
+  #+end_quote
+  - モーメントに基づく記述統計量は漸近正規性をもつ
+  - 最尤推定量は広い範囲の確率分布に対して漸近正規性をもつ
+  - いずれも中心極限定理にもとづく
+- 推定量の評価に正規分布から導かれる分布が利用できる
 
 
 * 演習
@@ -1149,7 +1208,7 @@
     \frac{\partial}{\partial A}\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
     =B^{\mathsf{T}}
   \end{equation}
-  ことが容易に確かめられる．
+  となることが容易に確かめられる．
   #+end_quote
 
 #+reveal: split
