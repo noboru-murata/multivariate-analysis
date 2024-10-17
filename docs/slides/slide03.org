@@ -4,9 +4,9 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-12-02 15:06:35 mura>
+# Time-stamp: <2024-10-17 11:18:34 mura>
 :REVEAL:
-#+SETUPFILE: "./reveal.js/org/mycourse.org"
+#+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
@@ -41,7 +41,11 @@
     else
       theme_update(text = element_text(family = "HiraMaruProN-W4"))}
   library(see)
-  options(ggplot2.discrete.colour = function() scale_colour_material(),
+  library(gt)
+  library(gtsummary)
+  # theme_gtsummary_compact()
+  options(crayon.enabled = FALSE,
+          ggplot2.discrete.colour = function() scale_colour_material(),
           ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
@@ -55,6 +59,7 @@
 - 第3回 : モデルによる予測と発展的なモデル
 
 #+begin_src R :exports none :tangle no
+  options(crayon.enabled = FALSE)
   setwd("~/Desktop/lectures/u-tokyo/autumn/course")
 #+end_src
 #+begin_src R :exports none 
@@ -414,7 +419,6 @@
 # 東京大学
 ** R : 線形モデルの推定
 :PROPERTIES:
-:reveal_background: #fef4f4
 :ID:       2E34C154-BD9D-4380-82E0-2D53B97D9F1E
 :END:
 - 関数 ~stats::lm()~ による推定
@@ -428,8 +432,18 @@
     #' na.action: 欠損の扱いを指定(既定値はoption("na.action")で設定された処理)
     #' model,x,y,qr: 返値にmodel.frame,model.matrix,目的変数,QR分解を含むか指定
   #+end_src
+** 例 : ボルドーワインの価格と気候
+- 配布データ ~wine.csv~ の回帰分析
+  #+begin_src R :exports code
+    bw_data <- read_csv(file="data/wine.csv")  # データの読み込み
+    bw_fit <- lm(formula = LPRICE2 ~ . - VINT, # VINTを除く全て
+                 data = bw_data) 
+  #+end_src
+  #+begin_src R
+    bw_fit # 推定結果の簡単な表示
+  #+end_src
   
-** データセットの準備
+** COMMENT データセットの準備
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -452,6 +466,32 @@
     - 参考 : https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
 
 ** 練習問題
+- データセット [[https://www.statlearning.com/s/Advertising.csv]] は
+  広告費 (TV, radio, newspapers) と売上の関係を調べたものである．
+  このデータセットを用いて以下の回帰式を推定しなさい．
+  #+begin_src R :eval no :tangle no
+    formula = sales ~ TV 
+    formula = sales ~ radio
+    formula = sales ~ TV + radio
+  #+end_src
+  - 参考 : https://www.statlearning.com
+    #+begin_quote
+    Datasets in this presentation are taken from "An Introduction to
+    Statistical Learning, with applications in R" (Springer, 2013)
+    with permission from the authors: G. James, D. Witten, T. Hastie
+    and R. Tibshirani.
+    #+end_quote
+
+** 練習問題
+- 配布したデータセット ~tokyo_weather.csv~ は
+  気象庁より取得した東京の気候データを回帰分析用に整理したものである．
+  このデータセットのうち，8月の気候データを用いて，以下の回帰式を推定しなさい．
+  #+begin_src R :eval no :tangle no
+    formula = temp ~ solar + press
+  #+end_src
+  - 参考 : https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
+
+** COMMENT 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       9010402A-AC86-4A3F-9A0F-397A945FACB5
@@ -467,12 +507,12 @@
       formula = sales ~ radio
       formula = sales ~ TV + radio
     #+end_src
-
-#+begin_src R :exports none
+** COMMENT 解答例
+#+begin_src R :exports none :tangle no
   #' ---------------------------------------------------------------------------
   #' @practice 回帰係数の推定
 #+end_src
-#+begin_src R :eval no :exports none
+#+begin_src R :eval no :exports none :tangle no
   #' 広告費と売上データによる回帰分析
 
   #' データの読み込み
@@ -512,7 +552,7 @@
               draw_polygon = TRUE, # 平面の塗り潰しの設定
               polygon_args = list(col = rgb(0,0,1,0.2))) 
 #+end_src
-#+begin_src R :eval no :exports none
+#+begin_src R :eval no :exports none :tangle no
   #' 東京の気候データによる回帰分析
   #' データの読み込み
   tw_data <- read_csv("data/tokyo_weather.csv")
@@ -538,7 +578,7 @@
               draw_polygon = TRUE, # 平面の塗り潰しの設定
               polygon_args = list(col = rgb(0,0,1,0.1))) 
 #+end_src
-#+begin_src R :exports none
+#+begin_src R :exports none :tangle no
   #' ---------------------------------------------------------------------------
 #+end_src
   
@@ -639,12 +679,25 @@
 :END:
 - 関数 ~lm()~ の出力には様々な情報が含まれる
   #+begin_src R :eval no :tangle no
-    #' lmの出力を引数とする関数の例
-    coef(lmの出力)         # 推定された回帰係数
-    fitted(lmの出力)       # あてはめ値
-    resid(lmの出力)        # 残差
-    model.frame(lmの出力)  # modelに必要な変数の抽出 (データフレーム)
-    model.matrix(lmの出力) # デザイン行列
+    #' lmの出力を引数とする base R の関数の例
+    base::summary(lmの出力)       # 推定結果のまとめ
+    stats::coef(lmの出力)         # 推定された回帰係数
+    stats::fitted(lmの出力)       # あてはめ値
+    stats::resid(lmの出力)        # 残差
+    stats::model.frame(lmの出力)  # modelに必要な変数の抽出 (データフレーム)
+    stats::model.matrix(lmの出力) # デザイン行列
+  #+end_src
+
+** R : broom パッケージ
+:PROPERTIES:
+:END:
+- 関数 ~base::summary()~ の tidyverse 版
+- 関数 ~stats::lm()~ の結果を tibble 形式で表示
+  #+begin_src R :eval no :tangle no
+    #' 推定結果の tibble 形式での表示
+    broom::tidy(lmの出力)    # 推定結果のまとめ．coef(summary(lmの出力)) と同様
+    broom::glance(lmの出力)  # 評価指標(統計量)のまとめ．決定係数やF値などを整理
+    broom::augment(lmの出力) # 入出力データのまとめ．あてはめ値・残差などを整理
   #+end_src
   
 ** R : 行列とベクトル
@@ -706,7 +759,7 @@
     となること
   - あてはめ値と残差が直交すること
   - 回帰式が標本平均を通ること
-    
+** COMMENT 解答例    
 #+begin_src R :eval no :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 最小二乗推定量の性質
@@ -734,7 +787,8 @@
   #' 関数 stats::model.matrix() の返値は matrix class である
   #' 関数 stats::model.frame() の返値は data.frame class であり
   #' model.frame(...)[[k]] は data.frame ではなく vector になる
-  #' tibble(...)[[k]] は vector ではなく1列の tibble になるので注意
+  #' tibble(...)[[k]] は vector となるが，
+  #' tibble(...)[k] は vector ではなく1列の tibble になるので注意
   #' 関数 base::crossprod() の引数は厳密に vector/matrix であることを要請する
   #' 例えば adv_data は全て数値なので行列に変換が可能で計算できる
   crossprod(adv_data) # データフレームのままなので計算できない
@@ -934,7 +988,7 @@
       S_y=S+S_r
     \end{equation}
     #+end_quote
-
+** COMMENT 解答例
 #+begin_src R :eval no :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 残差の分解
@@ -1116,7 +1170,7 @@
       sales ~ radio
       sales ~ TV + radio
     #+end_src
-
+** COMMENT 解答例
 #+begin_src R :eval no :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 決定係数によるモデルの比較
@@ -1203,66 +1257,58 @@
   - 気象庁 https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
   - データ https://noboru-murata.github.io/multivariate-analysis/data/tokyo_weather.csv
 
-** 東京の8月の気候の分析
+** 気温に影響を与える要因の分析
 :PROPERTIES:
 :ID:       A489FC6E-DE7F-40F3-AF84-149780E42205
 :END:
-- データの一部
+- データの概要
   #+begin_src R :exports none
     #' @exercise 東京の気候データを用いた例
-    
+
     #' データの読み込み
     tw_subset <- read_csv("data/tokyo_weather.csv") |>
       filter(month == 8) |> # 8月のデータの抽出
-      mutate(date=date(paste(year,month,day,sep="-")), .before = 1) |>
-      select(-c(year,month,day,day_of_week))
+      mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
+      select(-c(year,month,day,day_of_week)) |>
+      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
 
     #' モデル式
-    tw_formula1 <- temp ~ press
-    tw_formula2 <- temp ~ solar
-    tw_formula3 <- temp ~ press + solar
-    tw_formula4 <- temp ~ press + solar + humid
-    tw_formula5 <- temp ~ press + solar + cloud
+    tw_formula1 <- 気温 ~ 気圧
+    tw_formula2 <- 気温 ~ 日射
+    tw_formula3 <- 気温 ~ 気圧 + 日射
+    tw_formula4 <- 気温 ~ 気圧 + 日射 + 湿度
+    tw_formula5 <- 気温 ~ 気圧 + 日射 + 雲量
 
     #' 推定
-    tw_lm1 <- lm(tw_formula1, data=tw_subset, y = TRUE)
-    tw_lm2 <- lm(tw_formula2, data=tw_subset, y = TRUE)
-    tw_lm3 <- lm(tw_formula3, data=tw_subset, y = TRUE)
-    tw_lm4 <- lm(tw_formula4, data=tw_subset, y = TRUE)
-    tw_lm5 <- lm(tw_formula5, data=tw_subset, y = TRUE)
+    tw_lm1 <- lm(tw_formula1, data = tw_subset, y = TRUE)
+    tw_lm2 <- lm(tw_formula2, data = tw_subset, y = TRUE)
+    tw_lm3 <- lm(tw_formula3, data = tw_subset, y = TRUE)
+    tw_lm4 <- lm(tw_formula4, data = tw_subset, y = TRUE)
+    tw_lm5 <- lm(tw_formula5, data = tw_subset, y = TRUE)
   #+end_src
 
   #+begin_src R :exports none
     #' データの表示
-    #' 列名を日本語にして表示する
-    bar <- tw_subset |> # 列名を日本語に変更
-      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
     #' 記録を残すのであれば以下のようにすればよい
     #' foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
     #'                     c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
     #' (bar <- tw_subset |> rename(all_of(foo)))
   #+end_src
   #+begin_src R :eval no :exports none
-    View(bar) # 左上ペインに表として表示
+    tw_subset |> View() # 左上ペインに表として表示
   #+end_src
-  #+html: <font size=5>
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
-    bar |> slice(1:15) |> mutate(日付 = as.character(日付)) |>
-      stargazer::stargazer(summary = FALSE,
-                           rownames = FALSE,
-                           title = "東京の8月の気候",
-                           type = "html")
+    tw_subset |>
+      slice(1:15) |> 
+      gt() |> as_raw_html()
   #+end_src
-  #+html: </font>
 
-  #+begin_src R :exports results :results output latex :tangle no
+  #+begin_src R :exports results :results value scalar latex :tangle no
     #' データの表示(latex用)
-    bar |> mutate(日付 = as.character(日付)) |>
-      stargazer::stargazer(summary = FALSE,
-                           rownames = FALSE,
-                           title = "東京の8月の気候",
-                           font.size = "small", type = "latex")
+    tw_subset |>
+      mutate(日付 = as.character(日付)) |> # 文字列扱い
+      gt() |> as_latex() |> as.character()
   #+end_src
 
   # org に表を処理させる場合は以下のとおり
@@ -1292,8 +1338,11 @@
   #+begin_src R :file figs/03_pairs.png :exports results :results graphics
     #' 関連データの散布図
     tw_subset |>
-      select(temp,press,solar,humid,cloud) |>
-      GGally::ggpairs(columnLabels=c("気温","気圧","日射","湿度","雲量"))
+      select(気温,気圧,日射,湿度,雲量) |>
+      GGally::ggpairs()
+    ## tw_subset |>
+    ##   select(temp,press,solar,humid,cloud) |>
+    ##   GGally::ggpairs(columnLabels=c("気温","気圧","日射","湿度","雲量"))
   #+end_src
 
 #+caption: 散布図
@@ -1307,10 +1356,9 @@
   #+begin_src R :file figs/03_model1.png :exports results :results graphics
     #' モデル1の推定結果
     tw_subset |>
-      ggplot(aes(x = press, y = temp)) +
+      ggplot(aes(x = 気圧, y = 気温)) +
       geom_point(colour = "brown", shape = 20) +
-      geom_smooth(method = lm, se = FALSE, colour = "blue") +
-      labs(x = "気圧", y = "気温")
+      geom_smooth(method = lm, se = FALSE, colour = "blue")
   #+end_src
 
 #+caption: モデル1
@@ -1324,10 +1372,9 @@
   #+begin_src R :file figs/03_model2.png :exports results :results graphics
     #' モデル2の推定結果
     tw_subset |>
-      ggplot(aes(x = solar, y = temp)) +
+      ggplot(aes(x = 日射, y = 気温)) +
       geom_point(colour = "brown", shape = 20) +
-      geom_smooth(method = lm, se = FALSE, colour = "blue") +
-      labs(x = "気圧", y = "気温")
+      geom_smooth(method = lm, se = FALSE, colour = "blue")
   #+end_src
 
 #+caption: モデル2
@@ -1342,19 +1389,19 @@
     #' モデル3の推定結果
     if(Sys.info()[["sysname"]] == "Darwin") par(family = "HiraginoSans-W4")
     s3d <- scatterplot3d::scatterplot3d( 
-                            tw_subset[c("press","solar","temp")], # x,y,z の順
-                            type="p", # plotの種類: "p"点，"l"線，"h"足付き
-                            pch=16,# 点の種類 (?points 参照)
-                            angle=45, # xy平面の見る方向 (適宜調整)
-                            zlim=c(20,35),
-                            color="brown",
-                            xlab="気圧", ylab="日射", zlab="気温",
+                            tw_subset[c("気圧","日射","気温")], # x,y,z の順
+                            type = "p", # plotの種類: "p"点，"l"線，"h"足付き
+                            pch = 16,   # 点の種類 (?points 参照)
+                            angle = 45, # xy平面の見る方向 (適宜調整)
+                            zlim = c(20,35),
+                            color = "brown",
+                            #' xlab="気圧", ylab="日射", zlab="気温",
                             #'    highlight.3d=TRUE # 高さ(z)ごとに色を変える
                             )
     s3d$plane3d(
-          tw_lm3, col="blue", # 回帰式の定める平面の追加
-          draw_polygon=TRUE, # 平面の塗り潰しの設定
-          polygon_args=list(col=rgb(0,0,1,0.1))) 
+          tw_lm3, col = "blue", # 回帰式の定める平面の追加
+          draw_polygon = TRUE, # 平面の塗り潰しの設定
+          polygon_args = list(col=rgb(0,0,1,0.1))) 
   #+end_src
 
 #+caption: モデル3
@@ -1375,10 +1422,10 @@
              モデル5 = fitted(tw_lm5)) |>
       pivot_longer(starts_with("モデル"), # モデルをラベルとして予測値をまとめる
                    names_to = "model", values_to = "fitted") |>
-      ggplot(aes(x = temp, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
+      ggplot(aes(x = 気温, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
       geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
       geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
-      labs(x = "気温", y = "あてはめ値") +
+      labs(y = "あてはめ値") +
       xlim(22,32) + ylim(22,32) + theme(legend.position = c(.88,.15))
   #+end_src
 
@@ -1388,7 +1435,7 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/03_models.png]]
 
-** モデルの比較
+** COMMENT モデルの比較
 :PROPERTIES:
 :ID:       6463C58D-1F34-41FE-8F44-77CE478493C0
 :END:
@@ -1457,12 +1504,43 @@
   # #+end_src
   # #+html: </font>
       
+** モデルの比較
+- 決定係数(\(R^{2}\), Adjusted \(R^{2}\))
+  #+begin_src R :exports none
+    #' 関数 gtsummary::tbl_regression() を利用して結果をまとめる
+    my_gts <- function(x){
+      tbl_regression(x) |>
+        modify_column_hide(columns = c(p.value,conf.low)) |>
+        modify_column_unhide(columns = std.error) |>
+        add_glance_table(include = c("r.squared","adj.r.squared")) }
+    tw_gt <- 
+      tbl_merge(
+        tbls = list(
+          my_gts(tw_lm1),
+          my_gts(tw_lm2),
+          my_gts(tw_lm3),
+          my_gts(tw_lm4),
+          my_gts(tw_lm5)),
+        tab_spanner = c("モデル1","モデル2","モデル3","モデル4","モデル5")) |>
+      modify_table_body( ~ .x |>
+                           arrange(factor(variable,
+                                          levels = c("気圧","日射","湿度","雲量"))))
+  #+end_src
+  #+begin_src R :exports results :results output html :tangle no
+    #' 表示(reveal用)
+    tw_gt |> as_gt() |> as_raw_html()
+  #+end_src
+
+  #+begin_src R :exports results :results value scalar latex :tangle no
+    #' 表示(latex用)
+    tw_gt |> as_gt() |>
+      tab_options(table.font.size = 12) |> as_latex() |> as.character()
+  #+end_src
 
 * 次回の予定
 - 第1回 : 回帰モデルの考え方と推定
 - *第2回 : モデルの評価*
 - 第3回 : モデルによる予測と発展的なモデル
-
 
 * Footnotes
 * COMMENT ローカル変数
