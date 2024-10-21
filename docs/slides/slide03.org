@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-10-17 11:18:34 mura>
+# Time-stamp: <2024-10-21 17:19:23 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -33,6 +33,7 @@
 #+begin_src R :exports none
   ### 第3講 資料
   library(tidyverse)
+  library(broom)
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
@@ -65,8 +66,97 @@
 #+begin_src R :exports none 
   ### 第3講 サンプルコード
   library(tidyverse)
+  library(broom)
+  library(gt)
+  library(gtsummary)
 #+end_src
 
+
+* 回帰分析の例
+** ボルドーワインの価格と気候の関係
+#+caption: ボルドーワインの価格と気候の関係
+#+name: tbl:wine
+#+begin_src R :exports none
+  #' 重回帰の例
+  #' 表の作成
+  bw_data <- read_csv(file="data/wine.csv")
+#+end_src
+#+begin_src R :exports results :results output html
+  #' データの表示(reveal用)
+  bw_data |> slice(1:14) |> gt() |> as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex
+  #' データの表示(latex用)
+  bw_data |> gt() |> as_latex() |> as.character()
+#+end_src
+
+#+reveal: split
+#+begin_src R :file figs/bw-pairs.png :exports results :results graphics
+  bw_data |> 
+      ggpairs(columns = 2:6,
+              lower = list(continuous = wrap("smooth_loess", colour = "blue"))) +
+      theme(axis.title.x = element_text(size = 8), # 文字の大きさを調整
+            axis.title.y = element_text(size = 8)) 
+#+end_src
+#+caption: 価格と気候の散布図
+#+name: fig:bw-pairs
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bw-pairs.png]]
+
+#+reveal: split
+- 回帰式
+  #+html: <font size=5>
+  #+begin_quote
+  \begin{equation}
+    \text{LPRICE2}
+    = 
+    \beta_{0} +
+    \beta_{1}\times\text{WRAIN} +
+    \beta_{2}\times\text{DEGREES} +
+    \beta_{3}\times\text{HRAIN} +
+    \beta_{4}\times\text{TIME SV}
+  \end{equation}
+  #+end_quote
+  #+html: </font>
+#+caption: 価格と気候の関係
+#+name: tbl:bw-lm
+#+begin_src R :exports none
+bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
+             data = bw_data)
+#' 推定結果を表にまとめるためのパッケージ gtsummary を利用
+#+end_src
+#+begin_src R :exports results :results output html
+  #' データの表示(reveal用)
+  bw_fit |>
+    tbl_regression(intercept = TRUE,
+                   estimate_fun = label_style_sigfig(digits = 4)) |>
+    add_glance_source_note(include = c(r.squared,adj.r.squared,statistic,p.value)) |>
+    as_gt() |> as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex
+  #' データの表示(latex用)
+  bw_fit |>
+    tbl_regression(intercept = TRUE,
+                   estimate_fun = label_style_sigfig(digits = 4)) |>
+    add_glance_source_note(include = c(r.squared,adj.r.squared,statistic,p.value)) |>
+    as_gt() |> as_latex() |> as.character()
+#+end_src
+
+#+reveal: split
+#+begin_src R :file figs/bw-prediction.png :exports results :results graphics
+  bw_fit |>
+    augment() |>
+    ggplot(aes(x = LPRICE2, y = .fitted, label = VINT)) +
+    geom_text(na.rm = TRUE) + # text で表示
+    geom_abline(slope = 1, colour = "darkmagenta") +
+    labs(x = "Price (log)", y = "Prediction")
+#+end_src
+#+caption: 重回帰による予測値と実際の価格
+#+name: fig:fig-bw-prediction
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bw-prediction.png]]
 
 * 回帰分析の考え方
 ** 回帰分析
@@ -391,7 +481,12 @@
     =X^{\mathsf{T}}\boldsymbol{y}
   \end{equation}
   #+end_quote
-- \(X^{\mathsf{T}}X\) : *Gram行列* (Gram matrix)
+- *Gram行列* (Gram matrix)
+  #+begin_quote
+  \begin{equation}
+    X^{\mathsf{T}}X
+  \end{equation}
+  #+end_quote
   - \((p{+}1)\times(p{+}1)\) 行列 (正方行列)
   - 正定対称行列 (固有値が非負)
 
@@ -466,7 +561,10 @@
     - 参考 : https://www.data.jma.go.jp/gmd/risk/obsdl/index.php
 
 ** 練習問題
-- データセット [[https://www.statlearning.com/s/Advertising.csv]] は
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- データセット ~Advertising.csv~ は
   広告費 (TV, radio, newspapers) と売上の関係を調べたものである．
   このデータセットを用いて以下の回帰式を推定しなさい．
   #+begin_src R :eval no :tangle no
@@ -474,7 +572,8 @@
     formula = sales ~ radio
     formula = sales ~ TV + radio
   #+end_src
-  - 参考 : https://www.statlearning.com
+  - URL : [[https://www.statlearning.com/s/Advertising.csv]]
+  - データに関する記載事項 (https://www.statlearning.com より) 
     #+begin_quote
     Datasets in this presentation are taken from "An Introduction to
     Statistical Learning, with applications in R" (Springer, 2013)
@@ -483,9 +582,12 @@
     #+end_quote
 
 ** 練習問題
-- 配布したデータセット ~tokyo_weather.csv~ は
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- データセット ~tokyo_weather.csv~ は
   気象庁より取得した東京の気候データを回帰分析用に整理したものである．
-  このデータセットのうち，8月の気候データを用いて，以下の回帰式を推定しなさい．
+  このデータセットのうち，9月の気候データを用いて，以下の回帰式を推定しなさい．
   #+begin_src R :eval no :tangle no
     formula = temp ~ solar + press
   #+end_src
@@ -497,7 +599,7 @@
 :ID:       9010402A-AC86-4A3F-9A0F-397A945FACB5
 :END:
 - 前掲のデータセットを用いて回帰式を構成しなさい
-  - 東京の8月の気候データ
+  - 東京の9月の気候データ
     #+begin_src R :eval no :tangle no
       formula = temp ~ solar + press
     #+end_src
@@ -557,12 +659,12 @@
   #' データの読み込み
   tw_data <- read_csv("data/tokyo_weather.csv")
 
-  #' モデルの推定: 8月の"気温"を目的変数，"日射量・気圧"を説明変数とする
+  #' モデルの推定: 9月の"気温"を目的変数，"日射量・気圧"を説明変数とする
   tw_formula <- temp ~ solar + press # モデル式の定義 
   class(tw_formula)                  # formula class であることを確認
   (tw_lm <- lm(tw_formula, # 回帰係数の推定
                data = tw_data, 
-               subset =  month==8)) # 8月のデータの抽出
+               subset =  month==9)) # 9月のデータの抽出
   (tw_df <- as_tibble(model.frame(tw_lm))) # 推定に用いたデータフレームの抽出
   ggpairs(tw_df) # 散布図
 
@@ -1008,7 +1110,7 @@
   #' 以下は目的変数を推定結果に含める方法
   tw_lm <- lm(tw_formula,
               data = tw_data, 
-              subset = month == 8, # 8月のデータの抽出
+              subset = month == 9, # 9月のデータの抽出
                y = TRUE) # 目的変数をyとして返すように指定
   Y <- with(tw_lm,y)                     # 目的変数の取得 (tw_lm$y でも可)
   (Sy <- sum((Y-mean(Y))^2))             # 目的変数のばらつき
@@ -1158,17 +1260,17 @@
 :ID:       335A639C-748D-4FC8-B0DB-471A3C0F38CB
 :END:
 - 決定係数を用いてモデルの比較を行いなさい
-  - 東京の8月の気候データ
-    #+begin_src R :eval no :tangle no
-      temp ~ solar
-      temp ~ solar + press
-      temp ~ solar + press + cloud
-    #+end_src
   - 広告費と売上データ
     #+begin_src R :eval no :tangle no
       sales ~ TV
       sales ~ radio
       sales ~ TV + radio
+    #+end_src
+  - 東京の9月の気候データ
+    #+begin_src R :eval no :tangle no
+      temp ~ solar
+      temp ~ solar + press
+      temp ~ solar + press + cloud
     #+end_src
 ** COMMENT 解答例
 #+begin_src R :eval no :exports none
@@ -1205,7 +1307,7 @@
   #' 東京の気候データ
 
   #' モデルの比較
-  tw_subset <- tw_data |> filter(month == 8) # 8月のデータの抽出
+  tw_subset <- tw_data |> filter(month == 9) # 9月のデータの抽出
   tw_formula1 <- temp ~ solar
   tw_formula2 <- temp ~ solar + press
   tw_formula3 <- temp ~ solar + press + cloud
@@ -1261,66 +1363,65 @@
 :PROPERTIES:
 :ID:       A489FC6E-DE7F-40F3-AF84-149780E42205
 :END:
-- データの概要
-  #+begin_src R :exports none
-    #' @exercise 東京の気候データを用いた例
+#+begin_src R :exports none
+  #' @exercise 東京の気候データを用いた例
 
-    #' データの読み込み
-    tw_subset <- read_csv("data/tokyo_weather.csv") |>
-      filter(month == 8) |> # 8月のデータの抽出
-      mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
-      select(-c(year,month,day,day_of_week)) |>
-      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+  #' データの読み込み
+  tw_subset <- read_csv("data/tokyo_weather.csv") |>
+    filter(month == 9) |> # 9月のデータの抽出
+    mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
+    select(-c(year,month,day,day_of_week)) |>
+    set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
 
-    #' モデル式
-    tw_formula1 <- 気温 ~ 気圧
-    tw_formula2 <- 気温 ~ 日射
-    tw_formula3 <- 気温 ~ 気圧 + 日射
-    tw_formula4 <- 気温 ~ 気圧 + 日射 + 湿度
-    tw_formula5 <- 気温 ~ 気圧 + 日射 + 雲量
+  #' モデル式
+  tw_formula1 <- 気温 ~ 気圧
+  tw_formula2 <- 気温 ~ 日射
+  tw_formula3 <- 気温 ~ 気圧 + 日射
+  tw_formula4 <- 気温 ~ 気圧 + 日射 + 湿度
+  tw_formula5 <- 気温 ~ 気圧 + 日射 + 雲量
 
-    #' 推定
-    tw_lm1 <- lm(tw_formula1, data = tw_subset, y = TRUE)
-    tw_lm2 <- lm(tw_formula2, data = tw_subset, y = TRUE)
-    tw_lm3 <- lm(tw_formula3, data = tw_subset, y = TRUE)
-    tw_lm4 <- lm(tw_formula4, data = tw_subset, y = TRUE)
-    tw_lm5 <- lm(tw_formula5, data = tw_subset, y = TRUE)
-  #+end_src
+  #' 推定
+  tw_lm1 <- lm(tw_formula1, data = tw_subset, y = TRUE)
+  tw_lm2 <- lm(tw_formula2, data = tw_subset, y = TRUE)
+  tw_lm3 <- lm(tw_formula3, data = tw_subset, y = TRUE)
+  tw_lm4 <- lm(tw_formula4, data = tw_subset, y = TRUE)
+  tw_lm5 <- lm(tw_formula5, data = tw_subset, y = TRUE)
+#+end_src
 
-  #+begin_src R :exports none
-    #' データの表示
-    #' 記録を残すのであれば以下のようにすればよい
-    #' foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
-    #'                     c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
-    #' (bar <- tw_subset |> rename(all_of(foo)))
-  #+end_src
-  #+begin_src R :eval no :exports none
-    tw_subset |> View() # 左上ペインに表として表示
-  #+end_src
-  #+begin_src R :exports results :results output html :tangle no
-    #' データの表示(reveal用)
-    tw_subset |>
-      slice(1:15) |> 
-      gt() |> as_raw_html()
-  #+end_src
+#+begin_src R :exports none
+  #' データの表示
+  #' 記録を残すのであれば以下のようにすればよい
+  #' foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
+  #'                     c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+  #' (bar <- tw_subset |> rename(all_of(foo)))
+#+end_src
+#+begin_src R :eval no :exports none
+  tw_subset |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  tw_subset |>
+    slice(1:15) |> 
+    gt() |> as_raw_html()
+#+end_src
 
-  #+begin_src R :exports results :results value scalar latex :tangle no
-    #' データの表示(latex用)
-    tw_subset |>
-      mutate(日付 = as.character(日付)) |> # 文字列扱い
-      gt() |> as_latex() |> as.character()
-  #+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  tw_subset |>
+    mutate(日付 = as.character(日付)) |> # 文字列扱い
+    gt() |> as_latex() |> as.character()
+#+end_src
 
-  # org に表を処理させる場合は以下のとおり
-  # #+html: <font size=6>
-  # #+begin_src R :exports results :results output raw :tangle no
-  #   #' データの表示(reveal用)
-  #   bar |>
-  #     head(12) |> # 12日分を表示
-  #     ascii::ascii(include.rownames = FALSE) |>
-  #     ascii::print(type = "org")
-  # #+end_src
-  # #+html: </font>
+# org に表を処理させる場合は以下のとおり
+# #+html: <font size=6>
+# #+begin_src R :exports results :results output raw :tangle no
+#   #' データの表示(reveal用)
+#   bar |>
+#     head(12) |> # 12日分を表示
+#     ascii::ascii(include.rownames = FALSE) |>
+#     ascii::print(type = "org")
+# #+end_src
+# #+html: </font>
 
 #+reveal: split
 - 気温を説明する5種類の線形回帰モデルを検討

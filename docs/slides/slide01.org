@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-10-17 11:22:24 mura>
+# Time-stamp: <2024-10-21 16:46:56 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -210,6 +210,7 @@ print(bb_p) # グラフを表示
 #+name:   fig:r-wine01
 #+attr_html: :width 55% :height 55%
 #+attr_latex: :width 0.6\linewidth
+
 [[file:./figs/r-wine01.png]]
 
 #+reveal: split
@@ -244,14 +245,14 @@ print(bb_p) # グラフを表示
       theme(axis.title.x = element_text(size = 8), # 文字の大きさを調整
             axis.title.y = element_text(size = 8)) 
 #+end_src
-#+caption: ボルドーワインの価格と気候の関係
+#+caption: 価格と気候の散布図
 #+name: fig:bw-pairs
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/bw-pairs.png]]
 
 #+reveal: split
-#+caption: ボルドーワインの価格と気候の関係
+#+caption: 価格と気候の関係
 #+name: tbl:bw-lm
 #+begin_src R :exports none
 bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
@@ -262,16 +263,31 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
     #' データの表示(reveal用)
   bw_fit |>
       tbl_regression(estimate_fun = label_style_sigfig(digits = 4)) |>
-      add_glance_source_note(include = c(r.squared, adj.r.squared)) |>
+      add_glance_source_note(include = c(r.squared,adj.r.squared,statistic,p.value)) |>
     as_gt() |> gt::as_raw_html()
 #+end_src
 #+begin_src R :exports results :results value scalar latex
   #' データの表示(latex用)
   bw_fit |>
       tbl_regression(estimate_fun = label_style_sigfig(digits = 4)) |>
-      add_glance_source_note(include = c(r.squared, adj.r.squared)) |>
+      add_glance_source_note(include = c(r.squared,adj.r.squared,statistic,p.value)) |>
     as_gt() |> gt::as_latex() |> as.character()
 #+end_src
+
+#+reveal: split
+#+begin_src R :file figs/bw-prediction.png :exports results :results graphics
+  bw_fit |>
+    broom::augment() |>
+    ggplot(aes(x = LPRICE2, y = .fitted, label = VINT)) +
+    geom_text(na.rm = TRUE) + # text で表示
+    geom_abline(slope = 1, colour = "darkmagenta") +
+    labs(x = "Price (log)", y = "Prediction")
+#+end_src
+#+caption: 重回帰による予測値と実際の価格
+#+name: fig:fig-bw-prediction
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bw-prediction.png]]
 
 ** 主成分分析の考え方
 - 多数の変数が与えられたときに，変数のもつ構造を効率的に記述できる少数個の特徴量を構成する
