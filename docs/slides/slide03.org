@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-10-21 17:19:23 mura>
+# Time-stamp: <2024-10-26 22:03:15 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -1247,6 +1247,128 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
   \end{equation}
   #+end_quote
   - 不偏分散で補正している
+
+
+* COMMENT 決定係数 springから
+** 決定係数
+- \(X\) が \(Y\) の変動をどの程度説明できるかを数量化
+- *決定係数* (あるいは *寄与率*)
+  #+begin_quote
+  \begin{equation}
+    R^{2}=
+    \frac{\sum_{i=1}^{n}(\hat{Y}_{i}-\bar{Y})^{2}}{\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}
+  \end{equation}
+  #+end_quote
+- \(\hat{Y}_{i}\) は
+  *あてはめ値* または *予測値* と呼ばれる
+  #+begin_quote
+  \begin{equation}
+    \hat{Y}_{i}=
+    \hat{\alpha}+\hat{\beta}X_{i}\quad(i=1,\dotsc,n).  
+  \end{equation}
+  #+end_quote
+
+#+reveal: split
+- 以下の等式が成立
+  #+begin_quote
+  \begin{align}
+    &\hat{\epsilon}_i
+      =Y_i-\hat{Y}_i\quad (i=1,\dotsc,n)\\
+    &\sum_{i=1}^{n}\hat{\epsilon}_i=0,\\
+    &\frac{1}{n}\sum_{i=1}^nY_i=\bar{Y},\\
+    &\frac{1}{n}\sum_{i=1}^n\hat{Y}_i=\bar{Y}.
+  \end{align}
+  #+end_quote
+
+#+reveal: split
+- 決定係数
+  #+begin_quote
+  \begin{equation}
+    R^{2}=
+    \frac{\sum_{i=1}^{n}(\hat{Y}_{i}-\bar{Y})^{2}}{\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}
+  \end{equation}
+  #+end_quote
+- \(R^2\) の成分
+  - \(R^2\) の分子 : あてはめ値の(標本平均まわりでの)変動
+  - \(R^2\) の分母 : 目的変数の(標本平均まわりでの)変動
+- \(R^2\) の意味
+  - 回帰式が目的変数の変動をどの位説明できるか評価
+  - 大きいほど説明力が高いと解釈される
+
+** 決定係数の別表現
+- \(R^2\) は以下のように書き直すことも可能
+  - 目的変数の観測データとあてはめ値の相関の二乗
+    #+begin_quote
+    \begin{equation}
+      R^{2}=
+      \left\{
+        \frac{\sum_{i=1}^{n}(\hat{Y}_{i}-\bar{Y})(Y_{i}-\bar{Y})}
+        {\sqrt{\sum_{i=1}^{n}(\hat{Y}_{i}-\bar{Y})^{2}}
+          \cdot
+          \sqrt{\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}}
+      \right\}^{2}
+    \end{equation}
+    #+end_quote
+  - 説明変数と目的変数の観測データの間の相関の二乗
+    #+begin_quote
+    \begin{equation}
+      R^{2}=
+      \left\{
+        \frac{\sum_{i=1}^{n}(X_{i}-\bar{X})(Y_{i}-\bar{Y})}
+        {\sqrt{\sum_{i=1}^{n}(X_{i}-\bar{X})^{2}}
+          \cdot
+          \sqrt{\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}}
+      \right\}^{2}
+    \end{equation}
+    #+end_quote
+
+** 自由度調整済み決定係数
+- 不偏分散による \(R^2\) の修正
+  - 残差 \(\epsilon_i\) と目的変数 \(Y_i\) の標本分散による表現
+    #+begin_quote
+    \begin{equation}
+      R^{2}
+      =1-\frac{\frac{1}{n}\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}}{\frac{1}{n}\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}.
+    \end{equation}
+    #+end_quote
+  - 不偏推定量で代替 : *自由度調整済み決定係数* (または寄与率)
+    #+begin_quote
+    \begin{equation}
+      \bar{R}^{2}
+      =1-\frac{\frac{1}{n{-}2}\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}}{\frac{1}{n-1}\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}.
+    \end{equation}
+    #+end_quote
+
+** 決定係数の計算
+:PROPERTIES:
+:ID:       1E08B1FB-CEA5-4DE9-A958-DDC9676B18E7
+:END:
+- 関数 ~stat::summary()~ : 情報の要約 (base R)
+  #+begin_src R :eval no :tangle no
+    summary(object)
+    #' object: 関数 lm() で推定したモデル
+    #' 関数の出力 (リスト名 $"名前" で参照可能)
+    #' r.squareds : 決定係数
+    #' adj.r.squareds : 自由度調整済み決定係数
+    #' 詳細は '?summary.lm' を参照
+  #+end_src
+
+#+reveal: split
+- 関数 ~broom::tidy()~ : 回帰係数の情報 (tidyverse)
+  #+begin_src R :eval no :tangle no
+    tidy(x, conf.int = FALSE, conf.level = 0.95, exponentiate = FALSE, ...)
+    #' x: 関数 lm() で推定したモデル
+    #' conf.int: 信頼区間を付けるか否か
+    #' conf.level: 信頼係数
+    #' 詳細は '?broom::tidy.lm' を参照
+  #+end_src
+- 関数 ~broom::glance()~ : モデルの統計情報 (tidyverse)
+  #+begin_src R :eval no :tangle no
+    glance(x, ...)
+    #' x: 関数 lm() で推定したモデル
+    #' F統計量は statistic/p.value の列
+    #' 詳細は '?broom::glance.lm' を参照
+  #+end_src
 
 
 * COMMENT 実習
