@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-10-27 21:22:58 mura>
+# Time-stamp: <2024-10-28 18:53:48 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -2414,8 +2414,38 @@
   #+end_src
   #+begin_src R :exports results :results value scalar latex :tangle no
     #' 表示(latex用)
-    tw_gt |> as_gt() |>
-      tab_options(table.font.size = 5) |> as_latex() |> as.character()
+    tbl_merge(
+      tbls = list(
+        my_gts(tw_lm1),
+        my_gts(tw_lm2),
+        my_gts(tw_lm3)),
+      tab_spanner = c("モデル1","モデル2","モデル3")) |>
+      modify_table_body( ~ .x |>
+                           arrange(factor(variable,
+                                          levels = c("(Intercept)",
+                                                     "気圧",
+                                                     "日射",
+                                                     "湿度",
+                                                     "雲量")))) |>
+      as_gt() |>
+      tab_options(table.font.size = 10) |> as_latex() |> as.character()
+  #+end_src
+  #+begin_src R :exports results :results value scalar latex :tangle no
+    #' 表示(latex用)
+    tbl_merge(
+      tbls = list(
+        my_gts(tw_lm4),
+        my_gts(tw_lm5)),
+      tab_spanner = c("モデル4","モデル5")) |>
+      modify_table_body( ~ .x |>
+                           arrange(factor(variable,
+                                          levels = c("(Intercept)",
+                                                     "気圧",
+                                                     "日射",
+                                                     "湿度",
+                                                     "雲量")))) |>
+      as_gt() |>
+      tab_options(table.font.size = 10) |> as_latex() |> as.character()
   #+end_src
 
 #+reveal: split  
