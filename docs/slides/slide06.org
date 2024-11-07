@@ -4,9 +4,9 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-09-29 17:01:34 mura>
+# Time-stamp: <2024-11-07 23:04:07 mura>
 :REVEAL:
-#+SETUPFILE: "./reveal.js/org/mycourse.org"
+#+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
@@ -35,14 +35,22 @@
   library(ggfortify)
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
-  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
-    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
-      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
-    else
-      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
   library(see)
   options(ggplot2.discrete.colour = function() scale_colour_material(),
           ggplot2.discrete.fill = function() scale_fill_material())
+  library(broom)
+  library(gt)
+  library(gtsummary)
+  library(ggfortify)
+  library(ggrepel)
+  #' macOSのための日本語表示の設定
+  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
+    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+      jp_font <- "BIZUDGothic-Regular"
+    else
+      jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+  } else {jp_font <- NULL}
 #+end_src
 
 * COMMENT 講義概要
@@ -64,8 +72,118 @@
     dplyr::filter(),
     dplyr::select(),
     dplyr::lag(),
-  )
+    )
+  library(broom)
+  library(gt)
+  library(gtsummary)
+  library(ggfortify)
+  library(ggrepel)
+  #' macOSのための日本語表示の設定
+  if(Sys.info()["sysname"] == "Darwin") { # macOSか調べる
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+  } else {jp_font <- NULL}
 #+end_src
+
+* 主成分分析の例
+** 県毎の生活環境の違いの分析
+#+caption: 県別の生活環境に関するデータ
+#+name: tbl:wine
+#+begin_src R :exports none
+  #' 主成分分析の例
+  #' 表の作成
+  ja_data <- bind_cols(
+    read_csv(file = "data/prefecture.csv",
+             col_select = c(2,4)) |>
+    set_names("県名", "地方名"), # 列の名称を"県名"と"地方名"に変更
+    read_csv(file = "data/jpamenity.csv",
+             col_select = !1:2) |> slice(-1) |>
+    set_names(names(read_csv(file = "data/jpamenityitem.csv")))) # 簡略化した項目名に変更
+#+end_src
+#+begin_src R :eval no :exports none
+  ja_data |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  ja_data |>
+    select(1:10) |> # 大きな表なので一部の列を選択する
+    slice(1:15) |>
+    gt() |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  ja_data |>
+    select(1:10) |> # 大きな表なので一部の列を選択する
+    gt() |>
+    tab_options(table.font.size = 12) |>
+    as_latex() |> as.character()
+#+end_src
+
+#+reveal: split
+#+begin_src R :file figs/ja-pairs1.png :exports results :results graphics
+  ja_data |>
+    GGally::ggpairs(columns = 3:10,
+                    legend = c(2,1), # 2行1列のグラフから凡例を作成
+                    lower = list(continuous = GGally::wrap("points", alpha = .5),
+                                 mapping = aes(colour = 地方名))) +
+    theme(text = element_text(size = 8)) 
+#+end_src
+#+caption: 県別の生活環境(教育・労働などに関連する項目)
+#+name: fig:ja-pairs1
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/ja-pairs1.png]]
+
+#+reveal: split
+#+begin_src R :file figs/ja-pairs2.png :exports results :results graphics
+  ja_data |>
+    GGally::ggpairs(columns = 11:19,
+                    legend = c(2,1), 
+                    lower = list(continuous = GGally::wrap("points", alpha = .5),
+                                 mapping = aes(colour = 地方名))) +
+    theme(text = element_text(size = 8)) 
+#+end_src
+#+caption: 県別の生活環境(教育・労働などに関連する項目)
+#+name: fig:ja-pairs2
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/ja-pairs2.png]]
+
+#+reveal: split
+#+begin_src R :file figs/ja-pairs3.png :exports results :results graphics
+  ja_data |>
+    GGally::ggpairs(columns = 20:27,
+                    legend = c(2,1), 
+                    lower = list(continuous = GGally::wrap("points", alpha = .5),
+                                 mapping = aes(colour = 地方名))) +
+    theme(text = element_text(size = 8)) 
+#+end_src
+#+caption: 県別の生活環境(教育・労働などに関連する項目)
+#+name: fig:ja-pairs3
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/ja-pairs3.png]]
+
+#+reveal: split
+#+begin_src R :file figs/ja-biplot.png :exports results :results graphics
+  ja_fit <- ja_data |> 
+    column_to_rownames(var = "県名") |>
+    select(where(is.double)) |>
+    prcomp(scale. = TRUE) # 主成分分析の実行
+  autoplot(ja_fit, # バイプロット
+           label = TRUE, colour = "royalblue", # ラベルの表示
+           label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+           label.family = jp_font, label.size = 3,
+           loadings = TRUE, loadings.colour = "orchid", # 負荷の表示
+           loadings.label = TRUE, loadings.label.colour = "darkorchid", # 負荷ラベルの表示
+           loadings.label.family = jp_font, loadings.label.size = 3.5) 
+#+end_src
+#+caption: 県別の生活環境の主成分分析
+#+name: fig:ja-biplot
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/ja-biplot.png]]
 
 
 * 主成分分析の考え方
@@ -126,7 +244,6 @@
 # 東京大学
 ** R : 主成分分析を実行する関数
 :PROPERTIES:
-:reveal_background: #fef4f4
 :END:
 - Rの標準的な関数
   - ~stats::prcomp()~
@@ -138,7 +255,6 @@
 
 ** R : 関数 ~prcomp()~ の使い方
 :PROPERTIES:
-:reveal_background: #fef4f4
 :END:
 - データフレームの全ての列を用いる場合
   #+begin_src R :eval no :tangle no
@@ -157,7 +273,6 @@
   #+end_src
 ** R : 関数 ~predict()~ の使い方
 :PROPERTIES:
-:reveal_background: #fef4f4
 :END:
 - 主成分得点を計算する関数
   #+begin_src R :eval no :tangle no
@@ -167,6 +282,23 @@
     #' 詳細は '?stats::prcomp' または '?stats::predict.prcomp' を参照
   #+end_src
   - 'newdata' を省略すると分析に用いたデータフレームの得点が計算される
+
+#+reveal: split
+- 主成分分析の結果を取得する関数 
+  #+begin_src R :eval no :tangle no
+    tidy(x, matrix = "u", ...)
+    #' x: prcomp が出力したオブジェクト
+    #' matrix: 結果として取り出す行列 u:scores, v:loadings, d:eigenvalues
+    #' 詳細は '?broom::tidy.prcomp' を参照
+  #+end_src
+- 主成分得点を計算する関数 
+  #+begin_src R :eval no :tangle no
+    augment(x, data = NULL, newdata, ...)
+    #' x: prcomp が出力したオブジェクト
+    #' data: 元のデータ (通常不要)
+    #' newdata: 主成分得点を計算するデータフレーム
+    #' 詳細は '?broom::augment.prcomp' を参照
+  #+end_src
 
 ** 練習問題
 :PROPERTIES:
@@ -191,7 +323,7 @@
     #+begin_src R :eval no :tangle no
       geom_abline(slope = 傾き, intercept = 切片) # 指定の直線を追加できる
     #+end_src
-
+** COMMENT 解答例
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 主成分分析の考え方
@@ -571,7 +703,7 @@
   - 人工データを生成する
   - 主成分分析を実行する
   - Gram 行列を計算し固有値・固有ベクトルを求める
-    #+begin_src R :eval no
+    #+begin_src R :eval no :tangle no
       #' 中心化を行う
       X <- scale(toy_data, scale = FALSE)
       #' 詳細は '?base::scale' を参照
@@ -581,7 +713,7 @@
       eigen(G) # 返り値 'values, vectors' を確認
       #' 詳細は '?base::eigen' を参照
     #+end_src
-
+** COMMENT 解答例
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 第1主成分の求め方
@@ -922,7 +1054,6 @@
 # 東京大学
 ** データセットの準備
 :PROPERTIES:
-:reveal_background: #fef4f4
 :END:
 - 主成分分析では以下のデータセットを使用する
   - ~japan_social.csv~ (配付)
@@ -956,7 +1087,7 @@
       #' '-c(1,7)' は都道府県名・地方区分を除く．関数 select() を利用することもできる
       #' 'scale.=TRUE' とすると変数を正規化してから解析する
     #+end_src
-    
+** COMMENT 解答例    
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 主成分分析
@@ -1073,32 +1204,33 @@
     #' データの読み込み
     js_data <- read_csv("data/japan_social.csv")
   #+end_src
-  #+html: <font size=5>
+  #+begin_src R :eval no :exports none
+    js_data |> View() # 左上ペインに表として表示
+  #+end_src
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
-    js_data |> slice(1:15) |>
-      stargazer::stargazer(summary = FALSE,
-                           rownames = FALSE,
-                           title = "社会生活統計指標",
-                           type = "html")
+    js_data |>
+      slice(1:15) |>
+      gt() |>
+      as_raw_html()
   #+end_src
-  #+html: </font>
-  #+begin_src R :exports results :results output latex :tangle no
+  #+begin_src R :exports results :results value scalar latex :tangle no
     #' データの表示(latex用)
     js_data |>
-      stargazer::stargazer(summary = FALSE,
-                           rownames = FALSE,
-                           title = "社会生活統計指標",
-                           font.size = "small", type = "latex")
+      gt() |> 
+      tab_options(table.font.size = 12) |>
+      as_latex() |> as.character()
   #+end_src
-  
+
 #+reveal: split
 - データの散布図
   #+begin_src R :file figs/06_pairs.png :exports results :results graphics
     #' データの視覚化
     js_data |> # 散布図．いくつかの変数は相関強いことがわかる
-      select(where(is.double)) |>  # 都道府県名・地方区分は削除
-      GGally::ggpairs() 
+        GGally::ggpairs(columns = 2:6, # 都道府県名・地方区分は除く
+                        legend = c(2,1), # 2行1列のグラフから凡例を作成
+                        lower = list(continuous = GGally::wrap("points", alpha = .5),
+                                     mapping = aes(colour = Area)))
   #+end_src
 
 #+caption: 散布図
@@ -1129,23 +1261,22 @@
     js_data_std <- js_data |>
       mutate(across(where(is.double), \(x)signif(c(scale(x)), digits = 3)))
   #+end_src
-  #+html: <font size=5>
+  #+begin_src R :eval no :exports none
+    js_data |> View() # 左上ペインに表として表示
+  #+end_src
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
-    js_data_std |> slice(1:15) |>
-      stargazer::stargazer(summary = FALSE,
-                           rownames = FALSE,
-                           title = "社会生活統計指標",
-                           type = "html")
+    js_data_std |>
+      slice(1:15) |>
+      gt() |>
+      as_raw_html()
   #+end_src
-  #+html: </font>
-  #+begin_src R :exports results :results output latex :tangle no
+  #+begin_src R :exports results :results value scalar latex :tangle no
     #' データの表示(latex用)
     js_data_std |>
-      stargazer::stargazer(summary = FALSE,
-                           rownames = FALSE,
-                           title = "社会生活統計指標",
-                           font.size = "small", type = "latex")
+      gt() |> 
+      tab_options(table.font.size = 12) |>
+      as_latex() |> as.character()
   #+end_src
 
 #+reveal: split
@@ -1171,19 +1302,23 @@
          select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
          prcomp(scale. = TRUE) # 変数のばらつきを規格化
   #+end_src
-  #+html: <font size=6>
+  #+begin_src R :eval no :exports none
+    js_pca[["rotation"]] |> View() # 左上ペインに表として表示
+  #+end_src
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
     js_pca[["rotation"]] |>
-      stargazer::stargazer(summary = FALSE,
-                           type = "html")
+      as.data.frame() |> rownames_to_column("index") |>
+      gt() |>
+      as_raw_html()
   #+end_src
-  #+html: </font>
-  #+begin_src R :exports results :results output latex :tangle no
+  #+begin_src R :exports results :results value scalar latex :tangle no
     #' データの表示(latex用)
     js_pca[["rotation"]] |>
-      stargazer::stargazer(summary = FALSE,
-                           font.size = "small", type = "latex")
+      as.data.frame() |> rownames_to_column("index") |>
+      gt() |> 
+      tab_options(table.font.size = 12) |>
+      as_latex() |> as.character()
   #+end_src
 - 主成分方向から読み取れること
   - 第1 : 人の多さに関する成分(正の向きほど人が多い)
