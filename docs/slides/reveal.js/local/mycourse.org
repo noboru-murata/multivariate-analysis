@@ -12,7 +12,7 @@
 # Note that option "history" implies option "hash", which makes sure that
 # reload leads to the same slide: https://revealjs.com/config/
 #+OPTIONS: reveal_history:t reveal_fragmentinurl:t
-#+OPTIONS: reveal_mousewheel:t reveal_inter_presentation_links:t
+#+OPTIONS: reveal_mousewheel:nil reveal_inter_presentation_links:t
 
 # Disable separate PDF pages for each fragment.  Just use one per slide.
 #+OPTIONS: reveal_pdfseparatefragments:nil
