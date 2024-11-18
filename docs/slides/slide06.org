@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-11-11 11:47:08 mura>
+# Time-stamp: <2024-11-18 11:46:55 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -1266,7 +1266,7 @@
       mutate(across(where(is.double), \(x)signif(c(scale(x)), digits = 3)))
   #+end_src
   #+begin_src R :eval no :exports none
-    js_data |> View() # 左上ペインに表として表示
+    js_data_std |> View() # 左上ペインに表として表示
   #+end_src
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
@@ -1312,15 +1312,17 @@
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
     js_pca[["rotation"]] |>
-      as.data.frame() |> rownames_to_column("index") |>
+      as.data.frame() |> rownames_to_column() |>
       gt() |>
+      fmt_number(decimals = 4) |>
       as_raw_html()
   #+end_src
   #+begin_src R :exports results :results value scalar latex :tangle no
     #' データの表示(latex用)
     js_pca[["rotation"]] |>
-      as.data.frame() |> rownames_to_column("index") |>
+      as.data.frame() |> rownames_to_column() |>
       gt() |> 
+      fmt_number(decimals = 4) |>
       tab_options(table.font.size = 12) |>
       as_latex() |> as.character()
   #+end_src
@@ -1361,15 +1363,17 @@
   #+begin_src R :exports results :results output html :tangle no
     #' データの表示(reveal用)
     js_pca[["rotation"]] |>
-      as.data.frame() |> rownames_to_column("index") |>
+      as.data.frame() |> rownames_to_column() |>
       gt() |>
+      fmt_number(decimals = 4) |>
       as_raw_html()
   #+end_src
   #+begin_src R :exports results :results value scalar latex :tangle no
     #' データの表示(latex用)
     js_pca[["rotation"]] |>
-      as.data.frame() |> rownames_to_column("index") |>
+      as.data.frame() |> rownames_to_column() |>
       gt() |> 
+      fmt_number(decimals = 4) |>
       tab_options(table.font.size = 12) |>
       as_latex() |> as.character()
   #+end_src
