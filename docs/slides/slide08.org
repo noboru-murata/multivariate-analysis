@@ -4,24 +4,24 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-11-28 11:05:41 mura>
+# Time-stamp: <2024-11-25 10:21:09 mura>
 :REVEAL:
-#+SETUPFILE: "./reveal.js/org/mycourse.org"
+#+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
 :END:
 
 * COMMENT メモ
-[[file:README.org]]
+[[file:README.org::第8講]]
 
 * 講義の内容
 :PROPERTIES:
 :ID:       CE72CD31-63E0-44B8-ADB3-D9E175DD6B30
 :END:
 # 早稲田大学
-- *第1日 : 判別分析の考え方*
-- 第2日 : 分析の評価
+- *第1回 : 判別分析の考え方*
+- 第2回 : 分析の評価
 
 #+begin_src R :exports none :tangle no
   setwd("~/Desktop/lectures/mva/course")
@@ -38,14 +38,22 @@
   library(ggfortify)
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
-  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
-    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
-      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
-    else
-      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
   library(see)
   options(ggplot2.discrete.colour = function() scale_colour_material(),
           ggplot2.discrete.fill = function() scale_fill_material())
+  library(broom)
+  library(gt)
+  library(gtsummary)
+  library(ggfortify)
+  library(ggrepel)
+  #' macOSのための日本語表示の設定
+  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
+    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+      jp_font <- "BIZUDGothic-Regular"
+    else
+      jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+  } else {jp_font <- NULL}
 #+end_src
 
 * COMMENT 講義概要
@@ -63,13 +71,93 @@
   ### 第8講 サンプルコード
   library(conflicted)
   library(tidyverse)
+  library(MASS) # 判別分析のため
   conflicts_prefer(
     dplyr::filter(),
     dplyr::select(),
     dplyr::lag(),
   )
+  library(broom)
+  library(gt)
+  library(gtsummary)
   library(ggfortify)
+  library(ggrepel)
+  #' macOSのための日本語表示の設定
+  if(Sys.info()["sysname"] == "Darwin") { # macOSか調べる
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+  } else {jp_font <- NULL}
 #+end_src
+
+
+* 判別分析の例
+** 乳癌の良性・悪性の判別
+#+caption: 乳癌の生検データ
+#+name: tbl:biopsy
+#+begin_src R :exports none
+  #' 判別分析の例
+  #' 表の作成
+  bio_data <- MASS::biopsy |>
+    as_tibble() |>
+    na.omit() # NA を除く
+#+end_src
+#+begin_src R :eval no :exports none
+  bio_data |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  bio_data |>
+    slice(1:15) |>
+    gt() |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  bio_data |>
+    gt() |>
+    tab_options(table.font.size = 9) |>
+    as_latex() |> as.character()
+#+end_src
+
+#+reveal: split
+#+begin_src R :file figs/bio-pairs.png :exports results :results graphics
+  bio_data |>
+    select(!ID) |> # IDを除く
+    GGally::ggpairs(diag = list(mapping = aes(colour = class)),
+                    lower = list(mapping = aes(colour = class)))
+#+end_src
+#+caption: 9種類の生検の散布図
+#+name: fig:bio-pairs
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bio-pairs.png]]
+
+#+reveal: split
+#+begin_src R :file figs/bio-pca.png :exports results :results graphics :height 700
+  autoplot(bio_data |> select(where(is.numeric)) |> prcomp(), # 主成分分析
+           data = bio_data,
+           colour = "class") 
+#+end_src
+#+caption: 主成分分析を用いて2次元に縮約した生検と良性・悪性の関係
+#+name: fig:bio-pca
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bio-pca.png]]
+
+#+reveal: split
+#+begin_src R :file figs/bio-lda.png :exports results :results graphics :height 700
+bio_lda <- lda(class ~ . -ID, data = bio_data)
+bio_data |>
+    mutate(x = predict(bio_lda)[["x"]]) |>
+    ggplot(aes(x = x)) +
+    geom_histogram(aes(fill = class), show.legend = FALSE) +
+    facet_grid(class ~ .)
+#+end_src
+#+caption: 線形判別関数による判別関数値の分布
+#+name: fig:bio-lda
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bio-lda.png]]
 
 
 * 判別分析の考え方
@@ -327,7 +415,8 @@
   \begin{align}
     &p_{k}(\boldsymbol{x}) < p_{l}(\boldsymbol{x})\\
     &\Leftrightarrow
-      f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
+      f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l
+      \quad\text{(分母は共通)}\\
     &\Leftrightarrow
       \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
     &\Leftrightarrow
@@ -338,6 +427,7 @@
       \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)+\log\pi_l\\
     &\Leftrightarrow
       \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+      \quad\text{(2次の項は右辺と左辺で共通)}
   \end{align}
   #+end_quote
 
@@ -419,11 +509,11 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 線形判別関数 ~MASS::lda()~
+** R : 線形判別
 :PROPERTIES:
 :ID:       BB276D04-1D56-40CC-898A-800551D44DFD
 :END:
-- データフレームに対する分析
+- 関数 ~MASS::lda()~ 
   #+begin_src R :eval no :tangle no
     library(MASS) # パッケージの読み込み
     lda(formula, data, ..., subset, na.action)
@@ -431,7 +521,7 @@
     #' data: 必要な情報を含むデータフレーム
     #' 詳細は '?MASS::lda' を参照
   #+end_src
-- 判別結果の取得
+- 判別結果取得のための関数
   #+begin_src R :eval no :tangle no
     predict(object, newdata, prior = object$prior, dimen,
             method = c("plug-in", "predictive", "debiased"), ...)
@@ -481,7 +571,7 @@
       tw_lda_fitted <- predict(tw_lda) # 判別関数によるクラス分類結果の取得
       tw_lda_predict <- predict(tw_lda, newdata = tw_test) # 新しいデータの予測
     #+end_src
-    
+** COMMENT 解答例    
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 線形判別
@@ -622,8 +712,8 @@
   \begin{align}
     &p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})\\
     &\Leftrightarrow 
-      f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l\\
-    &\qquad\text{(分母は共通)}\\
+      f_{k}(\boldsymbol{x})\pi_{k} < f_l(\boldsymbol{x})\pi_l
+      \quad\text{(分母は共通)}\\
     &\Leftrightarrow
       \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
     &\Leftrightarrow
@@ -637,8 +727,7 @@
       \Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
       +\log\pi_l\\
     &\Leftrightarrow
-      \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})\\
-    &\qquad\text{(2次の項は右辺と左辺で共通)}
+      \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
   \end{align}
   #+end_quote
 
@@ -722,11 +811,11 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 2次判別関数 ~MASS::qda()~
+** R : 2次判別
 :PROPERTIES:
 :ID:       B4D138CC-63A9-4EDB-ABD4-3CC6E5E769F0
 :END:
-- データフレームに対する分析
+- 関数 ~MASS::qda()~
   #+begin_src R :eval no :tangle no
     library(MASS) # 既に読み込んでいる場合は不要
     qda(formula, data, ..., subset, na.action)
@@ -734,7 +823,7 @@
     #' data: 必要な情報を含むデータフレーム
     #' 詳細は '?MASS::qda' を参照
   #+end_src
-- 判別結果の取得
+- 判別結果取得のための関数
   #+begin_src R :eval no :tangle no
     predict(object, newdata, prior = object$prior,
             method = c("plug-in", "predictive", "debiased", "looCV"), ...)
@@ -765,7 +854,7 @@
       tw_qda_predict <- predict(tw_qda, newdata = tw_test) # 新しいデータの予測
     #+end_src
   - 別の月や変数を用いて判別分析を行いなさい
-
+** COMMENT 解答例
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 2次判別
@@ -786,7 +875,7 @@
 
   #' 試験データによる評価
   tw_qda_predict <- predict(tw_qda, newdata = tw_test) 
-    table(true = tw_test[["month"]], # 混同行列
+  table(true = tw_test[["month"]], # 混同行列
         predict = tw_qda_predict[["class"]])
   tibble(true = tw_test[["month"]]) |> # 比較表
     mutate(predict = tw_qda_predict[["class"]]) |>
@@ -1037,7 +1126,7 @@
         select(rain, temp, solar, wind, month)
       tw_lda2 <- lda(rain ~ ., data = tw_subset2) # 'rain' をそれ以外で判別
     #+end_src
-    
+** COMMENT 解答例
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 多値判別
@@ -1089,7 +1178,7 @@
   p + geom_point(data = # 判別関数値と予測ラベルのデータフレームを作成
                    bind_cols(tw_lda3_grid[["x"]],
                              predict = tw_lda3_grid[["class"]]),
-                 aes(colour = predict), alpha = 0.2)
+                 aes(colour = predict), alpha = 0.1)
 
   #' 12ヶ月分のデータを用いる
   #' 数が多いのでサンプリングする
@@ -1127,6 +1216,9 @@
   table(true = tw_rain[["rain"]][-idx], # 未知データに対する予測の混同行列
         predict = tw_rain_lda_predict[["class"]][-idx])
 #+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+#+end_src
 
 
 * 解析の事例
@@ -1144,7 +1236,7 @@
 :ID:       501D7D38-752C-46A6-A43B-D19B6533F359
 :END:
 - 9,10月のデータの散布図
-  #+begin_src R :file figs/08_pairs.png :exports results :results graphics
+  #+begin_src R :file figs/08_pairs.png :exports results :results graphics :height 700
     #' 東京の気象データによる判別分析
     library(MASS) # パッケージの読み込み
     #' データの整理
@@ -1169,7 +1261,7 @@
 
 #+reveal: split
 - 線形判別 (2値)
-  #+begin_src R :file figs/08_lda_value.png :exports results :results graphics
+  #+begin_src R :file figs/08_lda_value.png :exports results :results graphics :height 700
     #' 線形判別関数の推定
     tw_model <- month ~ temp + humid
     tw_lda <- lda(formula = tw_model, data = tw_subset)
@@ -1189,7 +1281,7 @@
 
 #+reveal: split
 - 線形判別 (2値)
-  #+begin_src R :file figs/08_lda.png :exports results :results graphics
+  #+begin_src R :file figs/08_lda.png :exports results :results graphics :height 700
     #' 判別関数により予測されるラベルの図示
     range_x <- range(tw_subset[["temp"]])  # 気温の値域
     range_y <- range(tw_subset[["humid"]]) # 湿度の値域
@@ -1210,6 +1302,7 @@
            title = "線形判別")
 
   #+end_src
+
 #+caption: 線形判別 (判別境界)
 #+name: fig:08_lda
 #+attr_html: height 100%
@@ -1218,7 +1311,7 @@
 
 #+reveal: split
 - 2次判別 (2値)
-  #+begin_src R :file figs/08_qda.png :exports results :results graphics
+  #+begin_src R :file figs/08_qda.png :exports results :results graphics :height 700
       #' 2次判別関数を推定
     tw_qda <- qda(formula = tw_model, data = tw_subset)
     tw_qda_fitted <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
@@ -1244,7 +1337,7 @@
 
 #+reveal: split
 - Fisherの線形判別 (多値)
-  #+begin_src R :file figs/08_multi.png :exports results :results graphics
+  #+begin_src R :file figs/08_multi.png :exports results :results graphics :height 700
     #' 多値判別
     tw_subset3  <- tw_data |>
       filter(month %in% c(9,10,11)) |>
