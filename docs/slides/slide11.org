@@ -4,9 +4,9 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2023-12-19 11:21:43 mura>
+# Time-stamp: <2024-12-16 18:49:34 mura>
 :REVEAL:
-#+SETUPFILE: "./reveal.js/org/mycourse.org"
+#+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
@@ -39,6 +39,7 @@
   library(ggfortify)
   library(cluster)
   library(ggdendro)
+  library(gt)
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
@@ -74,6 +75,8 @@
   library(tidyverse)
   library(ggfortify)
   library(cluster)
+  library(ggdendro)
+  library(gt)
 #+end_src
 
 
@@ -189,7 +192,7 @@
 #+end_leftcol
 #+begin_rightcol
 #+header: :width 600 :height 1000
-#+begin_src R :file figs/11_hclst.png :exports results :results graphics
+#+begin_src R :file figs/11_hclst.png :exports results :results graphics :tangle no
   library(cluster)
   js_data <- bind_cols(
     read_csv(file="data/japan_social.csv"),
@@ -211,7 +214,7 @@
              clus=c(1,2,3,4,5,6,7),
              diss=FALSE,
              stand=TRUE, lines=0, labels=3, 
-             main=NULL, sub=NULL, cex=1,
+             main=NULL, sub=NULL, cex=1.5,
              xlim=c(-2.5,2.5), ylim=c(-2.5,2.5),
              xaxt="n", yaxt="n", ann=FALSE,
              col.p="blue", col.txt="darkgray", col.clus="white", shade=FALSE)
@@ -221,7 +224,7 @@
                  clus=tmpb[[i]],
                  diss=FALSE, cex=0.2,
                  stand=TRUE, add=TRUE, span=FALSE,
-                 lines=0, lwd=2, col.p="blue", col.clus="orange")
+                 lines=0, lwd=3, col.p="blue", col.clus="orange")
       }
     }
   }
@@ -486,9 +489,8 @@
 :PROPERTIES:
 :ID:       5DF1EC41-AF81-47B0-A847-0EB32710158C
 :END:
-- 都道府県別好きなおむすびの具(一部)での例
-
-#+begin_src R :file figs/11_nhclst0.png :exports results :results graphics
+- 関東・関西圏を除く好きなおむすびの具
+#+begin_src R :exports none
   om_data <- bind_cols(
     read_csv(file="data/omusubi.csv"),
     read_csv(file="data/prefecture.csv"))
@@ -498,7 +500,29 @@
     column_to_rownames(var = "jp") |>
     set_names(c("梅","鮭","昆布","鰹","明太子","鱈子","ツナ","その他")) 
   n <- nrow(om_subset)
+#+end_src
+#+begin_src R :eval no :exports none
+  om_subset |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  om_subset |>
+    mutate(県名 = rownames(om_subset), .before = 1) |>
+    slice_head(n = 15) |> 
+    gt() |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  om_subset |>
+    mutate(県名 = rownames(om_subset), .before = 1) |>
+    gt() |>
+    tab_options(table.font.size = 9) |>
+    as_latex() |> as.character()
+#+end_src
 
+#+reveal: split
+#+begin_src R :file figs/11_nhclst0.png :exports results :results graphics :tangle no
   jdx <- 1:ncol(om_subset) # jdx <- sample(ncol(om_subset),2)
   om_pca <- prcomp(om_subset[,jdx])
 
@@ -515,7 +539,7 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/11_nhclst0.png]]
 #+reveal: split
-#+begin_src R :file figs/11_nhclst1.png :exports results :results graphics
+#+begin_src R :file figs/11_nhclst1.png :exports results :results graphics :tangle no
   ## 図示のための関数
   myPlot <- function(cntr) {
     dsy <- daisy(rbind(om_subset[,jdx],cntr))
@@ -545,7 +569,7 @@
 [[file:figs/11_nhclst1.png]]
 
 #+reveal: split
-#+begin_src R :file figs/11_nhclst2.png :exports results :results graphics
+#+begin_src R :file figs/11_nhclst2.png :exports results :results graphics :tangle no
   cntr <- myPlot(cntr)
 #+end_src
 #+caption: Lloyd-Forgyのアルゴリズム (その2)
@@ -555,7 +579,7 @@
 [[file:figs/11_nhclst2.png]]
 
 #+reveal: split
-#+begin_src R :file figs/11_nhclst3.png :exports results :results graphics
+#+begin_src R :file figs/11_nhclst3.png :exports results :results graphics :tangle no
   cntr <- myPlot(cntr)
 #+end_src
 #+caption: Lloyd-Forgyのアルゴリズム (その3)
@@ -565,7 +589,7 @@
 [[file:figs/11_nhclst3.png]]
 
 #+reveal: split
-#+begin_src R :file figs/11_nhclst4.png :exports results :results graphics
+#+begin_src R :file figs/11_nhclst4.png :exports results :results graphics :tangle no
    cntr <- myPlot(cntr)
 #+end_src
 #+caption: Lloyd-Forgyのアルゴリズム (その4)
@@ -575,7 +599,7 @@
 [[file:figs/11_nhclst4.png]]
 
 #+reveal: split
-#+begin_src R :file figs/11_nhclst5.png :exports results :results graphics
+#+begin_src R :file figs/11_nhclst5.png :exports results :results graphics :tangle no
    cntr <- myPlot(cntr)
 #+end_src
 #+caption: Lloyd-Forgyのアルゴリズム (その5)
@@ -585,7 +609,7 @@
 [[file:figs/11_nhclst5.png]]
 
 #+reveal: split
-#+begin_src R :file figs/11_nhclst6.png :exports results :results graphics
+#+begin_src R :file figs/11_nhclst6.png :exports results :results graphics :tangle no
    cntr <- myPlot(cntr)
 #+end_src
 #+caption: Lloyd-Forgyのアルゴリズム (その6)
@@ -595,7 +619,7 @@
 [[file:figs/11_nhclst6.png]]
 
 #+reveal: split
-#+begin_src R :file figs/11_nhclst.png :exports results :results graphics
+#+begin_src R :file figs/11_nhclst.png :exports results :results graphics :tangle no
    if(Sys.info()["sysname"]=="Darwin"){par(family="BIZUDGothic-Regular")}
    dsy <- daisy(rbind(om_subset[,jdx],cntr))
    clst <- apply(as.matrix(dsy)[1:n,(1:k)+n],
@@ -619,24 +643,38 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 関数 ~kmeans()~
+** R : \(k\)-平均法
 :PROPERTIES:
 :ID:       BF14B712-D1D7-4CDA-BE9C-3BDCFDD7822F
 :END:
-- \(k\)-平均法を実行するための標準的な関数
-  #+begin_src R :eval no
+- 関数 ~kmeans()~
+  #+begin_src R :eval no :tangle no
     kmeans(x, centers, iter.max = 10, nstart = 1,
-	   algorithm = "Hartigan-Wong")
-    ## x: データフレーム
-    ## centers: クラスタ数
-    ## iter.max: 最大繰り返し数
-    ## nstart: 初期値の候補数
-    ## algorithm: 最適化法の指定．他に "Lloyd", "Forgy", "MacQueen" が指定可
+           algorithm = c("Hartigan-Wong", "Lloyd", "Forgy",
+                         "MacQueen"), trace = FALSE)
+    #' x: データフレーム
+    #' centers: クラスタ数
+    #' iter.max: 最大繰り返し数
+    #' nstart: 初期値の候補数
+    #' algorithm: 最適化法の指定．既定値は 'Hartigan-Wong'
   #+end_src
-- 結果は変数のスケールにも依存
-  - 例えば測定値の単位により異なる
-  - 必要ならば主成分分析の場合と同様にデータの標準化を行う
+  - 結果は変数のスケールにも依存
+    - 例えば測定値の単位により異なる
+    - 必要ならば主成分分析の場合と同様にデータの標準化を行う
 
+** R : 2次元でのクラスタ表示
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 関数 ~ggfortify::autoplot()~ (ggplot 系)
+  #+begin_src R :eval no :tangle no
+    autoplot(object, data = NULL, colour = "cluster", ...)
+    #' object: stats::kmeans(), cluster::pam() などの返値
+    #' data: クラスタリングに用いたデータ (kmeansの場合に必要)
+    #' 詳細は '?ggfortify::autoplot.kmeans()' を参照
+  #+end_src
+- 関数 ~cluster::clusplot()~ を利用することもできる
+      
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
@@ -644,63 +682,135 @@
 :END:
 - データセット ~japan_social.csv~ を用いて
   以下を確認しなさい
-  #+begin_src R :eval no
-    js_data <- read.csv("data/japan_social.csv", row.names=1)
+  #+begin_src R :eval no :tangle no
+    js_df <- read_csv("data/japan_social.csv") |>
+      column_to_rownames(var = "Pref") |> # 'Pref'を行名に変換
+      select(-Area) # 地方名は除く
   #+end_src
   - 関数 ~kmeans()~ を用いて
     各変数平均0，分散1に標準化
     (関数 ~scale()~ を利用)
     したデータを7クラスタに分割しなさい
   - 各クラスタ内の県名を表示しなさい
-  - 関数 ~clusplot()~ を用いて
-    2次元散布図に各クラスタを表示しなさい
-    (~?clusplot~ 参照)
-
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 関数 kmeans による非階層的クラスタリング
-  ### 
-  
-  ## データの読み込み
-  js_data <- read.csv(file="data/japan_social.csv", row.names=1)
-  
-  ## k-平均法の実行: 
-  set.seed(1234) # 必要に応じて初期値の乱数のシード
+  - 2次元散布図に各クラスタを表示しなさい
+- データセット ~omusubi.csv~ でも確認しなさい
+** COMMENT 解答例
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 関数 kmeans による非階層的クラスタリング
+#+end_src
+#+begin_src R :eval no :exports none
+  #' データの読み込み (japan_social.csv)
+  js_data <- read_csv("data/japan_social.csv") 
+  js_df <- js_data |> # 距離計算用のデータフレーム
+    column_to_rownames(var = "Pref") |> # 'Pref'を行名に変換
+    select(-Area) # 地方名は除く
+  #' k-平均法の実行: 
+  set.seed(1234) # 必要に応じて初期値の乱数のシード値を指定する
   k <- 7 # 分割数を指定
-  js_km <- kmeans(scale(js_data), # 標準化
-		  centers=k, # クラスタ数
-		  nstart=20) # 初期値を20回変更して試す
-  
-  ## 各クラスター内の県名を表示
-  for(i in 1:k){
+  js_kmeans <- js_df |>
+    scale() |> # 標準化(平均0 分散1)
+    kmeans(centers = k, # クラスタ数
+           nstart = 20) # 初期値を20回変更して試す
+  #' 各クラスター内の県名を表示
+  #' kmeansの返値 cluster の情報を利用する
+  #' kmeans.object$cluster または kmeans.object[["cluster"]] を用いる
+  for(i in 1:k) {
     cat("=== cluster",i,"===\n")
-    print(names(which(js_km$cluster==i)))
+    which(js_kmeans[["cluster"]] == i) |> names() |> print()
   }
-  
-  ## clusplotによるクラスタの表示
-  library(cluster) # clusplot を利用するため
-  clusplot(x=js_data,
-	   clus=js_km$cluster, # クラスタ番号
-	   stand=TRUE, # 標準化したデータで表示
-	   lines=0, labels=3, # 表示の指定
-	   main=NULL, sub=NULL, cex=0.8, # タイトルなどの調整
-	   col.p=rainbow(k)[js_km$cluster], # 虹色で色付け
-	   col.clus="orange", shade=FALSE)	 # クラスタ囲みの指定
+  #' 2次元でのクラスタ表示
+  #' 前回の主成分分析を利用したクラスタの表示とほぼ同様な記述
+  js_kmeans |>
+    autoplot(data = scale(js_df), # kmeans の場合は元のデータの指定が必須
+             ## (kmeansの返値は距離行列の情報しか持っておらず主成分の計算ができないため)
+             frame = TRUE, # クラスタ毎に枠を付ける
+             frame.type = "convex", # 凸包 "convex"・楕円 "norm,t" が指定できる
+             label = TRUE, # ラベルを付加
+             label.repel = TRUE, # 重なりを回避(ラベルが消える場合もあるので注意)
+             label.size = 3, # ラベルの大きさ
+             label.show.legend = FALSE) # 凡例の中のアルファベットを除く
+  #' @notes
+  #' 以下は cluster::clusplot() を用いる場合の例
+  clusplot(x = js_df, 
+           clus = js_kmeans$cluster, # クラスタ番号
+           stand = TRUE, # データの標準化を行う
+           lines = 0, labels = 3, # 表示の指定
+           main = NULL, sub = NULL, cex = 0.8, # タイトルなどの調整
+           col.p = rainbow(k)[js_kmeans$cluster], # 虹色で色付け
+           col.clus = "orange", shade = FALSE)	 # クラスタ囲みの指定
+
+  #' データの読み込み (omusubi.csv)
+  om_data <- bind_cols( # 日本語表記・地方の情報を追加
+    read_csv(file = "data/omusubi.csv"),
+    read_csv(file = "data/prefecture.csv"))
+  om_df <- om_data |>  # 距離計算用のデータフレーム
+    select(ume:etc,jp) |>
+    set_names(c("梅","鮭","昆布","鰹","明太子","鱈子","ツナ","その他","県名")) |>
+    column_to_rownames(var = "県名")
+  #' 日本語表示のための設定
+  if(Sys.info()["sysname"] == "Darwin") { # MacOSか調べて日本語フォントを指定
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+    par(family = jp_font)
+  } else {
+    jp_font <- NULL # MacOSでない場合はフォントを指定しない
+  }
+  #' k-平均法の実行: 
+  k <- 6 # 6分割で分析
+  om_kmeans <- om_df |>
+    sqrt() |> # Hellinger距離
+    kmeans(centers = k, # クラスタ数
+           nstart = 20) # 初期値を20回変更して試す
+  #' 各クラスター内の県名を表示
+  for(i in 1:k) {
+    cat("=== cluster",i,"===\n")
+    which(om_kmeans[["cluster"]] == i) |> names() |> print()
+  }
+  #' 2次元でのクラスタ表示
+  om_kmeans |>
+    autoplot(data = sqrt(om_df), 
+             frame = TRUE, 
+             frame.type = "norm", # 楕円で囲む
+             label = TRUE, 
+             label.repel = TRUE, 
+             label.size = 3, 
+             label.family = jp_font, # 日本語フォントの指定 (不要な場合は削除)
+             label.show.legend = FALSE) 
+  #' cluster::clusplot() による表示
+  clusplot(x = sqrt(om_df), 
+           clus = om_kmeans$cluster, # クラスタ番号
+           stand = FALSE, # データは標準化しない
+           lines = 0, labels = 3, # 表示の指定
+           main = NULL, sub = NULL, cex = 0.8, # タイトルなどの調整
+           col.p = rainbow(k)[om_kmeans$cluster], # 虹色で色付け
+           col.clus = "orange", shade = FALSE)	 # クラスタ囲みの指定
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
-** R : 関数 ~cluster::pam()~
+** R : \(k\)-メドイド法 
 :PROPERTIES:
 :ID:       23F6D185-357C-4973-95B4-184D0335F0BC
 :END:
-- \(k\)-メドイド法を実行するための関数
-  #+begin_src R :eval no
-    pam(x, k, metric = "euclidean", stand = FALSE)
-    ## x: データフレーム，または距離行列 
-    ## k: クラスタの数
-    ## metric: 距離の指定(xがデータフレームの場合)．他に "manhattan" が指定可
-    ## stand: 標準化(平均0，絶対偏差1)
+- 関数 ~cluster::pam()~
+  #+begin_src R :eval no :tangle no
+    pam(x, k, diss = inherits(x, "dist"),
+        metric = c("euclidean", "manhattan"), 
+        medoids = if(is.numeric(nstart)) "random",
+        nstart = if(variant == "faster") 1 else NA,
+        stand = FALSE, cluster.only = FALSE,
+        do.swap = TRUE,
+        keep.diss = !diss && !cluster.only && n < 100,
+        keep.data = !diss && !cluster.only,
+        variant = c("original", "o_1", "o_2", "f_3", "f_4", "f_5", "faster"),
+        pamonce = FALSE, trace.lev = 0)
+    #' x: データフレーム，または距離行列 
+    #' k: クラスタの数
+    #' metric: 距離の指定(xがデータフレームの場合)
+    #' stand: 標準化(平均0，絶対偏差1)
   #+end_src
-  - 詳細は ~?cluster::pam~ を参照
 
 ** COMMENT 演習: 非階層的クラスタリング
 :PROPERTIES:
@@ -718,57 +828,84 @@
   - 関数 ~pam()~ を用いて
     各変数平均0，絶対偏差1に標準化したデータを7クラスタに分割しなさい
   - 各クラスタ内の県名を表示しなさい
-  - 関数 ~clusplot()~ を用いて
-    2次元散布図に各クラスタを表示しなさい
-- 余裕がある人はデータセット ~omusubi.csv~ でも確認しなさい
-
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 関数 pam による非階層的クラスタリング
-  ### 
-
-  ## k-medoids の実行
-  js_pam <- pam(js_data,
-                stand=TRUE,
-                k=k)
-
-  ## 各クラスター内の県名を表示
+  - 2次元散布図に各クラスタを表示しなさい
+- データセット ~omusubi.csv~ でも確認しなさい
+** 解答例
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 関数 pam による非階層的クラスタリング
+#+end_src
+#+begin_src R :eval no :exports none
+  #' k-medoids の実行
+  k <- 7
+  js_pam <- js_df |>  
+    pam(stand = TRUE, # 正規化(平均0 絶対偏差1)
+        k = k) # クラスタ数の指定
+  #' 各クラスター内の県名を表示
   for(i in 1:k){
-      cat("=== cluster",i,"===\n")
-      print(names(which(js_pam$clustering==i)))
+    cat("=== cluster",i,"===\n")
+    which(js_pam[["clustering"]] == i) |> names() |> print()
   }
+  #' 2次元でのクラスタ表示
+  js_pam |> 
+    autoplot(frame = TRUE, 
+             frame.type = "convex", 
+             label = TRUE, 
+             label.repel = TRUE, 
+             label.size = 3, 
+             label.show.legend = FALSE)
+  #' Manhattan距離だとどのようになるか試してみる
+  #' いくつかのクラスタでメンバが変わっている
+  js_df |>  
+    pam(stand = TRUE, 
+        metric = "manhattan",
+        k = k) |>
+    autoplot(frame = TRUE, 
+             frame.type = "convex", 
+             label = TRUE, 
+             label.repel = TRUE, 
+             label.size = 3, 
+             label.show.legend = FALSE) 
+  #' cluster::clusplot() を用いる場合は kmeans とほぼ同様
+  clusplot(x = js_df,
+           clus = js_pam$clustering,
+           stand = TRUE,
+           lines = 0, labels = 3, 
+           main = NULL, sub = NULL, cex = 0.8,
+           col.p = rainbow(k)[js_pam$clustering],
+           col.clus = "orange", shade = FALSE)
 
-  ## クラスタの表示
-  clusplot(x=js_data,
-           clus=js_pam$clustering,
-           stand=TRUE,
-           lines=0, labels=3, 
-           main=NULL, sub=NULL, cex=0.8,
-           col.p=rainbow(k)[js_pam$clustering],
-           col.clus="orange", shade=FALSE)
-
-  ## 
-  om_data <- read.csv(file="data/omusubi.csv", row.names=1)
-
-  ## k-medoids の実行
+  #' k-medoids の実行
   k <- 6
-  om_pam <- pam(daisy(sqrt(om_data)), # Hellinger距離 (スケールをさぼっている)
-                k=k)
-
-  ## 各クラスター内の県名を表示
+  om_pam <- om_df |>
+    sqrt() |>
+    pam(k = k)
+  #' 各クラスター内の県名を表示
   for(i in 1:k){
-      cat("=== cluster",i,"===\n")
-      print(names(which(om_pam$clustering==i)))
+    cat("=== cluster",i,"===\n")
+    which(om_pam[["clustering"]] == i) |> names() |> print()
   }
-
-  ## クラスタの表示
-  clusplot(x=om_data,
-           clus=om_pam$clustering,
-           stand=TRUE,
-           lines=0, labels=3, 
-           main=NULL, sub=NULL, cex=0.8,
-           col.p=rainbow(k)[om_pam$clustering],
-           col.clus="orange", shade=FALSE)
+  #' 2次元でのクラスタ表示
+  om_pam |> 
+    autoplot(frame = TRUE, 
+             frame.type = "convex", 
+             label = TRUE, 
+             label.repel = TRUE, 
+             label.size = 3, 
+             label.family = jp_font, 
+             label.show.legend = FALSE)
+  #' cluster::clusplot() による表示
+  #' クラスタリングの結果は om_pam$clustering に保管されている
+  clusplot(x = sqrt(om_df),
+           clus = om_pam$clustering,
+           stand = TRUE,
+           lines = 0, labels = 3, 
+           main = NULL, sub = NULL, cex = 0.8,
+           col.p = rainbow(k)[om_pam$clustering],
+           col.clus = "orange", shade = FALSE)
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
@@ -781,10 +918,10 @@
 - データの属性
   #+begin_example
   Forest : 森林面積割合 (%) 2014年
-  Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-  Ratio : 全国総人口に占める人口割合 (%) 2015年
-  Land : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-  Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+  Agri   : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+  Ratio  : 全国総人口に占める人口割合 (%) 2015年
+  Land   : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+  Goods  : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
   #+end_example
 - 平均0，分散1に正規化して解析
 
@@ -1109,22 +1246,36 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 関数 ~cluster::agnes()~ の場合
+** R : 凝集係数
 :PROPERTIES:
 :ID:       5EFEBBAA-7795-4ED3-9A25-C5506764F4B9
 :END:
-- 関数 ~agnes()~ による凝集係数の取得
-  #+begin_src R :eval no
-    ### 凝集係数の取得
-    summary(agnes(x, # データフレーム
-                  stand = TRUE, # 正規化
-		  metric = "euclidean", # ユークリッド距離
-		  method = "average") # 群平均法
-	    )$ac 
-    ### 凝集係数の視覚化 (banner plot)
-    plot(agnes(x), # 階層的クラスタリングの結果
-         which.plots=1) # banner plot を選択
-    ## plot および cluster::bannerplot のオプションを参考
+- 関数 ~cluster::agnes()~ の返値の情報
+  #+begin_src R :eval no :tangle no
+    object[["ac"]] # 凝集係数の取得 (object$ac でも良い)
+    object[["height"]] # デンドログラムの高さ(結合時のクラスタ距離)
+    object[["order.lab"]] # デンドログラムの並び順のラベル
+    #' object: cluster::agnes() の返値
+  #+end_src
+  - これらを利用して banner plot を描くことができる
+  - 関数 ~summary(object)~ はこれらの情報をまとめて表示する
+#+reveal: split
+- 視覚化のための関数 (graphics 系)
+  #+begin_src R :eval no :tangle no
+    #' cluster::plot.agnes() 系統樹および凝集係数の表示
+    plot(x, ask = FALSE, which.plots = NULL, main = NULL,
+         sub = paste("Agglomerative Coefficient = ",round(x$ac, digits = 2)),
+         adj = 0, nmax.lab = 35, max.strlen = 5, xax.pretty = TRUE, ...)
+    #' x: cluster::agnes() の返値
+    #' which.plots: 1 (banner plot), 2 (dendrogram)
+    #' banner plot の表示には以下の cluster::bannerplot() が呼出される
+    bannerplot(x, w = rev(x$height), fromLeft = TRUE,
+               main=NULL, sub=NULL, xlab = "Height",  adj = 0,
+               col = c(2, 0), border = 0, axes = TRUE, frame.plot = axes,
+               rev.xax = !fromLeft, xax.pretty = TRUE,
+               labels = NULL, nmax.lab = 35, max.strlen = 5,
+               yax.do = axes && length(x$order) <= nmax.lab,
+               yaxRight = fromLeft, y.mar = 2.4 + max.strlen/2.5, ...)
   #+end_src
 
 ** 練習問題
@@ -1138,90 +1289,214 @@
     - 標準化: 行う
     - データ距離: ユークリッド距離，およびマンハッタン距離
     - クラスタ距離: 群平均法
-  - 凝集係数を用いて2つの距離の評価を行いなさい
-
-#+begin_src R :eval no :exports none :tangle yes
-  ###
-  ### 練習問題 凝集係数による距離の検討
-  ### 
-
-  ## データの読み込み (既に読み込んでいれば不要)
-  js_data <- read.csv("data/japan_social.csv", row.names=1)
-
-  ## ユークリッド距離による階層的クラスタリング
-  js_agn.euc <- agnes(js_data,
-			metric="euclidean", # データ距離
-			stand=TRUE,	    # 標準化
-			method="average")   # クラスタ距離
-  plot(js_agn.euc, which.plots=2, # デンドログラムの表示
-	    main="euclidean") 
-
-  ## マンハッタン距離による階層的クラスタリング
-  js_agn.man <- agnes(js_data,
-			metric="manhattan",
-			stand=TRUE,
-			method="average")
-  plot(js_agn.man, which.plots=2,
-	    main="manhattan")
-
-  ## データ毎の凝集係数の表示
-  plot(js_agn.euc, which.plots=1, # banner plotの表示
-	    nmax.lab=50,   # 表示するラベルの上限 (標準は40)
-	    max.strlen=5,  # 表示するラベルの文字数の上限
-	    main="euclidean")
-
-  plot(js_agn.man, which.plots=1,
-	    nmax.lab=50,  
-	    max.strlen=5,
-	    main="manhattan")
-
-  ## 一部のデータの距離が大きいと凝集係数は大きくなりがち (理由を考えてみよう)
-  ## 北海道，東京，宮崎，鹿児島を除いて再計算する 
-  summary(agnes(js_data[-c(1,13,45,46),],
-		     metric="euclidean",
-		     stand=TRUE,
-		     method="average"))$ac
-  summary(agnes(js_data[-c(1,13,45,46),],
-		     metric="manhattan",
-		     stand=TRUE,
-		     method="average"))$ac
-  ## ユークリッド距離の方が凝集係数は大きいことがわかる
-  ## 個別の係数の確認
-  plot(agnes(js_data[-c(1,13,45,46),],
-		  metric="euclidean",
-		  stand=TRUE,
-		  method="average"),
-	    which.plots=1,
-	    nmax.lab=50,  
-	    max.strlen=5,
-	    main="euclidean")
-  plot(agnes(js_data[-c(1,13,45,46),],
-		  metric="manhattan",
-		  stand=TRUE,
-		  method="average"),
-	    which.plots=1,
-	    nmax.lab=50,  
-	    max.strlen=5,
-	    main="manhattan")
+  - 凝集係数を用いて2つのデータ距離の評価を行いなさい
+  - 凝集係数が低いいくつかのデータを削除して評価しなさい
+** 解答例
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 凝集係数による距離の検討
 #+end_src
+#+begin_src R :eval no :exports none
+  #' ユークリッド距離による階層的クラスタリング
+  js_agnes_euc <- agnes(js_df,
+                        metric="euclidean", # データ距離
+                        stand=TRUE,	    # 標準化
+                        method="average")   # クラスタ距離
+  js_agnes_euc |> as.dendrogram() |>  
+    ggdendrogram(rotate = FALSE, 
+                 theme_dendro = FALSE) + 
+    labs(title = "Euclidean distance",
+         x = "Prefecture", y = "Height") +
+    theme(axis.text.y = element_text(size = 9))
+  #' マンハッタン距離による階層的クラスタリング
+  js_agnes_man <- agnes(js_df,
+                        metric="manhattan",
+                        stand=TRUE,
+                        method="average")
+  js_agnes_man |> as.dendrogram() |>  
+    ggdendrogram(rotate = FALSE, 
+                 theme_dendro = FALSE) + 
+    labs(title = "Manhattan distance",
+         x = "Prefecture", y = "Height") +
+    theme(axis.text.y = element_text(size = 9))
 
-** R : 関数 ~cluster::pam()~ の場合
+  #' 凝集係数の確認
+  js_agnes_euc[["ac"]]
+  js_agnes_man[["ac"]]
+  #' ユークリッド距離の方がわずかに良いことがわかる
+
+  #' データ毎の凝集係数の表示
+  tibble(x = js_agnes_euc[["height"]],
+         y = length(js_agnes_euc[["height"]]):1) |>
+    ggplot() +
+    #' 各枝のheightと最大値で矩形を描く
+    geom_rect(aes(xmin = x, xmax = max(x),
+                  ymin = y, ymax = y+1), 
+              fill = "orange", alpha = 0.6) + # 塗り潰し色と透明度を指定
+    #' y軸にラベルを表示する
+    scale_y_continuous(breaks = length(js_agnes_euc[["order.lab"]]):1,
+                       expand = expansion(add = 0.5),
+                       labels = js_agnes_euc[["order.lab"]]) +
+    labs(title = "Euclidean distance") +
+    theme(axis.text.y = element_text(size = 9))
+  tibble(x = js_agnes_man[["height"]],
+         y = length(js_agnes_man[["height"]]):1) |>
+    ggplot() +
+    geom_rect(aes(xmin = x, xmax = max(x),
+                  ymin = y, ymax = y+1), 
+              fill = "orange", alpha = 0.6) + 
+    scale_y_continuous(breaks = length(js_agnes_man[["order.lab"]]):1,
+                       expand = expansion(add = 0.5),
+                       labels = js_agnes_man[["order.lab"]]) +
+    labs(title = "Manhattan distance") +
+    theme(axis.text.y = element_text(size = 9))
+
+  #' @notes
+  #' bannerplot の情報を整理するための関数を定義してもよい
+  my_bannerplot <- function(object, # agnesの返値
+                            fill = "orange", alpha = 0.6, ...) {
+    p <- tibble(x = object[["height"]],
+                y = length(object[["height"]]):1) |>
+      ggplot() +
+      geom_rect(aes(xmin = x, xmax = max(x),
+                    ymin = y, ymax = y+1), 
+                fill = fill, alpha = alpha) + 
+      scale_y_continuous(breaks = length(object[["order.lab"]]):1,
+                         expand = expansion(add = 0.5),
+                         labels = object[["order.lab"]])
+    p
+  }
+  my_bannerplot(js_agnes_euc,
+               fill = "red", alpha = 0.6)
+
+  #' 一部のデータの距離が大きいと凝集係数は大きくなりがち (理由を考えてみよう)
+  #' 北海道，東京，宮崎，鹿児島を除いて再計算する 
+  #' 返値の要素を抽出する場合にはパイプ(|>)が使えない場合があるので注意
+  agnes(js_df |> slice(-c(1,13,45,46)),
+        metric = "euclidean",
+        stand = TRUE,
+        method = "average")[["ac"]]
+  agnes(js_df |> slice(-c(1,13,45,46)),
+        metric = "manhattan",
+        stand = TRUE,
+        method = "average")[["ac"]]
+  #' いずれにせよユークリッド距離の方が凝集係数は大きいことがわかる
+  #' 個別の係数の確認
+  js_df |> slice(-c(1,13,45,46)) |>
+    agnes(metric = "euclidean",
+          stand = TRUE,
+          method = "average") |>
+    my_bannerplot() + # @notes で定義した関数を利用
+    labs(title = "Euclidean distance") +
+    theme(axis.text.y = element_text(size = 9))
+  js_df |> slice(-c(1,13,45,46)) |>
+    agnes(metric = "manhattan",
+          stand = TRUE,
+          method = "average") |>
+    my_bannerplot() +
+    labs(title = "Manhattan distance") +
+    theme(axis.text.y = element_text(size = 9))
+
+  #' @notes
+  #' graphics系の関数を利用する場合は以下のようにすればよい
+  #' デンドログラムの表示
+  plot(js_agnes_euc, which.plots=2, 
+       main="euclidean") 
+  plot(js_agnes_man, which.plots=2, 
+       main="manhattan") 
+  #' データ毎の凝集係数の表示
+  plot(js_agnes_euc, which.plots=1, # banner plotの表示
+       nmax.lab=50,   # 表示するラベルの上限 (標準は40)
+       max.strlen=5,  # 表示するラベルの文字数の上限
+       main="euclidean")
+  plot(js_agnes_man, which.plots=1,
+       nmax.lab=50,  
+       max.strlen=5,
+       main="manhattan")
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+#+end_src
+# #+begin_src R :exports none
+#   tibble(x = js_agnes_euc[["height"]],
+#          ymin = fct_rev(as_factor(js_agnes_euc[["order.lab"]]))[-1],
+#          ymax = fct_rev(as_factor(js_agnes_euc[["order.lab"]]))[-47]) |>
+#     ggplot() +
+#     geom_rect(aes(xmin = x, xmax = max(x),
+#                   ymin = ymin, ymax = ymax), 
+#               fill = "orange", alpha = 0.6) + # 塗り潰し色と透明度を指定
+#     labs(title = "Euclidean distance") +
+#     theme(axis.text.y = element_text(size = 9))
+#   tibble(x = js_agnes_man[["height"]],
+#          ymin = fct_rev(as_factor(js_agnes_man[["order.lab"]]))[-1],
+#          ymax = fct_rev(as_factor(js_agnes_man[["order.lab"]]))[-47]) |>
+#     ggplot() +
+#     geom_rect(aes(xmin = x, xmax = max(x),
+#                   ymin = ymin, ymax = ymax), 
+#               fill = "orange", alpha = 0.6) + # 塗り潰し色と透明度を指定
+#     labs(title = "Manhattan distance") +
+#     theme(axis.text.y = element_text(size = 9))
+#   extract_banner <- function(x) {
+#     labels <- x$order.lab
+#     tibble(x = x$height,
+#            ymin = fct_rev(as_factor(labels))[-1],
+#            ymax = fct_rev(as_factor(labels))[-length(labels)])
+#   }
+#   extract_banner(js_agnes_euc) |>
+#     ggplot() +
+#     geom_rect(aes(xmin = x, xmax = max(x),
+#                   ymin = ymin, ymax = ymax), 
+#               fill = "red", alpha = 0.6)
+# #+end_src
+
+** R : シルエット係数
 :PROPERTIES:
 :ID:       6AF1B625-7D2F-40F4-9AC5-236684343A73
 :END:
-- 関数 ~pam()~ によるシルエット係数の取得
-  #+begin_src R :eval no
-    ### シルエット係数関連の情報取得
-    summary(pam(x, k))$silinfo
-    ### 各データのシルエット係数
-    summary(pam(x, k))$silinfo$widths
-    ### 各クラスタのシルエット係数の平均
-    summary(pam(x, k))$silinfo$clus.avg.widths
-    ### シルエット係数の平均
-    summary(pam(om_dsy,k=k))$silinfo$avg.width
-    ### シルエット係数の視覚化 (silhouette plot)
-    plot(pam(om_dsy,k=k), which.plot=2)
-    ## plot および cluster::silhouette のオプションを参考
+- 関数 ~cluster::pam()~ の返値の情報
+  #+begin_src R :eval no :tangle no
+    object[["silinfo"]] # シルエット係数に関する様々な情報
+    object[["silinfo"]][["widths"]] # 各データのシルエット係数
+    object[["silinfo"]][["clus.avg.widths"]] # 各クラスタのシルエット係数の平均
+    object[["silinfo"]][["avg.width"]] # シルエット係数の平均
+    #' object: cluster::agnes() の返値
+  #+end_src
+  - 関数 ~summary(object)~ はこれらの情報をまとめて表示する
+- 補助的な関数
+  #+begin_src R :eval no :tangle no
+    #' シルエット係数の取得
+    silhouette(x, ...)
+    #' x: cluster::pam() などの返値
+    silhouette(x, dist, dmatrix, ...)
+    #' x: stats::cutree() などの返値
+    #' dist/dmatrix: 距離行列または解離度を表す行列など
+  #+end_src
+#+reveal: split
+- 視覚化のための関数 (ggplot 系)
+  #+begin_src R :eval no :tangle no
+    #' ggfortify::autoplot.silhouette() シルエット係数の表示
+    autoplot(object,
+      colour = "red", linetype = "dashed", size = 0.5, bar.width = 1, ...)
+    #' object: cluster::silhouette() の返値
+    #' colour/linetype/size: reference line の設定
+  #+end_src
+#+reveal: split
+- 視覚化のための関数 (graphics 系)
+  #+begin_src R :eval no :tangle no
+    #' cluster::plot.partition() 2次元クラスタおよびシルエット係数の表示
+    plot(x, ask = FALSE, which.plots = NULL,
+         nmax.lab = 40, max.strlen = 5, data = x$data, dist = NULL,
+         stand = FALSE, lines = 2,
+         shade = FALSE, color = FALSE, labels = 0, plotchar = TRUE,
+         span = TRUE, xlim = NULL, ylim = NULL, main = NULL, ...)
+    #' x: cluster::pam() などの返値
+    #' which.plots: 1 (cluster plot), 2 (silhouette plot)
+    #' silhouette plot の表示には以下の cluster::plot.silhouette() が呼出される
+    plot(x, nmax.lab = 40, max.strlen = 5,
+         main = NULL, sub = NULL, xlab = expression("Silhouette width "* s[i]),
+         col = "gray",  do.col.sort = length(col) > 1, border = 0,
+         cex.names = par("cex.axis"), do.n.k = TRUE, do.clus.stat = TRUE, ...)
+    #' x: cluster::silhouette() の返値
   #+end_src
 
 ** COMMENT 演習: クラスタ分析の評価
@@ -1250,45 +1525,92 @@
     #+end_quote
   - クラスタ数4-10のシルエット係数を比較しなさい
   - 適当と思われるクラスタ数による分析を行いなさい
-
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 シルエット係数によるクラスタ数の検討
-  ### 
-
-  ## データの読み込み (既に読み込んでいれば不要)
-  om_data <- read.csv(file="data/omusubi.csv", row.names=1)
-
-  ## Hellinger距離の計算
-  om_dsy <- 1/sqrt(2)*daisy(sqrt(om_data/100))
-
-  ## クラスタ数 4-10 で平均シルエット係数を確認
+  - Euclid距離を用いて同様な分析を行いなさい
+** COMMENT 解答例
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice シルエット係数によるクラスタ数の検討
+#+end_src
+#+begin_src R :eval no :exports none
+  #' クラスタ数 4-10 で平均シルエット係数を確認
+  om_df_hel <- om_df |> sqrt() # Hellinger距離を計算しやすくデータフレームを用意
   for(k in 4:10){
-	   cat("k =",k," ")
-	   print(summary(pam(om_dsy,k=k))$silinfo$avg.width)
+    cat(pam(om_df_hel, k = k)$silinfo$avg.width,
+        " (k = ", k, ")\n", sep="")
+  }
+  #' pam(om_df_hel, k = k)[["silinfo"]][["avg.width"]] と書いても良い
+  #' k=7,8,9 (上位3つ) のシルエット係数を視覚化
+  for(k in 7:9) {
+    p <- pam(om_df_hel, k = k) |>
+      silhouette() |>
+      autoplot() +
+      labs(title = paste("k =", k))
+    print(p) # ggplotはfor文内では明示的にprintする必要がある
   }
 
-  ## 7-9 のシルエット係数を視覚化
-  plot(pam(om_dsy,k=7), which.plot=2,
-	    nmax.lab=50, # 表示するラベルの上限 (標準は40)
-	    max.strlen=5, # 表示するラベルの文字数の上限
-	    cex.names=0.1) # ラベルの文字の大きさの調整
-  plot(pam(om_dsy,k=8), which.plot=2,
-	    nmax.lab=50, max.strlen=5, cex.names=0.1)
-  plot(pam(om_dsy,k=9), which.plot=2,
-	    nmax.lab=50, max.strlen=5, cex.names=0.1)
-
-  ## k=8が悪いシルエット係数が少ないという意味で良さそうなのでクラスタの結果を表示
+  #' 悪いシルエット係数が少ないという意味で k=8 が良さそう
   k <- 8
-  om_pam <- pam(om_dsy,k=k)
-  plot(om_pam, which.plot=1, 
-	    stand=TRUE,
-	    lines=0, labels=3, 
-	    main="", sub=NULL, cex=0.8, # タイトルと文字の大きさの調整
-	    col.p=rainbow(k)[om_pam$clustering], # クラスタ番号ごとに色付け
-	    col.clus="orange", shade=FALSE) # クラスタを楕円で表示
-  ## cluster::clusplot のオプションを参考
-  ## クラスタリングの結果は om_pam$clustering に保管されている
+  om_df_hel |>
+    pam(k = k) |>
+    autoplot(frame = TRUE, 
+             frame.type = "convex", 
+             label = TRUE, 
+             label.repel = TRUE, 
+             label.size = 3, 
+             label.family = jp_font, 
+             label.show.legend = FALSE)
+  #' 同様な描画は以下でも可能
+  om_pam <- om_df_hel |>
+    pam(k = k)
+  plot(om_pam,
+       which.plot = 1, # cluster::clusplot のオプションを参考
+       stand = TRUE,
+       lines = 0, labels = 3, 
+       main = "", sub = NULL, cex = 0.8, # タイトルと文字の大きさの調整
+       col.p = rainbow(k)[om_pam$clustering], # クラスタ番号ごとに色付け
+       col.clus = "orange", shade = FALSE) # クラスタを楕円で表示
+
+  #' Euclid距離による分析
+  #' k = 5-10 で検証
+  for(k in 5:10) {
+    foo <- pam(om_df, k = k)
+    p <- foo |>
+      silhouette() |>
+      autoplot() +
+      labs(title = paste("k =", k, "(Silhouette coef. =",
+                         round(foo$silinfo$avg.width, digits = 3), ")"))
+    print(p) 
+  }
+  #' 悪いシルエット係数が少ないという意味で k=7 が良さそう
+  k <- 7
+  om_df |>
+    pam(k = k) |>
+    autoplot(frame = TRUE, 
+             frame.type = "norm", 
+             label = TRUE, 
+             label.repel = TRUE, 
+             label.size = 3, 
+             label.family = jp_font, 
+             label.show.legend = FALSE)
+#+end_src
+#+begin_src R :eval no :exports none
+  #' @notes
+  #' 階層的クラスタリングでもシルエット係数を計算することができる
+  om_agnes <- agnes(om_df_hel)
+  om_agnes |> as.dendrogram() |>
+    ggdendrogram()
+  silhouette(cutree(om_agnes, k = k), 
+             daisy(om_df_hel)) |> # 距離行列が必要
+    autoplot()
+  #' シルエット係数のグラフはクラスタ毎に降順(大きいものが上)に並べ替えられている
+  #' グラフに合わせた要素名を取り出すには例えば以下のようにすれば良い
+  silhouette(cutree(om_agnes, k = k), daisy(om_df_hel)) |>
+    as_tibble() |>
+    mutate(prefecture=rownames(om_df_hel)) |>
+    arrange(desc(cluster), desc(sil_width))
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
@@ -1423,7 +1745,7 @@ file:figs/11_jsdendroman.png
   #+end_src
 
 #+reveal: split
-#+begin_src R :file figs/11_omsil7.png :exports results :results graphics
+#+begin_src R :file figs/11_omsil7.png :exports results :results graphics :height 700
   om_data_hel |>
     pam(k = 7) |>
     silhouette() |>
@@ -1438,7 +1760,7 @@ file:figs/11_jsdendroman.png
 file:figs/11_omsil7.png
 
 #+reveal: split
-#+begin_src R :file figs/11_omsil8.png :exports results :results graphics
+#+begin_src R :file figs/11_omsil8.png :exports results :results graphics :height 700
   om_data_hel |>
     pam(k = 8) |>
     silhouette() |>
@@ -1453,7 +1775,7 @@ file:figs/11_omsil7.png
 file:figs/11_omsil8.png
 
 #+reveal: split
-#+begin_src R :file figs/11_omsil9.png :exports results :results graphics
+#+begin_src R :file figs/11_omsil9.png :exports results :results graphics :height 700
   om_data_hel |>
     pam(k = 9) |>
     silhouette() |>
@@ -1468,7 +1790,7 @@ file:figs/11_omsil8.png
 file:figs/11_omsil9.png
 
 #+reveal: split
-#+begin_src R :file figs/11_omclusplot8.png :exports results :results graphics
+#+begin_src R :file figs/11_omclusplot8.png :exports results :results graphics :height 700
   ## k=8が良さそう
   om_data_hel |>
     pam(k = 8) |>

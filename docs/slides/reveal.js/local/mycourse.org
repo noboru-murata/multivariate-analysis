@@ -42,16 +42,20 @@
 # Use menu plugins
 #+REVEAL_ADD_PLUGIN: menu RevealMenu plugin/menu/menu.js
 #+REVEAL_EXTRA_CSS: ./reveal.js/plugin/menu/menu.css
+#+REVEAL_EXTRA_CSS: ./reveal.js/plugin/menu/font-awesome/css/fontawesome.css 
 # Use spotlight plugins (Q/W)
 #+REVEAL_ADD_PLUGIN: spotlight RevealSpotlight plugin/spotlight/spotlight.js
 # Use chalkboard plugins (currently corrupted 2024/9/1)
-# #+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js
-# #+REVEAL_EXTRA_CSS: ./reveal.js/plugin/chalkboard/style.css
+#+REVEAL_ADD_PLUGIN: chalkboard RevealChalkboard plugin/chalkboard/plugin.js
+#+REVEAL_EXTRA_CSS: ./reveal.js/plugin/chalkboard/style.css
 # Use drawer plugins (D/C)
-#+REVEAL_ADD_PLUGIN: drawer RevealDrawer plugin/drawer/drawer.js
-#+REVEAL_EXTRA_CSS: ./reveal.js/plugin/drawer/drawer.css
+# #+REVEAL_ADD_PLUGIN: drawer RevealDrawer plugin/drawer/drawer.js
+# #+REVEAL_EXTRA_CSS: ./reveal.js/plugin/drawer/drawer.css
 # Add some configuration for Reveal.initialize
-#+REVEAL_EXTRA_OPTIONS: spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, }
+# #+REVEAL_EXTRA_OPTIONS: spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, }
+#+REVEAL_EXTRA_OPTIONS: spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, }
+# customcontrols doesn't work
+# #+REVEAL_EXTRA_OPTIONS: customcontrols: { controls: [ { icon: '<i class="fa fa-pen-square"></i>', title: 'Toggle chalkboard (B)', action: 'RevealChalkboard.toggleChalkboard();' }, { icon: '<i class="fa fa-pen"></i>', title: 'Toggle notes canvas (C)', action: 'RevealChalkboard.toggleNotesCanvas();' } ] }, spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, chalkboard: { buttons: true}, }
 # Use my custom title slide.
 #+REVEAL_TITLE_SLIDE: ./reveal.js/local/mycourse.html
 # Use my custom css 

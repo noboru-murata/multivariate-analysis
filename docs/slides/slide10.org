@@ -3,10 +3,10 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2023-12-12 11:25:26 mura>
+# Time-stamp: <2024-12-09 14:07:16 mura>
 #+STARTUP: hidestars content indent
 :REVEAL:
-#+SETUPFILE: "./reveal.js/org/mycourse.org"
+#+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
 # <m C-i でlatex block (math env用)
 # C-c '
@@ -35,6 +35,7 @@
     dplyr::lag(),
   )
   library(tidyverse)
+  library(gt)
   library(GGally)
   library(ggfortify)
   library(cluster)
@@ -72,12 +73,15 @@
     dplyr::lag(),
   )
   library(tidyverse)
+  library(gt)
   library(ggfortify)
+  library(GGally)
   library(cluster)
+  library(ggdendro)
 #+end_src
 
 
-* 事例
+* クラスタ分析の例
 ** COMMENT 実データによる例
 :PROPERTIES:
 :END:
@@ -103,41 +107,42 @@
   - 総務省 [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
   - データ https://noboru-murata.github.io/multivariate-analysis/data/japan_social.csv
     #+begin_example
-    Pref : 都道府県名
+    Pref   : 都道府県名
     Forest : 森林面積割合 (%) 2014年
-    Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-    Ratio : 全国総人口に占める人口割合 (%) 2015年
-    Land : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-    Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
-    Area : 地方区分
+    Agri   : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+    Ratio  : 全国総人口に占める人口割合 (%) 2015年
+    Land   : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+    Goods  : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+    Area   : 地方区分
     #+end_example
-
+  
 ** データの概要
 :PROPERTIES:
 :ID:       B6A543CF-F3D8-423A-9BD2-93B6021BD821
 :END:
 #+begin_src R :exports none
+  #' @exercise 実データによるクラスタ分析の例
+  #' 以下の例で用いる分析のための関数の詳細は今回・次回で解説
   #' データの読み込み
   js_data <- read_csv("data/japan_social.csv") |>
     mutate(Area = as_factor(Area))
 #+end_src
-#+html: <font size=5>
+#+begin_src R :eval no :exports none
+  js_data |> View() # 左上ペインに表として表示
+#+end_src
 #+begin_src R :exports results :results output html :tangle no
   #' データの表示(reveal用)
-  js_data |> slice(1:15) |>
-    stargazer::stargazer(summary = FALSE,
-                         rownames = FALSE,
-                         title = "社会生活統計指標",
-                         type = "html")
+  js_data |>
+    slice(1:15) |>
+    gt() |>
+    as_raw_html()
 #+end_src
-#+html: </font>
-#+begin_src R :exports results :results output latex :tangle no
+#+begin_src R :exports results :results value scalar latex :tangle no
   #' データの表示(latex用)
   js_data |>
-    stargazer::stargazer(summary = FALSE,
-                         rownames = FALSE,
-                         title = "社会生活統計指標",
-                         font.size = "small", type = "latex")
+    gt() |>
+    tab_options(table.font.size = 9) |>
+    as_latex() |> as.character()
 #+end_src
 
 # #+reveal: split
@@ -163,12 +168,12 @@
 #+begin_src R :file figs/10_pairs.png :exports results :results graphics
   #' データの視覚化
   js_data |> # 散布図．いくつかの変数は相関強いことがわかる
-    GGally::ggpairs(columns = 2:6,
-                    upper = list(continuous = "cor"),
-                    diag = list(continuous = wrap("densityDiag", alpha = 0.4),
-                                mapping = aes(colour = Area)),
-                    lower = list(continuous = wrap("points", size = 1),
-                                 mapping = aes(colour = Area)))
+    ggpairs(columns = 2:6,
+            upper = list(continuous = "cor"),
+            diag = list(continuous = wrap("densityDiag", alpha = 0.4),
+                        mapping = aes(colour = Area)),
+            lower = list(continuous = wrap("points", size = 1),
+                         mapping = aes(colour = Area)))
     #+end_src
 #+caption: 散布図
 #+name: fig:10_pairs
@@ -258,45 +263,69 @@
 :PROPERTIES:
 :ID:       47ACA170-C74E-4F57-8282-4A96BAD56F80
 :END:
-- [[color:green][社会生活統計指標の一部(関東)]]
-  #+begin_src R :file figs/10_hclst0.png :exports results :results graphics
-    library(cluster)
+- [[color:green][社会生活統計指標の一部(関東地方)]]
+  #+begin_src R :exports none
     js_data <- bind_cols(
       read_csv(file="data/japan_social.csv"),
       read_csv(file="data/prefecture.csv"))
-    myPlot <- function(k) {
-      if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-      tmpa <- js_data |>
-        slice(8:14) |>
-        select(2:6,jp) |>
-        column_to_rownames(var = "jp")
-      # tmpa <- js_data[8:14,]
-      tmpb <- list(c(1,2,3,4,1,6,7),
-                   c(1,2,3,1,1,6,7),
-                   c(1,2,2,1,1,6,7),
-                   c(1,2,2,1,1,6,1),
-                   c(1,1,1,1,1,6,1),
-                   c(1,1,1,1,1,1,1))
-      clusplot(x=tmpa,
-               clus=c(1,2,3,4,5,6,7),
-               diss=FALSE,
-               stand=TRUE, lines=0, labels=3, 
-               main=NULL, sub=NULL, cex=1,
-               xlim=c(-2.5,2.5), ylim=c(-2.5,2.5),
-               xaxt="n", yaxt="n", ann=FALSE,
-               col.p="blue", col.txt="darkgray", col.clus="white", shade=FALSE)
-      if(k>0) {
-        for(i in 1:k) {
-          clusplot(x=tmpa,
-                   clus=tmpb[[i]],
-                   diss=FALSE, cex=0.2,
-                   stand=TRUE, add=TRUE, span=FALSE,
-                   lines=0, lwd=2, col.p="blue", col.clus="orange")
-        }
+    js_kanto <- js_data |> 
+      slice(8:14) |>
+      select(jp,2:6) |>
+      set_names(c("都道府県名","森林面積割合","農業産出額","人口割合","土地生産性","商品販売額"))
+  #+end_src
+  #+begin_src R :eval no :exports none
+    js_kanto |> View() # 左上ペインに表として表示
+  #+end_src
+  #+begin_src R :exports results :results output html :tangle no
+    #' データの表示(reveal用)
+    js_kanto |>
+      gt() |>
+      as_raw_html()
+  #+end_src
+  #+begin_src R :exports results :results value scalar latex :tangle no
+    #' データの表示(latex用)
+    js_kanto |>
+      gt() |>
+      tab_options(table.font.size = 9) |>
+      as_latex() |> as.character()
+  #+end_src
+
+#+reveal: split
+#+begin_src R :file figs/10_hclst0.png :exports results :results graphics :tangle no
+  library(cluster)
+  myPlot <- function(k) {
+    if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
+    tmpa <- js_data |>
+      slice(8:14) |>
+      select(2:6,jp) |>
+      column_to_rownames(var = "jp")
+    # tmpa <- js_data[8:14,]
+    tmpb <- list(c(1,2,3,4,1,6,7),
+                 c(1,2,3,1,1,6,7),
+                 c(1,2,2,1,1,6,7),
+                 c(1,2,2,1,1,6,1),
+                 c(1,1,1,1,1,6,1),
+                 c(1,1,1,1,1,1,1))
+    clusplot(x=tmpa,
+             clus=c(1,2,3,4,5,6,7),
+             diss=FALSE,
+             stand=TRUE, lines=0, labels=3, lwd=2,
+             main=NULL, sub=NULL, cex=1, cex.txt=1.5,
+             xlim=c(-2.5,2.5), ylim=c(-2.5,2.5),
+             xaxt="n", yaxt="n", ann=FALSE,
+             col.p="blue", col.txt="darkgray", col.clus="white", shade=FALSE)
+    if(k>0) {
+      for(i in 1:k) {
+        clusplot(x=tmpa,
+                 clus=tmpb[[i]],
+                 diss=FALSE, cex=0.2, 
+                 stand=TRUE, add=TRUE, span=FALSE,
+                 lines=0, lwd=4, col.p="blue", col.clus="orange")
       }
     }
-    myPlot(0)
-  #+end_src
+  }
+  myPlot(0)
+#+end_src
 
 #+CAPTION: 凝集的クラスタリング
 #+NAME: fig:10_hclst0
@@ -305,7 +334,7 @@
 [[file:figs/10_hclst0.png]]
 
 #+reveal: split
-#+begin_src R :file figs/10_hclst1.png :exports results :results graphics
+#+begin_src R :file figs/10_hclst1.png :exports results :results graphics :tangle no
   myPlot(1)
 #+end_src
 
@@ -316,7 +345,7 @@
 [[file:figs/10_hclst1.png]]
 
 #+reveal: split
-#+begin_src R :file figs/10_hclst2.png :exports results :results graphics
+#+begin_src R :file figs/10_hclst2.png :exports results :results graphics :tangle no
   myPlot(2)
 #+end_src
 
@@ -327,7 +356,7 @@
 [[file:figs/10_hclst2.png]]
 
 #+reveal: split
-#+begin_src R :file figs/10_hclst3.png :exports results :results graphics
+#+begin_src R :file figs/10_hclst3.png :exports results :results graphics :tangle no
   myPlot(3)
 #+end_src
 
@@ -338,7 +367,7 @@
 [[file:figs/10_hclst3.png]]
 
 #+reveal: split
-#+begin_src R :file figs/10_hclst4.png :exports results :results graphics
+#+begin_src R :file figs/10_hclst4.png :exports results :results graphics :tangle no
   myPlot(4)
 #+end_src
 
@@ -350,7 +379,7 @@
 
    
 #+reveal: split
-#+begin_src R :file figs/10_hclst5.png :exports results :results graphics
+#+begin_src R :file figs/10_hclst5.png :exports results :results graphics :tangle no
   myPlot(5)
 #+end_src
    
@@ -362,7 +391,7 @@
 
    
 #+reveal: split
-#+begin_src R :file figs/10_hclst6.png :exports results :results graphics
+#+begin_src R :file figs/10_hclst6.png :exports results :results graphics :tangle no
   myPlot(6)
 #+end_src
    
@@ -373,7 +402,7 @@
 [[file:figs/10_hclst6.png]]
 
 #+reveal: split
-#+begin_src R :file figs/10_dendro.png :exports results :results graphics
+#+begin_src R :file figs/10_dendro.png :exports results :results graphics :tangle no
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
   js_data |>
     slice(8:14) |>
@@ -541,7 +570,29 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 関数 ~dist()~ 
+** R : クラスタ分析
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       122E64CD-BC8C-4ECB-96C9-29443B23443D
+:END:
+- 関連するパッケージ
+  - *stats* : base R の基本的な統計に関するパッケージ
+    - 関数 ~dist()~, ~hclust~, ~kmeans()~ など
+    - 標準でインストールされている
+  - *cluster* : Kaufman and Rousseeuw (1990) にもとづくパッケージ
+    - 関数 ~daisy()~, ~agnes()~, ~pam()~ など
+    - 標準でインストールされている
+  - *ggfortify* : ggplotによる描画を補助するパッケージ
+    - 関数 ~autoplot()~ など
+    - 既に導入済み(回帰，主成分，判別分析でも利用)
+  - *ggdendro* : ggplotによるデンドログラム描画のパッケージ
+    #+begin_src R :exports code :tangle no
+      #' 最初に一度だけ以下のいずれかを実行しておく
+      #'  - Package タブから ggdendro をインストール
+      #'  - コンソール上で次のコマンドを実行 'install.packages("ggdendro")'
+    #+end_src
+
+** COMMENT R : 関数 ~dist()~ 
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       AE111138-526B-4567-9F1F-E4DC65CC6D7E
@@ -563,27 +614,30 @@
     ## i,j: 行・列の指定 (数値ベクトル，データフレームの行名)
   #+end_src
 
-** R : 関数 ~cluster::daisy()~ 
+** R : データ間の距離の計算
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       F308DB23-6E0F-48FA-8845-55C7FC617ACC
 :END:
-- ~cluster~: クラスタ分析用のパッケージ
-- 関数 ~dist()~ とほぼ同様
-  #+begin_src R :eval no
-    ### パッケージの読み込み (標準で含まれているのでinstallは不要)
-    library(cluster) # require(cluster)
-    ### 距離の計算，返値は dissimilarity class (distとほぼ互換)
-    dsy <- daisy(x, metric = "euclidean", stand = FALSE)
-    ## x: データフレーム
-    ## metric: 距離 (標準はユークリッド距離，他は"manhattan"など)
-    ## stand: 正規化(平均と絶対偏差の平均による)の有無
-
-    ### 距離行列全体の表示
-    dsy # または print(dsy)
-    ### 特定の成分の取得
-    as.matrix(dsy)[i，j]
-    ## i,j: 行・列の指定 (数値ベクトル，データフレームの行名)
+- 関数 ~stats::dist()~ 
+  #+begin_src R :eval no :tangle no
+    dist(x, method = "euclidean", diag = FALSE, upper = FALSE, p = 2)
+    #' x: データフレーム
+    #' method: 距離 (標準はユークリッド距離，他は"manhattan","minkowski"など)
+    #' diag: 対角成分を持たせるか 
+    #' upper: 上三角成分を持たせるか (標準は下三角成分のみ)
+    #' 返値は dist class
+  #+end_src
+- 関数 ~cluster::daisy()~ 
+  #+begin_src R :eval no :tangle no
+    daisy(x, metric = c("euclidean", "manhattan", "gower"),
+          stand = FALSE, type = list(), weights = rep.int(1, p),
+          warnBin = warnType, warnAsym = warnType, warnConst = warnType,
+          warnType = TRUE)
+    #' x: データフレーム
+    #' metric: 距離 (標準はユークリッド距離，他は"manhattan"など)
+    #' stand: 正規化(平均と絶対偏差の平均による)の有無
+    #' 返値は dissimilarity class
   #+end_src
 
 ** 練習問題
@@ -592,68 +646,81 @@
 :ID:       D22E87E3-E968-4F93-9ED3-CFA9473F2463
 :END:
 - 都道府県別の社会生活統計指標を用いて以下を確認しなさい
-  #+begin_src R :eval no
-    ### データの読み込み 
-    js_data <- read.csv(file="data/japan_social.csv", row.names=1)
+  #+begin_src R :eval no :tangle no
+    #' データの読み込み方の例
+    js_df <- read_csv("data/japan_social.csv") |>
+      column_to_rownames(var = "Pref") |> # 'Pref'を行名に変換
+      select(-Area) # 地方名は除く
   #+end_src
   - 正規化せずにユークリッド距離とマンハッタン距離の計算を行いなさい
   - 正規化して上記と同様の計算を行いなさい 
   - 関東の都県同士の距離を表示しなさい (daisyによる正規化を用いなさい)
   - 大阪と四国の間の距離を表示しなさい
   - ユークリッド距離とマンハッタン距離の散布図を描き比較しなさい
+    
+** COMMENT 解答例
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 距離の計算
+#+end_src
+#+begin_src R :eval no :exports none
+  #' データの読み込み
+  js_data <- read_csv("data/japan_social.csv") |>
+    mutate(Area = as_factor(Area))
+  js_df <- js_data |>
+    column_to_rownames(var = "Pref") |> # 'Pref'を行名に変換
+    select(-Area) # 距離計算に不要な地方名は除く
+  #' @notes
+  #' 'js_data' のまま扱うこともできるが，距離・類似度を計算する関数は
+  #' 'js_df' の形式(base::data.frame())を想定しているため用意しておく
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 距離の計算
-  ### 
+  #' ユークリッド距離とマンハッタン距離の計算
+  js_dist_euc <- dist(js_df, method = "euclidean")
+  js_dist_man <- dist(js_df, method = "manhattan")
+  js_daisy_euc <- daisy(js_df, metric = "euclidean")
+  js_daisy_man <- daisy(js_df, metric = "manhattan")
+  #' 両者が同じことを確認
+  as.matrix(js_dist_euc)[1:5,1:5]
+  as.matrix(js_daisy_euc)[1:5,1:5]
 
-  ### パッケージの読み込み 
-  library(cluster) # require(cluster)
+  #' 正規化したユークリッド距離とマンハッタン距離の計算
+  js_dist_euc <- dist(scale(js_df), method = "euclidean")
+  js_dist_man <- dist(scale(js_df), method = "manhattan")
+  js_daisy_euc <- daisy(js_df, metric = "euclidean", stand = TRUE)
+  js_daisy_man <- daisy(js_df, metric = "manhattan", stand = TRUE)
+  #' 正規化の方法が異なることに注意
+  as.matrix(js_dist_man)[10:15,10:15]
+  as.matrix(js_daisy_man)[10:15,10:15]
 
-  ## データの読み込み
-  js_data <- read.csv(file="data/japan_social.csv", row.names=1)
+  #' 以下 daisy による正規化を用いる
+  #' 関東の都県同士の距離を表示しなさい
+  glimpse(js_daisy_euc) # 距離行列のもつ情報を見る
+  attr(js_daisy_euc, "Labels") # 県名を確認 ('attributes(js_daisy_euc)$Labels' でも良い)
+  as.matrix(js_daisy_euc)[8:14, 8:14]
+  as.matrix(js_daisy_man)[8:14, 8:14]
+  #' dist/dissimilarity オブジェクトは距離以外の様々な属性 (attributes) を持つ
+  #' glimpse(obj) : オブジェクトの構造(structure)を見る(関数strでも良い)
+  #' attributes(obj) : 属性を表示(変更)する
+  #' attr(obj,属性名) : 特定の属性を表示(変更)する
 
-  ## ユークリッド距離とマンハッタン距離の計算
-  dst.euc <- dist(js_data, method="euclidean")
-  dst.man <- dist(js_data, method="manhattan")
-  dsy.euc <- daisy(js_data, metric="euclidean")
-  dsy.man <- daisy(js_data, metric="manhattan")
-  ## 両者が同じことを確認
-  as.matrix(dst.euc)[1:5,1:5]
-  as.matrix(dsy.euc)[1:5,1:5]
+  #' 大阪と四国の間の距離
+  as.matrix(js_daisy_euc)[27, 36:39, drop = FALSE] # 行列として表示
+  as.matrix(js_daisy_man)["Osaka", # 1行なので標準ではベクトルとして扱われる
+                          c("Tokushima","Kagawa","Ehime","Kochi")]
 
-  ## 正規化したユークリッド距離とマンハッタン距離の計算
-  dst.euc <- dist(scale(js_data), method="euclidean")
-  dst.man <- dist(scale(js_data), method="manhattan")
-  dsy.euc <- daisy(js_data, metric="euclidean", stand=TRUE)
-  dsy.man <- daisy(js_data, metric="manhattan", stand=TRUE)
-  ## 正規化の方法が異なることに注意
-  as.matrix(dst.man)[10:15,10:15]
-  as.matrix(dsy.man)[10:15,10:15]
+  #' ユークリッド距離とマンハッタン距離の散布図
+  p <- tibble( # 列名に特殊な文字(空白など)を含む場合は `` で囲む
+    `Euclid dist.` = as.vector(js_daisy_euc),
+    `Manhattan dist.` = as.vector(js_daisy_man)) |>
+    ggplot(aes(x = `Euclid dist.`, y = `Manhattan dist.`)) +
+    geom_point(colour = "blue")
 
-  ## 以下 daisy による正規化を用いる
-  ## 関東の都県同士の距離を表示しなさい
-  str(dsy.euc) # 距離行列のもつ情報を見る
-  attr(dsy.euc, "Labels") # 県名を確認 (rownames(js_data)でも良い)
-  as.matrix(dsy.euc)[8:14, 8:14]
-  as.matrix(dsy.man)[8:14, 8:14]
-  ## dist/dissimilarity オブジェクトは距離以外の様々な属性 (attributes) を持つ
-  ## str(obj) : オブジェクトの構造(structure)を見る
-  ## attributes(obj) : 属性を表示(変更)する
-  ## attr(obj,属性名) : 特定の属性を表示(変更)する
-
-  ## 大阪と四国の間の距離
-  as.matrix(dsy.euc)[27, 36:39, drop=FALSE] # 行列として表示
-  as.matrix(dsy.man)["Osaka", # 1行なので標準ではベクトルとして扱われる
-                     c("Tokushima","Kagawa","Ehime","Kochi")]
-
-  ## ユークリッド距離とマンハッタン距離の散布図
-  plot(dsy.euc, dsy.man,
-       xlab="Euclid dist.", ylab="Manhattan dist.")
-  plot(dsy.euc, dsy.man, 
-       xlim=c(0,3), ylim=c(0,3), # 原点近傍のみ表示
-       xlab="Euclid dist.", ylab="Manhattan dist.")
-  ## いくつか順序が入れ替わっていることがわかる
+  p + geom_abline(slope = 1, intercept = 0, colour = "red") # 基準線を付けて表示
+  p + xlim(0,3) + ylim(0,3) # 原点近傍のみ表示
+  #' いくつか順序が入れ替わっていることがわかる
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
@@ -819,29 +886,91 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 関数 ~hclust()~ 
+** R : 階層的クラスタリング
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       F217C7F8-45C2-48ED-9642-0BFA62F9E9B9
 :END:
-- 距離行列を用いた階層的クラスタリング
-  #+begin_src R :eval no
-    hclst <- hclust(d, method = "complete")
-    ## d: 距離行列
-    ## method: 分析法 (標準は最長距離法，他は"single","average"など)
-
-    ### 系統樹の表示 (一般的な plot のオプションが利用可能)
-    plot(hclst)
-
-    ### クラスタの分割
-    cutree(tree = hclst, k = NULL, h = NULL)
-    ## tree: hclustの結果を指定
-    ## k: クラスタ数を指定して分割
-    ## h: クラスタ距離を指定して分割
-
-    ### クラスタの分割表示 (cutree とほぼ同様のオプション)
-    rect.hclust(tree = hclst, k = NULL, h = NULL)
+- 関数 ~stats::hclust()~ 
+  #+begin_src R :eval no :tangle no
+    hclust(d, method = "complete", members = NULL)
+    #' d: 距離行列
+    #' method: 分析法 (標準は最長距離法，他は"single","average"など)
   #+end_src
+- 分析のための補助的な関数
+  #+begin_src R :eval no :tangle no
+    #' stats::cutree() - デンドログラムに基づくクラスタの分割 
+    cutree(tree, k = NULL, h = NULL)
+    #' tree: stats::hclust() の返値
+    #' k: クラスタの数を指定して分割
+    #' h: クラスタの高さを指定して分割
+  #+end_src
+
+#+reveal: split
+- 視覚化のための関数 (ggplot 系)
+  #+begin_src R :eval no :tangle no
+    ggdendrogram(data,
+                 segments = TRUE, labels = TRUE, leaf_labels = TRUE,
+                 rotate = FALSE, theme_dendro = TRUE, ...)
+    #' data: stats::hclust(), stats::dendrogram() などの返値
+  #+end_src
+- 視覚化のための関数 (graphics 系)
+  #+begin_src R :eval no :tangle no
+    #' stats::plot.hclust() - 系統樹の表示
+    plot(x, labels = NULL, hang = 0.1, check = TRUE,
+         axes = TRUE, frame.plot = FALSE, ann = TRUE,
+         main = "Cluster Dendrogram",
+         sub = NULL, xlab = NULL, ylab = "Height", ...)
+    #' x: stats::hclust() の返値
+
+    #' stats::rect.hclust() - クラスタの分割表示 (cutreeとほぼ同様)
+    rect.hclust(tree, k = NULL, which = NULL, x = NULL, h = NULL,
+                border = 2, cluster = NULL)
+    #' tree: stats::hclust() の返値
+  #+end_src
+  
+** R : 2次元でのクラスタ表示
+:PROPERTIES:
+:reveal_background: #fef4f4
+:ID:       06758554-01AD-44DD-B4A1-25B987E163B4
+:END:
+- 関数 ~ggfortify::autoplot()~ (ggplot 系)
+  #+begin_src R :eval no :tangle no
+    autoplot(object, data = NULL, frame = FALSE,
+             scale = 1, x = 1, y = 2,
+             variance_percentage = TRUE, ...)
+    #' object: stats::prcomp() などの返値
+    #' data: 描画に必要な追加データ
+    #' frame: クラスタごと(colourなどで指定)に凸包または楕円を描画
+    #' 詳細は '?ggfortify::autoplot.pca_common()/ggbiplot()'を参照
+  #+end_src
+  - クラスタの分割には関数 cutree() を利用する
+  - 2次元の散布図の作成には主成分分析などを利用する
+#+reveal: split
+- 関数 ~cluster::clusplot()~ (graphics 系)
+  #+begin_src R :eval no :tangle no
+    clusplot(x, clus, diss = FALSE, stand = FALSE,
+             lines = 2, shade = FALSE, color = FALSE,
+             labels= 0, plotchar = TRUE,
+             col.p = "dark green", col.txt = col.p, col.clus = 5，...)
+    #' x: データフレーム
+    #' clus: クラスタ分割
+    #' stand: 正規化の有無
+    #' lines: クラスタ間の繋がりの表示 (0:無，1:外，2:中心)
+    #' shade: 網掛けの有無
+    #' labels: ラベルの表示 (0:無，2:データとクラスタ, 3:データ, 4:クラスタ, など)
+    #' col.p/txt/clue: データ点・文字・クラスタの色指定
+    #' 詳細は '?cluster::clusplot.default()' を参照
+  #+end_src
+
+# - 関数 ~ggfortify::autoplot()~ 
+#   #+begin_src R :eval no :tangle no
+#     autoplot(object, data = NULL, colour = "cluster", ...)
+#     #' object: stats::kmeans(), cluster::pam() などの返値
+#     #' data: クラスタリングに用いたデータ (kmeansの場合に必要)
+#     #' 詳細は '?ggfortify::autoplot.kmeans()' を参照
+#   #+end_src
+
 
 ** COMMENT 演習: 階層的クラスタリング
 :PROPERTIES:
@@ -858,97 +987,106 @@
   - 平均0，分散1に正規化したデータのユークリッド距離を用いて，
     群平均法による階層的クラスタリングを行いなさい
   - クラスタ数を5つとして分割を行いなさい
-
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 階層的クラスタリング
-  ### 
-
-  ## クラスタリングの実行
-  js_dst <- dist(scale(js_data)) # 正規化してユークリッド距離を測る
-  js_est <- hclust(js_dst, method="average") # 群平均法
-  plot(js_est,
-       cex=0.8, # 文字の大きさを調整
-       sub="", xlab="", # 表示の一部を消去
-       main="euclidean + average") # デンドログラムの表示
-
-  ## クラスタの分割
+** COMMENT 解答例
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 階層的クラスタリング
+#+end_src
+#+begin_src R :eval no :exports none
+  #' クラスタリングの実行
+  #' 正規化してユークリッド距離を測る
+  js_dist <- js_df |> scale() |> dist() # 'dist(scale(js_df))' でも良い
+  js_hclust <- js_dist |>
+    hclust(method = "average") # 群平均法
+  js_hclust |> as.dendrogram() |>  
+    ggdendrogram(rotate = FALSE, # 横向きにしない
+                 theme_dendro = FALSE) + # 'TRUE'とすれば無地
+    labs(title = "Euclidean + Average",
+         x = "Prefecture", y = "Height") +
+    theme(axis.text.y = element_text(size = 9))
+  #' 少数のクラスタに分割してみる
   k <- 5 # 分割数を指定
-  plot(js_est,
-       hang=-1, # ラベルを揃えて表示
-       cex=0.8, 
-       sub="", xlab="", main="")
-  rect.hclust(js_est, k=k, border="orange") 
-  ## 結果の確認 (各クラスタ内の県名を表示)
-  js_clst <- cutree(js_est, k=k) # デンドログラムを分割
-  js_pref <- rownames(js_data) # 県名の取得
+  js_clust <- cutree(js_hclust, k = k) # デンドログラムを分割
+  js_pref <- rownames(js_df) # 県名の取得
   for(i in 1:k){
-      cat("=== cluster",i,"===\n")
-      print(js_pref[js_clst==i])
+    cat("=== cluster",i,"===\n")
+    print(js_pref[js_clust==i])
   }
+  #' @notes
+  #' 関数 stats::hclust では base R の関数 plot を利用して
+  #' 下記のような方法で簡便にクラスタの分割を表示できる
+  #' ggplot で同様なグラフを描く方法は後述
+  plot(js_hclust,
+       hang = -1, # ラベルを揃えて表示
+       cex = 0.8, # 文字のサイズを調整
+       sub = "", xlab = "", main = "")
+  rect.hclust(js_hclust, k = k, border = "orange") 
 
-  ## 主成分分析を併用して表示 (参考)
-  js_pca <- prcomp(js_data, scale.=TRUE) # データを正規化      
-  plot(predict(js_pca),
-       pch=js_clst, # クラスタ毎に形を変える
-       col="gray") 
-  text(predict(js_pca), 
-       labels=paste0("  ",rownames(js_data)), # 空白を加えて県名を表示
-       adj=c(0,0.5), # ラベルの位置をxは右寄せ(0)，yは真中(0.5)に指定
-       col=js_clst, # クラスタ毎に色を変える
-       cex=0.8) # 文字の大きさを調整
-  ## 最大クラスタを再評価
-  table(js_clst) # 最大を確認
-  m <- which.max(table(js_clst)) # 最大クラスタの番号を取り出す
-  js_pca <- prcomp(js_data[js_clst==m,], scale.=TRUE) # 最大クラスタのみ処理
-  plot(predict(js_pca),
-       pch=m, # クラスタの形を指定
-       col="gray") 
-  text(predict(js_pca),
-       labels=paste0("  ",rownames(js_data[js_clst==m,])),
-       adj=c(0,0.5), 
-       col=m, # クラスタの色を指定
-       cex=0.8) 
+  #' 主成分分析を併用して表示
+  js_df |>
+    prcomp() |> # 主成分分析
+    autoplot(data = tibble(cluster = factor(js_clust)),
+             colour = 'cluster',
+             ## 主成分分析の図をクラスタ毎に色分けするためのデータを追加
+             frame = TRUE, # クラスタ毎に枠を付ける
+             frame.type = "convex", # 凸包 "convex"・楕円 "norm,t" が指定できる
+             label = TRUE, # ラベルを付加
+             label.repel = TRUE, # 重なりを回避(ラベルが消える場合もあるので注意)
+             label.size = 3, # ラベルの大きさ
+             label.show.legend = FALSE) # 凡例の中のアルファベットを除く
+
+  #' 最大クラスタを再評価
+  table(js_clust) # 最大を確認
+  m <- which.max(table(js_clust)) # 最大クラスタの番号を取り出す
+  js_df_sub <- js_df[js_clust==m,]
+  js_hclust_sub <- js_df_sub |>
+    scale() |> dist() |> hclust(method = "average") 
+  js_hclust_sub |> as.dendrogram() |>  
+    ggdendrogram(rotate = FALSE, theme_dendro = FALSE) +
+    labs(title = "euclidean + average",
+         x = "prefecture", y = "distance") +
+    theme(axis.text.y = element_text(size = 9))
+  js_clust_sub <- cutree(js_hclust_sub, k = 4) # 最大クラスタをさらに分割
+  js_df_sub |>
+    prcomp() |> # 主成分分析
+    autoplot(data = tibble(cluster = factor(js_clust_sub)),
+             colour = 'cluster',
+             frame = TRUE, 
+             frame.type = "convex", 
+             label = TRUE,
+             label.repel = TRUE,
+             label.size = 3,
+             label.show.legend = FALSE)
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
-** R : 関数 ~cluster::agnes()~ 
+** R : ~package::cluster~ の利用 
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       2E0591D8-A5AC-4640-A560-8F95B9978D92
 :END:
-- ~cluster~ パッケージによる階層的クラスタリング
-  #+begin_src R :eval no
-    agns <- agnes(x, metric = "euclidean", stand = FALSE,
-                  method = "average")
-    ## x: データフレーム，または距離行列
-    ## metric: 距離 (標準はユークリッド距離，他は"manhattan"など)
-    ## stand: 正規化(平均と絶対偏差の平均による)の有無
-    ## method: 分析法 (標準は群平均法，他は"single","complete"など)
-
-    ### 系統樹の表示 (一般的な plot のオプションが利用可能)
-    plot(agns, which.plots=2)
-    ## which.plots=1 は評価の際に利用
+- 関数 ~cluster::agnes()~ 
+  #+begin_src R :eval no :tangle no
+    agnes(x, diss = inherits(x, "dist"), metric = "euclidean",
+          stand = FALSE, method = "average", par.method,
+          keep.diss = n < 100, keep.data = !diss, trace.lev = 0)
+    #' x: データフレーム，または距離行列
+    #' metric: 距離 (標準はユークリッド距離，他は 'manhattan' など)
+    #' stand: 正規化(平均と絶対偏差の平均による)の有無
+    #' method: 分析法 (標準は群平均法，他は 'single', 'complete' など)
   #+end_src
-- 関数 ~cutree()~, ~rect.hclust()~ も利用可能
-
-** R : 関数 ~cluster::clusplot()~ 
-:PROPERTIES:
-:reveal_background: #fef4f4
-:ID:       06758554-01AD-44DD-B4A1-25B987E163B4
-:END:
-- 2次元でのクラスタ表示
-  #+begin_src R :eval no
-    clusplot(x, clus, stand =FALSE, 
-	     lines = 2, shade = FALSE, labels= 0, 
-	     col.p = "dark green", col.txt = col.p, col.clus = 5)
-    ## x: データフレーム
-    ## clus: クラスタ分割
-    ## stand: 正規化の有無
-    ## lines: クラスタ間の繋がりの表示 (0:無，1:外，2:中心)
-    ## shade: 網掛けの有無
-    ## labels: ラベルの表示 (0:無，2:データとクラスタ, 3:データ, 4:クラスタ, など)
-    ## col.p/txt/clue: データ点・文字・クラスタの色指定
+- 視覚化のための補助的な関数 (base R系)
+  #+begin_src R :eval no :tangle no
+    #' cluster::plot.agnes() - 系統樹および凝集係数の表示
+    plot(x, ask = FALSE, which.plots = NULL, main = NULL,
+         sub = paste("Agglomerative Coefficient = ",round(x$ac, digits = 2)),
+         adj = 0, nmax.lab = 35, max.strlen = 5, xax.pretty = TRUE, ...)
+    #' x: cluster::agnes() の返値
+    #' which.plots: 1 - banner plot, 2 - dendrogram
   #+end_src
+#  - 関数 ~stats::cutree()~, ~stats::rect.hclust()~ も利用可能
 
 ** データセットの準備
 :PROPERTIES:
@@ -985,9 +1123,10 @@
 :ID:       126BE363-3942-4D86-B307-3A95240D3AAF
 :END:
 - 上記のデータを用いて以下の分析を行いなさい
-  #+begin_src R :eval no
-    ### データの読み込み 
-    om_data <- read.csv(file="data/omusubi.csv", row.names=1)
+  #+begin_src R :eval no :tangle no
+    #' データの読み込み 
+    om_data <- read_csv(file = "data/omusubi.csv")
+    om_df <- om_data |> column_to_rownames(var = "Pref")
   #+end_src
   - Hellinger距離を用いて距離行列を作成しなさい
     #+begin_quote
@@ -1002,52 +1141,141 @@
     #+end_quote
   - 群平均法による階層的クラスタリングを行いなさい
   - クラスタ数を定めて2次元でのクラスタ表示を作成しなさい
+** COMMENT 解答例
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
+  #' @practice 階層的クラスタリング 
+#+end_src
+#+begin_src R :eval no :exports none
+  #' データの読み込み("omusubi.csv"を用いる)
+  om_data <- bind_cols( # 日本語表記・地方の情報を追加
+    read_csv(file = "data/omusubi.csv"),
+    read_csv(file = "data/prefecture.csv"))
+  #' 距離計算用のデータフレーム
+  om_df <- om_data |> 
+    select(ume:etc,jp) |>
+    set_names(c("梅","鮭","昆布","鰹","明太子","鱈子","ツナ","その他","県名")) |>
+    column_to_rownames(var = "県名")
+  #' 日本語表示のための設定
+  if(Sys.info()["sysname"] == "Darwin") { # MacOSか調べて日本語フォントを指定
+    theme_update(text = element_text(family = "HiraMaruProN-W4"))}
+  if(Sys.info()["sysname"] == "Darwin") { # MacOSか調べて日本語フォントを指定
+    label_family <- "HiraMaruProN-W4"} else {label_family <- NULL}
+  #' データの散布図:
+  om_data |>
+    select(ume:etc,jp,area_jp) |>
+    set_names(c("梅","鮭","昆布","鰹","明太子","鱈子","ツナ","その他","県名","地方")) |>
+    ggpairs(columns = 1:8,
+            upper = list(continuous = "cor"),
+            diag = list(continuous = "barDiag"),
+            lower = list(continuous = wrap("points", size = 0.5),
+                         mapping = aes(colour = 地方)))
+  #' 県別の人気比率:
+  om_data |>
+    select(ume:etc,jp) |>
+    set_names(c("梅","鮭","昆布","鰹","明太子","鱈子","ツナ","その他","県名")) |>
+    pivot_longer(-県名) |>
+    mutate(県名 = fct_rev(as_factor(県名)),
+           name = as_factor(name)) |> # ggplot(aes(x = 県名, y = value)) +
+    ggplot(aes(y = 県名, x = value)) +
+    geom_bar(aes(fill = name),
+             stat = "identity",
+             position = position_stack(reverse=TRUE)) +
+    labs(title = "おむすびの具 県別人気アンケート (2009)",
+         x = "人気比率", fill = "具材") +
+    theme(axis.text.y = element_text(size = 9))
 
-#+begin_src R :eval no :exports none :tangle yes
-  ### 
-  ### 練習問題 階層的クラスタリング
-  ### 
+  #' Hellinger距離による階層的クラスタリング
+  om_agnes <- om_df |> sqrt() |> agnes()
+  #' @notes
+  #' 1/2乗してEuclid距離を計算すればHellinger距離に比例した量が得られる
+  #' 定数倍まで厳密に計算するのであれば '1/sqrt(2)*daisy(sqrt(om_df/100))'
 
-  ## パッケージの読み込み
-  library(cluster) # 既に読み込んでいれば不要
-
-  ## データの読み込み("omusubi.csv"を用いる)
-  om_data <- read.csv(file="data/omusubi.csv", row.names=1)
-  
-  ## データの視覚化
-  ## pairs plot
-  pairs(om_data,
-        col="blue",
-        panel=panel.smooth, # 各散布図の傾向を見る回帰曲線を付加
-        main="Favorite Filling in Omusubi (2009)")
-  ## bar plot
-  barplot(t(as.matrix(om_data)), # barplot用にデータフレームを変換
-          col=rainbow(8), # 具材ごとに色を変える
-          legend.text=colnames(om_data), # 色の凡例を付加
-          args.legend=list(cex=0.6), # 凡例の大きさを調整
-          horiz=TRUE, # 横向きで作成
-          las=1, # ラベルを水平に表示
-          cex.names=0.6, # ラベルの文字の大きさを調整
-          xlim=c(0,120), # 凡例のためにx軸に余白を付加
-          axes=FALSE, # 座標軸を描かない
-          main="Favorite Filling in Omusubi (2009)")
-
-  ## Hellinger距離の計算
-  om_dsy <- 1/sqrt(2)*daisy(sqrt(om_data/100))
-  ## 定数倍を気にしないのであれば daisy(sqrt(om_data)) でよい
-  
-  ## 階層的クラスタリング
-  om_agns <- agnes(om_dsy) 
-  plot(om_agns, which.plot=2, cex=0.8,
-       main="Dendrogram of Omusubi Data")
-
-  ## クラスタ数7として2次元のクラスタ表示
+  #' デンドログラムの表示
+  om_agnes |> as.dendrogram() |>  
+    ggdendrogram(rotate = TRUE, theme_dendro = FALSE) +
+    labs(title = "おむすびの具人気アンケート",
+         x = "県名", y = "距離") +
+    theme(axis.text.y = element_text(size = 9))
+  #' クラスタ数7としてクラスタの表示
   k <- 7
-  clusplot(x=om_data,
-           clus=cutree(om_agns, k=k),
-           labels=2,
-           col.p="green", col.txt="blue", col.clus="orange", cex=0.8,
-           main="Cluster of Omusubi Data")
+  om_clust <- cutree(om_agnes, k = k)  # クラスタを作成
+  om_df |>
+    prcomp() |>
+    autoplot(data = tibble(cluster = factor(om_clust)),
+             colour = 'cluster',
+             label = TRUE,
+             label.repel = TRUE,
+             label.size = 3,
+             label.family = label_family,
+             label.show.legend = FALSE)
+  om_df |>
+    prcomp() |>
+    autoplot(data = tibble(cluster = factor(om_clust)),
+             colour = 'cluster',
+             frame = TRUE,
+             frame.type = "norm", # 各クラスタを正規分布で近似して楕円を描く
+             label = TRUE,
+             label.repel = TRUE,
+             label.size = 3,
+             label.family = label_family,
+             label.show.legend = FALSE)
+  #' @notes
+  #' ggplotでは繁雑となるが下記のような図を描くこともできる
+  om_dendr <- dendro_data(om_agnes, type="rectangle") # ggplot用に変換
+  om_rect <- left_join(label(om_dendr),
+                       tibble(label = rownames(om_df),
+                              cluster = om_clust)) |>
+    group_by(cluster) |>
+    summarize(xmin = min(x)-0.3, xmax = max(x)+0.3)
+  om_ymax <- mean(sort(om_agnes$height, decreasing = TRUE)[k-0:1])
+  om_agnes |>
+    as.dendrogram() |>
+    ggdendrogram(rotate = TRUE, theme_dendro = FALSE) +
+    labs(title = "クラスタの分割",
+         x = "県名", y = "距離") +
+    theme(axis.text.x = element_text(size = 9)) +
+    geom_rect(data = om_rect,
+              aes(xmin = xmin, xmax = xmax, ymin = 0, ymax = om_ymax,
+                  fill = as_factor(cluster)),
+              alpha = 0.3, show.legend = FALSE)
+  #' @notes
+  #' 繁雑な処理を関数化するには例えば以下のようにすればよい
+  rect_agnes <- function(x, k) {
+    rect <- left_join(label(dendro_data(x, type="rectangle")),
+                      tibble(label = rownames(x$data),
+                             cluster = cutree(x, k = k))) |>
+    group_by(cluster) |>
+    summarize(xmin = min(x)-0.3, xmax = max(x)+0.3) |>
+    mutate(ymax = mean(sort(x$height, decreasing = TRUE)[k-0:1]))
+  }
+  om_agnes |>
+    as.dendrogram() |>
+    ggdendrogram(rotate = TRUE, theme_dendro = FALSE) +
+    geom_rect(data = rect_agnes(om_agnes, k = k),
+              aes(xmin = xmin, xmax = xmax, ymin = 0, ymax = ymax,
+                  fill = as_factor(cluster)),
+              alpha = 0.3, show.legend = FALSE) +
+    labs(title = "クラスタの分割",
+         x = "県名", y = "距離") +
+    theme(axis.text.x = element_text(size = 9)) 
+  #' @notes
+  #' 'package::cluster' には graphics 系の描画関数が含まれている
+  #' 例えば上記と同様なグラフは以下のようにして書ける
+  if(Sys.info()["sysname"]=="Darwin"){par(family="HiraMaruProN-W4")}
+  plot(om_agnes, which.plot = 2, cex = 0.8, # 関数plot.agnes()を使う場合
+       main = "Dendrogram of Omusubi Data")
+  plot(as.dendrogram(om_agnes), # 関数plot.dendrogram()を使う場合
+       main = "Dendrogram of Omusubi Data")
+  rect.hclust(om_agnes, k = k, border = (1:k)+1)
+  clusplot(x = om_df,
+           clus = cutree(om_agnes, k = k),
+           labels = 2,
+           col.p = "green", col.txt = "blue", col.clus = "orange", cex = 0.8,
+           main = "Cluster of Omusubi Data")
+#+end_src
+#+begin_src R :exports none
+  #' ---------------------------------------------------------------------------
 #+end_src
 
 
@@ -1060,10 +1288,10 @@
 - 各データを正規化
   #+begin_example
   Forest : 森林面積割合 (%) 2014年
-  Agri : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-  Ratio : 全国総人口に占める人口割合 (%) 2015年
-  Land : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-  Goods : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+  Agri   : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+  Ratio  : 全国総人口に占める人口割合 (%) 2015年
+  Land   : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+  Goods  : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
   #+end_example
 - 分析方法 : Euclid 距離 + 群平均法
 
