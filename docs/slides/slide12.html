@@ -15,9 +15,11 @@
 
 <link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/font-awesome/css/fontawesome.css"/>
 
-<link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/chalkboard/style.css"/>
+
+<link rel="stylesheet" href="./reveal.js/local/mycourse.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
@@ -43,8 +45,8 @@
 
 </section>
 <section>
-<section id="slide-org8e92cb1">
-<h2 id="org8e92cb1">講義の内容</h2>
+<section id="slide-org676b907">
+<h2 id="org676b907">講義の内容</h2>
 <ul>
 <li><b>第1回 : 時系列の基本モデル</b></li>
 <li>第2回 : モデルの推定と予測</li>
@@ -53,13 +55,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org6e47664">
-<h2 id="org6e47664">事例</h2>
-<div class="outline-text-2" id="text-org6e47664">
+<section id="slide-org807aff7">
+<h2 id="org807aff7">時系列解析の例</h2>
+<div class="outline-text-2" id="text-org807aff7">
 </div>
 </section>
-<section id="slide-org7841116">
-<h3 id="org7841116">データの概要</h3>
+<section id="slide-orgf049713">
+<h3 id="orgf049713">データの概要</h3>
 <ul>
 <li>米国の航空機旅客量の変遷データ
 <ul>
@@ -82,9 +84,9 @@ Edition. Holden-Day. Series G.
 
 </section>
 <section>
-<div id="osncjrvket" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="buzrecfvki" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
-  <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
+  <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 24px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
     <tr class="gt_col_headings" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="year" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" bgcolor="#FFFFFF" valign="bottom" align="right">year</th>
@@ -268,48 +270,48 @@ Edition. Holden-Day. Series G.
 </section>
 <section>
 
-<div id="orgdd3bf2e" class="figure">
-<p><img src="figs/12_ap_display.png" alt="12_ap_display.png" />
+<div id="org222bb6c" class="figure">
+<p><img src="figs/ap_display.png" alt="ap_display.png" />
 </p>
-<p><span class="figure-number">Figure 1: </span>航空機旅客量データと自己・偏自己相関</p>
+<p><span class="figure-number">Figure 1: </span>航空機旅客量データ・自己相関・季節性の確認</p>
 </div>
 
 </section>
 <section>
 
-<div id="orgf86a19c" class="figure">
-<p><img src="figs/12_ap_decompose.png" alt="12_ap_decompose.png" />
+<div id="org567a185" class="figure">
+<p><img src="figs/ap_decompose.png" alt="ap_decompose.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>時系列の分解による表現</p>
 </div>
 </section>
-<section id="slide-org5c30405">
-<h3 id="org5c30405">データのモデル化</h3>
+<section id="slide-org33381e8">
+<h3 id="org33381e8">データのモデル化</h3>
 
-<div id="org012f28b" class="figure">
-<p><img src="figs/12_ap_arima.png" alt="12_ap_arima.png" />
+<div id="org850914f" class="figure">
+<p><img src="figs/ap_arima.png" alt="ap_arima.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>モデルの推定とあてはめ</p>
 </div>
 </section>
-<section id="slide-org4d3ba62">
-<h3 id="org4d3ba62">モデルにもとづく予測</h3>
+<section id="slide-org1d8f4ca">
+<h3 id="org1d8f4ca">モデルにもとづく予測</h3>
 
-<div id="org2ac329b" class="figure">
-<p><img src="figs/12_ap_predict.png" alt="12_ap_predict.png" />
+<div id="orgf22a71d" class="figure">
+<p><img src="figs/ap_predict.png" alt="ap_predict.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>航空機旅客量の予測</p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-org80ba17c">
-<h2 id="org80ba17c">時系列解析の概要</h2>
-<div class="outline-text-2" id="text-org80ba17c">
+<section id="slide-orgf396166">
+<h2 id="orgf396166">時系列解析の概要</h2>
+<div class="outline-text-2" id="text-orgf396166">
 </div>
 </section>
-<section id="slide-org8da78af">
-<h3 id="org8da78af">時系列解析とは</h3>
+<section id="slide-org056f60a">
+<h3 id="org056f60a">時系列解析とは</h3>
 <ul>
 <li>時系列データ
 <ul>
@@ -332,8 +334,8 @@ Edition. Holden-Day. Series G.
 
 </ul>
 </section>
-<section id="slide-org20a9140">
-<h3 id="org20a9140">時系列データ</h3>
+<section id="slide-orgd3de907">
+<h3 id="orgd3de907">時系列データ</h3>
 <ul>
 <li><p>
 統計学・確率論における表現 : <b>確率過程</b>
@@ -364,13 +366,13 @@ Edition. Holden-Day. Series G.
 </section>
 </section>
 <section>
-<section id="slide-org4762d8a">
-<h2 id="org4762d8a">基本的なモデル</h2>
-<div class="outline-text-2" id="text-org4762d8a">
+<section id="slide-orgd2743b0">
+<h2 id="orgd2743b0">基本的なモデル</h2>
+<div class="outline-text-2" id="text-orgd2743b0">
 </div>
 </section>
-<section id="slide-org12b7b45">
-<h3 id="org12b7b45">ホワイトノイズ</h3>
+<section id="slide-org8c292ea">
+<h3 id="org8c292ea">ホワイトノイズ</h3>
 <ul>
 <li><p>
 定義
@@ -411,21 +413,21 @@ Edition. Holden-Day. Series G.
 </blockquote></li>
 
 </ul></li>
-<li>独立であるため系列としての予測は不可能</li>
+<li>独立であるため系列としての予測(点推定)は不可能</li>
 
 </ul>
 
 </section>
 <section>
 
-<div id="org6ca2161" class="figure">
-<p><img src="figs/12_wn.png" alt="12_wn.png" />
+<div id="orgb150462" class="figure">
+<p><img src="figs/ts_wn.png" alt="ts_wn.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>ホワイトノイズ (標準正規分布)</p>
 </div>
 </section>
-<section id="slide-orgcc51ab5">
-<h3 id="orgcc51ab5">トレンドのあるホワイトノイズ</h3>
+<section id="slide-org958c051">
+<h3 id="org958c051">トレンドのあるホワイトノイズ</h3>
 <ul>
 <li><p>
 定義
@@ -460,14 +462,14 @@ Edition. Holden-Day. Series G.
 </section>
 <section>
 
-<div id="org312d0c0" class="figure">
-<p><img src="figs/12_trwn.png" alt="12_trwn.png" />
+<div id="org3d8a243" class="figure">
+<p><img src="figs/ts_trwn.png" alt="ts_trwn.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>トレンドのあるホワイトノイズ</p>
 </div>
 </section>
-<section id="slide-org0908b22">
-<h3 id="org0908b22">ランダムウォーク</h3>
+<section id="slide-org875b1e8">
+<h3 id="org875b1e8">ランダムウォーク</h3>
 <ul>
 <li><p>
 定義
@@ -496,19 +498,19 @@ Edition. Holden-Day. Series G.
 </section>
 <section>
 
-<div id="org389f821" class="figure">
-<p><img src="figs/12_rw.png" alt="12_rw.png" />
+<div id="org1346310" class="figure">
+<p><img src="figs/ts_rw.png" alt="ts_rw.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>ランダムウォーク</p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-orgedf99fb" data-background="#fef4f4">
-<h2 id="orgedf99fb">演習</h2>
+<section id="slide-org0b1dda4" data-background="#fef4f4">
+<h2 id="org0b1dda4">演習</h2>
 </section>
-<section id="slide-orgf7c7529" data-background="#fef4f4">
-<h3 id="orgf7c7529">問題</h3>
+<section id="slide-orga1919ed" data-background="#fef4f4">
+<h3 id="orga1919ed">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -529,8 +531,8 @@ Edition. Holden-Day. Series G.
 
 </ul>
 </section>
-<section id="slide-orgfc8ec35" data-background="#fef4f4">
-<h3 id="orgfc8ec35">解答例</h3>
+<section id="slide-org8eab834" data-background="#fef4f4">
+<h3 id="org8eab834">解答例</h3>
 <ul>
 <li><p>
 定義に従い計算する
@@ -594,13 +596,13 @@ Edition. Holden-Day. Series G.
 </section>
 </section>
 <section>
-<section id="slide-org098cd0b">
-<h2 id="org098cd0b">より一般的なモデル</h2>
-<div class="outline-text-2" id="text-org098cd0b">
+<section id="slide-org46cea37">
+<h2 id="org46cea37">より一般的なモデル</h2>
+<div class="outline-text-2" id="text-org46cea37">
 </div>
 </section>
-<section id="slide-orgcf0a0f7">
-<h3 id="orgcf0a0f7">自己回帰過程</h3>
+<section id="slide-orga57ea0f">
+<h3 id="orga57ea0f">自己回帰過程</h3>
 <ul>
 <li><p>
 定義 (AR(p); 次数 \(p\) の auto regressive の略)
@@ -637,14 +639,14 @@ Edition. Holden-Day. Series G.
 </section>
 <section>
 
-<div id="org276b67d" class="figure">
-<p><img src="figs/12_ar.png" alt="12_ar.png" />
+<div id="org11e32dd" class="figure">
+<p><img src="figs/ts_ar.png" alt="ts_ar.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>AR過程</p>
 </div>
 </section>
-<section id="slide-org913bb9c">
-<h3 id="org913bb9c">移動平均過程</h3>
+<section id="slide-orgedf926f">
+<h3 id="orgedf926f">移動平均過程</h3>
 <ul>
 <li><p>
 定義 (MA(q); 次数 \(q\) の moving average の略)
@@ -679,14 +681,14 @@ Edition. Holden-Day. Series G.
 <section>
 
 
-<div id="orgfa9afb8" class="figure">
-<p><img src="figs/12_ma.png" alt="12_ma.png" />
+<div id="org439884c" class="figure">
+<p><img src="figs/ts_ma.png" alt="ts_ma.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>MA過程</p>
 </div>
 </section>
-<section id="slide-orgbb7077a">
-<h3 id="orgbb7077a">自己回帰移動平均過程</h3>
+<section id="slide-org595c176">
+<h3 id="org595c176">自己回帰移動平均過程</h3>
 <ul>
 <li><p>
 定義 (ARMA(\(p,q\)); 次数 \((p,q)\))
@@ -726,19 +728,19 @@ Edition. Holden-Day. Series G.
 <section>
 
 
-<div id="org8f843bd" class="figure">
-<p><img src="figs/12_arma.png" alt="12_arma.png" />
+<div id="orgab7513e" class="figure">
+<p><img src="figs/ts_arma.png" alt="ts_arma.png" />
 </p>
 <p><span class="figure-number">Figure 10: </span>ARMA過程</p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-org91e9829" data-background="#fef4f4">
-<h2 id="org91e9829">演習</h2>
+<section id="slide-orga814ca7" data-background="#fef4f4">
+<h2 id="orga814ca7">演習</h2>
 </section>
-<section id="slide-org153e0e7" data-background="#fef4f4">
-<h3 id="org153e0e7">問題</h3>
+<section id="slide-orgb5cc213" data-background="#fef4f4">
+<h3 id="orgb5cc213">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -749,8 +751,8 @@ Edition. Holden-Day. Series G.
 
 </ul>
 </section>
-<section id="slide-orgee05ffe" data-background="#fef4f4">
-<h3 id="orgee05ffe">解答例</h3>
+<section id="slide-org04a2aa0" data-background="#fef4f4">
+<h3 id="org04a2aa0">解答例</h3>
 <ul>
 <li><p>
 定義に従い帰納的に計算する
@@ -814,13 +816,13 @@ Edition. Holden-Day. Series G.
 </section>
 </section>
 <section>
-<section id="slide-orgf54ff7b">
-<h2 id="orgf54ff7b">定常過程と非定常過程</h2>
-<div class="outline-text-2" id="text-orgf54ff7b">
+<section id="slide-org81eb0a2">
+<h2 id="org81eb0a2">定常過程と非定常過程</h2>
+<div class="outline-text-2" id="text-org81eb0a2">
 </div>
 </section>
-<section id="slide-org69b001a">
-<h3 id="org69b001a">弱定常性</h3>
+<section id="slide-orgb95d468">
+<h3 id="orgb95d468">弱定常性</h3>
 <ul>
 <li>確率過程\(X_{t},\;t=1,\dotsc,T\)が次の性質をもつ 
 <ul>
@@ -870,8 +872,8 @@ Edition. Holden-Day. Series G.
 
 </ul>
 </section>
-<section id="slide-org7e8cd20">
-<h3 id="org7e8cd20">定常性と非定常性</h3>
+<section id="slide-org7b60004">
+<h3 id="org7b60004">定常性と非定常性</h3>
 <ul>
 <li>定常でない確率過程は <b>非定常</b> であるという</li>
 <li>いろいろな確率過程の定常性
@@ -884,8 +886,8 @@ Edition. Holden-Day. Series G.
 
 </ul>
 </section>
-<section id="slide-org2b0b97c">
-<h3 id="org2b0b97c">非定常過程の難しさ</h3>
+<section id="slide-orgf6ff80f">
+<h3 id="orgf6ff80f">非定常過程の難しさ</h3>
 <ul>
 <li>性質を特徴付ける統計量が観測値から得られない
 <ul>
@@ -901,14 +903,14 @@ Edition. Holden-Day. Series G.
 <li><a href="http://tylervigen.com/spurious-correlations">http://tylervigen.com/spurious-correlations</a></li>
 
 </ul></li>
-<li><span style="color:gray;">因果推論などの潜伏変数とは異なる問題</span></li>
+<li>因果推論などの潜伏変数とは異なる問題</li>
 
 </ul></li>
 
 </ul>
 </section>
-<section id="slide-orgef31db9">
-<h3 id="orgef31db9">非定常過程の取り扱い</h3>
+<section id="slide-org98bea53">
+<h3 id="org98bea53">非定常過程の取り扱い</h3>
 <ul>
 <li>定常過程とみなせるように変換して分析を実行
 <ul>
@@ -961,13 +963,13 @@ Edition. Holden-Day. Series G.
 </section>
 </section>
 <section>
-<section id="slide-org61e0772">
-<h2 id="org61e0772">自己共分散・自己相関</h2>
-<div class="outline-text-2" id="text-org61e0772">
+<section id="slide-orgd07a3ba">
+<h2 id="orgd07a3ba">自己共分散・自己相関</h2>
+<div class="outline-text-2" id="text-orgd07a3ba">
 </div>
 </section>
-<section id="slide-orgfee5383">
-<h3 id="orgfee5383">自己共分散・自己相関</h3>
+<section id="slide-org287d338">
+<h3 id="org287d338">自己共分散・自己相関</h3>
 <ul>
 <li>確率過程\(X_{t}\)が <b>定常過程</b> の場合
 <ul>
@@ -1007,8 +1009,8 @@ Edition. Holden-Day. Series G.
 
 </ul>
 </section>
-<section id="slide-org7cfc533">
-<h3 id="org7cfc533">標本自己共分散・標本自己相関</h3>
+<section id="slide-org994b0d2">
+<h3 id="org994b0d2">標本自己共分散・標本自己相関</h3>
 <ul>
 <li>観測データ \(X_1,\dotsc,X_{T}\) からの推定
 <ul>
@@ -1046,8 +1048,8 @@ Edition. Holden-Day. Series G.
 
 </ul>
 </section>
-<section id="slide-orgab7e6d3">
-<h3 id="orgab7e6d3">数値例</h3>
+<section id="slide-orgaae4ccd">
+<h3 id="orgaae4ccd">数値例</h3>
 <ul>
 <li>同じモデルに従うパス(系列)の自己相関を比較する
 <ul>
@@ -1062,8 +1064,8 @@ Edition. Holden-Day. Series G.
 </section>
 <section>
 
-<div id="orgc8397e5" class="figure">
-<p><img src="figs/12_aracf.png" alt="12_aracf.png" />
+<div id="org6080972" class="figure">
+<p><img src="figs/ts_aracf.png" alt="ts_aracf.png" />
 </p>
 <p><span class="figure-number">Figure 11: </span>AR過程の自己相関</p>
 </div>
@@ -1071,8 +1073,8 @@ Edition. Holden-Day. Series G.
 </section>
 <section>
 
-<div id="org8fbbd86" class="figure">
-<p><img src="figs/12_maacf.png" alt="12_maacf.png" />
+<div id="org51c0554" class="figure">
+<p><img src="figs/ts_maacf.png" alt="ts_maacf.png" />
 </p>
 <p><span class="figure-number">Figure 12: </span>MA過程の自己相関</p>
 </div>
@@ -1080,19 +1082,19 @@ Edition. Holden-Day. Series G.
 </section>
 <section>
 
-<div id="orgc059ea3" class="figure">
-<p><img src="figs/12_armaacf.png" alt="12_armaacf.png" />
+<div id="org4b5fac2" class="figure">
+<p><img src="figs/ts_armaacf.png" alt="ts_armaacf.png" />
 </p>
 <p><span class="figure-number">Figure 13: </span>ARMA過程の自己相関</p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-org39a44fa" data-background="#fef4f4">
-<h2 id="org39a44fa">演習</h2>
+<section id="slide-org571ea8d" data-background="#fef4f4">
+<h2 id="org571ea8d">演習</h2>
 </section>
-<section id="slide-org04b4a57" data-background="#fef4f4">
-<h3 id="org04b4a57">問題</h3>
+<section id="slide-orgff68e9d" data-background="#fef4f4">
+<h3 id="orgff68e9d">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -1104,8 +1106,8 @@ AR過程の係数と自己共分散の間に成り立つ関係を考えなさい
 
 </ul>
 </section>
-<section id="slide-orga690185" data-background="#fef4f4">
-<h3 id="orga690185">解答例</h3>
+<section id="slide-orgc4316b9" data-background="#fef4f4">
+<h3 id="orgc4316b9">解答例</h3>
 <ul>
 <li><p>
 ラグ\(h>0\)の自己共分散を考える
@@ -1191,8 +1193,8 @@ Levinson–Durbin アルゴリズムが知られている</li>
 </section>
 </section>
 <section>
-<section id="slide-org80069d2">
-<h2 id="org80069d2">次回の内容</h2>
+<section id="slide-org455a3aa">
+<h2 id="org455a3aa">次回の内容</h2>
 <ul>
 <li>第1回 : 時系列の基本モデル</li>
 <li><b>第2回 : モデルの推定と予測</b></li>
@@ -1206,7 +1208,7 @@ Levinson–Durbin アルゴリズムが知られている</li>
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
 <script src="./reveal.js/plugin/menu/menu.js"></script>
 <script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
-<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/plugin/chalkboard/plugin.js"></script>
 <script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
@@ -1220,7 +1222,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: true,
+mouseWheel: false,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1229,10 +1231,10 @@ overview: true,
 transition: 'fade',
 transitionSpeed: 'default',
 showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
-spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
+spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealChalkboard ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [

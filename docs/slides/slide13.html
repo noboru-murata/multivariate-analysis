@@ -15,9 +15,11 @@
 
 <link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/font-awesome/css/fontawesome.css"/>
 
-<link rel="stylesheet" href="./reveal.js/dist/theme/mycourse.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/chalkboard/style.css"/>
+
+<link rel="stylesheet" href="./reveal.js/local/mycourse.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
@@ -43,8 +45,8 @@
 
 </section>
 <section>
-<section id="slide-org4ce1529">
-<h2 id="org4ce1529">講義の内容</h2>
+<section id="slide-org666fdc3">
+<h2 id="org666fdc3">講義の内容</h2>
 <ul>
 <li>第1回 : 時系列の基本モデル</li>
 <li><b>第2回 : モデルの推定と予測</b></li>
@@ -53,13 +55,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org7bf0c6f">
-<h2 id="org7bf0c6f">時系列解析の復習</h2>
-<div class="outline-text-2" id="text-org7bf0c6f">
+<section id="slide-org32abe0a">
+<h2 id="org32abe0a">時系列解析の復習</h2>
+<div class="outline-text-2" id="text-org32abe0a">
 </div>
 </section>
-<section id="slide-org9c6e634">
-<h3 id="org9c6e634">時系列解析とは</h3>
+<section id="slide-org2b01fff">
+<h3 id="org2b01fff">時系列解析とは</h3>
 <ul>
 <li>時系列データ
 <ul>
@@ -82,8 +84,8 @@
 
 </ul>
 </section>
-<section id="slide-org2f59e54">
-<h3 id="org2f59e54">時系列モデルと定常性</h3>
+<section id="slide-org5041041">
+<h3 id="org5041041">時系列モデルと定常性</h3>
 <ul>
 <li><p>
 <b>確率過程</b>
@@ -112,8 +114,8 @@
 
 </ul>
 </section>
-<section id="slide-org3d5c9a1">
-<h3 id="org3d5c9a1">ホワイトノイズ</h3>
+<section id="slide-orgad66af6">
+<h3 id="orgad66af6">ホワイトノイズ</h3>
 <ul>
 <li><p>
 定義
@@ -145,8 +147,8 @@
 
 </ul>
 </section>
-<section id="slide-org7b8bbe3">
-<h3 id="org7b8bbe3">トレンドのあるホワイトノイズ</h3>
+<section id="slide-org7d44ad6">
+<h3 id="org7d44ad6">トレンドのあるホワイトノイズ</h3>
 <ul>
 <li><p>
 定義
@@ -177,8 +179,8 @@
 
 </ul>
 </section>
-<section id="slide-orgb3307e5">
-<h3 id="orgb3307e5">ランダムウォーク</h3>
+<section id="slide-org253098e">
+<h3 id="org253098e">ランダムウォーク</h3>
 <ul>
 <li><p>
 定義
@@ -209,8 +211,8 @@
 
 </ul>
 </section>
-<section id="slide-org32f533c">
-<h3 id="org32f533c">自己回帰過程</h3>
+<section id="slide-org3b026c2">
+<h3 id="org3b026c2">自己回帰過程</h3>
 <ul>
 <li><p>
 定義 (次数\(p\)のARモデル)
@@ -243,8 +245,8 @@
 
 </ul>
 </section>
-<section id="slide-orgf8742a0">
-<h3 id="orgf8742a0">移動平均過程</h3>
+<section id="slide-org865866d">
+<h3 id="org865866d">移動平均過程</h3>
 <ul>
 <li><p>
 定義 (次数\(q\) のMAモデル)
@@ -278,8 +280,8 @@
 
 </ul>
 </section>
-<section id="slide-org70ea5eb">
-<h3 id="org70ea5eb">自己回帰移動平均過程</h3>
+<section id="slide-org4284f28">
+<h3 id="org4284f28">自己回帰移動平均過程</h3>
 <ul>
 <li><p>
 定義 (次数\((p,q)\)のARMAモデル)
@@ -316,8 +318,8 @@
 
 </ul>
 </section>
-<section id="slide-org0409b75">
-<h3 id="org0409b75">自己共分散・自己相関</h3>
+<section id="slide-org8207f06">
+<h3 id="org8207f06">自己共分散・自己相関</h3>
 <ul>
 <li>弱定常な確率過程 : \(X_{t},\;t=1,\dotsc,T\)
 <ul>
@@ -360,8 +362,8 @@
 
 </ul>
 </section>
-<section id="slide-orge578303">
-<h3 id="orge578303">標本自己共分散・標本自己相関</h3>
+<section id="slide-org6b6cbb8">
+<h3 id="org6b6cbb8">標本自己共分散・標本自己相関</h3>
 <ul>
 <li>観測データ \(X_1,\dotsc,X_{T}\) からの推定
 <ul>
@@ -402,8 +404,8 @@
 </section>
 <section>
 
-<div id="orge7f3114" class="figure">
-<p><img src="figs/13_ar.png" alt="13_ar.png" />
+<div id="org89aba6d" class="figure">
+<p><img src="figs/ts_ar.png" alt="ts_ar.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>同じモデルに従うAR過程の例</p>
 </div>
@@ -411,8 +413,8 @@
 </section>
 <section>
 
-<div id="org1024a39" class="figure">
-<p><img src="figs/13_aracf.png" alt="13_aracf.png" />
+<div id="org4c2cca0" class="figure">
+<p><img src="figs/ts_aracf.png" alt="ts_aracf.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>AR過程の自己相関</p>
 </div>
@@ -420,8 +422,8 @@
 </section>
 <section>
 
-<div id="orgc5db4a1" class="figure">
-<p><img src="figs/13_ma.png" alt="13_ma.png" />
+<div id="org996c3ef" class="figure">
+<p><img src="figs/ts_ma.png" alt="ts_ma.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>同じモデルに従うMA過程の例</p>
 </div>
@@ -429,8 +431,8 @@
 </section>
 <section>
 
-<div id="org70db482" class="figure">
-<p><img src="figs/13_maacf.png" alt="13_maacf.png" />
+<div id="org60da936" class="figure">
+<p><img src="figs/ts_maacf.png" alt="ts_maacf.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>MA過程の自己相関</p>
 </div>
@@ -438,8 +440,8 @@
 </section>
 <section>
 
-<div id="org0257d67" class="figure">
-<p><img src="figs/13_arma.png" alt="13_arma.png" />
+<div id="orga7337f1" class="figure">
+<p><img src="figs/ts_arma.png" alt="ts_arma.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>同じモデルに従うARMA過程の例</p>
 </div>
@@ -447,21 +449,21 @@
 </section>
 <section>
 
-<div id="orgc763a88" class="figure">
-<p><img src="figs/13_armaacf.png" alt="13_armaacf.png" />
+<div id="org4b6caf6" class="figure">
+<p><img src="figs/ts_armaacf.png" alt="ts_armaacf.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>ARMA過程の自己相関</p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-orgffc559a">
-<h2 id="orgffc559a">ARモデルの推定</h2>
-<div class="outline-text-2" id="text-orgffc559a">
+<section id="slide-orgb3328f5">
+<h2 id="orgb3328f5">ARモデルの推定</h2>
+<div class="outline-text-2" id="text-orgb3328f5">
 </div>
 </section>
-<section id="slide-org4b20cad">
-<h3 id="org4b20cad">自己共分散・自己相関</h3>
+<section id="slide-org9160127">
+<h3 id="org9160127">自己共分散・自己相関</h3>
 <ul>
 <li>平均\(0\)の弱定常な確率過程 : \(X_{t},\;t=1,\dotsc,T\)
 <ul>
@@ -504,8 +506,8 @@
 
 </ul>
 </section>
-<section id="slide-org3028e75">
-<h3 id="org3028e75">自己共分散とARモデル</h3>
+<section id="slide-org781e607">
+<h3 id="org781e607">自己共分散とARモデル</h3>
 <ul>
 <li><p>
 AR(p)モデル : 
@@ -548,8 +550,8 @@ AR(p)モデル :
 
 </ul>
 </section>
-<section id="slide-org3c7b1d0">
-<h3 id="org3c7b1d0">Yule-Walker方程式</h3>
+<section id="slide-org5175f09">
+<h3 id="org5175f09">Yule-Walker方程式</h3>
 <ul>
 <li><p>
 \(1\le h\le p\) を考えると以下の関係が成り立つ
@@ -588,8 +590,8 @@ AR(p)モデル :
 
 </ul>
 </section>
-<section id="slide-orgad21054">
-<h3 id="orgad21054">偏自己相関</h3>
+<section id="slide-org3f3ad95">
+<h3 id="org3f3ad95">偏自己相関</h3>
 <ul>
 <li><p>
 AR(p)モデル
@@ -638,8 +640,8 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 <section>
 
-<div id="orgd2112b9" class="figure">
-<p><img src="figs/13_arpacf.png" alt="13_arpacf.png" />
+<div id="org9fdfc0c" class="figure">
+<p><img src="figs/ts_arpacf.png" alt="ts_arpacf.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>AR過程の偏自己相関</p>
 </div>
@@ -647,8 +649,8 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 <section>
 
-<div id="org2fd3be8" class="figure">
-<p><img src="figs/13_mapacf.png" alt="13_mapacf.png" />
+<div id="orgefd63fe" class="figure">
+<p><img src="figs/ts_mapacf.png" alt="ts_mapacf.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>MA過程の偏自己相関</p>
 </div>
@@ -656,14 +658,14 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 <section>
 
-<div id="org53b5ec6" class="figure">
-<p><img src="figs/13_armapacf.png" alt="13_armapacf.png" />
+<div id="org278014f" class="figure">
+<p><img src="figs/ts_armapacf.png" alt="ts_armapacf.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>ARMA過程の偏自己相関</p>
 </div>
 </section>
-<section id="slide-org584c990">
-<h3 id="org584c990">モデルの推定に関する補足</h3>
+<section id="slide-org69339e7">
+<h3 id="org69339e7">モデルの推定に関する補足</h3>
 <ul>
 <li>ARMAモデルの推定方法は主に以下の3つ
 <ul>
@@ -686,8 +688,8 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 
 </ul>
 </section>
-<section id="slide-orgfde82a7">
-<h3 id="orgfde82a7">非定常過程の変換</h3>
+<section id="slide-org9b4d5a7">
+<h3 id="org9b4d5a7">非定常過程の変換</h3>
 <ul>
 <li>定常過程とみなせるように変換して分析
 <ul>
@@ -735,11 +737,11 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 </section>
 <section>
-<section id="slide-org9118e35" data-background="#fef4f4">
-<h2 id="org9118e35">演習</h2>
+<section id="slide-orgf81ed41" data-background="#fef4f4">
+<h2 id="orgf81ed41">演習</h2>
 </section>
-<section id="slide-org3ca5209" data-background="#fef4f4">
-<h3 id="org3ca5209">問題</h3>
+<section id="slide-orga68dc2d" data-background="#fef4f4">
+<h3 id="orga68dc2d">問題</h3>
 <ul>
 <li><p>
 以下で定義されるMA(1)について問に答えなさい
@@ -764,8 +766,8 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 
 </ul>
 </section>
-<section id="slide-org18fc122" data-background="#fef4f4">
-<h3 id="org18fc122">解答例</h3>
+<section id="slide-org21d3c41" data-background="#fef4f4">
+<h3 id="org21d3c41">解答例</h3>
 <ul>
 <li><p>
 平均0であることに注意して定義通り計算する
@@ -859,13 +861,13 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 </section>
 <section>
-<section id="slide-org6dfe2ed">
-<h2 id="org6dfe2ed">モデルによる予測</h2>
-<div class="outline-text-2" id="text-org6dfe2ed">
+<section id="slide-org01d677e">
+<h2 id="org01d677e">モデルによる予測</h2>
+<div class="outline-text-2" id="text-org01d677e">
 </div>
 </section>
-<section id="slide-org718b06e">
-<h3 id="org718b06e">ARMAモデルによる予測</h3>
+<section id="slide-org893b64a">
+<h3 id="org893b64a">ARMAモデルによる予測</h3>
 <ul>
 <li>推定したモデルを用いて\(n\)期先を予測
 <ul>
@@ -876,20 +878,21 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </ul></li>
 <li>いずれも \(n\)が大きいと不確定性が増大</li>
 <li>階差による変換は累積(階差の逆変換)により推定</li>
+<li>推定したノイズの不確定性にもとづき信頼区間を構成</li>
 
 </ul>
 
 </section>
 <section>
 
-<div id="orgb7a0d2c" class="figure">
-<p><img src="figs/13_ap_arima.png" alt="13_ap_arima.png" />
+<div id="org8246294" class="figure">
+<p><img src="figs/ap_arima.png" alt="ap_arima.png" />
 </p>
 <p><span class="figure-number">Figure 10: </span>ARIMAモデル(階差ありARMA)による予測</p>
 </div>
 </section>
-<section id="slide-org7d04794">
-<h3 id="org7d04794">分解モデルによる予測</h3>
+<section id="slide-org3536a52">
+<h3 id="org3536a52">分解モデルによる予測</h3>
 <ul>
 <li><p>
 トレンド成分+季節成分+ランダム成分への分解
@@ -926,25 +929,64 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </ul></li>
 
 </ul>
+</section>
+<section id="slide-orgd412236">
+<h3 id="orgd412236">Holt-Winter の方法</h3>
+<ul>
+<li><p>
+指数平滑化を用いた加法的分解モデルによる予測
+</p>
+<blockquote>
+<div>
+\begin{align}
+  l_{t} &= \alpha (x_{t}-s_{t{-}m}) + (1-\alpha) (l_{t{-}1}+b_{t{-}1})\\
+  b_{t} &= \beta (l_{t}-l_{t{-}1}) + (1-\beta) b_{t{-}1}\\
+  s_{t} &= \gamma (x_{t}-l_{t}) + (1-\gamma) s_{t{-}m}\\
+  \hat{x}_{t{+}h|t} &= l_{t} + b_{t}\times h + s_{t{-}m{+}h}
+\end{align}
+
+</div>
+</blockquote>
+<ul>
+<li>\(l_{t},b_{t}\)は時刻\(t\)における平均と傾きの推定値</li>
+<li>\(s_{t}\)は時刻\(t\)における季節成分，\(m\)は季節性の周期</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li>時刻\(t,t{-}1\)における推定を平滑化して推定量を構成</li>
+<li>ETS (error-trend-seasonal) モデルの一つ
+<ul>
+<li>基本的な考え方は乗法的分解に拡張可能</li>
+<li>拡張したのがETSモデルとも言える</li>
+
+</ul></li>
+<li>状態空間モデルの特殊な場合とも考えられる</li>
+
+</ul>
 
 </section>
 <section>
 
-<div id="orgc2b0aaf" class="figure">
-<p><img src="figs/13_ap_ets.png" alt="13_ap_ets.png" />
+<div id="orgb074947" class="figure">
+<p><img src="figs/ap_ets.png" alt="ap_ets.png" />
 </p>
 <p><span class="figure-number">Figure 11: </span>ETSモデル(expornential smoothing)による予測</p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-org513938b">
-<h2 id="org513938b">解析事例</h2>
-<div class="outline-text-2" id="text-org513938b">
+<section id="slide-org965b699">
+<h2 id="org965b699">解析事例</h2>
+<div class="outline-text-2" id="text-org965b699">
 </div>
 </section>
-<section id="slide-orgbc52da0">
-<h3 id="orgbc52da0">COVID-19 の感染者数の分析</h3>
+<section id="slide-orgd94a191">
+<h3 id="orgd94a191">COVID-19 の感染者数の分析</h3>
 <ul>
 <li>厚生労働省の COVID-19 のデータ
 <ul>
@@ -964,29 +1006,29 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 
 </ul>
 </section>
-<section id="slide-org275c33c">
-<h3 id="org275c33c">感染者数の推移</h3>
+<section id="slide-orgf25e032">
+<h3 id="orgf25e032">感染者数の推移</h3>
 
-<div id="org01a7106" class="figure">
-<p><img src="figs/13_patients.png" alt="13_patients.png" />
+<div id="org3d944e2" class="figure">
+<p><img src="figs/covid_patients.png" alt="covid_patients.png" />
 </p>
 <p><span class="figure-number">Figure 12: </span>全国の感染者数</p>
 </div>
 </section>
-<section id="slide-org98f1afe">
-<h3 id="org98f1afe">第3波における感染者数の推移</h3>
+<section id="slide-org8734f7f">
+<h3 id="org8734f7f">第3波における感染者数の推移</h3>
 
-<div id="orgf036258" class="figure">
-<p><img src="figs/13_3wave_patients.png" alt="13_3wave_patients.png" />
+<div id="orgf248c70" class="figure">
+<p><img src="figs/covid_3wave_patients.png" alt="covid_3wave_patients.png" />
 </p>
 <p><span class="figure-number">Figure 13: </span>第3波の感染者数</p>
 </div>
 </section>
-<section id="slide-orgafda2c4">
-<h3 id="orgafda2c4">基礎分析 (分析対象 : 2020/9/15-11/30)</h3>
+<section id="slide-org04368b6">
+<h3 id="org04368b6">基礎分析 (分析対象 : 2020/9/15-11/30)</h3>
 
-<div id="orgb3154f8" class="figure">
-<p><img src="figs/13_3wave.png" alt="13_3wave.png" />
+<div id="orga0286d3" class="figure">
+<p><img src="figs/covid_3wave.png" alt="covid_3wave.png" />
 </p>
 <p><span class="figure-number">Figure 14: </span>時系列 (階差)</p>
 </div>
@@ -994,8 +1036,8 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 <section>
 
-<div id="org10909f1" class="figure">
-<p><img src="figs/13_3wave_log.png" alt="13_3wave_log.png" />
+<div id="org15821ed" class="figure">
+<p><img src="figs/covid_3wave_log.png" alt="covid_3wave_log.png" />
 </p>
 <p><span class="figure-number">Figure 15: </span>時系列 (対数変換+階差)</p>
 </div>
@@ -1003,19 +1045,19 @@ AR(p)モデルを仮定したときの\(a_{p}\)の推定値
 </section>
 <section>
 
-<div id="org1d1cb1a" class="figure">
-<p><img src="figs/13_3wave_log7.png" alt="13_3wave_log7.png" />
+<div id="org5e6a39b" class="figure">
+<p><img src="figs/covid_3wave_log7.png" alt="covid_3wave_log7.png" />
 </p>
 <p><span class="figure-number">Figure 16: </span>時系列 (対数変換+階差+7日階差)</p>
 </div>
 </section>
-<section id="slide-org18eb39d">
-<h3 id="org18eb39d">ARIMA モデルによる推定</h3>
+<section id="slide-orge5331e7">
+<h3 id="orge5331e7">ARIMA モデルによる推定</h3>
 <ul>
 <li>推定された ARIMA モデル</li>
 
 </ul>
-<pre class="example" id="org5d6485c">
+<pre class="example" id="org2d9e3c5">
 Series: patients 
 Model: ARIMA(1,1,1)(2,0,0)[7] 
 Transformation: log(patients) 
@@ -1032,8 +1074,8 @@ AIC=-20.07   AICc=-19.21   BIC=-8.42
 </section>
 <section>
 
-<div id="org07b424c" class="figure">
-<p><img src="figs/13_3wave_arima_est.png" alt="13_3wave_arima_est.png" />
+<div id="org914a342" class="figure">
+<p><img src="figs/covid_3wave_arima_est.png" alt="covid_3wave_arima_est.png" />
 </p>
 <p><span class="figure-number">Figure 17: </span>あてはめ値</p>
 </div>
@@ -1041,8 +1083,8 @@ AIC=-20.07   AICc=-19.21   BIC=-8.42
 </section>
 <section>
 
-<div id="org24962a2" class="figure">
-<p><img src="figs/13_3wave_arima_diag.png" alt="13_3wave_arima_diag.png" />
+<div id="org31db1be" class="figure">
+<p><img src="figs/covid_3wave_arima_diag.png" alt="covid_3wave_arima_diag.png" />
 </p>
 <p><span class="figure-number">Figure 18: </span>診断プロット</p>
 </div>
@@ -1050,14 +1092,14 @@ AIC=-20.07   AICc=-19.21   BIC=-8.42
 </section>
 <section>
 
-<div id="org4ef6ed0" class="figure">
-<p><img src="figs/13_3wave_arima_pred.png" alt="13_3wave_arima_pred.png" />
+<div id="orgac59610" class="figure">
+<p><img src="figs/covid_3wave_arima_pred.png" alt="covid_3wave_arima_pred.png" />
 </p>
 <p><span class="figure-number">Figure 19: </span>予測値 (60日分，80%信頼区間)</p>
 </div>
 </section>
-<section id="slide-orgf2f4871">
-<h3 id="orgf2f4871">まとめ</h3>
+<section id="slide-orgc38683e">
+<h3 id="orgc38683e">まとめ</h3>
 <ul>
 <li>感染者数の推移は非定常なデータ</li>
 <li><p>
@@ -1081,7 +1123,7 @@ AIC=-20.07   AICc=-19.21   BIC=-8.42
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
 <script src="./reveal.js/plugin/menu/menu.js"></script>
 <script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
-<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/plugin/chalkboard/plugin.js"></script>
 <script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
@@ -1095,7 +1137,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: true,
+mouseWheel: false,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1104,10 +1146,10 @@ overview: true,
 transition: 'fade',
 transitionSpeed: 'default',
 showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
-spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
+spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealChalkboard ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
