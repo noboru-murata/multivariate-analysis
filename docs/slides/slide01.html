@@ -15,7 +15,9 @@
 
 <link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/font-awesome/css/fontawesome.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/chalkboard/style.css"/>
 
 <link rel="stylesheet" href="./reveal.js/local/mycourse.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -43,13 +45,13 @@
 
 </section>
 <section>
-<section id="slide-org2ff1fbe">
-<h2 id="org2ff1fbe">この講義について</h2>
-<div class="outline-text-2" id="text-org2ff1fbe">
+<section id="slide-org594ebcc">
+<h2 id="org594ebcc">この講義について</h2>
+<div class="outline-text-2" id="text-org594ebcc">
 </div>
 </section>
-<section id="slide-org58cb645">
-<h3 id="org58cb645">講義の概要</h3>
+<section id="slide-orgd378ef2">
+<h3 id="orgd378ef2">講義の概要</h3>
 <ul>
 <li>講義題目 : 多変量解析</li>
 <li>担当 : 村田 昇</li>
@@ -69,8 +71,8 @@
 
 </ul>
 </section>
-<section id="slide-org08b16fc">
-<h3 id="org08b16fc">受講にあたっての注意</h3>
+<section id="slide-org000155f">
+<h3 id="org000155f">受講にあたっての注意</h3>
 <ul>
 <li>微分積分学と線形代数学を復習しておく</li>
 <li>自身で解析するための計算機環境を準備する</li>
@@ -84,8 +86,8 @@
 
 </ul>
 </section>
-<section id="slide-org8cf2d41">
-<h3 id="org8cf2d41">講義計画 (予定)</h3>
+<section id="slide-org43f07c5">
+<h3 id="org43f07c5">講義計画 (予定)</h3>
 <ul>
 <li>オリエンテーション</li>
 <li>数学的準備 (1回)</li>
@@ -101,13 +103,36 @@
 </section>
 </section>
 <section>
-<section id="slide-org43cd9b6">
-<h2 id="org43cd9b6">多変量解析</h2>
-<div class="outline-text-2" id="text-org43cd9b6">
+<section id="slide-org75a69c0">
+<h2 id="org75a69c0">講義の内容</h2>
+<ul>
+<li>多変量解析法の紹介
+<ul>
+<li>回帰分析</li>
+<li>主成分分析</li>
+<li>判別分析</li>
+<li>クラスタ分析</li>
+<li>時系列解析</li>
+
+</ul></li>
+<li>数学的準備
+<ul>
+<li>ベクトルによる微分</li>
+<li>行列による微分</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org2d5c11a">
+<h2 id="org2d5c11a">多変量解析</h2>
+<div class="outline-text-2" id="text-org2d5c11a">
 </div>
 </section>
-<section id="slide-org5c54eef">
-<h3 id="org5c54eef">多変量解析とは</h3>
+<section id="slide-org73f7b44">
+<h3 id="org73f7b44">多変量解析とは</h3>
 <ul>
 <li>複数の変量からなるデータを分析する手法の総称
 <ul>
@@ -127,10 +152,10 @@
 
 </ul>
 </section>
-<section id="slide-orgb3fba30">
-<h3 id="orgb3fba30">回帰分析の考え方</h3>
+<section id="slide-org81d64ac">
+<h3 id="org81d64ac">回帰分析の考え方</h3>
 <ul>
-<li>ある変数(目的変数)を別の変数によって説明・予測するための関係式(回帰式)を構成する
+<li>ある変数(目的変数)を別の変数(説明変数)によって説明・予測するための関係式(回帰式)を構成する
 <ul>
 <li>単回帰 : 一つの変数で目的変数を説明する</li>
 <li>重回帰 : 複数の変数で目的変数を説明する</li>
@@ -145,14 +170,14 @@
 
 </ul>
 </section>
-<section id="slide-org941173c">
-<h3 id="org941173c">単回帰の例</h3>
-<div id="ntwzfzzuyd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<section id="slide-orgfb02c64">
+<h3 id="orgfb02c64">単回帰の例</h3>
+<div id="xyfqjoqiiz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
     <tr class="gt_col_headings" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a::stub" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left"></th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="body" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" bgcolor="#FFFFFF" valign="bottom" align="right">body</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="brain" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" bgcolor="#FFFFFF" valign="bottom" align="right">brain</th>
     </tr>
@@ -202,14 +227,13 @@
 <td headers="stub_1_14 brain" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">1320.0</td></tr>
   </tbody>
   
-  
 </table>
 </div>
 
 </section>
 <section>
 
-<div id="org0420db4" class="figure">
+<div id="org08ebf9e" class="figure">
 <p><img src="figs/bb-data.png" alt="bb-data.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>体重と脳の重さの関係</p>
@@ -218,7 +242,7 @@
 </section>
 <section>
 
-<div id="org68f91dd" class="figure">
+<div id="orgb0d6771" class="figure">
 <p><img src="figs/bb-loglog.png" alt="bb-loglog.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>体重と脳の重さの関係 (対数変換)</p>
@@ -227,15 +251,15 @@
 </section>
 <section>
 
-<div id="org64d7d7a" class="figure">
+<div id="orgf2d60a8" class="figure">
 <p><img src="figs/bb-lm.png" alt="bb-lm.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>回帰式とその信頼区間</p>
 </div>
 </section>
-<section id="slide-org5bcca02">
-<h3 id="org5bcca02">重回帰の例</h3>
-<div id="gttsxesqiu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<section id="slide-org77c38c6">
+<h3 id="org77c38c6">重回帰の例</h3>
+<div id="oqymnnmrjc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -335,14 +359,13 @@
 <td headers="TIME_SV" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">18</td></tr>
   </tbody>
   
-  
 </table>
 </div>
 
 </section>
 <section>
 
-<div id="org6f601fc" class="figure">
+<div id="org600abd4" class="figure">
 <p><img src="figs/bw-pairs.png" alt="bw-pairs.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>価格と気候の散布図</p>
@@ -350,15 +373,15 @@
 
 </section>
 <section>
-<div id="lpikdluoso" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="zrdotxuomc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
     <tr class="gt_col_headings" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;span class='gt_from_md'&gt;&lt;strong&gt;Characteristic&lt;/strong&gt;&lt;/span&gt;" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left"><span class="gt_from_md"><strong style="margin-top: 0; margin-bottom: 0;">Characteristic</strong></span></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;span class='gt_from_md'&gt;&lt;strong&gt;Beta&lt;/strong&gt;&lt;/span&gt;" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: center;" bgcolor="#FFFFFF" valign="bottom" align="center"><span class="gt_from_md"><strong style="margin-top: 0; margin-bottom: 0;">Beta</strong></span></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;span class='gt_from_md'&gt;&lt;strong&gt;95% CI&lt;/strong&gt;&lt;/span&gt;&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;line-height: 0;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: center;" bgcolor="#FFFFFF" valign="bottom" align="center"><span class="gt_from_md"><strong style="margin-top: 0; margin-bottom: 0;">95% CI</strong></span><span class="gt_footnote_marks" style="font-size: 75%; vertical-align: 0.4em; position: initial; white-space: nowrap; font-style: italic; font-weight: normal; line-height: 0;"><sup>1</sup></span></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;span class='gt_from_md'&gt;&lt;strong&gt;p-value&lt;/strong&gt;&lt;/span&gt;" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: center;" bgcolor="#FFFFFF" valign="bottom" align="center"><span class="gt_from_md"><strong style="margin-top: 0; margin-bottom: 0;">p-value</strong></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="label" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: left;" bgcolor="#FFFFFF" valign="bottom" align="left"><span class="gt_from_md"><strong style="margin-top: 0; margin-bottom: 0;">Characteristic</strong></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="estimate" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: center;" bgcolor="#FFFFFF" valign="bottom" align="center"><span class="gt_from_md"><strong style="margin-top: 0; margin-bottom: 0;">Beta</strong></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="conf.low" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: center;" bgcolor="#FFFFFF" valign="bottom" align="center"><span class="gt_from_md"><strong style="margin-top: 0; margin-bottom: 0;">95% CI</strong></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="p.value" style="border-style: none; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; text-align: center;" bgcolor="#FFFFFF" valign="bottom" align="center"><span class="gt_from_md"><strong style="margin-top: 0; margin-bottom: 0;">p-value</strong></span></th>
     </tr>
   </thead>
   <tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
@@ -379,14 +402,12 @@
 <td headers="conf.low" class="gt_row gt_center" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: center;" valign="middle" align="center">0.0090, 0.0387</td>
 <td headers="p.value" class="gt_row gt_center" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: center;" valign="middle" align="center">0.003</td></tr>
   </tbody>
-  <tfoot class="gt_sourcenotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF">
-    <tr style="border-style: none;">
-      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;"><span class="gt_from_md">R² = 0.828; Adjusted R² = 0.796; Statistic = 26.4; p-value = &lt;0.001</span></td>
+  <tfoot style="border-style: none;">
+    <tr class="gt_sourcenotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;"><span class="gt_from_md">Abbreviation: CI = Confidence Interval</span></td>
     </tr>
-  </tfoot>
-  <tfoot class="gt_footnotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF">
-    <tr style="border-style: none;">
-      <td class="gt_footnote" colspan="4" style="border-style: none; margin: 0px; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;"><span class="gt_footnote_marks" style="font-size: 75%; vertical-align: 0.4em; position: initial; white-space: nowrap; font-style: italic; font-weight: normal; line-height: 0;"><sup>1</sup></span> <span class="gt_from_md">CI = Confidence Interval</span></td>
+    <tr class="gt_sourcenotes" style="border-style: none; color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3;" bgcolor="#FFFFFF">
+      <td class="gt_sourcenote" colspan="4" style="border-style: none; font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px;"><span class="gt_from_md">R² = 0.828; Adjusted R² = 0.796; Statistic = 26.4; p-value = &lt;0.001</span></td>
     </tr>
   </tfoot>
 </table>
@@ -395,14 +416,14 @@
 </section>
 <section>
 
-<div id="org76b00b8" class="figure">
+<div id="org7c7cec5" class="figure">
 <p><img src="figs/bw-prediction.png" alt="bw-prediction.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>重回帰による予測値と実際の価格</p>
 </div>
 </section>
-<section id="slide-orga7d79c7">
-<h3 id="orga7d79c7">主成分分析の考え方</h3>
+<section id="slide-orga9cd6d7">
+<h3 id="orga9cd6d7">主成分分析の考え方</h3>
 <ul>
 <li>多数の変数が与えられたときに，変数のもつ構造を効率的に記述できる少数個の特徴量を構成する</li>
 <li><span style="color:green;">分析の事例</span>
@@ -414,9 +435,9 @@
 
 </ul>
 </section>
-<section id="slide-orgf462e3c">
-<h3 id="orgf462e3c">主成分分析の例</h3>
-<table id="org38c644e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-orgd7004f3">
+<h3 id="orgd7004f3">主成分分析の例</h3>
+<table id="org6aa4612" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 1:</span> 県別の生活環境(一部)</caption>
 
 <colgroup>
@@ -517,7 +538,7 @@
 </section>
 <section>
 
-<div id="orgcfe5982" class="figure">
+<div id="org5a11e64" class="figure">
 <p><img src="./figs/p-jpamenity01.png" alt="p-jpamenity01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 6: </span>県別の生活環境(人口動態)の散布図</p>
@@ -526,7 +547,7 @@
 </section>
 <section>
 
-<div id="orged08d1c" class="figure">
+<div id="org3992211" class="figure">
 <p><img src="./figs/p-jpamenity02.png" alt="p-jpamenity02.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 7: </span>県別の生活環境(教育・労働)の散布図</p>
@@ -535,7 +556,7 @@
 </section>
 <section>
 
-<div id="org075e273" class="figure">
+<div id="orga6b94ec" class="figure">
 <p><img src="./figs/p-jpamenity03.png" alt="p-jpamenity03.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 8: </span>県別の生活環境(貯蓄・余暇)の散布図</p>
@@ -544,14 +565,14 @@
 </section>
 <section>
 
-<div id="orge2a2452" class="figure">
+<div id="org90ab9f7" class="figure">
 <p><img src="./figs/p-jpamenity06.png" alt="p-jpamenity06.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 9: </span>県別の生活環境の主成分分析</p>
 </div>
 </section>
-<section id="slide-orgc3d7e31">
-<h3 id="orgc3d7e31">判別分析の考え方</h3>
+<section id="slide-org55df2a7">
+<h3 id="org55df2a7">判別分析の考え方</h3>
 <ul>
 <li>ある個体が複数のクラスのいずれかに属するとき，その個体の特徴量からどのクラスに属するかを予測するモデルを構築する</li>
 <li><span style="color:green;">分析の事例</span>
@@ -563,9 +584,9 @@
 
 </ul>
 </section>
-<section id="slide-orgd8f020a">
-<h3 id="orgd8f020a">判別分析の例</h3>
-<table id="org2129d0b" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-orgeb44c1c">
+<h3 id="orgeb44c1c">判別分析の例</h3>
+<table id="org2465801" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 2:</span> 乳癌患者の生研検査</caption>
 
 <colgroup>
@@ -738,7 +759,7 @@
 </section>
 <section>
 
-<div id="org449f2d2" class="figure">
+<div id="org6145e0e" class="figure">
 <p><img src="./figs/d-biopsy01.png" alt="d-biopsy01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 10: </span>乳癌患者(良性・悪性)の生研検査の散布図</p>
@@ -747,7 +768,7 @@
 </section>
 <section>
 
-<div id="org48710c0" class="figure">
+<div id="org047d029" class="figure">
 <p><img src="./figs/d-biopsy02.png" alt="d-biopsy02.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 11: </span>生研検査の主成分分析</p>
@@ -756,14 +777,14 @@
 </section>
 <section>
 
-<div id="org6a4ff56" class="figure">
+<div id="org8141db8" class="figure">
 <p><img src="./figs/d-biopsy03.png" alt="d-biopsy03.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 12: </span>生研検査による乳癌患者の判別分析</p>
 </div>
 </section>
-<section id="slide-orgf819963">
-<h3 id="orgf819963">クラスタ分析の考え方</h3>
+<section id="slide-org74567d0">
+<h3 id="org74567d0">クラスタ分析の考え方</h3>
 <ul>
 <li>特徴量の違いに着目して，妥当な個体のグループ(クラスタ)を構成する
 <ul>
@@ -780,9 +801,9 @@
 
 </ul>
 </section>
-<section id="slide-orgc817be0">
-<h3 id="orgc817be0">クラスタ分析の例</h3>
-<table id="org0903be9" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-org1a3be34">
+<h3 id="org1a3be34">クラスタ分析の例</h3>
+<table id="org8adba60" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 3:</span> おむすびの具に関するアンケート</caption>
 
 <colgroup>
@@ -931,7 +952,7 @@
 </section>
 <section>
 
-<div id="orga05b757" class="figure">
+<div id="org350ef6a" class="figure">
 <p><img src="./figs/c-omusubi01.png" alt="c-omusubi01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 13: </span>おむすびの具に関するアンケート分析 (県別の集計)</p>
@@ -940,14 +961,14 @@
 </section>
 <section>
 
-<div id="orgd496093" class="figure">
+<div id="org858834f" class="figure">
 <p><img src="./figs/c-omusubi02.png" alt="c-omusubi02.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 14: </span>アンケート結果にもとづく県のクラスタ分析</p>
 </div>
 </section>
-<section id="slide-org693618b">
-<h3 id="org693618b">時系列解析の考え方</h3>
+<section id="slide-orgcafd3c8">
+<h3 id="orgcafd3c8">時系列解析の考え方</h3>
 <ul>
 <li>時間とともに変化する現象を記述するために，未来の値を過去の値で近似する式を構成する
 <ul>
@@ -964,9 +985,9 @@
 
 </ul>
 </section>
-<section id="slide-org574775f">
-<h3 id="org574775f">時系列解析の例</h3>
-<table id="orgd143812" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<section id="slide-orgc21f70c">
+<h3 id="orgc21f70c">時系列解析の例</h3>
+<table id="org36aa647" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 4:</span> 航空機旅客量の変遷</caption>
 
 <colgroup>
@@ -1125,7 +1146,7 @@
 </section>
 <section>
 
-<div id="org867c38e" class="figure">
+<div id="org6047446" class="figure">
 <p><img src="./figs/t-airpass01.png" alt="t-airpass01.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 15: </span>航空機旅客量の変遷</p>
@@ -1134,7 +1155,7 @@
 </section>
 <section>
 
-<div id="org4848f07" class="figure">
+<div id="org8e233c0" class="figure">
 <p><img src="./figs/t-airpass04.png" alt="t-airpass04.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 16: </span>階差時系列の自己相関分析</p>
@@ -1143,7 +1164,7 @@
 </section>
 <section>
 
-<div id="orgf853d9d" class="figure">
+<div id="org63cbe5d" class="figure">
 <p><img src="./figs/t-airpass12.png" alt="t-airpass12.png" width="55%" height="55%" />
 </p>
 <p><span class="figure-number">Figure 17: </span>航空機旅客量の予測 (SARIMAモデルによる)</p>
@@ -1151,8 +1172,536 @@
 </section>
 </section>
 <section>
-<section id="slide-orge1ac1d6">
-<h2 id="orge1ac1d6">次回の予定</h2>
+<section id="slide-org0c497b9">
+<h2 id="org0c497b9">数学的準備</h2>
+<div class="outline-text-2" id="text-org0c497b9">
+</div>
+</section>
+<section id="slide-org99fdd43">
+<h3 id="org99fdd43">ベクトルによる微分</h3>
+<ul>
+<li><p>
+\(d\) 次元ベクトル
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{a}
+  =\begin{pmatrix}
+    a_1\\
+    a_2\\
+    \vdots\\
+    a_d
+  \end{pmatrix}
+  =(a_1,a_2,\dotsc,a_d)^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote></li>
+<li><p>
+ベクトル \(\boldsymbol{a}\) による関数 \(f(\boldsymbol{a})\) の微分の定義
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \frac{\partial f}{\partial\boldsymbol{a}}
+  =
+  \left(
+    \frac{\partial f}{\partial a_1},
+    \frac{\partial f}{\partial a_2},
+    \dotsc,
+    \frac{\partial f}{\partial a_d}
+  \right)^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+</section>
+<section id="slide-org17c53a0">
+<h3 id="org17c53a0">ベクトルによる微分 (例題)</h3>
+<ul>
+<li><p>
+問題
+</p>
+<blockquote>
+<p>
+\(d\) 次元ベクトル \(\boldsymbol{a}\) と \(\boldsymbol{b}\)
+を用いて定義される関数
+\(f(\boldsymbol{a})=\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\)
+の \(\boldsymbol{a}\) による微分を求めよ．
+</p>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+解答例
+</p>
+<blockquote>
+<p>
+各成分で考えると以下のように計算される．
+</p>
+<div>
+\begin{equation}
+  \frac{\partial f}{\partial a_i}
+  =\frac{\partial}{\partial a_i}
+  \left(a_1b_1+\dotsb+a_ib_i+\dotsb+a_db_d\right)
+  =b_i.
+\end{equation}
+
+</div>
+<p>
+したがって
+</p>
+<div>
+\begin{equation}
+  \frac{\partial f}{\partial\boldsymbol{a}}
+  =
+  \left(
+    b_{1},
+    b_{2},
+    \dotsc,
+    b_{d}
+  \right)^{\mathsf{T}}
+  =\boldsymbol{b}
+\end{equation}
+
+</div>
+<p>
+となる．
+</p>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+注意
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \begin{aligned}
+    \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\right)
+    &=\boldsymbol{b}\\
+    \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}\right)
+    &=(\boldsymbol{b}^{\mathsf{T}})^{\mathsf{T}}=\boldsymbol{b}
+  \end{aligned}
+\end{equation}
+
+</div>
+<p>
+というルールがあることがわかる．
+</p>
+</blockquote></li>
+
+</ul>
+</section>
+<section id="slide-orgd2a0505">
+<h3 id="orgd2a0505">行列による微分</h3>
+<ul>
+<li><p>
+\(d\times d\) 行列
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  A
+  =
+  \begin{pmatrix}
+    a_{11}&a_{12}&\dotsm&a_{1d}\\
+    a_{21}&a_{22}&\dotsm&a_{2d}\\
+    \vdots&&\ddots&\vdots\\
+    a_{d1}&a_{d2}&\dotsm&a_{dd}
+  \end{pmatrix}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+行列 \(A\) による関数 \(f(A)\) の微分の定義
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \frac{\partial f}{\partial A}
+  =
+  \begin{pmatrix}
+    \frac{\partial f}{\partial a_{11}}
+    &\frac{\partial f}{\partial a_{12}}&\dotsm
+    &\frac{\partial f}{\partial a_{1d}}\\[3pt]
+    \frac{\partial f}{\partial a_{21}}
+    &\frac{\partial f}{\partial a_{22}}&\dotsm
+    &\frac{\partial f}{\partial a_{2d}}\\[3pt]
+    \vdots&&\ddots&\vdots\\
+    \frac{\partial f}{\partial a_{d1}}
+    &\frac{\partial f}{\partial a_{d2}}&\dotsm
+    &\frac{\partial f}{\partial a_{dd}}
+  \end{pmatrix}
+\end{equation}
+
+</div>
+</blockquote></li>
+
+</ul>
+</section>
+<section id="slide-org48b335e">
+<h3 id="org48b335e">行列による微分 (例題1)</h3>
+<ul>
+<li><p>
+問題
+</p>
+<blockquote>
+<p>
+行列 \(A\) と \(d\) 次元ベクトル \(\boldsymbol{b}\)
+を用いて定義される関数
+</p>
+<div>
+\begin{equation}
+  f(A)=\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\sum_{i,j=1}^{d}b_ia_{ij}b_j
+\end{equation}
+
+</div>
+<p>
+の行列 \(A\) による微分を求めよ．
+</p>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+解答例
+</p>
+<blockquote>
+<p>
+成分で考えると
+</p>
+<div>
+\begin{equation}
+  \frac{\partial f}{\partial a_{ij}}
+  = 
+  \frac{\partial}{\partial a_{ij}}\sum_{i',j'=1}^{d}b_{i'}a_{i'j'}b_{j'}
+  =b_ib_j
+\end{equation}
+
+</div>
+<p>
+となるので，
+</p>
+<div>
+\begin{equation}
+  % \frac{\partial f}{\partial A}
+  \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+  =
+  \begin{pmatrix}
+    b_1b_1&b_1b_2&\dots&b_1b_d\\
+    b_2b_1&b_2b_2&\dots&b_2b_d\\
+    \vdots&&\ddots&\vdots\\
+    b_db_1&b_db_2&\dots&b_db_d
+  \end{pmatrix}
+  =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+\end{equation}
+
+</div>
+<p>
+と書くことができる．
+</p>
+</blockquote></li>
+
+</ul>
+</section>
+<section id="slide-orgbce2cc6">
+<h3 id="orgbce2cc6">行列による微分 (例題2)</h3>
+<ul>
+<li><p>
+問題
+</p>
+<blockquote>
+<p>
+\(d\times d\) 行列 \(A\) と \(B\)
+を用いて定義される関数
+</p>
+<div>
+\begin{equation}
+  f(A)=\mathrm{tr} AB=\sum_{i,j=1}^{d}a_{ij}b_{ji}
+\end{equation}
+
+</div>
+<p>
+の行列 \(A\) による微分を求めよ．
+</p>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+解答例
+</p>
+<blockquote>
+<p>
+成分では
+</p>
+<div>
+\begin{equation}
+  \frac{\partial f}{\partial a_{ij}}
+  =b_{ji} 
+\end{equation}
+
+</div>
+<p>
+となるので，
+</p>
+<div>
+\begin{equation}
+  % \frac{\partial f}{\partial A}
+  \frac{\partial}{\partial A}\mathrm{tr} AB
+  =
+  \begin{pmatrix}
+    b_{11}&b_{21}&\dots&b_{d1}\\
+    b_{12}&b_{22}&\dots&b_{d2}\\
+    \vdots&&\ddots&\vdots\\
+    b_{1d}&b_{2d}&\dots&b_{dd}
+  \end{pmatrix}
+  =B^{\mathsf{T}}
+\end{equation}
+
+</div>
+<p>
+と書くことができる．
+</p>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+注意1
+</p>
+<blockquote>
+<p>
+行列のトレースの性質
+</p>
+<div>
+\begin{equation}
+  \mathrm{tr} AB
+  =
+  \mathrm{tr} BA, \quad
+  \mathrm{tr} AB
+  =
+  \mathrm{tr} (AB)^{\mathsf{T}}
+  =
+  \mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+\end{equation}
+
+</div>
+<p>
+より
+</p>
+<div>
+\begin{equation}
+  \frac{\partial}{\partial A}\mathrm{tr} AB
+  =
+  \frac{\partial}{\partial A}\mathrm{tr} BA
+  =
+  \frac{\partial}{\partial A}\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
+  =
+  \frac{\partial}{\partial A}\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+  =B^{\mathsf{T}}
+\end{equation}
+
+</div>
+<p>
+となることが容易に確かめられる．
+</p>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+注意2
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+  =\mathrm{tr}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+\end{equation}
+
+</div>
+<p>
+となることから
+</p>
+<div>
+\begin{equation}
+  \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+  =
+  \frac{\partial}{\partial A}\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+  =\left(\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}\right)^{\mathsf{T}}
+  =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+\end{equation}
+
+</div>
+<p>
+となり，2つの例での計算結果が矛盾しないことが確かめられる．
+</p>
+</blockquote></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org2159cfa" data-background="#fef4f4">
+<h2 id="org2159cfa">演習</h2>
+</section>
+<section id="slide-org9e9e46d" data-background="#fef4f4">
+<h3 id="org9e9e46d">問題</h3>
+<ul>
+<li><p>
+行列(正方行列に限らない)のトレースに関して
+</p>
+<div>
+\begin{equation}
+  \mathrm{tr} AB
+  =\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+  =\mathrm{tr} BA
+  =\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
+\end{equation}
+
+</div>
+<p>
+が成り立つことを示せ
+</p></li>
+<li>\(d\) 次元ベクトル \(\boldsymbol{a}\) と
+\(d\times d\) 行列 \(A\)
+で定義される関数
+\(f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}A\boldsymbol{a}\)
+のベクトル \(\boldsymbol{a}\) による微分を求めよ</li>
+<li>行列 \(A\) の行列式を \(|A|\) と書くとき
+行列 \(A\) による行列式 \(|A|\) の微分を求めよ
+<ul>
+<li>ヒント : 余因子展開を利用すると容易に求められる</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org6b0eb8b" data-background="#fef4f4">
+<h3 id="org6b0eb8b">解答例</h3>
+<ul>
+<li><p>
+\(\mathrm{tr}AB\) より，行列 \(A,B\) の積は正方行列になることから，
+\(A\) が \(n\times m\) 行列とすれば，
+\(B\) は \(m\times n\) 行列となる．
+したがって
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \mathrm{tr}AB=\sum_{i=1}^{n}\sum_{j=1}^{m}a_{ij}b_{ji}
+\end{equation}
+
+</div>
+</blockquote>
+<p>
+と書くことができる．
+他の式も同様に書けることを確認すればよい．
+</p></li>
+
+</ul>
+
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+微分における積の法則(Leibniz 則)を用いればよい．
+</p>
+<blockquote>
+<div>
+\begin{align}
+  \frac{\partial f(\boldsymbol{a})}{\partial\boldsymbol{a}}
+  &=
+    \frac{\partial}{\partial\boldsymbol{a}}
+    \boldsymbol{a}^{\mathsf{T}}A\boldsymbol{b}
+    \mid_{\boldsymbol{b}=\boldsymbol{a}}
+    +
+    \frac{\partial}{\partial\boldsymbol{a}}
+    \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{a}
+    \mid_{\boldsymbol{b}=\boldsymbol{a}}\\
+  &=
+    A\boldsymbol{a}
+    +
+    (\boldsymbol{a}^{\mathsf{T}}A)^{\mathsf{T}}\\
+  &=(A+A^{\mathsf{T}})\boldsymbol{a}
+\end{align}
+
+</div>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section data-background="#fef4f4">
+<ul>
+<li><p>
+行列 \(A\) の \((i,j)\) 成分に関する余因子を \(\Delta_{ij}\) とする．
+行列式 \(|A|\) と逆行列 \(A^{-1}\) の \((i,j)\) 成分はそれぞれ
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  |A|=\sum_{j=1}^{d}a_{ij}\Delta_{ij},\; \forall i
+  \qquad
+  (A^{-1})_{ij}=\frac{\Delta_{ji}}{|A|}
+\end{equation}
+
+</div>
+</blockquote>
+<p>
+と書くことができる．したがって
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  \frac{\partial|A|}{\partial A}
+  =|A|(A^{-1})^{\mathsf{T}}
+\end{equation}
+
+</div>
+</blockquote>
+<p>
+となる．
+</p></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org89ca1af">
+<h2 id="org89ca1af">次回の予定</h2>
 <ul>
 <li>確率
 <ul>
@@ -1168,12 +1717,6 @@
 <li>Bayes の定理</li>
 
 </ul></li>
-<li>関数の微分
-<ul>
-<li>ベクトルによる微分</li>
-<li>行列による微分</li>
-
-</ul></li>
 
 </ul>
 </div>
@@ -1184,7 +1727,7 @@
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
 <script src="./reveal.js/plugin/menu/menu.js"></script>
 <script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
-<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/plugin/chalkboard/plugin.js"></script>
 <script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
@@ -1198,7 +1741,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: true,
+mouseWheel: false,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1207,10 +1750,10 @@ overview: true,
 transition: 'fade',
 transitionSpeed: 'default',
 showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
-spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
+spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealChalkboard ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [

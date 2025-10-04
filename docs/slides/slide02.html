@@ -15,7 +15,9 @@
 
 <link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/font-awesome/css/fontawesome.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/chalkboard/style.css"/>
 
 <link rel="stylesheet" href="./reveal.js/local/mycourse.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -43,8 +45,8 @@
 
 </section>
 <section>
-<section id="slide-orgb198798">
-<h2 id="orgb198798">講義の内容</h2>
+<section id="slide-orgf981ee8">
+<h2 id="orgf981ee8">講義の内容</h2>
 <ul>
 <li>確率
 <ul>
@@ -60,10 +62,9 @@
 <li>Bayes の定理</li>
 
 </ul></li>
-<li>関数の微分
+<li>検定の考え方
 <ul>
-<li>ベクトルによる微分</li>
-<li>行列による微分</li>
+<li>統計的仮説検定</li>
 
 </ul></li>
 
@@ -71,13 +72,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orgf0bb382">
-<h2 id="orgf0bb382">確率</h2>
-<div class="outline-text-2" id="text-orgf0bb382">
+<section id="slide-orgf99bb62">
+<h2 id="orgf99bb62">確率</h2>
+<div class="outline-text-2" id="text-orgf99bb62">
 </div>
 </section>
-<section id="slide-org8523607">
-<h3 id="org8523607">確率分布</h3>
+<section id="slide-org58700b2">
+<h3 id="org58700b2">確率分布</h3>
 <ul>
 <li><p>
 定義
@@ -106,8 +107,8 @@
 
 </ul>
 </section>
-<section id="slide-org8494e8d">
-<h3 id="org8494e8d">確率質量関数</h3>
+<section id="slide-org7cf63b4">
+<h3 id="org7cf63b4">確率質量関数</h3>
 <ul>
 <li><p>
 離散分布を記述する方法
@@ -130,8 +131,8 @@
 
 </ul>
 </section>
-<section id="slide-orge218fe5">
-<h3 id="orge218fe5">確率密度関数</h3>
+<section id="slide-org7513941">
+<h3 id="org7513941">確率密度関数</h3>
 <ul>
 <li><p>
 連続分布を記述する方法
@@ -181,18 +182,18 @@
 
 </ul>
 </section>
-<section id="slide-orga899a06">
-<h3 id="orga899a06">正規分布 (normal/Gaussian distribution)</h3>
-<div class="leftcol" id="org0e12d05">
+<section id="slide-org652299f">
+<h3 id="org652299f">正規分布 (normal/Gaussian distribution)</h3>
+<div class="leftcol" id="orgbcabd32">
 
-<div id="orgcc5bdde" class="figure">
+<div id="org9659884" class="figure">
 <p><img src="figs/pdf_norm.png" alt="pdf_norm.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 1: </span>正規分布 (平均\(0\),分散\(1\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org383b936">
+<div class="rightcol" id="org65c45ad">
 <blockquote>
 <ul>
 <li>標本空間 : \((-\infty,\infty)\)</li>
@@ -216,8 +217,8 @@
 
 </div>
 </section>
-<section id="slide-org1f1c269">
-<h3 id="org1f1c269">多次元正規分布</h3>
+<section id="slide-orgea88b6f">
+<h3 id="orgea88b6f">多次元正規分布</h3>
 <ul>
 <li>標本空間 : \(\mathbb{R}^{p}\)</li>
 <li>母数 : 平均 \(\boldsymbol{\mu}\), 分散共分散行列 \(\Sigma\)</li>
@@ -236,8 +237,8 @@
 
 </ul>
 </section>
-<section id="slide-org645a49c">
-<h3 id="org645a49c">正規分布の特徴付け</h3>
+<section id="slide-orgc89c6d2">
+<h3 id="orgc89c6d2">正規分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -254,18 +255,18 @@
 
 </ul>
 </section>
-<section id="slide-orgb2af327">
-<h3 id="orgb2af327">\(\chi^{2}\)分布 (\(\chi^{2}\)-distribution)</h3>
-<div class="leftcol" id="orga9240b1">
+<section id="slide-orgd5bedc6">
+<h3 id="orgd5bedc6">\(\chi^{2}\)分布 (\(\chi^{2}\)-distribution)</h3>
+<div class="leftcol" id="orgbb2bc91">
 
-<div id="org1789dba" class="figure">
+<div id="org9d7df2b" class="figure">
 <p><img src="figs/pdf_chisq.png" alt="pdf_chisq.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 2: </span>\(\chi^{2}\)分布 (自由度\(3\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="orgf98c722">
+<div class="rightcol" id="org3fba162">
 <blockquote>
 <ul>
 <li>標本空間 : \([0,\infty)\)</li>
@@ -289,8 +290,8 @@
 
 </div>
 </section>
-<section id="slide-org7bcdc78">
-<h3 id="org7bcdc78">\(\chi^{2}\)分布の特徴付け</h3>
+<section id="slide-org4cf7469">
+<h3 id="org4cf7469">\(\chi^{2}\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -322,18 +323,18 @@
 
 </ul>
 </section>
-<section id="slide-orgad061d8">
-<h3 id="orgad061d8">\(t\)分布 (Student&rsquo;s \(t\)-distribution)</h3>
-<div class="leftcol" id="orged9f7ca">
+<section id="slide-orgd349fa7">
+<h3 id="orgd349fa7">\(t\)分布 (Student&rsquo;s \(t\)-distribution)</h3>
+<div class="leftcol" id="orgbc5c457">
 
-<div id="org879ffe0" class="figure">
+<div id="org6fc55af" class="figure">
 <p><img src="figs/pdf_t.png" alt="pdf_t.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 3: </span>\(t\)分布 (自由度\(3\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org023135a">
+<div class="rightcol" id="org0f7fa4f">
 <blockquote>
 <ul>
 <li>標本空間 : \((-\infty,\infty)\)</li>
@@ -359,8 +360,8 @@
 
 </div>
 </section>
-<section id="slide-orge4445cc">
-<h3 id="orge4445cc">\(t\)分布の特徴付け</h3>
+<section id="slide-org5b7226b">
+<h3 id="org5b7226b">\(t\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -393,18 +394,18 @@
 
 </ul>
 </section>
-<section id="slide-orgfe95944">
-<h3 id="orgfe95944">\(F\)分布 (\(F\)-distribution)</h3>
-<div class="leftcol" id="org9bdd9ef">
+<section id="slide-orgc053664">
+<h3 id="orgc053664">\(F\)分布 (\(F\)-distribution)</h3>
+<div class="leftcol" id="org296aed7">
 
-<div id="org84de1b5" class="figure">
+<div id="org1645b3f" class="figure">
 <p><img src="figs/pdf_F.png" alt="pdf_F.png" width="100%" />
 </p>
 <p><span class="figure-number">Figure 4: </span>\(F\)分布 (自由度\(3,5\))</p>
 </div>
 
 </div>
-<div class="rightcol" id="org6ef709b">
+<div class="rightcol" id="org0114afc">
 <blockquote>
 <ul>
 <li>標本空間 : \([0,\infty)\)</li>
@@ -429,8 +430,8 @@
 
 </div>
 </section>
-<section id="slide-org2201805">
-<h3 id="org2201805">\(F\)分布の特徴付け</h3>
+<section id="slide-orged835ff">
+<h3 id="orged835ff">\(F\)分布の特徴付け</h3>
 <ul>
 <li>性質
 <ul>
@@ -461,8 +462,8 @@
 
 </ul>
 </section>
-<section id="slide-org7f4bb31">
-<h3 id="org7f4bb31">大数の強法則</h3>
+<section id="slide-org3df8149">
+<h3 id="org3df8149">大数の強法則</h3>
 <ul>
 <li><p>
 定理
@@ -495,8 +496,8 @@
 
 </ul>
 </section>
-<section id="slide-org1f1ca4a">
-<h3 id="org1f1ca4a">同分布の中心極限定理</h3>
+<section id="slide-orgd8b8773">
+<h3 id="orgd8b8773">同分布の中心極限定理</h3>
 <ul>
 <li><p>
 定理
@@ -554,8 +555,8 @@
 
 </ul>
 </section>
-<section id="slide-orgd058032">
-<h3 id="orgd058032">推定量の漸近正規性</h3>
+<section id="slide-orgc11961f">
+<h3 id="orgc11961f">推定量の漸近正規性</h3>
 <ul>
 <li><p>
 <b>漸近正規性</b>
@@ -577,11 +578,11 @@
 </section>
 </section>
 <section>
-<section id="slide-org35ee64b" data-background="#fef4f4">
-<h2 id="org35ee64b">演習</h2>
+<section id="slide-orga61ba7d" data-background="#fef4f4">
+<h2 id="orga61ba7d">演習</h2>
 </section>
-<section id="slide-org17d7995" data-background="#fef4f4">
-<h3 id="org17d7995">問題</h3>
+<section id="slide-org02fcc84" data-background="#fef4f4">
+<h3 id="org02fcc84">問題</h3>
 <ul>
 <li><p>
 標準正規分布の密度関数
@@ -607,8 +608,8 @@
 
 </ul>
 </section>
-<section id="slide-orgcefe5df" data-background="#fef4f4">
-<h3 id="orgcefe5df">解答例</h3>
+<section id="slide-org54f71fa" data-background="#fef4f4">
+<h3 id="org54f71fa">解答例</h3>
 <ul>
 <li><p>
 2つの標準正規分布の積を考えて，
@@ -656,13 +657,13 @@
 </section>
 </section>
 <section>
-<section id="slide-org4ae177b">
-<h2 id="org4ae177b">統計</h2>
-<div class="outline-text-2" id="text-org4ae177b">
+<section id="slide-orgb395de1">
+<h2 id="orgb395de1">統計</h2>
+<div class="outline-text-2" id="text-orgb395de1">
 </div>
 </section>
-<section id="slide-orga96cb5f">
-<h3 id="orga96cb5f">記述統計量</h3>
+<section id="slide-orgf3b2af5">
+<h3 id="orgf3b2af5">記述統計量</h3>
 <ul>
 <li><b>記述統計量</b> : (または要約統計量・基本統計量)
 <ul>
@@ -686,8 +687,8 @@
 
 </ul>
 </section>
-<section id="slide-orgf4d78e8">
-<h3 id="orgf4d78e8">平均</h3>
+<section id="slide-org1927907">
+<h3 id="org1927907">平均</h3>
 <ul>
 <li>データの代表値を表す記述統計量</li>
 <li><p>
@@ -723,8 +724,8 @@
 
 </ul>
 </section>
-<section id="slide-orgb3c4f1d">
-<h3 id="orgb3c4f1d">分散</h3>
+<section id="slide-org4cb7b67">
+<h3 id="org4cb7b67">分散</h3>
 <ul>
 <li>データのばらつき具合を表す記述統計量</li>
 <li><p>
@@ -755,8 +756,8 @@
 
 </ul>
 </section>
-<section id="slide-orge291e89">
-<h3 id="orge291e89">標本平均・分散の不偏性</h3>
+<section id="slide-orgb747123">
+<h3 id="orgb747123">標本平均・分散の不偏性</h3>
 <ul>
 <li><p>
 標本平均は \(\mu\) の <b>不偏推定量である</b> 
@@ -787,8 +788,8 @@
 
 </ul>
 </section>
-<section id="slide-org627c735">
-<h3 id="org627c735">不偏分散</h3>
+<section id="slide-orgdae7628">
+<h3 id="orgdae7628">不偏分散</h3>
 <ul>
 <li>不偏性を担保した分散の推定量</li>
 <li><p>
@@ -809,8 +810,8 @@
 
 </ul>
 </section>
-<section id="slide-orgb0c05b3">
-<h3 id="orgb0c05b3">標準偏差</h3>
+<section id="slide-org1fbda38">
+<h3 id="org1fbda38">標準偏差</h3>
 <ul>
 <li><p>
 <b>標準偏差</b> (standard deviation) 
@@ -846,8 +847,8 @@
 
 </ul>
 </section>
-<section id="slide-orgb8736eb">
-<h3 id="orgb8736eb">標準化</h3>
+<section id="slide-org8f9ad45">
+<h3 id="org8f9ad45">標準化</h3>
 <ul>
 <li>複数データの分析のために単位や基準を揃える方法</li>
 <li><p>
@@ -871,8 +872,8 @@
 
 </ul>
 </section>
-<section id="slide-orgdf32b9c">
-<h3 id="orgdf32b9c">偏差値</h3>
+<section id="slide-org8b7d5b2">
+<h3 id="org8b7d5b2">偏差値</h3>
 <ul>
 <li>別の基準での標準化
 <ul>
@@ -895,8 +896,8 @@
 
 </ul>
 </section>
-<section id="slide-org360f78e">
-<h3 id="org360f78e">共分散</h3>
+<section id="slide-org67cdf65">
+<h3 id="org67cdf65">共分散</h3>
 <ul>
 <li>複数のデータ間の関係を知るための記述統計量</li>
 <li><p>
@@ -924,8 +925,8 @@
 
 </ul>
 </section>
-<section id="slide-orgeb33ada">
-<h3 id="orgeb33ada">相関</h3>
+<section id="slide-orgaab048d">
+<h3 id="orgaab048d">相関</h3>
 <ul>
 <li>2種類のデータ間の比例関係の大きさ</li>
 <li><p>
@@ -954,8 +955,8 @@
 
 </ul>
 </section>
-<section id="slide-org368b87d">
-<h3 id="org368b87d">離散分布の尤度関数</h3>
+<section id="slide-org7016ab7">
+<h3 id="org7016ab7">離散分布の尤度関数</h3>
 <ul>
 <li>\(X_1=x_1,X_2=x_2,\dots,X_n=x_n\) の同時確率
 <ul>
@@ -1019,8 +1020,8 @@
 
 </ul>
 </section>
-<section id="slide-org8bb8970">
-<h3 id="org8bb8970">連続分布の尤度関数</h3>
+<section id="slide-org86617ac">
+<h3 id="org86617ac">連続分布の尤度関数</h3>
 <ul>
 <li>\(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta\) の同時確率
 <ul>
@@ -1080,8 +1081,8 @@
 
 </ul>
 </section>
-<section id="slide-org9abea66">
-<h3 id="org9abea66">最尤法</h3>
+<section id="slide-org4cd3a45">
+<h3 id="org4cd3a45">最尤法</h3>
 <ul>
 <li><p>
 最尤法
@@ -1117,8 +1118,8 @@
 
 </ul>
 </section>
-<section id="slide-org6bc4960">
-<h3 id="org6bc4960">Bayes の定理 (基本形)</h3>
+<section id="slide-org1897cbe">
+<h3 id="org1897cbe">Bayes の定理 (基本形)</h3>
 <ul>
 <li><p>
 定理
@@ -1142,8 +1143,8 @@
 
 </ul>
 </section>
-<section id="slide-org343397d">
-<h3 id="org343397d">Bayes の定理 (一般形)</h3>
+<section id="slide-orgab39313">
+<h3 id="orgab39313">Bayes の定理 (一般形)</h3>
 <ul>
 <li><p>
 定理
@@ -1168,11 +1169,11 @@
 </section>
 </section>
 <section>
-<section id="slide-org5e8dfd6" data-background="#fef4f4">
-<h2 id="org5e8dfd6">演習</h2>
+<section id="slide-org950404c" data-background="#fef4f4">
+<h2 id="org950404c">演習</h2>
 </section>
-<section id="slide-org02362d5" data-background="#fef4f4">
-<h3 id="org02362d5">問題</h3>
+<section id="slide-orgc3df74b" data-background="#fef4f4">
+<h3 id="orgc3df74b">問題</h3>
 <ul>
 <li><p>
 以下の問に答えなさい
@@ -1212,8 +1213,8 @@ A先生は大の野球ファンで，
 
 </ul>
 </section>
-<section id="slide-orgde85da6" data-background="#fef4f4">
-<h3 id="orgde85da6">解答例</h3>
+<section id="slide-orge784986" data-background="#fef4f4">
+<h3 id="orge784986">解答例</h3>
 <ul>
 <li><p>
 まず事象を定義する
@@ -1294,536 +1295,582 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 </section>
 </section>
 <section>
-<section id="slide-orgb796b04">
-<h2 id="orgb796b04">関数の微分</h2>
-<div class="outline-text-2" id="text-orgb796b04">
+<section id="slide-org69523ee">
+<h2 id="org69523ee">検定の考え方</h2>
+<div class="outline-text-2" id="text-org69523ee">
 </div>
 </section>
-<section id="slide-org3a58a1d">
-<h3 id="org3a58a1d">ベクトルによる微分</h3>
+<section id="slide-org7bb5a21">
+<h3 id="org7bb5a21">統計的仮説検定</h3>
 <ul>
-<li><p>
-\(d\) 次元ベクトル
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  \boldsymbol{a}
-  =\begin{pmatrix}
-    a_1\\
-    a_2\\
-    \vdots\\
-    a_d
-  \end{pmatrix}
-  =(a_1,a_2,\dotsc,a_d)^{\mathsf{T}}
-\end{equation}
+<li>ある現象・母集団に対して仮定された仮説の真偽を
+データに基づいて統計的に検証する方法</li>
+<li>検定の基本的手続き
+<ol>
+<li>帰無仮説(および対立仮説)を立てる</li>
+<li>データから計算できる統計量を設定する
+<ul>
+<li><b>検定統計量</b> という</li>
 
-</div>
-</blockquote></li>
-<li><p>
-ベクトル \(\boldsymbol{a}\) による関数 \(f(\boldsymbol{a})\) の微分の定義
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  \frac{\partial f}{\partial\boldsymbol{a}}
-  =
-  \left(
-    \frac{\partial f}{\partial a_1},
-    \frac{\partial f}{\partial a_2},
-    \dotsc,
-    \frac{\partial f}{\partial a_d}
-  \right)^{\mathsf{T}}
-\end{equation}
+</ul></li>
+<li>帰無仮説のもとで検定統計量が従う標本分布を求める
+<ul>
+<li><b>帰無分布</b> という</li>
 
-</div>
-</blockquote></li>
+</ul></li>
+<li>実際のデータから検定統計量の値を計算する</li>
+<li>計算された検定統計量の値が
+仮説が正しいときに十分高い確率で
+得られるかどうかを判断する
+<ul>
+<li>この閾値を <b>有意水準</b> という</li>
+
+</ul></li>
+
+</ol></li>
 
 </ul>
 </section>
-<section id="slide-orgf8660a0">
-<h3 id="orgf8660a0">ベクトルによる微分 (例題)</h3>
+<section id="slide-org7861110">
+<h3 id="org7861110">例題</h3>
 <ul>
-<li><p>
-問題
-</p>
-<blockquote>
-<p>
-\(d\) 次元ベクトル \(\boldsymbol{a}\) と \(\boldsymbol{b}\)
-を用いて定義される関数
-\(f(\boldsymbol{a})=\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\)
-の \(\boldsymbol{a}\) による微分を求めよ．
-</p>
-</blockquote></li>
-
-</ul>
-
-</section>
-<section>
+<li>表の出る確率が高くなるよう細工したコインを見つける問題を考える
 <ul>
-<li><p>
-解答例
-</p>
-<blockquote>
-<p>
-各成分で考えると以下のように計算される．
-</p>
-<div>
-\begin{equation}
-  \frac{\partial f}{\partial a_i}
-  =\frac{\partial}{\partial a_i}
-  \left(a_1b_1+\dotsb+a_ib_i+\dotsb+a_db_d\right)
-  =b_i.
-\end{equation}
-
-</div>
-<p>
-したがって
-</p>
-<div>
-\begin{equation}
-  \frac{\partial f}{\partial\boldsymbol{a}}
-  =
-  \left(
-    b_{1},
-    b_{2},
-    \dotsc,
-    b_{d}
-  \right)^{\mathsf{T}}
-  =\boldsymbol{b}
-\end{equation}
-
-</div>
-<p>
-となる．
-</p>
-</blockquote></li>
-
-</ul>
-
-</section>
-<section>
-<ul>
-<li><p>
-注意
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  \begin{aligned}
-    \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\right)
-    &=\boldsymbol{b}\\
-    \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}\right)
-    &=(\boldsymbol{b}^{\mathsf{T}})^{\mathsf{T}}=\boldsymbol{b}
-  \end{aligned}
-\end{equation}
-
-</div>
-<p>
-というルールがあることがわかる．
-</p>
-</blockquote></li>
-
-</ul>
-</section>
-<section id="slide-orgc8bff0c">
-<h3 id="orgc8bff0c">行列による微分</h3>
-<ul>
-<li><p>
-\(d\times d\) 行列
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  A
-  =
-  \begin{pmatrix}
-    a_{11}&a_{12}&\dotsm&a_{1d}\\
-    a_{21}&a_{22}&\dotsm&a_{2d}\\
-    \vdots&&\ddots&\vdots\\
-    a_{d1}&a_{d2}&\dotsm&a_{dd}
-  \end{pmatrix}
-\end{equation}
-
-</div>
-</blockquote></li>
-
-</ul>
-
-</section>
-<section>
-<ul>
-<li><p>
-行列 \(A\) による関数 \(f(A)\) の微分の定義
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  \frac{\partial f}{\partial A}
-  =
-  \begin{pmatrix}
-    \frac{\partial f}{\partial a_{11}}
-    &\frac{\partial f}{\partial a_{12}}&\dotsm
-    &\frac{\partial f}{\partial a_{1d}}\\[3pt]
-    \frac{\partial f}{\partial a_{21}}
-    &\frac{\partial f}{\partial a_{22}}&\dotsm
-    &\frac{\partial f}{\partial a_{2d}}\\[3pt]
-    \vdots&&\ddots&\vdots\\
-    \frac{\partial f}{\partial a_{d1}}
-    &\frac{\partial f}{\partial a_{d2}}&\dotsm
-    &\frac{\partial f}{\partial a_{dd}}
-  \end{pmatrix}
-\end{equation}
-
-</div>
-</blockquote></li>
-
-</ul>
-</section>
-<section id="slide-org06eca6c">
-<h3 id="org06eca6c">行列による微分 (例題1)</h3>
-<ul>
-<li><p>
-問題
-</p>
-<blockquote>
-<p>
-行列 \(A\) と \(d\) 次元ベクトル \(\boldsymbol{b}\)
-を用いて定義される関数
-</p>
-<div>
-\begin{equation}
-  f(A)=\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\sum_{i,j=1}^{d}b_ia_{ij}b_j
-\end{equation}
-
-</div>
-<p>
-の行列 \(A\) による微分を求めよ．
-</p>
-</blockquote></li>
-
-</ul>
-
-</section>
-<section>
-<ul>
-<li><p>
-解答例
-</p>
-<blockquote>
-<p>
-成分で考えると
-</p>
-<div>
-\begin{equation}
-  \frac{\partial f}{\partial a_{ij}}
-  = 
-  \frac{\partial}{\partial a_{ij}}\sum_{i',j'=1}^{d}b_{i'}a_{i'j'}b_{j'}
-  =b_ib_j
-\end{equation}
-
-</div>
-<p>
-となるので，
-</p>
-<div>
-\begin{equation}
-  % \frac{\partial f}{\partial A}
-  \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
-  =
-  \begin{pmatrix}
-    b_1b_1&b_1b_2&\dots&b_1b_d\\
-    b_2b_1&b_2b_2&\dots&b_2b_d\\
-    \vdots&&\ddots&\vdots\\
-    b_db_1&b_db_2&\dots&b_db_d
-  \end{pmatrix}
-  =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
-\end{equation}
-
-</div>
-<p>
-と書くことができる．
-</p>
-</blockquote></li>
-
-</ul>
-</section>
-<section id="slide-orgbb4a4db">
-<h3 id="orgbb4a4db">行列による微分 (例題2)</h3>
-<ul>
-<li><p>
-問題
-</p>
-<blockquote>
-<p>
-\(d\times d\) 行列 \(A\) と \(B\)
-を用いて定義される関数
-</p>
-<div>
-\begin{equation}
-  f(A)=\mathrm{tr} AB=\sum_{i,j=1}^{d}a_{ij}b_{ji}
-\end{equation}
-
-</div>
-<p>
-の行列 \(A\) による微分を求めよ．
-</p>
-</blockquote></li>
-
-</ul>
-
-</section>
-<section>
-<ul>
-<li><p>
-解答例
-</p>
-<blockquote>
-<p>
-成分では
-</p>
-<div>
-\begin{equation}
-  \frac{\partial f}{\partial a_{ij}}
-  =b_{ji} 
-\end{equation}
-
-</div>
-<p>
-となるので，
-</p>
-<div>
-\begin{equation}
-  % \frac{\partial f}{\partial A}
-  \frac{\partial}{\partial A}\mathrm{tr} AB
-  =
-  \begin{pmatrix}
-    b_{11}&b_{21}&\dots&b_{d1}\\
-    b_{12}&b_{22}&\dots&b_{d2}\\
-    \vdots&&\ddots&\vdots\\
-    b_{1d}&b_{2d}&\dots&b_{dd}
-  \end{pmatrix}
-  =B^{\mathsf{T}}
-\end{equation}
-
-</div>
-<p>
-と書くことができる．
-</p>
-</blockquote></li>
-
-</ul>
-
-</section>
-<section>
-<ul>
-<li><p>
-注意1
-</p>
-<blockquote>
-<p>
-行列のトレースの性質
-</p>
-<div>
-\begin{equation}
-  \mathrm{tr} AB
-  =
-  \mathrm{tr} BA, \quad
-  \mathrm{tr} AB
-  =
-  \mathrm{tr} (AB)^{\mathsf{T}}
-  =
-  \mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
-\end{equation}
-
-</div>
-<p>
-より
-</p>
-<div>
-\begin{equation}
-  \frac{\partial}{\partial A}\mathrm{tr} AB
-  =
-  \frac{\partial}{\partial A}\mathrm{tr} BA
-  =
-  \frac{\partial}{\partial A}\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
-  =
-  \frac{\partial}{\partial A}\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
-  =B^{\mathsf{T}}
-\end{equation}
-
-</div>
-<p>
-となることが容易に確かめられる．
-</p>
-</blockquote></li>
-
-</ul>
-
-</section>
-<section>
-<ul>
-<li><p>
-注意2
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
-  =\mathrm{tr}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
-\end{equation}
-
-</div>
-<p>
-となることから
-</p>
-<div>
-\begin{equation}
-  \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
-  =
-  \frac{\partial}{\partial A}\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
-  =\left(\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}\right)^{\mathsf{T}}
-  =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
-\end{equation}
-
-</div>
-<p>
-となり，2つの例での計算結果が矛盾しないことが確かめられる．
-</p>
-</blockquote></li>
-
-</ul>
-</section>
-</section>
-<section>
-<section id="slide-org0532928" data-background="#fef4f4">
-<h2 id="org0532928">演習</h2>
-</section>
-<section id="slide-org594af22" data-background="#fef4f4">
-<h3 id="org594af22">問題</h3>
-<ul>
-<li><p>
-行列(正方行列に限らない)のトレースに関して
-</p>
-<div>
-\begin{equation}
-  \mathrm{tr} AB
-  =\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
-  =\mathrm{tr} BA
-  =\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
-\end{equation}
-
-</div>
-<p>
-が成り立つことを示せ
-</p></li>
-<li>\(d\) 次元ベクトル \(\boldsymbol{a}\) と
-\(d\times d\) 行列 \(A\)
-で定義される関数
-\(f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}A\boldsymbol{a}\)
-のベクトル \(\boldsymbol{a}\) による微分を求めよ</li>
-<li>行列 \(A\) の行列式を \(|A|\) と書くとき
-行列 \(A\) による行列式 \(|A|\) の微分を求めよ
-<ul>
-<li>ヒント : 余因子展開を利用すると容易に求められる</li>
+<li class="fragment appear">何回か投げてみる</li>
+<li class="fragment appear">表が裏より出やすければ「いかさま」と判断する</li>
+<li class="fragment appear">どのくらい表が出たら怪しいと考えられるだろうか?</li>
 
 </ul></li>
 
 </ul>
 </section>
-<section id="slide-org11a9616" data-background="#fef4f4">
-<h3 id="org11a9616">解答例</h3>
+<section id="slide-org226a3ca">
+<h3 id="org226a3ca">問題</h3>
+<ul>
+<li>いかさまのないコイン(表の出る確率が0.5)を20回投げたとき，
+表が \(k\) 回出る確率を求めなさい</li>
+
+</ul>
+</section>
+<section id="slide-orgf4129e4">
+<h3 id="orgf4129e4">解答</h3>
 <ul>
 <li><p>
-\(\mathrm{tr}AB\) より，行列 \(A,B\) の積は正方行列になることから，
-\(A\) が \(n\times m\) 行列とすれば，
-\(B\) は \(m\times n\) 行列となる．
-したがって
+以下の式で計算される
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  \mathrm{tr}AB=\sum_{i=1}^{n}\sum_{j=1}^{m}a_{ij}b_{ji}
+  P(\text{表の回数}=k)
+  =
+  \left(20\atop k\right)
+  0.5^{k} (1-0.5)^{20-k}
 \end{equation}
-
-</div>
-</blockquote>
-<p>
-と書くことができる．
-他の式も同様に書けることを確認すればよい．
-</p></li>
-
-</ul>
-
-</section>
-<section data-background="#fef4f4">
-<ul>
-<li><p>
-微分における積の法則(Leibniz 則)を用いればよい．
-</p>
-<blockquote>
-<div>
-\begin{align}
-  \frac{\partial f(\boldsymbol{a})}{\partial\boldsymbol{a}}
-  &=
-    \frac{\partial}{\partial\boldsymbol{a}}
-    \boldsymbol{a}^{\mathsf{T}}A\boldsymbol{b}
-    \mid_{\boldsymbol{b}=\boldsymbol{a}}
-    +
-    \frac{\partial}{\partial\boldsymbol{a}}
-    \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{a}
-    \mid_{\boldsymbol{b}=\boldsymbol{a}}\\
-  &=
-    A\boldsymbol{a}
-    +
-    (\boldsymbol{a}^{\mathsf{T}}A)^{\mathsf{T}}\\
-  &=(A+A^{\mathsf{T}})\boldsymbol{a}
-\end{align}
 
 </div>
 </blockquote></li>
 
 </ul>
-
 </section>
-<section data-background="#fef4f4">
+<section>
+
+<div id="org729d834" class="figure">
+<p><img src="figs/pval_null_n_20.png" alt="pval_null_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 5: </span>いかさまのないコインの場合</p>
+</div>
+</section>
+<section id="slide-orgc91ce13">
+<h3 id="orgc91ce13">問題</h3>
+<ul>
+<li>いかさまのあるコイン(表の出る確率が0.6)を20回投げたとき，
+表が \(k\) 回出る確率を求めなさい</li>
+
+</ul>
+</section>
+<section id="slide-orgee8b415">
+<h3 id="orgee8b415">解答</h3>
 <ul>
 <li><p>
-行列 \(A\) の \((i,j)\) 成分に関する余因子を \(\Delta_{ij}\) とする．
-行列式 \(|A|\) と逆行列 \(A^{-1}\) の \((i,j)\) 成分はそれぞれ
+以下の式で計算される
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  |A|=\sum_{j=1}^{d}a_{ij}\Delta_{ij},\; \forall i
-  \qquad
-  (A^{-1})_{ij}=\frac{\Delta_{ji}}{|A|}
+  P(\text{表の回数}=k)
+  =
+  \left(20\atop k\right)
+  0.6^{k} (1-0.6)^{20-k}
 \end{equation}
 
 </div>
-</blockquote>
-<p>
-と書くことができる．したがって
+</blockquote></li>
+
+</ul>
+</section>
+<section>
+
+<div id="org31faef6" class="figure">
+<p><img src="figs/pval_alt_n_20.png" alt="pval_alt_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 6: </span>いかさまのないコインの場合</p>
+</div>
+</section>
+<section>
+
+<div id="org8a9824c" class="figure">
+<p><img src="figs/pval_both_n_20.png" alt="pval_both_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 7: </span>いかさまの有無による違い</p>
+</div>
+</section>
+<section id="slide-org65302b9">
+<h3 id="org65302b9">問題</h3>
+<ul>
+<li>いかさまのないコインを20回投げたとき，
+15回以上表が出る確率はいくつか</li>
+
+</ul>
+</section>
+<section id="slide-orgac9fd15">
+<h3 id="orgac9fd15">解答</h3>
+<ul>
+<li><p>
+以下の式で計算される
 </p>
 <blockquote>
 <div>
 \begin{equation}
-  \frac{\partial|A|}{\partial A}
-  =|A|(A^{-1})^{\mathsf{T}}
+  P(\text{表の回数}\ge 15)
+  =
+  \sum_{k=15}^{20}\left(20\atop k\right)
+  0.5^{k} (1-0.5)^{20-k}
+  =
+  0.02
+\end{equation}
+
+</div>
+</blockquote></li>
+<li>「20回投げて表が出た回数」を検定統計量と考える</li>
+<li>「20回投げて15回以上表が出たら怪しい」と考える
+<ul>
+<li>怪しいと考える検定統計量の領域を <b>棄却域</b> という</li>
+
+</ul></li>
+<li>この方策で「いかさまのないコイン」を間違えて怪しいとしてしまう確率は0.02である
+<ul>
+<li><b>第一種の過誤</b> (type-I error) という</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+
+<div id="orgb1c8698" class="figure">
+<p><img src="figs/pval_null_cum_n_20.png" alt="pval_null_cum_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 8: </span>いかさまのないコインの場合</p>
+</div>
+</section>
+<section id="slide-org9e75778">
+<h3 id="org9e75778">問題</h3>
+<ul>
+<li>いかさまのあるコインを20回投げたとき，
+15回以上表が出る確率はいくつか</li>
+
+</ul>
+</section>
+<section id="slide-orge4bb2c3">
+<h3 id="orge4bb2c3">解答</h3>
+<ul>
+<li><p>
+以下の式で計算される
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  P(\text{表の回数}\ge 15)
+  =
+  \sum_{k=15}^{20}\left(20\atop k\right)
+  0.6^{k} (1-0.6)^{20-k}
+  =
+  0.13
 \end{equation}
 
 </div>
 </blockquote>
-<p>
-となる．
-</p></li>
+<ul>
+<li>この方法で「いかさまのあるコイン」を見分けられる確率は13%程度となる</li>
+<li>これを検出力 (power) という</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section>
+
+<div id="org9bc3bd5" class="figure">
+<p><img src="figs/pval_alt_cum_n_20.png" alt="pval_alt_cum_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 9: </span>いかさまのあるコインの場合</p>
+</div>
+</section>
+<section>
+
+<div id="orge7967e2" class="figure">
+<p><img src="figs/pval_both_cum_n_20.png" alt="pval_both_cum_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 10: </span>いかさまの有無による違い</p>
+</div>
+</section>
+<section id="slide-orgd5b4bc4">
+<h3 id="orgd5b4bc4">問題</h3>
+<ul>
+<li>もっとあからさまにいかさまのあるコイン(表の出る確率が0.9)を20回投げたとき，
+15回以上表が出る確率はいくつか</li>
+
+</ul>
+</section>
+<section id="slide-orgc26e657">
+<h3 id="orgc26e657">解答</h3>
+<ul>
+<li><p>
+以下の式で計算される
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  P(\text{表の回数}\ge 15)
+  =
+  \sum_{k=15}^{20}\left(20\atop k\right)
+  0.9^{k} (1-0.9)^{20-k}
+  =
+  0.98
+\end{equation}
+
+</div>
+</blockquote>
+<ul>
+<li>この方法で「あからさまにいかさまのあるコイン」を見分けられる確率は98%程度となる</li>
+<li>対立仮説によって検出力は異なる</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section>
+
+<div id="org8c32478" class="figure">
+<p><img src="figs/pval_alt2_cum_n_20.png" alt="pval_alt2_cum_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 11: </span>いかさまのあるコインの場合</p>
+</div>
+</section>
+<section>
+
+<div id="org1905b60" class="figure">
+<p><img src="figs/pval_both2_cum_n_20.png" alt="pval_both2_cum_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 12: </span>いかさまの有無による違い</p>
+</div>
+</section>
+<section>
+
+<div id="orgf75d0c6" class="figure">
+<p><img src="figs/pval_power_n_20.png" alt="pval_power_n_20.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 13: </span>対立仮説による検出力の違い</p>
+</div>
+</section>
+<section id="slide-org39ae8bd">
+<h3 id="org39ae8bd">問題</h3>
+<ul>
+<li>いかさまのないコインを100回投げたとき，
+60回以上表が出る確率はいくつか</li>
+
+</ul>
+</section>
+<section id="slide-org5fee651">
+<h3 id="org5fee651">解答</h3>
+<ul>
+<li><p>
+以下の式で計算される
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  P(\text{表の回数}\ge 60)
+  =
+  \sum_{k=60}^{100}\left(100\atop k\right)
+  0.5^{k} (1-0.5)^{100-k}
+  =
+  0.028
+\end{equation}
+
+</div>
+</blockquote></li>
+<li>異なる検定統計量「100回投げて表が出た回数」を考えている</li>
+
+</ul>
+</section>
+<section id="slide-org18fa005">
+<h3 id="org18fa005">問題</h3>
+<ul>
+<li>いかさまのあるコインを100回投げたとき，
+60回以上表が出る確率はいくつか</li>
+
+</ul>
+</section>
+<section id="slide-org8825063">
+<h3 id="org8825063">解答</h3>
+<ul>
+<li><p>
+以下の式で計算される
+</p>
+<blockquote>
+<div>
+\begin{equation}
+  P(\text{表の回数}\ge 60)
+  =
+  \sum_{k=60}^{100}\left(100\atop k\right)
+  0.6^{k} (1-0.6)^{100-k}
+  =
+  0.543
+\end{equation}
+
+</div>
+</blockquote>
+<ul>
+<li>同じ仮説だとしても検定統計量によって検出力は異なる．</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+
+<div id="org73dab26" class="figure">
+<p><img src="figs/pval_both_cum_n_100.png" alt="pval_both_cum_n_100.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 14: </span>いかさまの有無による違い</p>
+</div>
+</section>
+<section>
+
+<div id="org9ac0a4f" class="figure">
+<p><img src="figs/pval_power_n_100.png" alt="pval_power_n_100.png" height="100%" />
+</p>
+<p><span class="figure-number">Figure 15: </span>対立仮説による検出力の違い</p>
+</div>
+</section>
+<section id="slide-org23aa3db">
+<h3 id="org23aa3db">問題</h3>
+<ul>
+<li>以下の問に答えなさい
+<ul>
+<li>100個のコインがある</li>
+<li>このうち10個にはあるいかさまが施されている</li>
+<li>ある検定統計量を用いて有意水準0.05の検定を考える</li>
+<li>設定した検定統計量の検出力は0.8であることがわかっている</li>
+<li>このときどの程度のいかさまを見破ることができるだろうか?</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-orgee9f728">
+<h3 id="orgee9f728">解答例</h3>
+<ul>
+<li>以下おおざっぱな考え方を示す
+<ul>
+<li>いかさまを検出できる確率は0.8なので，
+平均的には\(10\times0.8=8\)個の
+いかさまコインを見付けられる</li>
+<li>有意水準0.05なので，
+平均的には\(90\times0.05=4.5\)個
+誤っていかさまコインだと判定してしまう</li>
+<li>見破ったと考える12.5個のうち，
+本当にいかさまをしているのは8個なので，
+64%しか当たらないことになる</li>
+
+</ul></li>
+<li>実際の状況に合わせて検定の意味を考える必要がある</li>
 
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-org345bcb0">
-<h2 id="org345bcb0">次回の予定</h2>
+<section id="slide-org79d6c60">
+<h2 id="org79d6c60">p値とその誤解</h2>
+<div class="outline-text-2" id="text-org79d6c60">
+</div>
+</section>
+<section id="slide-orgc425bfe">
+<h3 id="orgc425bfe">p値とは</h3>
+<blockquote>
+<p>
+おおざっぱにいうと，
+p値とは特定の統計モデルのもとで，
+データの統計的要約
+(たとえば，2グループ比較での標本平均の差)
+が観察された値と等しいか，それよりも極端な値をとる確率である．
+</p>
+</blockquote>
+<ul>
+<li><b>p値</b> は観測された値を使った検定の第一種の過誤の確率として定義される</li>
+
+</ul>
+</section>
+<section id="slide-org6131c8b">
+<h3 id="org6131c8b">良くある間違った記述</h3>
+<ul>
+<li>p値は帰無仮説が正しい確率である</li>
+<li>有意水準を5%に設定して帰無仮説を棄却した場合，その判断が誤りである確率は5%である</li>
+<li>p値が0.01ということは帰無仮説を棄却しても100回に1回しか間違わない</li>
+<li>有意でない検定結果は帰無仮説が正しく，採択すべきであることを意味する</li>
+<li>有意な検定結果は帰無仮説が誤りであり，棄却すべきであることを意味する</li>
+
+</ul>
+</section>
+<section id="slide-orgbb65eac">
+<h3 id="orgbb65eac">ASAの提言</h3>
+<ul>
+<li>American Statistical Association
+<a href="https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf">https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf</a></li>
+<li>日本計量生物学会による和訳
+<a href="https://www.biometrics.gr.jp/news/all/ASA.pdf">https://www.biometrics.gr.jp/news/all/ASA.pdf</a></li>
+
+</ul>
+</section>
+<section id="slide-org5ad1711">
+<h3 id="org5ad1711">提言の要旨</h3>
+<ul>
+<li><p>
+その1
+</p>
+<blockquote>
+<p>
+p値はデータと特定の統計モデルが矛盾する程度をしめす指標のひとつである
+</p>
+</blockquote>
+<ul class="fragment appear">
+<li>統計モデルはいくつもの仮定を含む</li>
+<li>帰無仮説は仮定の1つにすぎない</li>
+<li>p値が小さければ<br />
+<del>データと帰無仮説の矛盾の程度が大きい</del><br />
+統計モデルの仮定のどれかが間違っている</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+その2
+</p>
+<blockquote>
+<p>
+p値は，調べている仮説が正しい確率や，データが偶然のみで得られた確率を測るものではない
+</p>
+</blockquote>
+<ul class="fragment appear">
+<li>誤差をともなってばらつくのはデータである</li>
+<li>仮説や真の値は確率的でない</li>
+<li>データが偶然のみで得られることは統計モデルの仮定の一つである</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+その3
+</p>
+<blockquote>
+<p>
+科学的な結論や，ビジネス，政策における決定は，p値がある値を超えたかどうかにのみ基づくべきではない
+</p>
+</blockquote>
+<ul class="fragment appear">
+<li>データ解析や科学的推論を機械的で明白なルールに貶めるようなやり方は
+誤った思い込みや貧弱な意思決定につながる</li>
+<li>科学的推論には研究デザイン，測定の室，外部のエビデンス，データ解析の背後にある
+仮定の妥当性が重要である</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+その4
+</p>
+<blockquote>
+<p>
+適正な推測のためには，すべてを報告する透明性が必要である
+</p>
+</blockquote>
+<ul class="fragment appear">
+<li>p値や関連する解析は選択して報告してはいけない</li>
+<li>研究の中で調べる仮説の数，データの選択基準，実行したすべての統計解析，計算したすべてのp値を開示すべきである</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+その5
+</p>
+<blockquote>
+<p>
+p値や統計的有意性は，効果の大きさや結果の重要性を意味しない
+</p>
+</blockquote>
+<ul class="fragment appear">
+<li>統計的に有意であることは科学的に意味にあることと同義ではない</li>
+<li>どんなに小さな効果でもサンプルサイズが大きかったり測定精度が十分高ければ小さなp値になるし，その逆もしかり</li>
+<li>効果の推定値が同じ大きさでも，推定の精度が異なれば異なったp値となる</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+<ul>
+<li><p>
+その6
+</p>
+<blockquote>
+<p>
+p値は，それだけでは統計モデルや仮説に関するエビデンスの，よい指標とはならない
+</p>
+</blockquote>
+<ul class="fragment appear">
+<li>背景情報や外部のエビデンスがなければ，p値は限られた情報しか提供しない</li>
+<li>p値が大きくても帰無仮説を好む証拠とはならない</li>
+<li>p値を計算したらデータ解析は終わりではない</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgf72c153">
+<h2 id="orgf72c153">次回の予定</h2>
 <ul>
 <li><b>第1日 : 回帰モデルの考え方と推定</b></li>
 <li>第2日 : モデルの評価</li>
@@ -1838,7 +1885,7 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
 <script src="./reveal.js/plugin/menu/menu.js"></script>
 <script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
-<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/plugin/chalkboard/plugin.js"></script>
 <script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
@@ -1852,7 +1899,7 @@ center: true,
 slideNumber: 'c',
 rollingLinks: false,
 keyboard: true,
-mouseWheel: true,
+mouseWheel: false,
 fragmentInURL: true,
 hashOneBasedIndex: false,
 pdfSeparateFragments: false,
@@ -1861,10 +1908,10 @@ overview: true,
 transition: 'fade',
 transitionSpeed: 'default',
 showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
-spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
+spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealChalkboard ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [

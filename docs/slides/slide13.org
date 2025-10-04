@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-01-06 17:20:03 mura>
+# Time-stamp: <2025-01-13 14:04:37 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 #+PROPERTY: header-args:R+ :width 1344 :height 960 :res 144
@@ -39,6 +39,7 @@
   library(fable)
   library(tsibble)
   library(feasts)
+  library(urca)
   library(patchwork)
   library(gt)
   #' 日本語表示・色の設定 (ggplot)
@@ -78,6 +79,7 @@
   library(fable)
   library(tsibble)
   library(feasts)
+  library(urca)
 #+end_src
 
 
@@ -292,7 +294,7 @@
 #+end_src
 #+caption: 同じモデルに従うAR過程の例
 #+name: fig:ts_ar
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_ar.png]]
 
@@ -306,7 +308,7 @@
 #+end_src
 #+caption: AR過程の自己相関
 #+name: fig:ts_aracf
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_aracf.png]]
    
@@ -321,7 +323,7 @@
 #+end_src
 #+caption: 同じモデルに従うMA過程の例
 #+name: fig:ts_ma
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_ma.png]]
 
@@ -335,7 +337,7 @@
 #+end_src
 #+caption: MA過程の自己相関
 #+name: fig:ts_maacf
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_maacf.png]]
 
@@ -350,7 +352,7 @@
 #+end_src
 #+caption: 同じモデルに従うARMA過程の例
 #+name: fig:ts_arma
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_arma.png]]
 
@@ -364,7 +366,7 @@
 #+end_src
 #+caption: ARMA過程の自己相関
 #+name: fig:ts_armaacf
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_armaacf.png]]
    
@@ -379,7 +381,7 @@
 :reveal_background: #fef4f4
 :ID:       53DE1CC8-0CB7-45DE-9186-B05CDAD42779
 :END:
-- 関数 feats::ACF()
+- 関数 feasts::ACF()
   #+begin_src R :eval no :tangle no
     ACF(.data,  y, ...,  lag_max = NULL,
       type = c("correlation", "covariance", "partial"),
@@ -631,7 +633,7 @@
 #+end_src
 #+caption: AR過程の偏自己相関
 #+name: fig:ts_arpacf
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_arpacf.png]]
 
@@ -645,7 +647,7 @@
 #+end_src
 #+caption: MA過程の偏自己相関
 #+name: fig:ts_mapacf
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_mapacf.png]]
 
@@ -659,7 +661,7 @@
 #+end_src
 #+name: fig:ts_armapacf
 #+caption: ARMA過程の偏自己相関
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_armapacf.png]]
    
@@ -1342,7 +1344,7 @@
 #+end_src
 #+name: fig:ap_arima
 #+caption: ARIMAモデル(階差ありARMA)による予測
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ap_arima.png]]
 
@@ -1396,7 +1398,7 @@
 #+end_src
 #+name: fig:ap_ets
 #+caption: ETSモデル(expornential smoothing)による予測
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ap_ets.png]]
 
@@ -1438,7 +1440,7 @@
   ##            ylab = "Observation")
 #+end_src
 #+caption: ホワイトノイズの予測
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_pred_wn.png]]
 
@@ -1450,7 +1452,7 @@
   autoplot(forecast(myARMA(a=c(1),b=c(0),rnorm(180)),h=20),col=2)
 #+end_src
 #+caption: ランダムウォークの予測
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_pred_rw.png]]
 
@@ -1461,7 +1463,7 @@
   autoplot(forecast(myARMA(a=c(0.8, -0.64),b=c(-0.5),rnorm(180)),h=20),col=2)
 #+end_src
 #+caption: ARMA 過程の予測
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ts_pred_arma.png]]
 
@@ -1520,7 +1522,7 @@
   print(p + geom_col(fill="skyblue")) # グラフ出力
 #+end_src
 #+caption: 全国の感染者数
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_patients.png]]
 
@@ -1554,7 +1556,7 @@
            y = "number of patients")
 #+end_src
 #+caption: 全国の感染者数
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_patients.png]]
 
@@ -1582,7 +1584,7 @@
            y = "number of patients")
 #+end_src
 #+caption: 第3波の感染者数
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_patients.png]]
 
@@ -1599,7 +1601,7 @@
   #' 7日周期の影響があることがわかる
 #+end_src
 #+caption: 時系列 (階差)
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave.png]]
 
@@ -1613,7 +1615,7 @@
   #' やはり7日周期の影響があることがわかる
 #+end_src
 #+caption: 時系列 (対数変換+階差)
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_log.png]]
 
@@ -1628,7 +1630,7 @@
   #' 7日の相関は負になっているので，季節階差は取らなくても良さそう
 #+end_src
 #+caption: 時系列 (対数変換+階差+7日階差)
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_log7.png]]
 
@@ -1660,7 +1662,7 @@
 #+end_src
 #+name: fig:covid_3wave_arima_est
 #+caption: あてはめ値
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_arima_est.png]]
 
@@ -1672,7 +1674,7 @@
 #+end_src
 #+name: fig:covid_3wave_arima_diag
 #+caption: 診断プロット
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_arima_diag.png]]
 
@@ -1687,7 +1689,7 @@
     labs(title = "Prediction by ARIMA model")
 #+end_src
 #+caption: 予測値 (60日分，80%信頼区間)
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_arima_pred.png]]
 
@@ -1703,7 +1705,7 @@
   autoplot(est.sts)
 #+end_src
 #+caption: 時系列の分解結果
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_sts_decomp.png]]
 
@@ -1733,7 +1735,7 @@
   print(p)
 #+end_src
 #+caption: あてはめ値
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_sts_est.png]]
 
@@ -1746,7 +1748,7 @@
   ## こちらも残差に相関が残っているので，優れたモデルという訳ではない
 #+end_src
 #+caption: 診断プロット
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_sts_diag.png]]
 
@@ -1789,7 +1791,7 @@
   print(p)
 #+end_src
 #+caption: 予測値 (60日分)
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_3wave_sts_pred.png]]
 
@@ -1817,7 +1819,7 @@
   print(p + geom_col(fill="skyblue")) # グラフ出力
 #+end_src
 #+caption: 第8波の感染者数
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_patients.png]]
 
@@ -1860,7 +1862,7 @@
   ## 残差に相関が残っているので，優れたモデルという訳ではない
 #+end_src
 #+caption: 診断プロット
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_arima_diag.png]]
 
@@ -1887,7 +1889,7 @@
   print(p)
 #+end_src
 #+caption: あてはめ値
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_arima_est.png]]
 
@@ -1930,7 +1932,7 @@
   print(p)
 #+end_src
 #+caption: 予測値 (2023/01/16まで)
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_arima_pred.png]]
 
@@ -1952,7 +1954,7 @@
   ## こちらも残差に相関が残っているので，優れたモデルという訳ではない
 #+end_src
 #+caption: 診断プロット
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_sts_diag.png]]
 
@@ -1964,7 +1966,7 @@
   autoplot(est.sts)
 #+end_src
 #+caption: 時系列の分解結果
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_sts_decomp.png]]
 
@@ -1994,7 +1996,7 @@
   print(p)
 #+end_src
 #+caption: あてはめ値
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_sts_est.png]]
 
@@ -2037,7 +2039,7 @@
   print(p)
 #+end_src
 #+caption: 予測値 (60日分)
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_sts_pred.png]]
   

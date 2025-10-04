@@ -1,4 +1,4 @@
-MSG = "2024 version"
+MSG = $(shell head -1 VERSION)
 
 all: html
 

@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-10-21 16:46:56 mura>
+# Time-stamp: <2025-10-04 14:54:44 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -39,19 +39,20 @@
 - 講義題目 : 多変量解析
 - 担当 : 村田 昇
 - 授業の目標 
-  - 統計解析手法である *多変量解析*
-    の基本的な方法に習熟する
-    - 大規模データから効果的に情報を抽出する
-    - データの背後に潜む統計的構造をモデル化して分析する
-  - 解析法の数理科学的側面を理解する
-  - 実データに多変量解析を適用する
+   - 統計解析手法である *多変量解析*
+      の基本的な方法に習熟する
+      - 大規模データから効果的に情報を抽出する
+      - データの背後に潜む統計的構造をモデル化して分析する
+   - 解析法の数理科学的側面を理解する
+   - 実データに多変量解析を適用する
+
 ** 受講にあたっての注意
 - 微分積分学と線形代数学を復習しておく
 - 自身で解析するための計算機環境を準備する
 - 講義の資料は Moodle および Web で公開する
 - 成績評価は課題の提出(2回)による
-  - 回帰分析
-  - 自由課題
+   - 回帰分析
+   - 自由課題
 
 ** 講義計画 (予定)
 - オリエンテーション 
@@ -65,29 +66,37 @@
 - 第2回レポート (1月末締切，自由課題)
 
 
+* 講義の内容
+- 多変量解析法の紹介
+   - 回帰分析
+   - 主成分分析
+   - 判別分析
+   - クラスタ分析
+   - 時系列解析
+- 関数の微分
+   - ベクトルによる微分
+   - 行列による微分
+
+
 * 多変量解析
 ** 多変量解析とは
 - 複数の変量からなるデータを分析する手法の総称
-  - 回帰分析 : 複数の量を用いて注目する変数の値を説明する
-  - 主成分分析 : 全体を説明する少数の特徴量を構成する
-  - 判別分析 : 特徴量の違いでカテゴリ分けを行う
-  - クラスタ分析 : 特徴量の違いに着目してクラスタを構成する
-  - 時系列解析 : 時間とともに変化する現象を記述する
+   - 回帰分析 : 複数の量を用いて注目する変数の値を説明する
+   - 主成分分析 : 全体を説明する少数の特徴量を構成する
+   - 判別分析 : 特徴量の違いでカテゴリ分けを行う
+   - クラスタ分析 : 特徴量の違いに着目してクラスタを構成する
+   - 時系列解析 : 時間とともに変化する現象を記述する
 - 機械学習で使われる手法の基礎
-  - 教師あり問題 : 回帰分析(量的データ)・判別分析(質的データ)
-  - 教師なし問題 : 主成分分析・クラスタ分析
+   - 教師あり問題 : 回帰分析(量的データ)・判別分析(質的データ)
+   - 教師なし問題 : 主成分分析・クラスタ分析
 
 ** 回帰分析の考え方
-- ある変数(目的変数)を別の変数によって説明・予測するための関係式(回帰式)を構成する
-  - 単回帰 : 一つの変数で目的変数を説明する
-  - 重回帰 : 複数の変数で目的変数を説明する
+- ある変数(目的変数)を別の変数(説明変数)によって説明・予測するための関係式(回帰式)を構成する
+   - 単回帰 : 一つの変数で目的変数を説明する
+   - 重回帰 : 複数の変数で目的変数を説明する
 - [[color:green][分析の事例]]
-  - 広告宣伝費と商品の売上を予測する式を作り，広告効果があるかどうか判定する
-  - 築年数・駅からの距離・広さ・間取りで家賃を説明する式を作り，新規に家賃を設定する際に利用する
-
-# ある1種類の変数/データを別の変数/データ(1種類もしくは複数)によって説明もしくは予測するための関係式(回帰方程式)を構成することを目的とする分析法
-# ある量(説明変数)を用いて注目する量(目的変数)を説明する
-# - 身長から体重を予測する式を作り，ある身長の人がある体重だったときに，それが普通かどうか判定する
+   - 広告宣伝費と商品の売上を予測する式を作り，広告効果があるかどうか判定する
+   - 築年数・駅からの距離・広さ・間取りで家賃を説明する式を作り，新規に家賃を設定する際に利用する
 
 ** COMMENT 単回帰の例
 #+caption: 体重と脳の重さ 
@@ -292,10 +301,8 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 ** 主成分分析の考え方
 - 多数の変数が与えられたときに，変数のもつ構造を効率的に記述できる少数個の特徴量を構成する
 - [[color:green][分析の事例]]
-  - 野球選手の打撃成績(打率，本塁打数，打点など)から，打者としての特徴を記述する指標を作成する
-  - 複数銘柄からなる株価の時系列データから，市場全体の変動を記述する総合指標を作成する
-
-# 全体を説明する少数の特徴量を構成する
+   - 野球選手の打撃成績(打率，本塁打数，打点など)から，打者としての特徴を記述する指標を作成する
+   - 複数銘柄からなる株価の時系列データから，市場全体の変動を記述する総合指標を作成する
 
 ** 主成分分析の例
 #+caption: 県別の生活環境(一部)
@@ -343,11 +350,8 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 ** 判別分析の考え方
 - ある個体が複数のクラスのいずれかに属するとき，その個体の特徴量からどのクラスに属するかを予測するモデルを構築する
 - [[color:green][分析の事例]]
-  - 食道がんを患っている人とそうでない人を，年齢・飲酒量・喫煙度から判別する
-  - 銀行が融資判断をするために，企業の財務データから，その企業が期間内に債務不履行となるか否かを予測する
-
-# - 花の種類を，その花の花弁の幅・長さおよび萼片(がくへん)の幅・長さから判別する
-# 特徴量の違いでカテゴリ分けを行う
+   - 食道がんを患っている人とそうでない人を，年齢・飲酒量・喫煙度から判別する
+   - 銀行が融資判断をするために，企業の財務データから，その企業が期間内に債務不履行となるか否かを予測する
 
 ** 判別分析の例
 #+caption: 乳癌患者の生研検査
@@ -387,11 +391,11 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 
 ** クラスタ分析の考え方
 - 特徴量の違いに着目して，妥当な個体のグループ(クラスタ)を構成する
-  - 階層的な方法 : 系統樹を作成する
-  - 非階層的な方法 : グループの代表値を推定する
+   - 階層的な方法 : 系統樹を作成する
+   - 非階層的な方法 : グループの代表値を推定する
 - [[color:green][分析の事例]]
-  - 映画に関するアンケート調査から潜在的なジャンル(グループ)を抽出する
-  - 顧客の購買履歴から，嗜好の異なる顧客グループに分類し，グループごとの販売戦略を立てる
+   - 映画に関するアンケート調査から潜在的なジャンル(グループ)を抽出する
+   - 顧客の購買履歴から，嗜好の異なる顧客グループに分類し，グループごとの販売戦略を立てる
 
 ** クラスタ分析の例
 #+caption: おむすびの具に関するアンケート
@@ -424,11 +428,11 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 
 ** 時系列解析の考え方
 - 時間とともに変化する現象を記述するために，未来の値を過去の値で近似する式を構成する
-  - 自己回帰 (ARモデル) : 過去の影響の記述
-  - 移動平均 (MAモデル) : 記憶のある不確定性
+   - 自己回帰 (ARモデル) : 過去の影響の記述
+   - 移動平均 (MAモデル) : 記憶のある不確定性
 - [[color:green][分析の事例]]
-  - 市町村の過去の年齢別の人口変動から将来の人口比率の推移を予測する
-  - 食品・飲料の季節ごとの販売履歴から，将来の需要量を予測して生産計画を立てる
+   - 市町村の過去の年齢別の人口変動から将来の人口比率の推移を予測する
+   - 食品・飲料の季節ごとの販売履歴から，将来の需要量を予測して生産計画を立てる
         
 ** 時系列解析の例
 #+caption: 航空機旅客量の変遷
@@ -477,20 +481,330 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 [[file:./figs/t-airpass12.png]]
 
 
+* 関数の微分
+** ベクトルによる微分
+- \(d\) 次元ベクトル
+   #+begin_quote
+   \begin{equation}
+     \boldsymbol{a}
+     =\begin{pmatrix}
+       a_1\\
+       a_2\\
+       \vdots\\
+       a_d
+     \end{pmatrix}
+     =(a_1,a_2,\dotsc,a_d)^{\mathsf{T}}
+   \end{equation}
+   #+end_quote
+- ベクトル \(\boldsymbol{a}\) による関数 \(f(\boldsymbol{a})\) の微分の定義
+   #+begin_quote
+   \begin{equation}
+     \frac{\partial f}{\partial\boldsymbol{a}}
+     =
+     \left(
+       \frac{\partial f}{\partial a_1},
+       \frac{\partial f}{\partial a_2},
+       \dotsc,
+       \frac{\partial f}{\partial a_d}
+     \right)^{\mathsf{T}}
+   \end{equation}
+   #+end_quote
+
+** ベクトルによる微分 (例題)
+- 問題
+   #+begin_quote
+   \(d\) 次元ベクトル \(\boldsymbol{a}\) と \(\boldsymbol{b}\)
+   を用いて定義される関数
+   \(f(\boldsymbol{a})=\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\)
+   の \(\boldsymbol{a}\) による微分を求めよ．
+   #+end_quote
+  
+#+reveal: split
+- 解答例
+   #+begin_quote
+   各成分で考えると以下のように計算される．
+   \begin{equation}
+     \frac{\partial f}{\partial a_i}
+     =\frac{\partial}{\partial a_i}
+     \left(a_1b_1+\dotsb+a_ib_i+\dotsb+a_db_d\right)
+     =b_i.
+   \end{equation}
+   したがって
+   \begin{equation}
+     \frac{\partial f}{\partial\boldsymbol{a}}
+     =
+     \left(
+       b_{1},
+       b_{2},
+       \dotsc,
+       b_{d}
+     \right)^{\mathsf{T}}
+     =\boldsymbol{b}
+   \end{equation}
+   となる．
+   #+end_quote
+  
+#+reveal: split
+- 注意
+   #+begin_quote
+   \begin{equation}
+     \begin{aligned}
+       \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\right)
+       &=\boldsymbol{b}\\
+       \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}\right)
+       &=(\boldsymbol{b}^{\mathsf{T}})^{\mathsf{T}}=\boldsymbol{b}
+     \end{aligned}
+   \end{equation}
+   というルールがあることがわかる．
+   #+end_quote
+  
+** 行列による微分
+- \(d\times d\) 行列
+   #+begin_quote
+   \begin{equation}
+     A
+     =
+     \begin{pmatrix}
+       a_{11}&a_{12}&\dotsm&a_{1d}\\
+       a_{21}&a_{22}&\dotsm&a_{2d}\\
+       \vdots&&\ddots&\vdots\\
+       a_{d1}&a_{d2}&\dotsm&a_{dd}
+     \end{pmatrix}
+   \end{equation}
+   #+end_quote
+
+#+reveal: split
+- 行列 \(A\) による関数 \(f(A)\) の微分の定義
+   #+begin_quote
+   \begin{equation}
+     \frac{\partial f}{\partial A}
+     =
+     \begin{pmatrix}
+       \frac{\partial f}{\partial a_{11}}
+       &\frac{\partial f}{\partial a_{12}}&\dotsm
+       &\frac{\partial f}{\partial a_{1d}}\\[3pt]
+       \frac{\partial f}{\partial a_{21}}
+       &\frac{\partial f}{\partial a_{22}}&\dotsm
+       &\frac{\partial f}{\partial a_{2d}}\\[3pt]
+       \vdots&&\ddots&\vdots\\
+       \frac{\partial f}{\partial a_{d1}}
+       &\frac{\partial f}{\partial a_{d2}}&\dotsm
+       &\frac{\partial f}{\partial a_{dd}}
+     \end{pmatrix}
+   \end{equation}
+   #+end_quote
+
+** 行列による微分 (例題1)
+- 問題
+   #+begin_quote
+   行列 \(A\) と \(d\) 次元ベクトル \(\boldsymbol{b}\)
+   を用いて定義される関数
+   \begin{equation}
+     f(A)=\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\sum_{i,j=1}^{d}b_ia_{ij}b_j
+   \end{equation}
+   の行列 \(A\) による微分を求めよ．
+   #+end_quote
+
+#+reveal: split
+- 解答例
+   #+begin_quote
+   成分で考えると
+   \begin{equation}
+     \frac{\partial f}{\partial a_{ij}}
+     = 
+     \frac{\partial}{\partial a_{ij}}\sum_{i',j'=1}^{d}b_{i'}a_{i'j'}b_{j'}
+     =b_ib_j
+   \end{equation}
+   となるので，
+   \begin{equation}
+     % \frac{\partial f}{\partial A}
+     \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+     =
+     \begin{pmatrix}
+       b_1b_1&b_1b_2&\dots&b_1b_d\\
+       b_2b_1&b_2b_2&\dots&b_2b_d\\
+       \vdots&&\ddots&\vdots\\
+       b_db_1&b_db_2&\dots&b_db_d
+     \end{pmatrix}
+     =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+   \end{equation}
+   と書くことができる．
+   #+end_quote
+
+** 行列による微分 (例題2)
+- 問題
+   #+begin_quote
+   \(d\times d\) 行列 \(A\) と \(B\)
+   を用いて定義される関数
+   \begin{equation}
+     f(A)=\mathrm{tr} AB=\sum_{i,j=1}^{d}a_{ij}b_{ji}
+   \end{equation}
+   の行列 \(A\) による微分を求めよ．
+   #+end_quote
+
+#+reveal: split
+- 解答例
+   #+begin_quote
+   成分では
+   \begin{equation}
+     \frac{\partial f}{\partial a_{ij}}
+     =b_{ji} 
+   \end{equation}
+   となるので，
+   \begin{equation}
+     % \frac{\partial f}{\partial A}
+     \frac{\partial}{\partial A}\mathrm{tr} AB
+     =
+     \begin{pmatrix}
+       b_{11}&b_{21}&\dots&b_{d1}\\
+       b_{12}&b_{22}&\dots&b_{d2}\\
+       \vdots&&\ddots&\vdots\\
+       b_{1d}&b_{2d}&\dots&b_{dd}
+     \end{pmatrix}
+     =B^{\mathsf{T}}
+   \end{equation}
+   と書くことができる．
+   #+end_quote
+
+#+reveal: split
+- 注意1
+   #+begin_quote
+   行列のトレースの性質
+   \begin{equation}
+     \mathrm{tr} AB
+     =
+     \mathrm{tr} BA, \quad
+     \mathrm{tr} AB
+     =
+     \mathrm{tr} (AB)^{\mathsf{T}}
+     =
+     \mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+   \end{equation}
+   より
+   \begin{equation}
+     \frac{\partial}{\partial A}\mathrm{tr} AB
+     =
+     \frac{\partial}{\partial A}\mathrm{tr} BA
+     =
+     \frac{\partial}{\partial A}\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
+     =
+     \frac{\partial}{\partial A}\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+     =B^{\mathsf{T}}
+   \end{equation}
+   となることが容易に確かめられる．
+   #+end_quote
+
+#+reveal: split
+- 注意2
+   #+begin_quote
+   \begin{equation}
+     \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+     =\mathrm{tr}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+   \end{equation}
+   となることから
+   \begin{equation}
+     \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+     =
+     \frac{\partial}{\partial A}\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+     =\left(\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}\right)^{\mathsf{T}}
+     =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+   \end{equation}
+   となり，2つの例での計算結果が矛盾しないことが確かめられる．
+   #+end_quote
+  
+
+* 演習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+** 問題
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- 行列(正方行列に限らない)のトレースに関して
+   \begin{equation}
+     \mathrm{tr} AB
+     =\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+     =\mathrm{tr} BA
+     =\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
+   \end{equation}
+   が成り立つことを示せ
+- \(d\) 次元ベクトル \(\boldsymbol{a}\) と
+   \(d\times d\) 行列 \(A\)
+   で定義される関数
+   \(f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}A\boldsymbol{a}\)
+   のベクトル \(\boldsymbol{a}\) による微分を求めよ
+- 行列 \(A\) の行列式を \(|A|\) と書くとき
+   行列 \(A\) による行列式 \(|A|\) の微分を求めよ
+   - ヒント : 余因子展開を利用すると容易に求められる
+
+** 解答例
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- \(\mathrm{tr}AB\) より，行列 \(A,B\) の積は正方行列になることから，
+   \(A\) が \(n\times m\) 行列とすれば，
+   \(B\) は \(m\times n\) 行列となる．
+   したがって
+   #+begin_quote
+   \begin{equation}
+     \mathrm{tr}AB=\sum_{i=1}^{n}\sum_{j=1}^{m}a_{ij}b_{ji}
+   \end{equation}
+   #+end_quote
+   と書くことができる．
+   他の式も同様に書けることを確認すればよい．
+
+#+reveal: split
+- 微分における積の法則(Leibniz 則)を用いればよい．
+   #+begin_quote
+   \begin{align}
+     \frac{\partial f(\boldsymbol{a})}{\partial\boldsymbol{a}}
+     &=
+       \frac{\partial}{\partial\boldsymbol{a}}
+       \boldsymbol{a}^{\mathsf{T}}A\boldsymbol{b}
+       \mid_{\boldsymbol{b}=\boldsymbol{a}}
+       +
+       \frac{\partial}{\partial\boldsymbol{a}}
+       \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{a}
+       \mid_{\boldsymbol{b}=\boldsymbol{a}}\\
+     &=
+       A\boldsymbol{a}
+       +
+       (\boldsymbol{a}^{\mathsf{T}}A)^{\mathsf{T}}\\
+     &=(A+A^{\mathsf{T}})\boldsymbol{a}
+   \end{align}
+   #+end_quote
+
+#+reveal: split
+- 行列 \(A\) の \((i,j)\) 成分に関する余因子を \(\Delta_{ij}\) とする．
+   行列式 \(|A|\) と逆行列 \(A^{-1}\) の \((i,j)\) 成分はそれぞれ
+   #+begin_quote
+   \begin{equation}
+     |A|=\sum_{j=1}^{d}a_{ij}\Delta_{ij},\; \forall i
+     \qquad
+     (A^{-1})_{ij}=\frac{\Delta_{ji}}{|A|}
+   \end{equation}
+   #+end_quote
+   と書くことができる．したがって
+   #+begin_quote
+   \begin{equation}
+     \frac{\partial|A|}{\partial A}
+     =|A|(A^{-1})^{\mathsf{T}}
+   \end{equation}
+   #+end_quote
+   となる．
+
+
 * 次回の予定
 - 確率
-  - 確率分布
-  - 確率質量関数・確率密度関数
-  - 正規分布 (\(\chi^2\)分布，\(t\)分布，\(F\)分布 )
+   - 確率分布
+   - 確率質量関数・確率密度関数
+   - 正規分布 (\(\chi^2\)分布，\(t\)分布，\(F\)分布 )
 - 統計
-  - 統計量 (標本平均，不偏分散・共分散，相関係数)
-  - 最尤法 (尤度関数)
-  - Bayes の定理
-- 関数の微分
-  - ベクトルによる微分
-  - 行列による微分
-
-
+   - 統計量 (標本平均，不偏分散・共分散，相関係数)
+   - 最尤法 (尤度関数)
+   - Bayes の定理
+      
 * Footnotes
 * COMMENT ローカル変数
 # Local Variables:
