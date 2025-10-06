@@ -5,7 +5,7 @@
 #+LINK: github https://noboru-murata.github.io/multivariate-analysis/
 #+STARTUP: hidestars content indent
 
-# Time-stamp: <2025-10-04 15:08:24 mura>
+# Time-stamp: <2025-10-06 16:22:56 mura>
 # C-c C-e H A (generate MDs for all subtrees)
 
 * 概要
@@ -36,7 +36,7 @@
 :EXPORT_FILE_NAME: lecture01
 :EXPORT_DATE: <2020-08-26 Wed>
 :END:
-<2025-10-04 Sat> 更新
+<2025-10-06 Mon> 更新
 ** スライド
 #+hugo: {{< myslide base="multivariate-analysis" name="slide01" >}}
 ** ハンドアウト
@@ -47,7 +47,7 @@
 :EXPORT_FILE_NAME: lecture02
 :EXPORT_DATE: <2020-08-26 Wed>
 :END:
-<2025-10-04 Sat> 更新
+<2025-10-06 Mon> 更新
 ** スライド
 #+hugo: {{< myslide base="multivariate-analysis" name="slide02" >}}
 ** ハンドアウト

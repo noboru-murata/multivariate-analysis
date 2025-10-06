@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-10-04 15:00:00 mura>
+# Time-stamp: <2025-10-06 14:22:17 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -49,28 +49,28 @@
 #+end_src
 
 * COMMENT 演習 (早稲田大学雛型)
-  :PROPERTIES:
-  :reveal_background: #fef4f4
-  :END:
-  # 早稲田大学
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 早稲田大学
 ** 問題
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - について以下を示しなさい．
-     - である．
-       #+begin_quote
-       #+end_quote
-       
-** 解答例
-   :PROPERTIES:
-   :reveal_background: #fef4f4
-   :END:
-   - いずれも定義にもとづいて計算すればよい
-     #+begin_quote
-     #+end_quote
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- について以下を示しなさい．
+   - である．
+      #+begin_quote
+      #+end_quote
 
-   
+** 解答例
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+- いずれも定義にもとづいて計算すればよい
+  #+begin_quote
+  #+end_quote
+
+
 
 #+OPTIONS: reveal_mousewheel:nil
 #+begin_src R :eval no :exports none :tangle yes
@@ -89,28 +89,28 @@
 :reveal_background: #fef4f4
 :END:
 - ほげほげな方法:
-  #+begin_src R :eval no
-  #+end_src
+   #+begin_src R :eval no
+   #+end_src
 ** データセット
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - 以下のデータセットを使用します
-  - ~xxx~
-    #+begin_quote
-    データの素性
-    #+end_quote
-    [[https://www.foo.com/]]
+   - ~xxx~
+      #+begin_quote
+      データの素性
+      #+end_quote
+      [[https://www.foo.com/]]
 
 ** 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - 構成しなさい
-  - データ
-    #+begin_quote
-    formulaなどを与える
-    #+end_quote
+   - データ
+      #+begin_quote
+      formulaなどを与える
+      #+end_quote
 
 #+begin_src R :eval no :exports none :tangle yes
   #'
@@ -182,44 +182,44 @@
 
 ** COMMENT 確率測度の条件
 - 以下の3つの条件が成立する
-  #+begin_quote
-  \begin{align}
-    (P.1)\quad
-    &P(A)\ge 0,\; A\in\mathcal{F}\\
-    (P.2)\quad
-    &P\biggl(\sum_{n=1}^\infty A_n\biggr)
-      =\sum_{n=1}^\infty P(A_n),\; A_n\in\mathcal{F}\\
-    (P.3)\quad
-    &P(\Omega)=1
-  \end{align}
-  #+end_quote
+   #+begin_quote
+   \begin{align}
+     (P.1)\quad
+     &P(A)\ge 0,\; A\in\mathcal{F}\\
+     (P.2)\quad
+     &P\biggl(\sum_{n=1}^\infty A_n\biggr)
+       =\sum_{n=1}^\infty P(A_n),\; A_n\in\mathcal{F}\\
+     (P.3)\quad
+     &P(\Omega)=1
+   \end{align}
+   #+end_quote
 
 ** COMMENT 積分による表現の正当性
 - (P.1) \(f(x)\) の正値性から明らか
 - (P.2) 積分区間を分割しても積分値が変わらないという積分の性質から明らか
 - (P.3) 区間 \([0,1]\) 上の積分
-  \begin{equation}
-    P([0,1])=\int_{0}^{1}f(\omega)d\omega
-    =0.5\times0.5+0.5\times1.5=1
-  \end{equation}
-  より全確率が \(1\) となっている
+   \begin{equation}
+     P([0,1])=\int_{0}^{1}f(\omega)d\omega
+     =0.5\times0.5+0.5\times1.5=1
+   \end{equation}
+   より全確率が \(1\) となっている
 
 ** COMMENT 確率密度
 - 定義
-  #+begin_quote
-  確率測度がある関数の積分
-  \begin{equation}
-    P(A)=\int_{A}f(\omega)d\omega
-  \end{equation}
-  で書かれているとき，
-  その被積分関数を 
-  *確率密度(関数)* (probability density function)
-  という．
+   #+begin_quote
+   確率測度がある関数の積分
+   \begin{equation}
+     P(A)=\int_{A}f(\omega)d\omega
+   \end{equation}
+   で書かれているとき，
+   その被積分関数を 
+   *確率密度(関数)* (probability density function)
+   という．
 
-  また確率密度を持つ確率測度を
-  *絶対連続* (absolutely continuous)
-  な分布と呼ぶ．
-  #+end_quote
+   また確率密度を持つ確率測度を
+   *絶対連続* (absolutely continuous)
+   な分布と呼ぶ．
+   #+end_quote
 
 ** 正規分布 (normal/Gaussian distribution)
 :PROPERTIES:
@@ -244,11 +244,11 @@
 - 標本空間 : \((-\infty,\infty)\)
 - 母数 : 平均 \(\mu\), 分散 \(\sigma^{2}\)
 - 密度関数 :
-  \begin{equation}
-    p(x)
-    =
-    \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^{2}}{2\sigma^{2}}}
-  \end{equation}
+   \begin{equation}
+     p(x)
+     =
+     \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^{2}}{2\sigma^{2}}}
+   \end{equation}
 - 備考 : \(\mu=0,\sigma=1\) のとき
   *標準正規分布* と呼ぶ．
 #+end_quote
@@ -292,12 +292,12 @@
 - 標本空間: 区間 \([a,b]\)
 - 母数: 区間の端点 \(a,b\)
 - 密度関数:
-  \begin{equation}
-    \frac{1}{b-a}
-    \quad(b\le x\le a)
-  \end{equation}
+   \begin{equation}
+     \frac{1}{b-a}
+     \quad(b\le x\le a)
+   \end{equation}
 - 備考: ルーレット回しの
-  確率密度関数に相当する．
+   確率密度関数に相当する．
 #+end_quote
 #+end_rightcol  
 
@@ -359,12 +359,12 @@
 - 標本空間 : \([0,\infty)\)
 - 母数 : 自由度 \(\nu\)
 - 密度関数 :
-  \begin{align}
-    p(x)
-    &=
-      \frac{1}{2^{\nu/2}\Gamma(\frac{\nu}{2})}x^{\nu/2-1}e^{-x/2}\\
-    &\quad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
-  \end{align}
+   \begin{align}
+     p(x)
+     &=
+       \frac{1}{2^{\nu/2}\Gamma(\frac{\nu}{2})}x^{\nu/2-1}e^{-x/2}\\
+     &\quad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
+   \end{align}
 - 備考 : 標準正規分布に従う独立な確率変数の2乗和の分布
 #+end_quote
 #+end_rightcol  
@@ -464,13 +464,13 @@
 - 標本空間 : \([0,\infty)\)
 - 母数 : 自由度 \(\nu_{1},\nu_{2}\)
 - 密度関数 :
-  \begin{align}
-    p(x)
-    &=
-    \frac{(\nu_{1}/\nu_{2})^{\nu_{1}/2}}{B(\nu_{1}/2,\nu_{2}/2)}
-    \frac{x^{\nu_{1}/2-1}}{(1+\nu_{1}x/\nu_{2})^{(\nu_{1}+\nu_{2})/2}}\\
-    &\quad B(x,y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1} dt
-  \end{align}
+   \begin{align}
+     p(x)
+     &=
+     \frac{(\nu_{1}/\nu_{2})^{\nu_{1}/2}}{B(\nu_{1}/2,\nu_{2}/2)}
+     \frac{x^{\nu_{1}/2-1}}{(1+\nu_{1}x/\nu_{2})^{(\nu_{1}+\nu_{2})/2}}\\
+     &\quad B(x,y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1} dt
+   \end{align}
 - 備考 : \(\chi^{2}\)分布に従う独立な確率変数の比の分布
 #+end_quote
 #+end_rightcol  
@@ -487,10 +487,10 @@
       \end{align}
       #+end_quote
    - 正規分布に従う確率変数の2つの独立な標本の不偏分散の比は
-      \(F\)分布に従う確率変数となる
+     \(F\)分布に従う確率変数となる
 - 用途
-   - 分散を推定する問題の検定に利用される
-   - 分散の信頼区間の構成に利用される
+  - 分散を推定する問題の検定に利用される
+  - 分散の信頼区間の構成に利用される
 
 ** COMMENT 指数分布 (exponential distribution)
 #+begin_leftcol
@@ -512,13 +512,13 @@
 - 標本空間: \([0,\infty)\)
 - 母数: 比率 (rate) \(\lambda>0\)
 - 密度関数:
-  \begin{equation}
-    p(x)=
-    \frac{1}{\lambda}e^{-\frac{x}{\lambda}}
-  \end{equation}
+   \begin{equation}
+     p(x)=
+     \frac{1}{\lambda}e^{-\frac{x}{\lambda}}
+   \end{equation}
 - 特徴:
-  タクシーなどの待ち時間のモデル
-  として利用される．
+   タクシーなどの待ち時間のモデル
+   として利用される．
 #+end_quote
 #+end_rightcol  
 
@@ -837,33 +837,33 @@
    - 確率密度関数 : \(f_{\boldsymbol{\theta}}(x)\) 
    - 確率密度関数のパラメタ : \(\boldsymbol{\theta}=(\theta_1,\dots,\theta_p)\) 
    - 独立な確率変数の同時確率
-      #+begin_quote
-      \begin{align}
-        & P(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta)
-          =\prod_{i=1}^nP(x_i\leq X_i\leq x_i+\delta)\\
-        &\simeq
-          \prod_{i=1}^nf_{\boldsymbol{\theta}}(x_i)\delta
-          =f_{\boldsymbol{\theta}}(x_1)\cdot
-          f_{\boldsymbol{\theta}}(x_2)\cdots
-          f_{\boldsymbol{\theta}}(x_n)\delta^{n}
-      \end{align}
-      #+end_quote
+     #+begin_quote
+     \begin{align}
+       & P(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta)
+         =\prod_{i=1}^nP(x_i\leq X_i\leq x_i+\delta)\\
+       &\simeq
+         \prod_{i=1}^nf_{\boldsymbol{\theta}}(x_i)\delta
+         =f_{\boldsymbol{\theta}}(x_1)\cdot
+         f_{\boldsymbol{\theta}}(x_2)\cdots
+         f_{\boldsymbol{\theta}}(x_n)\delta^{n}
+     \end{align}
+     #+end_quote
 
 #+reveal: split
 - 定義
-   #+begin_quote
-   パラメタ \(\boldsymbol{\theta}\) に対して
-   観測データ \(X_1,X_2,\dots,X_n\) が得られる理論上の確率密度
-   \begin{equation}
-     L(\boldsymbol{\theta})
-     =\prod_{i=1}^nf_{\boldsymbol{\theta}}(X_i)
-   \end{equation}
-   を
-   \(\boldsymbol{\theta}\) の 
-   *尤度* と言い，
-   \(\boldsymbol{\theta}\) の関数 \(L\) を *尤度関数* と呼ぶ．
-   #+end_quote
-   - 確率ではないので1より大きな値となることもある
+  #+begin_quote
+  パラメタ \(\boldsymbol{\theta}\) に対して
+  観測データ \(X_1,X_2,\dots,X_n\) が得られる理論上の確率密度
+  \begin{equation}
+    L(\boldsymbol{\theta})
+    =\prod_{i=1}^nf_{\boldsymbol{\theta}}(X_i)
+  \end{equation}
+  を
+  \(\boldsymbol{\theta}\) の 
+  *尤度* と言い，
+  \(\boldsymbol{\theta}\) の関数 \(L\) を *尤度関数* と呼ぶ．
+  #+end_quote
+  - 確率ではないので1より大きな値となることもある
 
 ** 最尤法
 - 最尤法
@@ -945,51 +945,51 @@
 :reveal_background: #fef4f4
 :END:
 - まず事象を定義する
-   #+begin_quote
-   \begin{align}
-     A&:\text{先生の機嫌が良い}&
-     && A^{c}&:\text{先生の機嫌が悪い}\\
-     H&:\text{球団が勝つ}&
-     && H^{c}&:\text{球団が負ける}
-   \end{align}
-   #+end_quote
+  #+begin_quote
+  \begin{align}
+    A&:\text{先生の機嫌が良い}&
+    && A^{c}&:\text{先生の機嫌が悪い}\\
+    H&:\text{球団が勝つ}&
+    && H^{c}&:\text{球団が負ける}
+  \end{align}
+  #+end_quote
 - 条件を書き下す
-   #+begin_quote
-   \begin{align}
-     P(A|H)&=0.9&
-     && P(A^{c}|H)&=0.1\\
-     P(A^{c}|H^{c})&=0.7&
-     && P(A|H^{c})&=0.3\\
-     P(H)&=0.6&
-     && P(H^{c})&=0.4
-   \end{align}
-   #+end_quote
+  #+begin_quote
+  \begin{align}
+    P(A|H)&=0.9&
+    && P(A^{c}|H)&=0.1\\
+    P(A^{c}|H^{c})&=0.7&
+    && P(A|H^{c})&=0.3\\
+    P(H)&=0.6&
+    && P(H^{c})&=0.4
+  \end{align}
+  #+end_quote
 
 #+reveal: split     
 - A先生が機嫌が良いときに球団Hが勝った確率は？
-   #+begin_quote
-   \begin{align}
-     P(H|A)
-     &=\frac{P(A,H)}{P(A)}\\
-     &=\frac{P(A,H)}{P(A,H)+P(A,H^{c})}\\
-     &=\frac{P(A|H)P(H)}{P(A|H)P(H)+P(A|H^{c})P(H^{c})}\\
-     &=\frac{0.9\times 0.6}{0.9\times 0.6+0.3\times 0.4}\\
-     &=\frac{9}{11}\simeq 0.818
-   \end{align}
-   #+end_quote
+  #+begin_quote
+  \begin{align}
+    P(H|A)
+    &=\frac{P(A,H)}{P(A)}\\
+    &=\frac{P(A,H)}{P(A,H)+P(A,H^{c})}\\
+    &=\frac{P(A|H)P(H)}{P(A|H)P(H)+P(A|H^{c})P(H^{c})}\\
+    &=\frac{0.9\times 0.6}{0.9\times 0.6+0.3\times 0.4}\\
+    &=\frac{9}{11}\simeq 0.818
+  \end{align}
+  #+end_quote
 
 #+reveal: split     
 - A先生が機嫌が悪いときに球団Hが負けた確率は？
-   #+begin_quote
-   \begin{align}
-     P(H^{c}|A^{c})
-     &=\frac{P(A^{c},H^{c})}{P(A^{c})}\\
-     &=\frac{P(A^{c},H^{c})}{P(A^{c},H)+P(A^{c},H^{c})}\\
-     &=\frac{P(A^{c}|H^{c})P(H^{c})}{P(A^{c}|H)P(H)+P(A^{c}|H^{c})P(H^{c})}\\
-     &=\frac{0.7\times 0.4}{0.1\times 0.6+0.7\times 0.4}\\
-     &=\frac{14}{17}\simeq 0.824
-   \end{align}
-   #+end_quote
+  #+begin_quote
+  \begin{align}
+    P(H^{c}|A^{c})
+    &=\frac{P(A^{c},H^{c})}{P(A^{c})}\\
+    &=\frac{P(A^{c},H^{c})}{P(A^{c},H)+P(A^{c},H^{c})}\\
+    &=\frac{P(A^{c}|H^{c})P(H^{c})}{P(A^{c}|H)P(H)+P(A^{c}|H^{c})P(H^{c})}\\
+    &=\frac{0.7\times 0.4}{0.1\times 0.6+0.7\times 0.4}\\
+    &=\frac{14}{17}\simeq 0.824
+  \end{align}
+  #+end_quote
 
 
 * 検定の考え方
@@ -1388,233 +1388,233 @@ p値とは特定の統計モデルのもとで，
 * COMMENT 関数の微分
 ** ベクトルによる微分
 - \(d\) 次元ベクトル
-  #+begin_quote
-  \begin{equation}
-    \boldsymbol{a}
-    =\begin{pmatrix}
-      a_1\\
-      a_2\\
-      \vdots\\
-      a_d
-    \end{pmatrix}
-    =(a_1,a_2,\dotsc,a_d)^{\mathsf{T}}
-  \end{equation}
-  #+end_quote
+   #+begin_quote
+   \begin{equation}
+     \boldsymbol{a}
+     =\begin{pmatrix}
+       a_1\\
+       a_2\\
+       \vdots\\
+       a_d
+     \end{pmatrix}
+     =(a_1,a_2,\dotsc,a_d)^{\mathsf{T}}
+   \end{equation}
+   #+end_quote
 - ベクトル \(\boldsymbol{a}\) による関数 \(f(\boldsymbol{a})\) の微分の定義
-  #+begin_quote
-  \begin{equation}
-    \frac{\partial f}{\partial\boldsymbol{a}}
-    =
-    \left(
-      \frac{\partial f}{\partial a_1},
-      \frac{\partial f}{\partial a_2},
-      \dotsc,
-      \frac{\partial f}{\partial a_d}
-    \right)^{\mathsf{T}}
-  \end{equation}
-  #+end_quote
+   #+begin_quote
+   \begin{equation}
+     \frac{\partial f}{\partial\boldsymbol{a}}
+     =
+     \left(
+       \frac{\partial f}{\partial a_1},
+       \frac{\partial f}{\partial a_2},
+       \dotsc,
+       \frac{\partial f}{\partial a_d}
+     \right)^{\mathsf{T}}
+   \end{equation}
+   #+end_quote
 
 ** ベクトルによる微分 (例題)
 - 問題
-  #+begin_quote
-  \(d\) 次元ベクトル \(\boldsymbol{a}\) と \(\boldsymbol{b}\)
-  を用いて定義される関数
-  \(f(\boldsymbol{a})=\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\)
-  の \(\boldsymbol{a}\) による微分を求めよ．
-  #+end_quote
+   #+begin_quote
+   \(d\) 次元ベクトル \(\boldsymbol{a}\) と \(\boldsymbol{b}\)
+   を用いて定義される関数
+   \(f(\boldsymbol{a})=\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\)
+   の \(\boldsymbol{a}\) による微分を求めよ．
+   #+end_quote
   
 #+reveal: split
 - 解答例
-  #+begin_quote
-  各成分で考えると以下のように計算される．
-  \begin{equation}
-    \frac{\partial f}{\partial a_i}
-    =\frac{\partial}{\partial a_i}
-    \left(a_1b_1+\dotsb+a_ib_i+\dotsb+a_db_d\right)
-    =b_i.
-  \end{equation}
-  したがって
-  \begin{equation}
-    \frac{\partial f}{\partial\boldsymbol{a}}
-    =
-    \left(
-      b_{1},
-      b_{2},
-      \dotsc,
-      b_{d}
-    \right)^{\mathsf{T}}
-    =\boldsymbol{b}
-  \end{equation}
-  となる．
-  #+end_quote
+   #+begin_quote
+   各成分で考えると以下のように計算される．
+   \begin{equation}
+     \frac{\partial f}{\partial a_i}
+     =\frac{\partial}{\partial a_i}
+     \left(a_1b_1+\dotsb+a_ib_i+\dotsb+a_db_d\right)
+     =b_i.
+   \end{equation}
+   したがって
+   \begin{equation}
+     \frac{\partial f}{\partial\boldsymbol{a}}
+     =
+     \left(
+       b_{1},
+       b_{2},
+       \dotsc,
+       b_{d}
+     \right)^{\mathsf{T}}
+     =\boldsymbol{b}
+   \end{equation}
+   となる．
+   #+end_quote
   
 #+reveal: split
 - 注意
-  #+begin_quote
-  \begin{equation}
-    \begin{aligned}
-      \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\right)
-      &=\boldsymbol{b}\\
-      \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}\right)
-      &=(\boldsymbol{b}^{\mathsf{T}})^{\mathsf{T}}=\boldsymbol{b}
-    \end{aligned}
-  \end{equation}
-  というルールがあることがわかる．
-  #+end_quote
+   #+begin_quote
+   \begin{equation}
+     \begin{aligned}
+       \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{b}\right)
+       &=\boldsymbol{b}\\
+       \frac{\partial}{\partial\boldsymbol{a}}\left(\boldsymbol{b}^{\mathsf{T}}\boldsymbol{a}\right)
+       &=(\boldsymbol{b}^{\mathsf{T}})^{\mathsf{T}}=\boldsymbol{b}
+     \end{aligned}
+   \end{equation}
+   というルールがあることがわかる．
+   #+end_quote
   
 ** 行列による微分
 - \(d\times d\) 行列
-  #+begin_quote
-  \begin{equation}
-    A
-    =
-    \begin{pmatrix}
-      a_{11}&a_{12}&\dotsm&a_{1d}\\
-      a_{21}&a_{22}&\dotsm&a_{2d}\\
-      \vdots&&\ddots&\vdots\\
-      a_{d1}&a_{d2}&\dotsm&a_{dd}
-    \end{pmatrix}
-  \end{equation}
-  #+end_quote
+   #+begin_quote
+   \begin{equation}
+     A
+     =
+     \begin{pmatrix}
+       a_{11}&a_{12}&\dotsm&a_{1d}\\
+       a_{21}&a_{22}&\dotsm&a_{2d}\\
+       \vdots&&\ddots&\vdots\\
+       a_{d1}&a_{d2}&\dotsm&a_{dd}
+     \end{pmatrix}
+   \end{equation}
+   #+end_quote
 
 #+reveal: split
 - 行列 \(A\) による関数 \(f(A)\) の微分の定義
-  #+begin_quote
-  \begin{equation}
-    \frac{\partial f}{\partial A}
-    =
-    \begin{pmatrix}
-      \frac{\partial f}{\partial a_{11}}
-      &\frac{\partial f}{\partial a_{12}}&\dotsm
-      &\frac{\partial f}{\partial a_{1d}}\\[3pt]
-      \frac{\partial f}{\partial a_{21}}
-      &\frac{\partial f}{\partial a_{22}}&\dotsm
-      &\frac{\partial f}{\partial a_{2d}}\\[3pt]
-      \vdots&&\ddots&\vdots\\
-      \frac{\partial f}{\partial a_{d1}}
-      &\frac{\partial f}{\partial a_{d2}}&\dotsm
-      &\frac{\partial f}{\partial a_{dd}}
-    \end{pmatrix}
-  \end{equation}
-  #+end_quote
+   #+begin_quote
+   \begin{equation}
+     \frac{\partial f}{\partial A}
+     =
+     \begin{pmatrix}
+       \frac{\partial f}{\partial a_{11}}
+       &\frac{\partial f}{\partial a_{12}}&\dotsm
+       &\frac{\partial f}{\partial a_{1d}}\\[3pt]
+       \frac{\partial f}{\partial a_{21}}
+       &\frac{\partial f}{\partial a_{22}}&\dotsm
+       &\frac{\partial f}{\partial a_{2d}}\\[3pt]
+       \vdots&&\ddots&\vdots\\
+       \frac{\partial f}{\partial a_{d1}}
+       &\frac{\partial f}{\partial a_{d2}}&\dotsm
+       &\frac{\partial f}{\partial a_{dd}}
+     \end{pmatrix}
+   \end{equation}
+   #+end_quote
 
 ** 行列による微分 (例題1)
 - 問題
-  #+begin_quote
-  行列 \(A\) と \(d\) 次元ベクトル \(\boldsymbol{b}\)
-  を用いて定義される関数
-  \begin{equation}
-    f(A)=\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\sum_{i,j=1}^{d}b_ia_{ij}b_j
-  \end{equation}
-  の行列 \(A\) による微分を求めよ．
-  #+end_quote
+   #+begin_quote
+   行列 \(A\) と \(d\) 次元ベクトル \(\boldsymbol{b}\)
+   を用いて定義される関数
+   \begin{equation}
+     f(A)=\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\sum_{i,j=1}^{d}b_ia_{ij}b_j
+   \end{equation}
+   の行列 \(A\) による微分を求めよ．
+   #+end_quote
 
 #+reveal: split
 - 解答例
-  #+begin_quote
-  成分で考えると
-  \begin{equation}
-    \frac{\partial f}{\partial a_{ij}}
-    = 
-    \frac{\partial}{\partial a_{ij}}\sum_{i',j'=1}^{d}b_{i'}a_{i'j'}b_{j'}
-    =b_ib_j
-  \end{equation}
-  となるので，
-  \begin{equation}
-    % \frac{\partial f}{\partial A}
-    \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
-    =
-    \begin{pmatrix}
-      b_1b_1&b_1b_2&\dots&b_1b_d\\
-      b_2b_1&b_2b_2&\dots&b_2b_d\\
-      \vdots&&\ddots&\vdots\\
-      b_db_1&b_db_2&\dots&b_db_d
-    \end{pmatrix}
-    =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
-  \end{equation}
-  と書くことができる．
-  #+end_quote
+   #+begin_quote
+   成分で考えると
+   \begin{equation}
+     \frac{\partial f}{\partial a_{ij}}
+     = 
+     \frac{\partial}{\partial a_{ij}}\sum_{i',j'=1}^{d}b_{i'}a_{i'j'}b_{j'}
+     =b_ib_j
+   \end{equation}
+   となるので，
+   \begin{equation}
+     % \frac{\partial f}{\partial A}
+     \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+     =
+     \begin{pmatrix}
+       b_1b_1&b_1b_2&\dots&b_1b_d\\
+       b_2b_1&b_2b_2&\dots&b_2b_d\\
+       \vdots&&\ddots&\vdots\\
+       b_db_1&b_db_2&\dots&b_db_d
+     \end{pmatrix}
+     =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+   \end{equation}
+   と書くことができる．
+   #+end_quote
 
 ** 行列による微分 (例題2)
-  - 問題
-    #+begin_quote
-    \(d\times d\) 行列 \(A\) と \(B\)
-    を用いて定義される関数
-    \begin{equation}
-      f(A)=\mathrm{tr} AB=\sum_{i,j=1}^{d}a_{ij}b_{ji}
-    \end{equation}
-    の行列 \(A\) による微分を求めよ．
-    #+end_quote
+- 問題
+   #+begin_quote
+   \(d\times d\) 行列 \(A\) と \(B\)
+   を用いて定義される関数
+   \begin{equation}
+     f(A)=\mathrm{tr} AB=\sum_{i,j=1}^{d}a_{ij}b_{ji}
+   \end{equation}
+   の行列 \(A\) による微分を求めよ．
+   #+end_quote
 
 #+reveal: split
 - 解答例
-  #+begin_quote
-  成分では
-  \begin{equation}
-    \frac{\partial f}{\partial a_{ij}}
-    =b_{ji} 
-  \end{equation}
-  となるので，
-  \begin{equation}
-    % \frac{\partial f}{\partial A}
-    \frac{\partial}{\partial A}\mathrm{tr} AB
-    =
-    \begin{pmatrix}
-      b_{11}&b_{21}&\dots&b_{d1}\\
-      b_{12}&b_{22}&\dots&b_{d2}\\
-      \vdots&&\ddots&\vdots\\
-      b_{1d}&b_{2d}&\dots&b_{dd}
-    \end{pmatrix}
-    =B^{\mathsf{T}}
-  \end{equation}
-  と書くことができる．
-  #+end_quote
+   #+begin_quote
+   成分では
+   \begin{equation}
+     \frac{\partial f}{\partial a_{ij}}
+     =b_{ji} 
+   \end{equation}
+   となるので，
+   \begin{equation}
+     % \frac{\partial f}{\partial A}
+     \frac{\partial}{\partial A}\mathrm{tr} AB
+     =
+     \begin{pmatrix}
+       b_{11}&b_{21}&\dots&b_{d1}\\
+       b_{12}&b_{22}&\dots&b_{d2}\\
+       \vdots&&\ddots&\vdots\\
+       b_{1d}&b_{2d}&\dots&b_{dd}
+     \end{pmatrix}
+     =B^{\mathsf{T}}
+   \end{equation}
+   と書くことができる．
+   #+end_quote
 
 #+reveal: split
 - 注意1
-  #+begin_quote
-  行列のトレースの性質
-  \begin{equation}
-    \mathrm{tr} AB
-    =
-    \mathrm{tr} BA, \quad
-    \mathrm{tr} AB
-    =
-    \mathrm{tr} (AB)^{\mathsf{T}}
-    =
-    \mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
-  \end{equation}
-  より
-  \begin{equation}
-    \frac{\partial}{\partial A}\mathrm{tr} AB
-    =
-    \frac{\partial}{\partial A}\mathrm{tr} BA
-    =
-    \frac{\partial}{\partial A}\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
-    =
-    \frac{\partial}{\partial A}\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
-    =B^{\mathsf{T}}
-  \end{equation}
-  となることが容易に確かめられる．
-  #+end_quote
+   #+begin_quote
+   行列のトレースの性質
+   \begin{equation}
+     \mathrm{tr} AB
+     =
+     \mathrm{tr} BA, \quad
+     \mathrm{tr} AB
+     =
+     \mathrm{tr} (AB)^{\mathsf{T}}
+     =
+     \mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+   \end{equation}
+   より
+   \begin{equation}
+     \frac{\partial}{\partial A}\mathrm{tr} AB
+     =
+     \frac{\partial}{\partial A}\mathrm{tr} BA
+     =
+     \frac{\partial}{\partial A}\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
+     =
+     \frac{\partial}{\partial A}\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+     =B^{\mathsf{T}}
+   \end{equation}
+   となることが容易に確かめられる．
+   #+end_quote
 
 #+reveal: split
 - 注意2
-  #+begin_quote
-  \begin{equation}
-    \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
-    =\mathrm{tr}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
-  \end{equation}
-  となることから
-  \begin{equation}
-    \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
-    =
-    \frac{\partial}{\partial A}\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
-    =\left(\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}\right)^{\mathsf{T}}
-    =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
-  \end{equation}
-  となり，2つの例での計算結果が矛盾しないことが確かめられる．
-  #+end_quote
+   #+begin_quote
+   \begin{equation}
+     \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+     =\mathrm{tr}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}=\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+   \end{equation}
+   となることから
+   \begin{equation}
+     \frac{\partial}{\partial A}\boldsymbol{b}^{\mathsf{T}}A\boldsymbol{b}
+     =
+     \frac{\partial}{\partial A}\mathrm{tr} A\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+     =\left(\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}\right)^{\mathsf{T}}
+     =\boldsymbol{b}\boldsymbol{b}^{\mathsf{T}}
+   \end{equation}
+   となり，2つの例での計算結果が矛盾しないことが確かめられる．
+   #+end_quote
   
 
 * COMMENT 演習
@@ -1626,58 +1626,58 @@ p値とは特定の統計モデルのもとで，
 :reveal_background: #fef4f4
 :END:
 - 行列(正方行列に限らない)のトレースに関して
-  \begin{equation}
-    \mathrm{tr} AB
-    =\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
-    =\mathrm{tr} BA
-    =\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
-  \end{equation}
-  が成り立つことを示せ
+   \begin{equation}
+     \mathrm{tr} AB
+     =\mathrm{tr} B^{\mathsf{T}}A^{\mathsf{T}}
+     =\mathrm{tr} BA
+     =\mathrm{tr} A^{\mathsf{T}}B^{\mathsf{T}}
+   \end{equation}
+   が成り立つことを示せ
 - \(d\) 次元ベクトル \(\boldsymbol{a}\) と
-  \(d\times d\) 行列 \(A\)
-  で定義される関数
-  \(f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}A\boldsymbol{a}\)
-  のベクトル \(\boldsymbol{a}\) による微分を求めよ
+   \(d\times d\) 行列 \(A\)
+   で定義される関数
+   \(f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}A\boldsymbol{a}\)
+   のベクトル \(\boldsymbol{a}\) による微分を求めよ
 - 行列 \(A\) の行列式を \(|A|\) と書くとき
-  行列 \(A\) による行列式 \(|A|\) の微分を求めよ
-  - ヒント : 余因子展開を利用すると容易に求められる
+   行列 \(A\) による行列式 \(|A|\) の微分を求めよ
+   - ヒント : 余因子展開を利用すると容易に求められる
 
 ** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - \(\mathrm{tr}AB\) より，行列 \(A,B\) の積は正方行列になることから，
-  \(A\) が \(n\times m\) 行列とすれば，
-  \(B\) は \(m\times n\) 行列となる．
-  したがって
-  #+begin_quote
-  \begin{equation}
-    \mathrm{tr}AB=\sum_{i=1}^{n}\sum_{j=1}^{m}a_{ij}b_{ji}
-  \end{equation}
-  #+end_quote
-  と書くことができる．
-  他の式も同様に書けることを確認すればよい．
+   \(A\) が \(n\times m\) 行列とすれば，
+   \(B\) は \(m\times n\) 行列となる．
+   したがって
+   #+begin_quote
+   \begin{equation}
+     \mathrm{tr}AB=\sum_{i=1}^{n}\sum_{j=1}^{m}a_{ij}b_{ji}
+   \end{equation}
+   #+end_quote
+   と書くことができる．
+   他の式も同様に書けることを確認すればよい．
 
 #+reveal: split
 - 微分における積の法則(Leibniz 則)を用いればよい．
-  #+begin_quote
-  \begin{align}
-    \frac{\partial f(\boldsymbol{a})}{\partial\boldsymbol{a}}
-    &=
-      \frac{\partial}{\partial\boldsymbol{a}}
-      \boldsymbol{a}^{\mathsf{T}}A\boldsymbol{b}
-      \mid_{\boldsymbol{b}=\boldsymbol{a}}
-      +
-      \frac{\partial}{\partial\boldsymbol{a}}
-      \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{a}
-      \mid_{\boldsymbol{b}=\boldsymbol{a}}\\
-    &=
-      A\boldsymbol{a}
-      +
-      (\boldsymbol{a}^{\mathsf{T}}A)^{\mathsf{T}}\\
-    &=(A+A^{\mathsf{T}})\boldsymbol{a}
-  \end{align}
-  #+end_quote
+   #+begin_quote
+   \begin{align}
+     \frac{\partial f(\boldsymbol{a})}{\partial\boldsymbol{a}}
+     &=
+       \frac{\partial}{\partial\boldsymbol{a}}
+       \boldsymbol{a}^{\mathsf{T}}A\boldsymbol{b}
+       \mid_{\boldsymbol{b}=\boldsymbol{a}}
+       +
+       \frac{\partial}{\partial\boldsymbol{a}}
+       \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{a}
+       \mid_{\boldsymbol{b}=\boldsymbol{a}}\\
+     &=
+       A\boldsymbol{a}
+       +
+       (\boldsymbol{a}^{\mathsf{T}}A)^{\mathsf{T}}\\
+     &=(A+A^{\mathsf{T}})\boldsymbol{a}
+   \end{align}
+   #+end_quote
 
 #+reveal: split
 - 行列 \(A\) の \((i,j)\) 成分に関する余因子を \(\Delta_{ij}\) とする．
