@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-10-06 16:15:09 mura>
+# Time-stamp: <2025-10-08 16:57:03 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -1084,6 +1084,8 @@ ja_data |>
    - 統計量 (標本平均，不偏分散・共分散，相関係数)
    - 最尤法 (尤度関数)
    - Bayes の定理
+- 検定の考え方
+   - 統計的仮説検定
       
 * Footnotes
 * COMMENT ローカル変数
