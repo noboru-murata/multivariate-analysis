@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-10-26 22:03:15 mura>
+# Time-stamp: <2025-10-20 17:06:27 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -33,7 +33,6 @@
 #+begin_src R :exports none
   ### 第3講 資料
   library(tidyverse)
-  library(broom)
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
@@ -66,97 +65,8 @@
 #+begin_src R :exports none 
   ### 第3講 サンプルコード
   library(tidyverse)
-  library(broom)
-  library(gt)
-  library(gtsummary)
 #+end_src
 
-
-* 回帰分析の例
-** ボルドーワインの価格と気候の関係
-#+caption: ボルドーワインの価格と気候の関係
-#+name: tbl:wine
-#+begin_src R :exports none
-  #' 重回帰の例
-  #' 表の作成
-  bw_data <- read_csv(file="data/wine.csv")
-#+end_src
-#+begin_src R :exports results :results output html
-  #' データの表示(reveal用)
-  bw_data |> slice(1:14) |> gt() |> as_raw_html()
-#+end_src
-#+begin_src R :exports results :results value scalar latex
-  #' データの表示(latex用)
-  bw_data |> gt() |> as_latex() |> as.character()
-#+end_src
-
-#+reveal: split
-#+begin_src R :file figs/bw-pairs.png :exports results :results graphics
-  bw_data |> 
-      ggpairs(columns = 2:6,
-              lower = list(continuous = wrap("smooth_loess", colour = "blue"))) +
-      theme(axis.title.x = element_text(size = 8), # 文字の大きさを調整
-            axis.title.y = element_text(size = 8)) 
-#+end_src
-#+caption: 価格と気候の散布図
-#+name: fig:bw-pairs
-#+attr_html: height 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/bw-pairs.png]]
-
-#+reveal: split
-- 回帰式
-  #+html: <font size=5>
-  #+begin_quote
-  \begin{equation}
-    \text{LPRICE2}
-    = 
-    \beta_{0} +
-    \beta_{1}\times\text{WRAIN} +
-    \beta_{2}\times\text{DEGREES} +
-    \beta_{3}\times\text{HRAIN} +
-    \beta_{4}\times\text{TIME SV}
-  \end{equation}
-  #+end_quote
-  #+html: </font>
-#+caption: 価格と気候の関係
-#+name: tbl:bw-lm
-#+begin_src R :exports none
-bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
-             data = bw_data)
-#' 推定結果を表にまとめるためのパッケージ gtsummary を利用
-#+end_src
-#+begin_src R :exports results :results output html
-  #' データの表示(reveal用)
-  bw_fit |>
-    tbl_regression(intercept = TRUE,
-                   estimate_fun = label_style_sigfig(digits = 4)) |>
-    add_glance_source_note(include = c(r.squared,adj.r.squared,statistic,p.value)) |>
-    as_gt() |> as_raw_html()
-#+end_src
-#+begin_src R :exports results :results value scalar latex
-  #' データの表示(latex用)
-  bw_fit |>
-    tbl_regression(intercept = TRUE,
-                   estimate_fun = label_style_sigfig(digits = 4)) |>
-    add_glance_source_note(include = c(r.squared,adj.r.squared,statistic,p.value)) |>
-    as_gt() |> as_latex() |> as.character()
-#+end_src
-
-#+reveal: split
-#+begin_src R :file figs/bw-prediction.png :exports results :results graphics
-  bw_fit |>
-    augment() |>
-    ggplot(aes(x = LPRICE2, y = .fitted, label = VINT)) +
-    geom_text(na.rm = TRUE) + # text で表示
-    geom_abline(slope = 1, colour = "darkmagenta") +
-    labs(x = "Price (log)", y = "Prediction")
-#+end_src
-#+caption: 重回帰による予測値と実際の価格
-#+name: fig:fig-bw-prediction
-#+attr_html: height 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/bw-prediction.png]]
 
 * 回帰分析の考え方
 ** 回帰分析
@@ -481,14 +391,9 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
     =X^{\mathsf{T}}\boldsymbol{y}
   \end{equation}
   #+end_quote
-- *Gram行列* (Gram matrix)
-  #+begin_quote
-  \begin{equation}
-    X^{\mathsf{T}}X
-  \end{equation}
-  #+end_quote
+- \(X^{\mathsf{T}}X\) : *Gram行列* (Gram matrix)
   - \((p{+}1)\times(p{+}1)\) 行列 (正方行列)
-  - 正定対称行列 (固有値が非負)
+  - 半正定値行列 (固有値が非負)
 
 ** 正規方程式の解
 - 正規方程式の基本的な性質
@@ -508,6 +413,12 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 
 
 * COMMENT 実習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+
+* COMMENT 実習(関数の説明付き)
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -775,6 +686,12 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 :reveal_background: #fef4f4
 :END:
 # 東京大学
+
+* COMMENT 実習(関数の説明付き)
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
 ** R : 推定結果からの情報の取得
 :PROPERTIES:
 :ID:       FAD1BBAA-3D02-49EC-9CAA-91C5EE6AA80E
@@ -976,7 +893,7 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
     X^{\mathsf{T}}\boldsymbol{y}-X^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}
     =
     X^{\mathsf{T}}\boldsymbol{y}-X^{\mathsf{T}}\boldsymbol{y}
-    =0
+    =\boldsymbol{0}
   \end{equation}
   #+end_quote
 - 行列 \(X\) の 1列目が \(\boldsymbol{1}\) であることより明らか
@@ -1068,7 +985,7 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** 練習問題
+** COMMENT 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       24C4364D-224C-4ECA-AFAE-2A32E3B62A4A
@@ -1249,134 +1166,12 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
   - 不偏分散で補正している
 
 
-* COMMENT 決定係数 springから
-** 決定係数
-- \(X\) が \(Y\) の変動をどの程度説明できるかを数量化
-- *決定係数* (あるいは *寄与率*)
-  #+begin_quote
-  \begin{equation}
-    R^{2}=
-    \frac{\sum_{i=1}^{n}(\hat{Y}_{i}-\bar{Y})^{2}}{\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}
-  \end{equation}
-  #+end_quote
-- \(\hat{Y}_{i}\) は
-  *あてはめ値* または *予測値* と呼ばれる
-  #+begin_quote
-  \begin{equation}
-    \hat{Y}_{i}=
-    \hat{\alpha}+\hat{\beta}X_{i}\quad(i=1,\dotsc,n).  
-  \end{equation}
-  #+end_quote
-
-#+reveal: split
-- 以下の等式が成立
-  #+begin_quote
-  \begin{align}
-    &\hat{\epsilon}_i
-      =Y_i-\hat{Y}_i\quad (i=1,\dotsc,n)\\
-    &\sum_{i=1}^{n}\hat{\epsilon}_i=0,\\
-    &\frac{1}{n}\sum_{i=1}^nY_i=\bar{Y},\\
-    &\frac{1}{n}\sum_{i=1}^n\hat{Y}_i=\bar{Y}.
-  \end{align}
-  #+end_quote
-
-#+reveal: split
-- 決定係数
-  #+begin_quote
-  \begin{equation}
-    R^{2}=
-    \frac{\sum_{i=1}^{n}(\hat{Y}_{i}-\bar{Y})^{2}}{\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}
-  \end{equation}
-  #+end_quote
-- \(R^2\) の成分
-  - \(R^2\) の分子 : あてはめ値の(標本平均まわりでの)変動
-  - \(R^2\) の分母 : 目的変数の(標本平均まわりでの)変動
-- \(R^2\) の意味
-  - 回帰式が目的変数の変動をどの位説明できるか評価
-  - 大きいほど説明力が高いと解釈される
-
-** 決定係数の別表現
-- \(R^2\) は以下のように書き直すことも可能
-  - 目的変数の観測データとあてはめ値の相関の二乗
-    #+begin_quote
-    \begin{equation}
-      R^{2}=
-      \left\{
-        \frac{\sum_{i=1}^{n}(\hat{Y}_{i}-\bar{Y})(Y_{i}-\bar{Y})}
-        {\sqrt{\sum_{i=1}^{n}(\hat{Y}_{i}-\bar{Y})^{2}}
-          \cdot
-          \sqrt{\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}}
-      \right\}^{2}
-    \end{equation}
-    #+end_quote
-  - 説明変数と目的変数の観測データの間の相関の二乗
-    #+begin_quote
-    \begin{equation}
-      R^{2}=
-      \left\{
-        \frac{\sum_{i=1}^{n}(X_{i}-\bar{X})(Y_{i}-\bar{Y})}
-        {\sqrt{\sum_{i=1}^{n}(X_{i}-\bar{X})^{2}}
-          \cdot
-          \sqrt{\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}}
-      \right\}^{2}
-    \end{equation}
-    #+end_quote
-
-** 自由度調整済み決定係数
-- 不偏分散による \(R^2\) の修正
-  - 残差 \(\epsilon_i\) と目的変数 \(Y_i\) の標本分散による表現
-    #+begin_quote
-    \begin{equation}
-      R^{2}
-      =1-\frac{\frac{1}{n}\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}}{\frac{1}{n}\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}.
-    \end{equation}
-    #+end_quote
-  - 不偏推定量で代替 : *自由度調整済み決定係数* (または寄与率)
-    #+begin_quote
-    \begin{equation}
-      \bar{R}^{2}
-      =1-\frac{\frac{1}{n{-}2}\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}}{\frac{1}{n-1}\sum_{i=1}^{n}(Y_{i}-\bar{Y})^{2}}.
-    \end{equation}
-    #+end_quote
-
-** 決定係数の計算
-:PROPERTIES:
-:ID:       1E08B1FB-CEA5-4DE9-A958-DDC9676B18E7
-:END:
-- 関数 ~stat::summary()~ : 情報の要約 (base R)
-  #+begin_src R :eval no :tangle no
-    summary(object)
-    #' object: 関数 lm() で推定したモデル
-    #' 関数の出力 (リスト名 $"名前" で参照可能)
-    #' r.squareds : 決定係数
-    #' adj.r.squareds : 自由度調整済み決定係数
-    #' 詳細は '?summary.lm' を参照
-  #+end_src
-
-#+reveal: split
-- 関数 ~broom::tidy()~ : 回帰係数の情報 (tidyverse)
-  #+begin_src R :eval no :tangle no
-    tidy(x, conf.int = FALSE, conf.level = 0.95, exponentiate = FALSE, ...)
-    #' x: 関数 lm() で推定したモデル
-    #' conf.int: 信頼区間を付けるか否か
-    #' conf.level: 信頼係数
-    #' 詳細は '?broom::tidy.lm' を参照
-  #+end_src
-- 関数 ~broom::glance()~ : モデルの統計情報 (tidyverse)
-  #+begin_src R :eval no :tangle no
-    glance(x, ...)
-    #' x: 関数 lm() で推定したモデル
-    #' F統計量は statistic/p.value の列
-    #' 詳細は '?broom::glance.lm' を参照
-  #+end_src
-
-
 * COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** 練習問題
+** COMMENT 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       335A639C-748D-4FC8-B0DB-471A3C0F38CB
@@ -1485,65 +1280,66 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
 :PROPERTIES:
 :ID:       A489FC6E-DE7F-40F3-AF84-149780E42205
 :END:
-#+begin_src R :exports none
-  #' @exercise 東京の気候データを用いた例
+- データの概要
+  #+begin_src R :exports none
+    #' @exercise 東京の気候データを用いた例
 
-  #' データの読み込み
-  tw_subset <- read_csv("data/tokyo_weather.csv") |>
-    filter(month == 9) |> # 9月のデータの抽出
-    mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
-    select(-c(year,month,day,day_of_week)) |>
-    set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+    #' データの読み込み
+    tw_subset <- read_csv("data/tokyo_weather.csv") |>
+      filter(month == 9) |> # 9月のデータの抽出
+      mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
+      select(-c(year,month,day,day_of_week)) |>
+      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
 
-  #' モデル式
-  tw_formula1 <- 気温 ~ 気圧
-  tw_formula2 <- 気温 ~ 日射
-  tw_formula3 <- 気温 ~ 気圧 + 日射
-  tw_formula4 <- 気温 ~ 気圧 + 日射 + 湿度
-  tw_formula5 <- 気温 ~ 気圧 + 日射 + 雲量
+    #' モデル式
+    tw_formula1 <- 気温 ~ 気圧
+    tw_formula2 <- 気温 ~ 日射
+    tw_formula3 <- 気温 ~ 気圧 + 日射
+    tw_formula4 <- 気温 ~ 気圧 + 日射 + 湿度
+    tw_formula5 <- 気温 ~ 気圧 + 日射 + 雲量
 
-  #' 推定
-  tw_lm1 <- lm(tw_formula1, data = tw_subset, y = TRUE)
-  tw_lm2 <- lm(tw_formula2, data = tw_subset, y = TRUE)
-  tw_lm3 <- lm(tw_formula3, data = tw_subset, y = TRUE)
-  tw_lm4 <- lm(tw_formula4, data = tw_subset, y = TRUE)
-  tw_lm5 <- lm(tw_formula5, data = tw_subset, y = TRUE)
-#+end_src
+    #' 推定
+    tw_lm1 <- lm(tw_formula1, data = tw_subset, y = TRUE)
+    tw_lm2 <- lm(tw_formula2, data = tw_subset, y = TRUE)
+    tw_lm3 <- lm(tw_formula3, data = tw_subset, y = TRUE)
+    tw_lm4 <- lm(tw_formula4, data = tw_subset, y = TRUE)
+    tw_lm5 <- lm(tw_formula5, data = tw_subset, y = TRUE)
+  #+end_src
 
-#+begin_src R :exports none
-  #' データの表示
-  #' 記録を残すのであれば以下のようにすればよい
-  #' foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
-  #'                     c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
-  #' (bar <- tw_subset |> rename(all_of(foo)))
-#+end_src
-#+begin_src R :eval no :exports none
-  tw_subset |> View() # 左上ペインに表として表示
-#+end_src
-#+begin_src R :exports results :results output html :tangle no
-  #' データの表示(reveal用)
-  tw_subset |>
-    slice(1:15) |> 
-    gt() |> as_raw_html()
-#+end_src
+  #+begin_src R :exports none
+    #' データの表示
+    #' 記録を残すのであれば以下のようにすればよい
+    #' foo <- set_names(names(tw_subset), # 列名に対応する日本語ベクトルを用意
+    #'                     c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
+    #' (bar <- tw_subset |> rename(all_of(foo)))
+  #+end_src
+  #+begin_src R :eval no :exports none
+    tw_subset |> View() # 左上ペインに表として表示
+  #+end_src
+  #+begin_src R :exports results :results output html :tangle no
+    #' データの表示(reveal用)
+    tw_subset |>
+      slice(1:15) |> 
+      gt() |> as_raw_html()
+  #+end_src
 
-#+begin_src R :exports results :results value scalar latex :tangle no
-  #' データの表示(latex用)
-  tw_subset |>
-    mutate(日付 = as.character(日付)) |> # 文字列扱い
-    gt() |> as_latex() |> as.character()
-#+end_src
+  #+begin_src R :exports results :results value scalar latex :tangle no
+    #' データの表示(latex用)
+    tw_subset |>
+      mutate(日付 = as.character(日付)) |> # 文字列扱い
+      gt() |> as_latex() |> as.character()
+  #+end_src
 
-# org に表を処理させる場合は以下のとおり
-# #+html: <font size=6>
-# #+begin_src R :exports results :results output raw :tangle no
-#   #' データの表示(reveal用)
-#   bar |>
-#     head(12) |> # 12日分を表示
-#     ascii::ascii(include.rownames = FALSE) |>
-#     ascii::print(type = "org")
-# #+end_src
-# #+html: </font>
+  # org に表を処理させる場合は以下のとおり
+  # #+html: <font size=6>
+  # #+begin_src R :exports results :results output raw :tangle no
+  #   #' データの表示(reveal用)
+  #   bar |>
+  #     head(12) |> # 12日分を表示
+  #     ascii::ascii(include.rownames = FALSE) |>
+  #     ascii::print(type = "org")
+  # #+end_src
+  # #+html: </font>
 
 #+reveal: split
 - 気温を説明する5種類の線形回帰モデルを検討
@@ -1760,10 +1556,12 @@ bw_fit <- lm(LPRICE2 ~ . - VINT, # VINTを除く全て
       tab_options(table.font.size = 12) |> as_latex() |> as.character()
   #+end_src
 
+
 * 次回の予定
 - 第1回 : 回帰モデルの考え方と推定
 - *第2回 : モデルの評価*
 - 第3回 : モデルによる予測と発展的なモデル
+
 
 * Footnotes
 * COMMENT ローカル変数
