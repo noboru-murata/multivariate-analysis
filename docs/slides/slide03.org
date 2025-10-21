@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-10-20 17:06:27 mura>
+# Time-stamp: <2025-10-21 10:51:41 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -626,8 +626,8 @@
     =
     X\boldsymbol{\hat{\beta}}
     =
-    \hat{\beta}_{0} X_\text{第0列} + 
-    \dots + \hat{\beta}_{p} X_\text{第p列}
+    \hat{\beta}_{0} X_{0(\text{切片})}\;+ 
+    \dots + \hat{\beta}_{p} X_{p(\text{第p成分})}
   \end{equation}
   #+end_quote
 
@@ -1286,7 +1286,7 @@
 
     #' データの読み込み
     tw_subset <- read_csv("data/tokyo_weather.csv") |>
-      filter(month == 9) |> # 9月のデータの抽出
+      filter(month == 8) |> # 9月のデータの抽出
       mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
       select(-c(year,month,day,day_of_week)) |>
       set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
@@ -1412,7 +1412,7 @@
                             type = "p", # plotの種類: "p"点，"l"線，"h"足付き
                             pch = 16,   # 点の種類 (?points 参照)
                             angle = 45, # xy平面の見る方向 (適宜調整)
-                            zlim = c(20,35),
+                            #' zlim = c(20,35),
                             color = "brown",
                             #' xlab="気圧", ylab="日射", zlab="気温",
                             #'    highlight.3d=TRUE # 高さ(z)ごとに色を変える
@@ -1445,7 +1445,8 @@
       geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
       geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
       labs(y = "あてはめ値") +
-      xlim(22,32) + ylim(22,32) + theme(legend.position = c(.88,.15))
+      # xlim(22,32) + ylim(22,32) +
+      theme(legend.position = c(.88,.15))
   #+end_src
 
 #+caption: モデルの比較
