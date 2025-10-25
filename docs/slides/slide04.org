@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-10-28 18:53:48 mura>
+# Time-stamp: <2025-10-25 17:50:53 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -218,7 +218,7 @@
 
 
 * 解析の事例
-** 実データによる例
+** COMMENT 実データによる例
 :PROPERTIES:
 :ID:       C513A101-EB45-4E7A-A4D3-1A8819EF6183
 :END:
@@ -245,7 +245,7 @@
 
     #' データの読み込み
     tw_subset <- read_csv("data/tokyo_weather.csv") |>
-      filter(month == 9) |> # 9月のデータの抽出
+      filter(month == 8) |> # 8月のデータの抽出
       mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
       select(-c(year,month,day,day_of_week)) |>
       set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
@@ -285,8 +285,7 @@
     #' データの表示(latex用)
     tw_subset |>
       mutate(日付 = as.character(日付)) |> # 文字列扱い
-      gt() |>
-      tab_options(table.font.size = 12) |> as_latex() |> as.character()
+      gt() |> as_latex() |> as.character()
   #+end_src
 
   # org に表を処理させる場合は以下のとおり
@@ -367,7 +366,7 @@
                             type = "p", # plotの種類: "p"点，"l"線，"h"足付き
                             pch = 16,   # 点の種類 (?points 参照)
                             angle = 45, # xy平面の見る方向 (適宜調整)
-                            zlim = c(20,35),
+                            #' zlim = c(20,35),
                             color = "brown",
                             ## xlab="気圧", ylab="日射", zlab="気温",
                             ##    highlight.3d=TRUE # 高さ(z)ごとに色を変える
@@ -401,7 +400,8 @@
       geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
       geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
       labs(y = "あてはめ値") +
-      xlim(22,32) + ylim(22,32) + theme(legend.position = c(.88,.15))
+      #' xlim(22,32) + ylim(22,32) +
+      theme(legend.position = c(.88,.15))
   #+end_src
 
 #+caption: モデルの比較
@@ -479,7 +479,7 @@
   # #+end_src
   # #+html: </font>
       
-** モデルの比較
+** COMMENT モデルの比較
 - 決定係数(\(R^{2}\), Adjusted \(R^{2}\))
   #+begin_src R :exports none
     #' 関数 gtsummary::tbl_regression() を利用して結果をまとめる
@@ -500,6 +500,46 @@
       modify_table_body( ~ .x |>
                            arrange(factor(variable,
                                           levels = c("気圧","日射","湿度","雲量"))))
+  #+end_src
+  #+begin_src R :eval no :exports none
+    tw_gt # Viewer ペインに表示
+  #+end_src
+  #+begin_src R :exports results :results output html :tangle no
+    #' 表示(reveal用)
+    tw_gt |> as_gt() |> as_raw_html()
+  #+end_src
+  #+begin_src R :exports results :results value scalar latex :tangle no
+    #' 表示(latex用)
+    tw_gt |> as_gt() |>
+      tab_options(table.font.size = 12) |> as_latex() |> as.character()
+  #+end_src
+
+** モデルの比較
+- 決定係数(\(R^{2}\), Adjusted \(R^{2}\))
+  #+begin_src R :exports none
+    #' 関数 gtsummary::tbl_regression() を利用して結果をまとめる
+    my_gts <- function(x){
+      tbl_regression(x) |>
+        modify_column_hide(columns = c(p.value,conf.low)) |>
+        modify_column_unhide(columns = std.error) |>
+        modify_header(label = "**変数**",
+                      estimate = "**係数**",
+                      std.error = "**標準誤差**") |>
+        add_glance_table(
+          include = c(r.squared,adj.r.squared))
+    }
+    tw_gt <- 
+      tbl_merge(
+        tbls = list(
+          my_gts(tw_lm1),
+          my_gts(tw_lm2),
+          my_gts(tw_lm3),
+          my_gts(tw_lm4),
+          my_gts(tw_lm5)),
+        tab_spanner = paste0("モデル",1:5)) |>
+      modify_table_body(~.x |>
+                          arrange(factor(variable,
+                                         levels = c("気圧","日射","湿度","雲量"))))
   #+end_src
   #+begin_src R :eval no :exports none
     tw_gt # Viewer ペインに表示
@@ -643,7 +683,7 @@
                             type="p", # plotの種類: "p"点，"l"線，"h"足付き
                             pch=16,# 点の種類 (?points 参照)
                             angle=45, # xy平面の見る方向 (適宜調整)
-                            zlim=c(20,35),
+                            #' zlim=c(20,35),
                             color="brown",
                             xlab="気圧", ylab="日射", zlab="気温",
                             #'    highlight.3d=TRUE # 高さ(z)ごとに色を変える
@@ -676,7 +716,8 @@
       geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
       geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
       labs(x = "気温", y = "あてはめ値") +
-      xlim(22,32) + ylim(22,32) + theme(legend.position = c(.88,.15))
+      #' xlim(22,32) + ylim(22,32) +
+      theme(legend.position = c(.88,.15))
   #+end_src
 
 #+caption: モデルの比較
@@ -950,8 +991,14 @@
   #+end_quote
 - これらの性質を利用してモデルの評価を行う
 
-  
+
 * COMMENT 実習
+:PROPERTIES:
+:reveal_background: #fef4f4
+:END:
+# 東京大学
+
+* COMMENT 実習(関数の説明付き)
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1262,7 +1309,7 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** 練習問題
+** COMMENT 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       5D5CB611-713B-4FDA-8DC0-DDCC7DB5F25B
@@ -1383,67 +1430,132 @@
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
-- 以下を示しなさい
-  - 不偏分散 \(\hat{\sigma}^{2}\) が
-    母数 \(\sigma^{2}\) の不偏な推定量となる
-    #+begin_quote
-    以下が成り立つことを示せばよい
-    \begin{equation}
-      \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
-      =(n{-}p{-}1)\sigma^{2}
-    \end{equation}
-    #+end_quote
-
+- 以下の問に答えなさい
+   - 不偏分散 \(\hat{\sigma}^{2}\) が
+      母数 \(\sigma^{2}\) の不偏な推定量となることを示せ
+      #+begin_quote
+      以下が成り立つことを示せばよい
+      \begin{equation}
+        \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
+        =(n{-}p{-}1)\sigma^{2}
+      \end{equation}
+      #+end_quote
+   - 回帰のばらつき \(S_{r}\) をハット行列 \(H\) と
+      目的変数 \(\boldsymbol{y}\) で表せ
+      
 ** 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 - ハット行列 \(H\) を用いた表現を利用する
-  #+begin_quote
-  \begin{align}
-    \boldsymbol{\hat{\epsilon}}
-    &=
-      (I_{n}-H)\boldsymbol{\epsilon}\\
-    \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
-    &=
-      \mathbb{E}[\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}]\\
-    &=
-      \mathbb{E}[\mathrm{tr}
-      (\boldsymbol{\hat{\epsilon}}
-      \boldsymbol{\hat{\epsilon}}^{\mathsf{T}})]\\
-    &=
-      \mathbb{E}[\mathrm{tr}
-      (I_{n}-H)\boldsymbol{\epsilon}
-      \boldsymbol{\epsilon}^{\mathsf{T}}(I_{n}-H)]\\
-    &=
-      \mathrm{tr}(I_{n}-H)
-      \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
-      (I_{n}-H)\\
-    &=
-      \mathrm{tr}
-      (I_{n}-H)(\sigma^{2}I_{n})(I_{n}-H)\\
-    &=
-      \sigma^{2}\mathrm{tr}(I_{n}-H)
-  \end{align}
-  #+end_quote
-  - \(I_{n}\) は \(n\times n\) 単位行列
+   #+begin_quote
+   \begin{align}
+     \boldsymbol{\hat{\epsilon}}
+     &=
+       (I_{n}-H)\boldsymbol{\epsilon}\\
+     \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
+     &=
+       \mathbb{E}[\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}]\\
+     &=
+       \mathbb{E}[\mathrm{tr}
+       (\boldsymbol{\hat{\epsilon}}
+       \boldsymbol{\hat{\epsilon}}^{\mathsf{T}})]\\
+     &=
+       \mathbb{E}[\mathrm{tr}
+       (I_{n}-H)\boldsymbol{\epsilon}
+       \boldsymbol{\epsilon}^{\mathsf{T}}(I_{n}-H)]\\
+     &=
+       \mathrm{tr}(I_{n}-H)
+       \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
+       (I_{n}-H)\\
+     &=
+       \mathrm{tr}
+       (I_{n}-H)(\sigma^{2}I_{n})(I_{n}-H)\\
+     &=
+       \sigma^{2}\mathrm{tr}(I_{n}-H)
+   \end{align}
+   #+end_quote
+   - \(I_{n}\) は \(n\times n\) 単位行列
 
 #+reveal: split
 - さらに以下が成立する
-  #+begin_quote
-  \begin{align}
-    \mathrm{tr} H
-    &=
-      \mathrm{tr} X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\\
-    &=
-      \mathrm{tr} (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\\
-    &=
-      \mathrm{tr} I_{p{+}1}\\
-    &=p+1
-  \end{align}
-  #+end_quote
-  - 行列のサイズに注意
+   #+begin_quote
+   \begin{align}
+     \mathrm{tr} H
+     &=
+       \mathrm{tr} X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\\
+     &=
+       \mathrm{tr} (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\\
+     &=
+       \mathrm{tr} I_{p{+}1}\\
+     &=p+1
+   \end{align}
+   #+end_quote
+   - 行列のサイズに注意
 
+#+reveal: split
+- \(H\) の性質より以下が成り立つ
+   #+begin_quote
+   \begin{align}
+     H\boldsymbol{1} &=\boldsymbol{1}\\
+     \boldsymbol{\hat{y}} &= H\boldsymbol{y}
+   \end{align}
+   #+end_quote
+- また行列 \(M\) を以下で定める
+   #+begin_quote
+   \begin{equation}
+     M = \frac{1}{n}\boldsymbol{1}\boldsymbol{1}^{\mathsf{T}}
+   \end{equation}
+   #+end_quote
+   このとき以下が成り立つ
+   #+begin_quote
+   \begin{align}
+     &M^{2} = M\\
+     &HM = MH = M
+   \end{align}
+   #+end_quote
+
+#+reveal: split
+- これを用いると目的変数の平均は以下で表される
+   #+begin_quote
+   \begin{equation}
+     \boldsymbol{\bar{y}} = M\boldsymbol{y}
+   \end{equation}
+   #+end_quote
+- \(S_{r}\) の定義から
+   #+begin_quote
+   \begin{align}
+     S_{r}
+     &=
+       (\boldsymbol{\hat{y}}-\boldsymbol{\bar{y}})^{\mathsf{T}}
+       (\boldsymbol{\hat{y}}-\boldsymbol{\bar{y}}) \\
+     &=
+       ((H-M)\boldsymbol{y})^{\mathsf{T}}
+       ((H-M)\boldsymbol{y}) \\
+     &=
+       \boldsymbol{y}^{\mathsf{T}}(H-M)^{\mathsf{T}}
+       (H-M)\boldsymbol{y} \\
+     &=
+       \boldsymbol{y}^{\mathsf{T}}
+       (H-M)\boldsymbol{y} \\
+     &=
+       \mathrm{tr} (H-M)\boldsymbol{y}\boldsymbol{y}^{\mathsf{T}}
+   \end{align}
+   #+end_quote
+
+#+reveal: split
+- 後に \(\beta_{1}=\dotsb=\beta_{p}=0\) ならば
+   #+begin_quote
+   \begin{align}
+     \mathbb{E}[(\boldsymbol{y}-\boldsymbol{\bar{y}})
+     (\boldsymbol{y}-\boldsymbol{\bar{y}})^{\mathsf{T}}]
+     &=
+       \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]\\
+     &= \sigma^{2}I_{n}
+   \end{align}
+   #+end_quote
+   となることを利用して，モデルの評価のための統計量を導く．
+   
 
 * 係数の評価   
 ** @@latex:@@\(t\)統計量
@@ -1493,25 +1605,6 @@
 #   - \(\beta_j=0\) のとき説明変数 \(X_j\) は回帰式に寄与しない
 #   - 帰無仮説 \(\beta_j=0\) が正しければ \(p\)値は小さくならない
 #   - \(p\)値が小さいときは帰無仮説が誤り結論するのが自然
-
-** 回帰係数の信頼区間
-- 以下の確率変数は自由度 \(n{-}p{-}1\) の \(t\) 分布に従う
-  #+begin_quote
-  \begin{equation}
-    \frac{\hat{\beta}_{j}-\beta_{j}}{\mathrm{s.e.}(\hat{\beta}_{j})}
-    =
-    \frac{(\hat{\beta}_{j}-\beta_{j})/\sqrt{\mathrm{Var}(\hat{\beta}_{j})}}{\sqrt{(n{-}p{-}1)\mathrm{s.e.}(\hat{\beta}_{j})^{2}/(n{-}p{-}1)\mathrm{Var}(\hat{\beta}_{j})}}
-  \end{equation}
-  #+end_quote
-- \(\gamma\in(0,1)\) に対する \(\beta_{j}\) の \(1-\gamma\) 信頼区間
-  #+begin_quote
-  \begin{equation}
-    \left[
-      \hat{\beta}_{j}-t_{1{-}\gamma/2}(n{-}p{-}1)\cdot \mathrm{s.e.}(\hat{\beta}_{j}),\;
-      \hat{\beta}_{j}+t_{1{-}\gamma/2}(n{-}p{-}1)\cdot \mathrm{s.e.}(\hat{\beta}_{j})
-    \right]  
-  \end{equation}
-  #+end_quote
 
 
 * COMMENT 回帰係数の有意性検定 spring
@@ -1749,7 +1842,7 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** 練習問題
+** COMMENT 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       0518B4AE-5E37-4907-AA8D-509ACDA75600
@@ -1847,6 +1940,34 @@
 
 
 * モデルの評価
+** 平方和の分解(再掲)
+- いろいろなばらつき
+  - \(S_y=(\boldsymbol{y}-\bar{\boldsymbol{y}})^{\mathsf{T}}
+    (\boldsymbol{y}-\bar{\boldsymbol{y}})\) :
+    目的変数のばらつき
+  - \(S_{\phantom{y}}=(\boldsymbol{y}-\boldsymbol{\hat{y}})^{\mathsf{T}}
+    (\boldsymbol{y}-\boldsymbol{\hat{y}})\) :
+    残差のばらつき
+    (\(\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}\))
+  - \(S_r=(\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})^{\mathsf{T}}
+    (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})\) :
+    あてはめ値(回帰)のばらつき
+- 3つのばらつき(平方和)の関係
+  #+begin_quote
+  \begin{equation}
+    (\boldsymbol{y}-\bar{\boldsymbol{y}})^{\mathsf{T}}
+    (\boldsymbol{y}-\bar{\boldsymbol{y}})
+    =
+    (\boldsymbol{y}-\boldsymbol{\hat{y}})^{\mathsf{T}}
+    (\boldsymbol{y}-\boldsymbol{\hat{y}})+ 
+    (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})^{\mathsf{T}}
+    (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})
+  \end{equation}
+  \begin{equation}
+    S_y=S+S_r
+  \end{equation}
+  #+end_quote
+
 ** @@latex:@@\(F\)統計量
 - *ばらつきの比* に関する定理 
   #+begin_quote
@@ -1901,7 +2022,7 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** 練習問題
+** COMMENT 練習問題
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       9C894A66-7226-4D09-9047-F572CCBE903D
@@ -2186,36 +2307,8 @@
   - モデル4 : 気温 = F(気圧, 日射, 湿度)
   - モデル5 : 気温 = F(気圧, 日射, 雲量)
 
-** 気温に影響を与える要因の分析 (再掲)
-:PROPERTIES:
-:ID:       A489FC6E-DE7F-40F3-AF84-149780E42205
-:END:
+** 気温に影響を与える要因の分析(再掲)
 - データの概要
-  #+begin_src R :exports none
-    #' @exercise 東京の気候データを用いた例
-
-    #' データの読み込み
-    tw_subset <- read_csv("data/tokyo_weather.csv") |>
-      filter(month == 9) |> # 9月のデータの抽出
-      mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
-      select(-c(year,month,day,day_of_week)) |>
-      set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
-
-    #' モデル式
-    tw_formula1 <- 気温 ~ 気圧
-    tw_formula2 <- 気温 ~ 日射
-    tw_formula3 <- 気温 ~ 気圧 + 日射
-    tw_formula4 <- 気温 ~ 気圧 + 日射 + 湿度
-    tw_formula5 <- 気温 ~ 気圧 + 日射 + 雲量
-
-    #' 推定
-    tw_lm1 <- lm(tw_formula1, data = tw_subset, y = TRUE)
-    tw_lm2 <- lm(tw_formula2, data = tw_subset, y = TRUE)
-    tw_lm3 <- lm(tw_formula3, data = tw_subset, y = TRUE)
-    tw_lm4 <- lm(tw_formula4, data = tw_subset, y = TRUE)
-    tw_lm5 <- lm(tw_formula5, data = tw_subset, y = TRUE)
-  #+end_src
-
   #+begin_src R :exports none :tangle no
     #' データの表示
     #' 記録を残すのであれば以下のようにすればよい
@@ -2236,8 +2329,7 @@
     #' データの表示(latex用)
     tw_subset |>
       mutate(日付 = as.character(日付)) |> # 文字列扱い
-      gt() |>
-      tab_options(table.font.size = 12) |> as_latex() |> as.character()
+      gt() |> as_latex() |> as.character()
   #+end_src
 
   # org に表を処理させる場合は以下のとおり
@@ -2259,53 +2351,9 @@
   - モデル4 : 気温 = F(気圧, 日射, 湿度)
   - モデル5 : 気温 = F(気圧, 日射, 雲量)
 
-** COMMENT 分析の視覚化 (再掲)
-:PROPERTIES:
-:ID:       59B71FB4-2412-4B64-BF49-A53AF3313B7F
-:END:
+
+** 分析の視覚化(再掲)
 - 観測値とあてはめ値の比較
-
-#+caption: モデルの比較
-#+name: fig:04_models
-#+attr_html: height 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/04_models.png]]
-
-** 分析の視覚化 (再掲)
-:PROPERTIES:
-:END:
-- 関連するデータの散布図
-  #+begin_src R :eval no :file figs/04_pairs.png :exports results :results graphics
-    #' 関連データの散布図
-    tw_subset |>
-      select(気温,気圧,日射,湿度,雲量) |>
-      GGally::ggpairs()
-  #+end_src
-
-#+caption: 散布図
-#+name: fig:04_pairs
-#+attr_html: height 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/04_pairs.png]]
-
-#+reveal: split
-- 観測値とあてはめ値の比較
-  #+begin_src R :eval no :file figs/04_models.png :exports results :results graphics
-    #' 観測値とあてはめ値の比較
-    tw_subset |>
-      mutate(モデル1 = fitted(tw_lm1),    # モデルごとに予測値をデータフレームに追加
-             モデル2 = fitted(tw_lm2),
-             モデル3 = fitted(tw_lm3),
-             モデル4 = fitted(tw_lm4),
-             モデル5 = fitted(tw_lm5)) |>
-      pivot_longer(starts_with("モデル"), # モデルをラベルとして予測値をまとめる
-                   names_to = "model", values_to = "fitted") |>
-      ggplot(aes(x = 気温, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
-      geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
-      geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
-      labs(y = "あてはめ値") +
-      xlim(22,32) + ylim(22,32) + theme(legend.position = c(.88,.15))
-  #+end_src
 
 #+caption: モデルの比較
 #+name: fig:04_models
@@ -2383,15 +2431,26 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/04_diag_model5.png]]
   
-** モデルの評価
-- \(t\)統計量・\(F\)統計量によるモデルの比較
+** モデルの比較
+:PROPERTIES:
+:ID:       6104947A-BAD8-48A6-848D-9001C82883BF
+:END:
+- \(t\)統計量・\(F\)統計量
   #+begin_src R :exports none
     #' 関数 gtsummary::tbl_regression() を利用して結果をまとめる
     my_gts <- function(x){
-      tbl_regression(x, intercept = TRUE) |>                      # 標準の表
-        modify_column_hide(columns = c(conf.low)) |>              # 信頼区間を非表示
-        modify_column_unhide(columns = c(std.error,statistic)) |> # 標準誤差とt統計量を表示
-        add_glance_table(include = c(statistic,p.value)) }        # F統計量とp値
+      tbl_regression(x) |>
+        modify_column_hide(columns = c(conf.low)) |>
+        modify_column_unhide(columns = statistic) |>
+        modify_header(label = "**変数**",
+                      estimate = "**係数**",
+                      statistic = "**t統計量**",
+                      p.value = "**p値**") |>
+        add_glance_table(
+          include = c(adj.r.squared,statistic,p.value),
+          label = list(statistic = "F統計量",
+                       p.value = "p値"))
+      }
     tw_gt <- 
       tbl_merge(
         tbls = list(
@@ -2400,97 +2459,59 @@
           my_gts(tw_lm3),
           my_gts(tw_lm4),
           my_gts(tw_lm5)),
-        tab_spanner = c("モデル1","モデル2","モデル3","モデル4","モデル5")) |>
-      modify_table_body( ~ .x |>
-                           arrange(factor(variable,
-                                          levels = c("(Intercept)","気圧","日射","湿度","雲量"))))
-  #+end_src
-  #+begin_src R :eval no :exports none
-    tw_gt # Viewer ペインに表示
+        tab_spanner = paste0("モデル",1:5)) |>
+      modify_table_body(~.x |> arrange(
+                                 factor(variable,
+                                        levels = c("気圧","日射","湿度","雲量"))))
   #+end_src
   #+begin_src R :exports results :results output html :tangle no
     #' 表示(reveal用)
     tw_gt |> as_gt() |> as_raw_html()
-  #+end_src
-  #+begin_src R :exports results :results value scalar latex :tangle no
-    #' 表示(latex用)
-    tbl_merge(
-      tbls = list(
-        my_gts(tw_lm1),
-        my_gts(tw_lm2),
-        my_gts(tw_lm3)),
-      tab_spanner = c("モデル1","モデル2","モデル3")) |>
-      modify_table_body( ~ .x |>
-                           arrange(factor(variable,
-                                          levels = c("(Intercept)",
-                                                     "気圧",
-                                                     "日射",
-                                                     "湿度",
-                                                     "雲量")))) |>
-      as_gt() |>
-      tab_options(table.font.size = 10) |> as_latex() |> as.character()
-  #+end_src
-  #+begin_src R :exports results :results value scalar latex :tangle no
-    #' 表示(latex用)
-    tbl_merge(
-      tbls = list(
-        my_gts(tw_lm4),
-        my_gts(tw_lm5)),
-      tab_spanner = c("モデル4","モデル5")) |>
-      modify_table_body( ~ .x |>
-                           arrange(factor(variable,
-                                          levels = c("(Intercept)",
-                                                     "気圧",
-                                                     "日射",
-                                                     "湿度",
-                                                     "雲量")))) |>
-      as_gt() |>
-      tab_options(table.font.size = 10) |> as_latex() |> as.character()
   #+end_src
 
-#+reveal: split  
-- 様々な統計量によるモデルの比較
-  #+begin_src R :exports none
-    #' 関数 gtsummary::tbl_regression() を利用して結果をまとめる
-    my_gts <- function(x){
-      tbl_regression(x, intercept = TRUE) |>                      # 標準の表
-        add_significance_stars(
-          pattern = "{estimate} ({conf.low}, {conf.high}){stars}",
-          hide_ci = TRUE, hide_se = TRUE
-        ) |>
-        modify_header(estimate = "**Beta (95% CI)**") |>
-        modify_footnote(estimate = "CI = Confidence Interval",
-                        abbreviation = TRUE) |>
-        add_glance_table(include = c(r.squared,
-                                     adj.r.squared,
-                                     statistic,
-                                     p.value)) }
-        tw_gt <- 
-          tbl_merge(
-            tbls = list(
-              my_gts(tw_lm1),
-              my_gts(tw_lm2),
-              my_gts(tw_lm3),
-              my_gts(tw_lm4),
-              my_gts(tw_lm5)),
-            tab_spanner = c("モデル1","モデル2","モデル3","モデル4","モデル5")) |>
-          modify_table_body( ~ .x |>
-                               arrange(factor(variable,
-                                              levels = c("(Intercept)","気圧","日射","湿度","雲量"))))
-  #+end_src
-  #+begin_src R :eval no :exports none
-    tw_gt # Viewer ペインに表示
-  #+end_src
-  #+begin_src R :exports results :results output html :tangle no
-    #' 表示(reveal用)
-    tw_gt |> as_gt() |> as_raw_html()
-  #+end_src
   #+begin_src R :exports results :results value scalar latex :tangle no
     #' 表示(latex用)
     tw_gt |> as_gt() |>
-      tab_options(table.font.size = 10) |> as_latex() |> as.character()
+      tab_options(table.font.size = 12) |> as_latex() |> as.character()
   #+end_src
 
+#+reveal: split
+- 診断プロット (モデル3)
+  #+begin_src R :file figs/04_diag_model3.png :exports results :results graphics
+    #' 診断プロット (モデル3)
+    autoplot(tw_lm3)
+  #+end_src
+
+#+caption: モデルの比較
+#+name: fig:04_diag_model3
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/04_diag_model3.png]]
+#+reveal: split
+- 診断プロット (モデル4)
+  #+begin_src R :file figs/04_diag_model4.png :exports results :results graphics
+    #' 診断プロット (モデル4)
+    autoplot(tw_lm4)
+  #+end_src
+
+#+caption: モデルの比較
+#+name: fig:04_diag_model4
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/04_diag_model4.png]]
+  #+reveal: split
+- 診断プロット (モデル5)
+  #+begin_src R :file figs/04_diag_model5.png :exports results :results graphics
+    #' 診断プロット (モデル5)
+    autoplot(tw_lm5)
+  #+end_src
+
+#+caption: モデルの比較
+#+name: fig:04_diag_model5
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/04_diag_model5.png]]
+  
 ** COMMENT 東京の8月の気候の分析(古いcode)
 :PROPERTIES:
 :ID:       99AAECD9-1974-48D7-9E3C-F81FDDD8A7AC
@@ -2655,7 +2676,7 @@
                 ))
     #+end_src
 
-
+    
 * 次回の予定
 - 第1回 : 回帰モデルの考え方と推定
 - 第2回 : モデルの評価
