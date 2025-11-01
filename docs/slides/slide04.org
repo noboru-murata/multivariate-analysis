@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-10-25 17:50:53 mura>
+# Time-stamp: <2025-11-01 14:31:51 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -34,6 +34,7 @@
 #+begin_src R :exports none
   ### 第4講 資料
   library(tidyverse)
+  library(GGally)
   library(gt)
   library(gtsummary)
   library(ggfortify)
@@ -64,6 +65,7 @@
 #+begin_src R :exports none
   ### 第4講 サンプルコード
   library(tidyverse)
+  library(GGally)
   library(gt)
   library(gtsummary)
   if(Sys.info()["sysname"] == "Darwin") { # MacOSか調べて日本語フォントを指定
@@ -245,7 +247,7 @@
 
     #' データの読み込み
     tw_subset <- read_csv("data/tokyo_weather.csv") |>
-      filter(month == 8) |> # 8月のデータの抽出
+      filter(month == 10) |> # 10月のデータの抽出
       mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
       select(-c(year,month,day,day_of_week)) |>
       set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
@@ -315,7 +317,7 @@
     #' 関連データの散布図
     tw_subset |>
       select(気温,気圧,日射,湿度,雲量) |>
-      GGally::ggpairs()
+      ggpairs()
   #+end_src
 
 #+caption: 散布図
@@ -497,9 +499,9 @@
           my_gts(tw_lm4),
           my_gts(tw_lm5)),
         tab_spanner = c("モデル1","モデル2","モデル3","モデル4","モデル5")) |>
-      modify_table_body( ~ .x |>
-                           arrange(factor(variable,
-                                          levels = c("気圧","日射","湿度","雲量"))))
+      modify_table_body(~.x |>
+                          arrange(factor(variable,
+                                         levels = c("気圧","日射","湿度","雲量"))))
   #+end_src
   #+begin_src R :eval no :exports none
     tw_gt # Viewer ペインに表示
@@ -630,7 +632,7 @@
     #' 関連データの散布図
     tw_subset |>
       select(temp,press,solar,humid,cloud) |>
-      GGally::ggpairs(columnLabels=c("気温","気圧","日射","湿度","雲量"))
+      ggpairs(columnLabels=c("気温","気圧","日射","湿度","雲量"))
   #+end_src
 
 #+caption: 散布図
@@ -1290,7 +1292,7 @@
   - \(\hat{\beta}_j\) の標準偏差の推定量
   #+begin_quote
   \begin{equation}
-    \mathrm{s.e.}(\hat{\beta}_{j})
+    \mathrm{s{.}e{.}}(\hat{\beta}_{j})
     =
     \hat{\sigma}\zeta_j
     =
@@ -1501,7 +1503,7 @@
      \boldsymbol{\hat{y}} &= H\boldsymbol{y}
    \end{align}
    #+end_quote
-- また行列 \(M\) を以下で定める
+- 行列 \(M\) を以下で定める
    #+begin_quote
    \begin{equation}
      M = \frac{1}{n}\boldsymbol{1}\boldsymbol{1}^{\mathsf{T}}
@@ -1516,7 +1518,7 @@
    #+end_quote
 
 #+reveal: split
-- これを用いると目的変数の平均は以下で表される
+- 行列 \(M\) を用いると目的変数の平均は以下で表される
    #+begin_quote
    \begin{equation}
      \boldsymbol{\bar{y}} = M\boldsymbol{y}
@@ -1547,14 +1549,13 @@
 - 後に \(\beta_{1}=\dotsb=\beta_{p}=0\) ならば
    #+begin_quote
    \begin{align}
-     \mathbb{E}[(\boldsymbol{y}-\boldsymbol{\bar{y}})
-     (\boldsymbol{y}-\boldsymbol{\bar{y}})^{\mathsf{T}}]
-     &=
-       \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]\\
-     &= \sigma^{2}I_{n}
+     \mathbb{E}[\boldsymbol{y}\boldsymbol{y}^{\mathsf{T}}]
+     &= \beta_{0}^{2} \boldsymbol{1}\boldsymbol{1}^{\mathsf{T}}
+       + \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]\\
+     &= n \beta_{0}^{2} M + \sigma^{2}I_{n}
    \end{align}
    #+end_quote
-   となることを利用して，モデルの評価のための統計量を導く．
+   となることを利用して，モデルの評価のための統計量を導く
    
 
 * 係数の評価   
@@ -1566,7 +1567,7 @@
       % \text{(t統計量)}\quad
       t
       =
-      \frac{\hat{\beta}_j-\beta_j}{\mathrm{s.e.}(\hat{\beta}_{j})}
+      \frac{\hat{\beta}_j-\beta_j}{\mathrm{s{.}e{.}}(\hat{\beta}_{j})}
       =
       \frac{\hat{\beta}_j-\beta_j}{\hat{\sigma}\zeta_{j}}
     \end{equation}
@@ -1627,7 +1628,7 @@
   は自由度 \(n{-}2\) の \(t\) 分布に従う 
   #+begin_quote
   \begin{equation}
-    t=\frac{\hat{\beta}}{\mathrm{s.e.}(\hat{\beta})}
+    t=\frac{\hat{\beta}}{\mathrm{s{.}e{.}}(\hat{\beta})}
   \end{equation}
   #+end_quote
 - 対立仮説 \(H_1\) が正しければ, 
@@ -1752,18 +1753,18 @@
 - \(\hat{\alpha},\hat{\beta}\) の分散の推定量 (資料; Gauss-Markovの定理)
   #+begin_quote
   \begin{equation}
-    \mathrm{s.e.}(\hat{\alpha})^2
+    \mathrm{s{.}e{.}}(\hat{\alpha})^2
     =\frac{\hat{\sigma}^2\sum_iX_i^2}{n\sum_i(X_i-\bar{X})^2},
     \quad
-    \mathrm{s.e.}(\hat{\beta})^2
+    \mathrm{s{.}e{.}}(\hat{\beta})^2
     =\frac{\hat{\sigma}^2}{\sum_i(X_i-\bar{X})^2}
   \end{equation}
   #+end_quote
-  - \(\mathrm{s.e.}(\hat{\alpha}),\mathrm{s.e.}(\hat{\beta})\) は *標準誤差* と呼ばれる
+  - \(\mathrm{s{.}e{.}}(\hat{\alpha}),\mathrm{s{.}e{.}}(\hat{\beta})\) は *標準誤差* と呼ばれる
 - 以下は \(\hat{\beta}\) と独立で自由度 \(n{-}2\) の \(\chi^2\) 分布に従う
   #+begin_quote
   \begin{equation}
-    \frac{(n{-}2)\mathrm{s.e.}(\hat{\beta})^2}{\mathrm{Var}(\hat{\beta})}
+    \frac{(n{-}2)\mathrm{s{.}e{.}}(\hat{\beta})^2}{\mathrm{Var}(\hat{\beta})}
   \end{equation}
   #+end_quote
 
@@ -1771,17 +1772,17 @@
 - 以下の確率変数は自由度 \(n{-}2\) の \(t\) 分布に従う
   #+begin_quote
   \begin{equation}
-    \frac{\hat{\beta}-\beta}{\mathrm{s.e.}(\hat{\beta})}
+    \frac{\hat{\beta}-\beta}{\mathrm{s{.}e{.}}(\hat{\beta})}
     =
-    \frac{(\hat{\beta}-\beta)/\sqrt{\mathrm{Var}(\hat{\beta})}}{\sqrt{(n{-}2)\mathrm{s.e.}(\hat{\beta})^{2}/(n{-}2)\mathrm{Var}(\hat{\beta})}}
+    \frac{(\hat{\beta}-\beta)/\sqrt{\mathrm{Var}(\hat{\beta})}}{\sqrt{(n{-}2)\mathrm{s{.}e{.}}(\hat{\beta})^{2}/(n{-}2)\mathrm{Var}(\hat{\beta})}}
   \end{equation}
   #+end_quote
 - \(\gamma\in(0,1)\) に対する \(\beta\) の \(1-\gamma\) 信頼区間
   #+begin_quote
   \begin{equation}
     \left[
-      \hat{\beta}-t_{1{-}\gamma/2}(n{-}2)\cdot \mathrm{s.e.}(\hat{\beta}),\;
-      \hat{\beta}+t_{1{-}\gamma/2}(n{-}2)\cdot \mathrm{s.e.}(\hat{\beta})
+      \hat{\beta}-t_{1{-}\gamma/2}(n{-}2)\cdot \mathrm{s{.}e{.}}(\hat{\beta}),\;
+      \hat{\beta}+t_{1{-}\gamma/2}(n{-}2)\cdot \mathrm{s{.}e{.}}(\hat{\beta})
     \right]  
   \end{equation}
   #+end_quote
@@ -2351,7 +2352,6 @@
   - モデル4 : 気温 = F(気圧, 日射, 湿度)
   - モデル5 : 気温 = F(気圧, 日射, 雲量)
 
-
 ** 分析の視覚化(再掲)
 - 観測値とあてはめ値の比較
 
@@ -2476,37 +2476,37 @@
   #+end_src
 
 #+reveal: split
-- 診断プロット (モデル3)
+- 診断プロット
   #+begin_src R :file figs/04_diag_model3.png :exports results :results graphics
     #' 診断プロット (モデル3)
     autoplot(tw_lm3)
   #+end_src
 
-#+caption: モデルの比較
+#+caption: モデル3
 #+name: fig:04_diag_model3
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/04_diag_model3.png]]
 #+reveal: split
-- 診断プロット (モデル4)
+- 診断プロット
   #+begin_src R :file figs/04_diag_model4.png :exports results :results graphics
     #' 診断プロット (モデル4)
     autoplot(tw_lm4)
   #+end_src
 
-#+caption: モデルの比較
+#+caption: モデル4
 #+name: fig:04_diag_model4
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/04_diag_model4.png]]
   #+reveal: split
-- 診断プロット (モデル5)
+- 診断プロット
   #+begin_src R :file figs/04_diag_model5.png :exports results :results graphics
     #' 診断プロット (モデル5)
     autoplot(tw_lm5)
   #+end_src
 
-#+caption: モデルの比較
+#+caption: モデル5
 #+name: fig:04_diag_model5
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth

@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-11-04 16:48:53 mura>
+# Time-stamp: <2025-11-01 17:09:20 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -34,6 +34,7 @@
 #+begin_src R :exports none
   ### 第5講 資料
   library(tidyverse)
+  library(GGally)
   library(broom)
   library(gt)
   library(gtsummary)
@@ -145,8 +146,8 @@
       mutate(date = date(paste(year,month,day,sep="-")), .before = 1) |>
       select(-c(year,month,day,day_of_week)) |>
       set_names(c("日付","気温","降雨","日射","降雪","風向","風速","気圧","湿度","雲量"))
-    tw_subset <- tw_data |> # 9月のデータの抽出
-      filter(month(日付) == 9)
+    tw_subset <- tw_data |> # 10月のデータの抽出
+      filter(month(日付) == 10)
     #' モデル式
     tw_formula1 <- 気温 ~ 気圧
     tw_formula2 <- 気温 ~ 日射
@@ -184,7 +185,7 @@
     tw_subset |>
       mutate(日付 = as.character(日付)) |> # 文字列扱い
       gt() |>
-      tab_options(table.font.size = 12) |>
+      tab_options(table.font.size = 12, table.width = pct(80)) |>
       as_latex() |> as.character()
   #+end_src
 
@@ -281,10 +282,10 @@
     #' 関連データの散布図
     tw_subset |>
       select(気温,気圧,日射,湿度,雲量) |>
-      GGally::ggpairs()
+      ggpairs()
   #+end_src
 
-#+caption: 散布図
+#+caption: 気温,気圧,日射,湿度,雲量の関係
 #+name: fig:05_pairs
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -305,7 +306,7 @@
       ggplot(aes(x = 気温, y = あてはめ値)) + # 気温の実測値をx軸，予測値をy軸で表示
       geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
       geom_point(aes(colour = モデル, shape = モデル)) + # 予測値をモデル別に表示
-      xlim(22,32) + ylim(22,32) +
+      ## xlim(22,32) + ylim(22,32) +
       theme(legend.position = "inside", legend.position.inside = c(.88,.15))
   #+end_src
 
@@ -324,7 +325,7 @@
     #' 関連データの散布図
     tw_subset |>
       select(temp,press,solar,humid,cloud) |>
-      GGally::ggpairs(columnLabels=c("気温","気圧","日射","湿度","雲量"))
+      ggpairs(columnLabels=c("気温","気圧","日射","湿度","雲量"))
   #+end_src
 
 #+caption: 散布図
@@ -385,12 +386,13 @@
     tbl_regression(x) |>
       add_significance_stars(
         hide_se = TRUE,
-        pattern = "{estimate}{stars} ({std.error})"
+        pattern = "{estimate}({std.error}){stars}"
       ) |>
-      modify_header(estimate = "**Beta (SE)**") |>
-      modify_footnote(estimate = "SE = Standard Error", abbreviation = TRUE) |>
-      add_glance_table(include = c(r.squared,
-                                   adj.r.squared)) }
+      add_glance_table(include = c(r.squared,adj.r.squared)) |>
+      modify_header(label = "**変数**", estimate = "**係数(SE)**") |>
+      remove_abbreviation() |>
+      modify_abbreviation("SE = 標準誤差")
+  }
   tw_gt <- 
     tbl_merge(
       tbls = list(
@@ -400,12 +402,13 @@
         my_gts(tw_lm4),
         my_gts(tw_lm5)),
       tab_spanner = paste0("モデル",1:5)) |>
-    modify_table_body( ~ .x |>
-                         arrange(factor(variable,
-                                        levels = c("気圧",
-                                                   "日射",
-                                                   "湿度",
-                                                   "雲量"))))
+    modify_table_body(~.x |>
+                        arrange(factor(variable,
+                                       levels = c("気圧",
+                                                  "日射",
+                                                  "湿度",
+                                                  "雲量"))))
+
 #+end_src
 #+begin_src R :eval no :exports none
   tw_gt # Viewer ペインに表示
@@ -419,7 +422,7 @@
 #+begin_src R :exports results :results value scalar latex :tangle no
   #' 表示(latex用)
   tw_gt |> as_gt() |>
-    tab_options(table.font.size = 12) |>
+    tab_options(table.font.size = 12, table.width = pct(80)) |>
     as_latex() |> as.character()
 #+end_src
 
@@ -591,13 +594,14 @@
       tbl_regression(x) |>
         add_significance_stars(
           hide_se = TRUE,
-          pattern = "{estimate}{stars} ({std.error})"
+          pattern = "{estimate}({std.error}){stars}"
         ) |>
-        modify_header(estimate = "**Beta (SE)**") |>
-        modify_footnote(estimate = "SE = Standard Error", abbreviation = TRUE) |>
-        add_glance_table(include = c(r.squared,
-                                     statistic,
-                                     p.value)) }
+        add_glance_table(include = c(r.squared,statistic,p.value)) |>
+        modify_header(label = "**変数**",
+                      estimate = "**係数(SE)**") |>
+        remove_abbreviation() |>
+        modify_abbreviation("SE = 標準誤差")
+    }
     tw_gt <- 
       tbl_merge(
         tbls = list(
@@ -607,12 +611,12 @@
           my_gts(tw_lm4),
           my_gts(tw_lm5)),
         tab_spanner = paste0("モデル",1:5)) |>
-      modify_table_body( ~ .x |>
-                           arrange(factor(variable,
-                                          levels = c("気圧",
-                                                     "日射",
-                                                     "湿度",
-                                                     "雲量"))))
+      modify_table_body(~.x |>
+                          arrange(factor(variable,
+                                         levels = c("気圧",
+                                                    "日射",
+                                                    "湿度",
+                                                    "雲量"))))
   #+end_src
   #+begin_src R :eval no :exports none
     tw_gt # Viewer ペインに表示
@@ -626,7 +630,7 @@
   #+begin_src R :exports results :results value scalar latex :tangle no
     #' 表示(latex用)
     tw_gt |> as_gt() |>
-      tab_options(table.font.size = 12) |>
+      tab_options(table.font.size = 12, table.width = pct(80)) |>
       as_latex() |> as.character()
   #+end_src
 
@@ -812,18 +816,31 @@
   #+begin_src R :exports none
     #' 関数 gtsummary::tbl_regression() を利用して結果をまとめる
     my_gts <- function(x){
-      tbl_regression(x, intercept = TRUE) |>                   # 標準の表
-        modify_column_hide(columns = c(conf.low)) |>           # 信頼区間を非表示
-        modify_column_unhide(columns = c(std.error,statistic))} # 標準誤差とt統計量を表示
+      tbl_regression(x, intercept = TRUE) |>                      # 標準の表
+        modify_column_hide(columns = c(conf.low)) |>              # 信頼区間を非表示
+        modify_column_unhide(columns = c(std.error,statistic)) |> # 標準誤差とt統計量を表示
+        add_significance_stars(
+          hide_p = FALSE,
+          pattern = "{p.value}{stars}"
+        ) |>
+        modify_header(label = "**変数**",
+                      estimate = "**係数**",
+                      std.error = "**SE**",
+                      statistic = "**t統計量**",
+                      p.value = "**p値**") |>
+        remove_abbreviation() |>
+        modify_abbreviation("SE = 標準誤差")
+    } 
     tw_gt <- 
       tbl_merge(
         tbls = list(
-          my_gts(tw_lm1),
-          my_gts(tw_lm2),
+          ## my_gts(tw_lm1),
+          ## my_gts(tw_lm2),
           my_gts(tw_lm3),
           my_gts(tw_lm4),
           my_gts(tw_lm5)),
-        tab_spanner = paste0("モデル",1:5)) |>
+        tab_spanner = paste0("モデル",3:5)) |>
+      ## tab_spanner = paste0("モデル",1:5)) |>
       modify_table_body( ~ .x |>
                            arrange(factor(variable,
                                           levels = c("(Intercept)",
@@ -841,41 +858,48 @@
       tab_options(table.font.size = 20) |>
       as_raw_html()
   #+end_src
+
   #+begin_src R :exports results :results value scalar latex :tangle no
     #' 表示(latex用)
-    tbl_merge(
-      tbls = list(
-        my_gts(tw_lm1),
-        my_gts(tw_lm2),
-        my_gts(tw_lm3)),
-      tab_spanner = paste0("モデル",1:3)) |>
-      modify_table_body( ~ .x |>
-                           arrange(factor(variable,
-                                          levels = c("(Intercept)",
-                                                     "気圧",
-                                                     "日射",
-                                                     "湿度",
-                                                     "雲量")))) |>
-      as_gt() |>
-      tab_options(table.font.size = 10) |> as_latex() |> as.character()
+    tw_gt |> as_gt() |>
+      tab_options(table.font.size = 11) |>
+      as_latex() |> as.character()
   #+end_src
-  #+begin_src R :exports results :results value scalar latex :tangle no
-    #' 表示(latex用)
-    tbl_merge(
-      tbls = list(
-        my_gts(tw_lm4),
-        my_gts(tw_lm5)),
-      tab_spanner = paste0("モデル",4:5)) |>
-      modify_table_body( ~ .x |>
-                           arrange(factor(variable,
-                                          levels = c("(Intercept)",
-                                                     "気圧",
-                                                     "日射",
-                                                     "湿度",
-                                                     "雲量")))) |>
-      as_gt() |>
-      tab_options(table.font.size = 10) |> as_latex() |> as.character()
-  #+end_src
+  # #+begin_src R :exports results :results value scalar latex :tangle no
+  #   #' 表示(latex用)
+  #   tbl_merge(
+  #     tbls = list(
+  #       my_gts(tw_lm1),
+  #       my_gts(tw_lm2),
+  #       my_gts(tw_lm3)),
+  #     tab_spanner = paste0("モデル",1:3)) |>
+  #     modify_table_body( ~ .x |>
+  #                          arrange(factor(variable,
+  #                                         levels = c("(Intercept)",
+  #                                                    "気圧",
+  #                                                    "日射",
+  #                                                    "湿度",
+  #                                                    "雲量")))) |>
+  #     as_gt() |>
+  #     tab_options(table.font.size = 10) |> as_latex() |> as.character()
+  # #+end_src
+  # #+begin_src R :exports results :results value scalar latex :tangle no
+  #   #' 表示(latex用)
+  #   tbl_merge(
+  #     tbls = list(
+  #       my_gts(tw_lm4),
+  #       my_gts(tw_lm5)),
+  #     tab_spanner = paste0("モデル",4:5)) |>
+  #     modify_table_body( ~ .x |>
+  #                          arrange(factor(variable,
+  #                                         levels = c("(Intercept)",
+  #                                                    "気圧",
+  #                                                    "日射",
+  #                                                    "湿度",
+  #                                                    "雲量")))) |>
+  #     as_gt() |>
+  #     tab_options(table.font.size = 10) |> as_latex() |> as.character()
+  # #+end_src
 
 ** COMMENT モデルの評価(stargazer)
 :PROPERTIES:
@@ -983,17 +1007,15 @@
 :PROPERTIES:
 :ID:       F6E66B48-BDBE-46E7-AAED-6BD55B99A7A4
 :END:
-- モデル2
-  #+begin_src R :file figs/05_diag_model2.png :exports results :results graphics
-    #' 診断プロット (モデル2)
-    autoplot(tw_lm2)
-  #+end_src
-
-#+caption: モデル2の診断
-#+name: fig:05_diag_model2
-#+attr_html: height 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/05_diag_model2.png]]
+- 回帰モデルのあてはまりを視覚的に評価
+  - Residuals vs Fitted: あてはめ値(予測値)と残差の関係 \\
+     (誤差の均一性)
+  - Normal Q-Q: 標準化残差と標準正規分布の比較 \\
+     (残差の正規性)
+  - Scale-Location: あてはめ値と標準化残差の関係 \\
+     (分散の均一性)
+  - Residuals vs Leverage: 標準化残差とテコ比の関係 \\
+     (外れ値)
 
 #+reveal: split
 - モデル3
@@ -1020,7 +1042,20 @@
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/05_diag_model4.png]]
-  
+
+#+reveal: split
+- モデル5
+  #+begin_src R :file figs/05_diag_model5.png :exports results :results graphics
+    #' 診断プロット (モデル5)
+    autoplot(tw_lm5)
+  #+end_src
+
+#+caption: モデル5の診断
+#+name: fig:05_diag_model5
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/05_diag_model5.png]]
+
 ** COMMENT 講義資料: 回帰分析とその評価
 :PROPERTIES:
 :reveal_background: #EEEEFF
@@ -1072,12 +1107,12 @@
 - この性質を利用して以下の3つの値の違いを評価
   #+begin_quote
   \begin{align}
-    \hat{y}&=(1,\boldsymbol{x}^{\mathsf{T}})\hat{\boldsymbol{\beta}}
-    &&\text{(回帰式による予測値)}\\
+    y&=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}+\epsilon
+    &&\text{(観測値)}\\
     \tilde{y}&=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}
     &&\text{(最適な予測値)}\\
-    y&=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}+\epsilon
-    &&\text{(観測値)}
+    \hat{y}&=(1,\boldsymbol{x}^{\mathsf{T}})\hat{\boldsymbol{\beta}}
+    &&\text{(回帰式による予測値)}
   \end{align}
   #+end_quote
   - \(\hat{y}\) と \(y\) は独立な正規分布に従うことに注意
@@ -1622,7 +1657,7 @@
   #' 信頼区間と予測区間の計算
   tw_train <- tw_data |> filter(month(日付) %in% 8) # 推定用データ
   tw_test  <- tw_data |> filter(month(日付) %in% 9) # 予測用データ
-  tw_model <- 気温 ~ 日射 + 気圧 + 雲量 # モデルの定義 
+  tw_model <- 気温 ~ 日射 + 気圧 + 湿度 # モデルの定義 
   tw_lm <- lm(tw_model, data = tw_train) # モデルの推定
 #+end_src
 - 推定されたモデル
@@ -1634,7 +1669,14 @@
       add_significance_stars(
         hide_p = FALSE,
         pattern = "{p.value}{stars}"
-      ) 
+      ) |>
+      modify_header(label = "**変数**",
+                    estimate = "**係数**",
+                    std.error = "**SE**",
+                    statistic = "**t統計量**",
+                    p.value = "**p値**") |>
+      remove_abbreviation() |>
+      modify_abbreviation("SE = 標準誤差")
   #+end_src
   #+begin_src R :eval no :exports none
     tw_gt # Viewer ペインに表示
@@ -1648,7 +1690,7 @@
   #+begin_src R :exports results :results value scalar latex :tangle no
     #' 表示(latex用)
     tw_gt |> as_gt() |>
-      tab_options(table.font.size = 12) |>
+      tab_options(table.font.size = 12, table.width = pct(60)) |>
       as_latex() |> as.character()
   #+end_src
 
@@ -1757,9 +1799,9 @@
 
 ** カテゴリカル変数を含むモデル
 - 数値ではないデータ
-  - [[color:green][悪性良性]]
-  - [[color:green][血液型]]
-- 適切な方法で数値に変換して対応:
+  - [[color:green][悪性・良性]]
+  - [[color:green][血液型 (A型,B型,AB型,O型)]] 
+- 適切な方法で数値に変換して対応
   - 2値の場合は 1,0 (真，偽) を割り当てる
     - 悪性 : 1
     - 良性 : 0
@@ -1776,7 +1818,7 @@
 :PROPERTIES:
 :ID:       74AD1041-5716-450D-8520-16ADF64B934A
 :END:
-#+begin_leftcol
+#+begin_leftcol40
 #+begin_src R :exports none
   #' 表の作成
   bb_data <-
@@ -1784,14 +1826,19 @@
 #+end_src
 #+begin_src R :exports results :results output html :tangle no
   #' データの表示(reveal用)
-  bb_data |> slice(1:14) |> gt() |> as_raw_html()
+  bb_data |> slice(1:14) |>
+    gt() |>
+    as_raw_html()
 #+end_src
 #+begin_src R :exports results :results value scalar latex :tangle no
   #' データの表示(latex用)
-  bb_data |> gt() |> as_latex() |> as.character()
+  bb_data |>
+    gt() |>
+    tab_options(table.font.size = 12, table.width = pct(60)) |>
+    as_latex() |> as.character()
 #+end_src
-#+end_leftcol
-#+begin_rightcol
+#+end_leftcol40
+#+begin_rightcol60
 - 様々な動物の体重と脳の重さの関係を調べる
   - 体重は5桁程度のばらつき
   - 脳の重さは4桁程度のばらつき
@@ -1799,7 +1846,7 @@
   - 変換なし
   - 体重を対数変換
   - 体重および脳の重さを対数変換
-#+end_rightcol
+#+end_rightcol60
   
 #+reveal: split
 - 散布図 (変換なし)
@@ -1814,7 +1861,7 @@
            x = "体重 [kg]", y = "脳の重さ [g]") 
   #+end_src
 
-#+caption: 散布図 (データの変換なし)
+#+caption: データの変換なし
 #+name: fig:05_animals1
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -1834,7 +1881,7 @@
            x = "体重 [kg]", y = "脳の重さ [g]") 
   #+end_src
 
-#+caption: 散布図 (体重を対数変換)
+#+caption: 体重を対数変換
 #+name: fig:05_animals2
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -1854,7 +1901,7 @@
            x = "体重 [kg]", y = "脳の重さ [g]") 
   #+end_src
 
-#+caption: 散布図 (体重と脳の重さを対数変換)
+#+caption: 体重と脳の重さを対数変換
 #+name: fig:05_animals3
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -1874,7 +1921,7 @@
            x = "体重 [kg]", y = "脳の重さ [g]") 
   #+end_src
 
-#+caption: 単回帰
+#+caption: 回帰直線と信頼区間
 #+name: fig:05_animals4
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -1895,7 +1942,7 @@
            x = "体重 [kg]", y = "脳の重さ [g]") 
   #+end_src
 
-#+caption: 外れ値を除いた単回帰
+#+caption: 外れ値を除いた回帰直線と信頼区間
 #+name: fig:05_animals5
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -1971,8 +2018,8 @@
 :PROPERTIES:
 :ID:       5FAE7843-5071-4936-BE9B-822E534EE4BB
 :END:
-- 東京の気候データ(10月)を用いて，
-  この時期気温に影響する変数の関係を検討する
+- 東京の気候データ(10月)を用いて
+   気温に影響する変数の関係を検討する
   - 日射と気圧の線形回帰モデル \\
     (日射と気圧が気温にどのように影響するか検討する)
   - これらの交互作用を加えた線形回帰モデル \\
@@ -1986,10 +2033,10 @@
       filter(month(日付) == 10)
     tw_subset |>
       select(気温, 日射, 気圧) |>
-      GGally::ggpairs()
+      ggpairs()
   #+end_src
 
-#+caption: 散布図 (気温・日射・気圧)
+#+caption: 気温，日射，気圧の関係
 #+name: fig:05_interaction
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -1999,7 +2046,7 @@
 :PROPERTIES:
 :ID:       2CC1EB4C-139F-4CD5-9C6E-7647E3AAE53E
 :END:
-#+begin_leftcol
+#+begin_leftcol40
 #+begin_src R :exports none
   #' 日射と気圧の線形回帰モデル
   tw_lm1 <- lm(気温 ~ 日射 + 気圧, data = tw_subset)
@@ -2012,14 +2059,17 @@
     tbl_regression(x) |>
       add_significance_stars(
         hide_se = TRUE,
-        pattern = "{estimate}{stars} ({std.error})"
+        pattern = "{estimate}({std.error}){stars}"
       ) |>
-      modify_header(estimate = "**Beta (SE)**") |>
-      modify_footnote(estimate = "SE = Standard Error", abbreviation = TRUE) |>
-      add_glance_table(include = c(r.squared,
-                                   adj.r.squared,
-                                   statistic,
-                                   p.value)) }
+      add_glance_table(
+        include = c(r.squared,adj.r.squared,statistic,p.value),
+        label = list(statistic = "F統計量",
+                     p.value = "p値")) |>
+      modify_header(label = "**変数**",
+                    estimate = "**係数(SE)**") |>
+      remove_abbreviation() |>
+      modify_abbreviation("SE = 標準誤差") 
+  }
   tw_gt <- 
     tbl_merge(
       tbls = list(
@@ -2044,11 +2094,11 @@
 #+begin_src R :exports results :results value scalar latex :tangle no
   #' 表示(latex用)
   tw_gt |> as_gt() |>
-    tab_options(table.font.size = 12) |>
+    tab_options(table.font.size = 12, table.width = pct(50)) |>
     as_latex() |> as.character()
 #+end_src
-#+end_leftcol
-#+begin_rightcol
+#+end_leftcol40
+#+begin_rightcol60
 - 気温への寄与
   - 線形モデル
     - 日射の係数は正
@@ -2057,7 +2107,7 @@
     - 日射の係数は気圧がある値より高い場合に負
     - 気圧の係数は日射がある値より高い場合に負
     - 係数の有意性は低いのでより多くのデータでの分析が必要
-#+end_rightcol
+#+end_rightcol60
 
 ** COMMENT カテゴリカル変数の利用
 :PROPERTIES:
@@ -2142,10 +2192,18 @@
              月 = as_factor(month(日付)))
     tw_data_cat |>
       select(気温, 雨の有無, 月) |>
-      GGally::ggpairs(aes(colour = 雨の有無))
+      ggpairs(aes(colour = 雨の有無),
+              upper = list(continuous = wrap("cor", alpha = 0.6),
+                           combo = wrap("box_no_facet", alpha = 0.6),
+                           discrete = wrap("count", alpha = 0.6)),
+              lower = list(continuous = wrap("points", alpha = 0.6),
+                           combo = wrap("facethist", alpha = 0.6),
+                           discrete = wrap("facetbar", alpha = 0.6)),
+              diag = list(continuous = wrap("densityDiag", alpha = 0.6),
+                          discrete = wrap("barDiag", alpha = 0.6)))
   #+end_src
 
-#+caption: 散布図 (気温・雨の有無・月)
+#+caption: 気温，雨の有無，月の関係
 #+name: fig:05_categorical
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -2155,7 +2213,7 @@
 :PROPERTIES:
 :ID:       0BFAD130-FA6A-4F50-947C-AFDD7297EBB5
 :END:
-#+begin_leftcol
+#+begin_leftcol40
 #+begin_src R :exports none
   #' 雨と気温の関係を分析
   tw_lm3 <- lm(気温 ~ 雨の有無, data = tw_data_cat)
@@ -2168,14 +2226,19 @@
     tbl_regression(x, intercept = TRUE) |>                      # 標準の表
       add_significance_stars(
         hide_se = TRUE,
-        pattern = "{estimate}{stars} ({std.error})"
+        pattern = "{estimate}({std.error}){stars}"
       ) |>
-      modify_header(estimate = "**Beta (SE)**") |>
-      modify_footnote(estimate = "SE = Standard Error", abbreviation = TRUE) |>
       add_glance_table(include = c(r.squared,
                                    adj.r.squared,
                                    statistic,
-                                   p.value)) }
+                                   p.value),
+                       label = list(statistic = "F統計量",
+                                    p.value = "p値")) |>
+      modify_header(label = "**変数**",
+                    estimate = "**係数(SE)**") |>
+      remove_abbreviation() |>
+      modify_abbreviation("SE = 標準誤差")
+  }
   tw_gt <- 
     tbl_merge(
       tbls = list(
@@ -2200,11 +2263,11 @@
 #+begin_src R :exports results :results value scalar latex :tangle no
   #' 表示(latex用)
   tw_gt |> as_gt() |>
-    tab_options(table.font.size = 12) |>
+    tab_options(table.font.size = 12, table.width = pct(50)) |>
     as_latex() |> as.character()
 #+end_src
-#+end_leftcol
-#+begin_rightcol
+#+end_leftcol40
+#+begin_rightcol60
 - 気温への寄与
   - 雨の 有無モデル
     - 経験的に雨の有無は気温と無関係ではないと考えられる
@@ -2213,9 +2276,25 @@
   - 雨の有無+月モデル
     - 月毎の気温の偏りが月の係数として推定される
     - 雨の日の方が気温が低いことが支持される
-#+end_rightcol
+#+end_rightcol60
 
+#+reveal: split
+- 実測値とあてはめ値の関係
+  #+begin_src R :file figs/05_rain.png :exports results :results graphics :width 1024 :height 640 
+    #' 雨の有無の気温への影響
+    augment(tw_lm4, data = tw_data_cat) |>
+      ggplot(aes(x = 日付, y = 気温)) +
+      geom_point(aes(colour = 雨の有無)) +
+      geom_point(aes(y = .fitted), colour = "limegreen") +
+      labs(y = "あてはめ値")
+  #+end_src
 
+#+caption: 月毎の気温への雨の影響
+#+name: fig:05_rain
+#+attr_html: height 100%
+#+attr_latex: :width 0.9\linewidth
+[[file:figs/05_rain.png]]
+    
 * COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
