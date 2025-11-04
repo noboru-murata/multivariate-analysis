@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-11-01 17:09:20 mura>
+# Time-stamp: <2025-11-04 11:01:20 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -416,7 +416,7 @@
 #+begin_src R :exports results :results output html :tangle no
   #' 表示(reveal用)
   tw_gt |> as_gt() |>
-    tab_options(table.font.size = 20) |>
+    tab_options(table.font.size = 24) |>
     as_raw_html()
   #+end_src
 #+begin_src R :exports results :results value scalar latex :tangle no
@@ -624,7 +624,7 @@
   #+begin_src R :exports results :results output html :tangle no
     #' 表示(reveal用)
     tw_gt |> as_gt() |>
-      tab_options(table.font.size = 20) |>
+      tab_options(table.font.size = 24) |>
       as_raw_html()
   #+end_src
   #+begin_src R :exports results :results value scalar latex :tangle no
@@ -817,9 +817,29 @@
     #' 関数 gtsummary::tbl_regression() を利用して結果をまとめる
     my_gts <- function(x){
       tbl_regression(x, intercept = TRUE) |>                      # 標準の表
-        modify_column_hide(columns = c(conf.low)) |>              # 信頼区間を非表示
-        modify_column_unhide(columns = c(std.error,statistic)) |> # 標準誤差とt統計量を表示
+        modify_column_unhide(columns = c(statistic)) |> # 標準誤差とt統計量を表示
         add_significance_stars(
+          pattern = "{estimate}({std.error})"
+        ) |>
+        add_significance_stars(
+          hide_ci = TRUE,
+          hide_se = TRUE,
+          hide_p = FALSE,
+          pattern = "{p.value}{stars}"
+        ) |>
+        modify_header(label = "**変数**",
+                      estimate = "**係数(SE)**",
+                      statistic = "**t統計量**",
+                      p.value = "**p値**") |>
+        remove_abbreviation() |>
+        modify_abbreviation("SE = 標準誤差")
+    } 
+    my_gts <- function(x){
+      tbl_regression(x, intercept = TRUE) |>            # 標準の表
+        modify_column_unhide(columns = c(statistic)) |> # 標準誤差とt統計量を表示
+        add_significance_stars(
+          hide_ci = TRUE,
+          hide_se = FALSE,
           hide_p = FALSE,
           pattern = "{p.value}{stars}"
         ) |>
@@ -855,7 +875,7 @@
   #+begin_src R :exports results :results output html :tangle no
     #' 表示(reveal用)
     tw_gt |> as_gt() |>
-      tab_options(table.font.size = 20) |>
+      tab_options(table.font.size = 23) |>
       as_raw_html()
   #+end_src
 
@@ -1684,7 +1704,7 @@
   #+begin_src R :exports results :results output html :tangle no
     #' 表示(reveal用)
     tw_gt |> as_gt() |>
-      tab_options(table.font.size = 20) |>
+      tab_options(table.font.size = 24) |>
       as_raw_html()
   #+end_src
   #+begin_src R :exports results :results value scalar latex :tangle no
@@ -2088,7 +2108,7 @@
 #+begin_src R :exports results :results output html :tangle no
   #' 表示(reveal用)
   tw_gt |> as_gt() |>
-    tab_options(table.font.size = 20) |>
+    tab_options(table.font.size = 22) |>
     as_raw_html()
 #+end_src
 #+begin_src R :exports results :results value scalar latex :tangle no
