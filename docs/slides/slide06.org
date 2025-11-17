@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-11-15 17:46:20 mura>
+# Time-stamp: <2025-11-17 17:16:39 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -32,27 +32,36 @@
 #+end_src
 #+begin_src R :exports none
   ### 第6講 資料
+  library(conflicted) # 関数名の衝突を警告
+  conflicts_prefer(   # 優先的に使う関数を指定
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+    )
   library(tidyverse)
   library(GGally)
-  library(ggfortify)
-  #' 日本語表示・色の設定 (ggplot)
-  theme_set(theme_gray(base_size = 16))
-  library(see)
-  options(ggplot2.discrete.colour = function() scale_colour_material(),
-          ggplot2.discrete.fill = function() scale_fill_material())
   library(broom)
   library(gt)
   library(gtsummary)
   library(ggfortify)
   library(ggrepel)
-  #' macOSのための日本語表示の設定
+  #' 日本語表示の設定
+  theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
     if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
       jp_font <- "BIZUDGothic-Regular"
     else
       jp_font <- "HiraMaruProN-W4"
     theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
   } else {jp_font <- NULL}
+  #' 色の設定
+  library(see)
+  options(ggplot2.discrete.colour = function() scale_colour_material(),
+          ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
 * COMMENT 講義概要
@@ -229,6 +238,7 @@
     select(c(1,4,5,9,10,12,18,19,20,21,23)) |> # 大きな表なので一部の列を選択する
     slice(1:15) |>
     gt() |>
+    tab_caption("都道府県別の自然環境・経済基盤データ") |>
     as_raw_html()
 #+end_src
 #+begin_src R :exports results :results value scalar latex :tangle no
@@ -351,6 +361,7 @@
   ja_data |>
     slice(1:15) |>
     gt() |>
+    tab_caption("都道府県別の人口関連データ") |>
     tab_options(table.font.size = 20) |>
     as_raw_html()
 #+end_src
@@ -358,7 +369,8 @@
   #' データの表示(latex用)
   ja_data |>
     gt() |>
-    tab_options(table.font.size = 9) |>
+    tab_caption("都道府県別の人口関連データ") |>
+    tab_options(table.font.size = 9, table.width = pct(90)) |>
     as_latex() |> as.character()
 #+end_src
 
@@ -1410,220 +1422,234 @@
 :PROPERTIES:
 :ID:       D680F3ED-E66C-496B-A436-4C5F5DAF0B6B
 :END:
-:LOGBOOK:
-CLOCK: [2025-11-05 Wed 00:03]--[2025-11-05 Wed 00:03] =>  0:00
-:END:
-- データ(の一部)の内容
-  #+begin_src R :exports none
-    #' データの読み込み
-    js_data <- read_csv(file = "data/japan_social.csv",
-                        col_type = list(地方区分 = col_factor()))
-    ## js_data <-
-    ##   bind_cols(
-    ##     read_csv(file = "data/prefecture.csv",
-    ##              col_select = c(2,4)) |>
-    ##     set_names("県名","地方区分"), # 列の名称を"県名"と"地方区分"に変更
-    ##     read_csv(file = "data/japan_social.csv",
-    ##              col_select = 2:6) |> 
-    ##     set_names("森林面積割合","農業算出額","人口割合","土地生産性","商品販売額")
-    ##   )|> # 簡略化した項目名に変更
-    ##   mutate(地方区分 = as_factor(地方区分)) # 地方区分を出現順に因子化
-  #+end_src
+#+begin_src R :exports none
+  #' データの読み込み
+  js_data <- read_csv(file = "data/japan_social.csv",
+                      col_type = list(地方区分 = col_factor()))
+  ## js_data <-
+  ##   bind_cols(
+  ##     read_csv(file = "data/prefecture.csv",
+  ##              col_select = c(2,4)) |>
+  ##     set_names("県名","地方区分"), # 列の名称を"県名"と"地方区分"に変更
+  ##     read_csv(file = "data/japan_social.csv",
+  ##              col_select = 2:6) |> 
+  ##     set_names("森林面積割合","農業算出額","人口割合","土地生産性","商品販売額")
+  ##   )|> # 簡略化した項目名に変更
+  ##   mutate(地方区分 = as_factor(地方区分)) # 地方区分を出現順に因子化
+#+end_src
 
-  #+begin_src R :eval no :exports none
-    js_data |> View() # 左上ペインに表として表示
-  #+end_src
-  #+begin_src R :exports results :results output html :tangle no
-    #' データの表示(reveal用)
-    js_data |>
-      slice(1:15) |>
-      gt() |>
-      tab_options(table.font.size = 20) |>
-      as_raw_html()
-  #+end_src
-  #+begin_src R :exports results :results value scalar latex :tangle no
-    #' データの表示(latex用)
-    js_data |>
-      gt() |> 
-      tab_options(table.font.size = 12) |>
-      as_latex() |> as.character()
-  #+end_src
+#+begin_src R :eval no :exports none
+  js_data |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  js_data |>
+    slice(1:15) |>
+    gt() |>
+    tab_caption("都道府県別の自然環境・経済基盤データ") |>
+    tab_options(table.font.size = 20) |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  js_data |>
+    gt() |> 
+    tab_caption("都道府県別の自然環境・経済基盤データ") |>
+    tab_options(table.font.size = 12, table.width = pct(85)) |>
+    as_latex() |> as.character()
+#+end_src
 
 #+reveal: split
-- データの散布図
-  #+begin_src R :file figs/js_pairs.png :exports results :results graphics :height 700
-    #' データの視覚化
-    js_data |> # 散布図．いくつかの変数は相関強いことがわかる
-      ggpairs(columns = 3:7, # 都道府県名・地方区分は除く
-              legend = c(2,1), # 2行1列のグラフから凡例を作成
-              upper = list(continuous = wrap("cor", size = 4.5)),
-              lower = list(continuous = wrap("points", alpha = .5),
-                           mapping = aes(colour = 地方区分))) +
-      theme(strip.text.x = element_text(size = 11),
-            strip.text.y = element_text(size = 11),
-            axis.text.x = element_text(size = 9),
-            axis.text.y = element_text(size = 9))
+- 変数間の関係を見る
 
-  #+end_src
+#+begin_src R :file figs/js_pairs.png :exports results :results graphics :height 700
+  #' データの視覚化
+  js_data |> # 散布図．いくつかの変数は相関強いことがわかる
+    ggpairs(columns = 3:7, # 都道府県名・地方区分は除く
+            legend = c(2,1), # 2行1列のグラフから凡例を作成
+            upper = list(continuous = wrap("cor", size = 4.5)),
+            lower = list(continuous = wrap("points", alpha = .5),
+                         mapping = aes(colour = 地方区分))) +
+    theme(strip.text.x = element_text(size = 11),
+          strip.text.y = element_text(size = 11),
+          axis.text.x = element_text(size = 9),
+          axis.text.y = element_text(size = 9))
 
-#+caption: 散布図
+#+end_src
+
+#+caption: データの散布図
 #+name: fig:js_pairs
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pairs.png]]
 
 #+reveal: split
-- データの箱ひげ図
-  #+begin_src R :file figs/js_boxplot.png :exports results :results graphics
-    js_data |> # 箱ひげ図．変数のばらつきに大きな違いがある
-      pivot_longer(where(is.double)) |>  # 都道府県名・地方区分以外をまとめる
-      mutate(name = as_factor(name)) |>  # 出現順にx軸を並べるために因子化する
-      ggplot(aes(x = name, y = value)) + # 既定値の name と value を利用
-      geom_boxplot(aes(fill = name), show.legend = FALSE) +# 変数ごとに色を変える
-      labs(x = NULL, y = NULL)
-  #+end_src
+- 変数のばらつきに大きな違いがある
+   
+#+begin_src R :file figs/js_boxplot.png :exports results :results graphics
+  js_data |> # 箱ひげ図．
+    pivot_longer(where(is.double)) |>  # 都道府県名・地方区分以外をまとめる
+    mutate(name = as_factor(name)) |>  # 出現順にx軸を並べるために因子化する
+    ggplot(aes(x = name, y = value)) + # 既定値の name と value を利用
+    geom_boxplot(aes(fill = name), alpha = 0.5,
+                 show.legend = FALSE) +# 変数ごとに色を変える
+    labs(x = NULL, y = NULL)
+#+end_src
 
-#+caption: 箱ひげ図
+#+caption: 変数別の箱ひげ図
 #+name: fig:js_boxplot
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_boxplot.png]]
 
 #+reveal: split
-- データの密度推定
-  #+begin_src R :file figs/js_density.png :exports results :results graphics
-    js_data |> 
-      pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
-      mutate(name = as_factor(name)) |>
-      ggplot(aes(x = value)) + 
-      geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
-      labs(x = NULL, y = NULL, fill = NULL) +
-      theme(legend.position = "inside",
-            legend.position.inside = c(.95, .95),
-            legend.justification = c("right", "top"))
-  #+end_src
+- より詳細な分布を確認する
+   
+#+begin_src R :file figs/js_density.png :exports results :results graphics
+  js_data |> 
+    pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+    mutate(name = as_factor(name)) |>
+    ggplot(aes(x = value)) + 
+    geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
+    labs(x = NULL, y = NULL, fill = NULL) +
+    theme(legend.position = "inside",
+          legend.position.inside = c(.95, .95),
+          legend.justification = c("right", "top"))
+#+end_src
 
-#+caption: 密度推定
+#+caption: 変数別の確率密度
 #+name: fig:js_density
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_density.png]]
 
 #+reveal: split
-- 標準化したデータ(の一部)
-  #+begin_src R :exports none
-    #' データの標準化
-    js_data_std <-
-      js_data |>
-      mutate(across(where(is.double), \(x)signif(c(scale(x)), digits = 3)))
-  #+end_src
-  #+begin_src R :eval no :exports none
-    js_data_std |> View() # 左上ペインに表として表示
-  #+end_src
-  #+begin_src R :exports results :results output html :tangle no
-    #' データの表示(reveal用)
-    js_data_std |>
-      slice(1:15) |>
-      gt() |>
-      as_raw_html()
-  #+end_src
-  #+begin_src R :exports results :results value scalar latex :tangle no
-    #' データの表示(latex用)
-    js_data_std |>
-      gt() |> 
-      tab_options(table.font.size = 12) |>
-      as_latex() |> as.character()
-  #+end_src
+- データのばらつきを揃える
+   
+#+begin_src R :exports none
+  #' データの標準化
+  js_data_std <-
+    js_data |>
+    mutate(across(where(is.double), \(x)signif(c(scale(x)), digits = 3)))
+#+end_src
+#+begin_src R :eval no :exports none
+  js_data_std |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  js_data_std |>
+    slice(1:15) |>
+    gt() |>
+    tab_caption("標準化したデータ") |>
+    tab_options(table.font.size = 20) |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  js_data_std |>
+    gt() |> 
+    tab_caption("標準化したデータ") |>
+    tab_options(table.font.size = 12, table.width = pct(85)) |>
+    as_latex() |> as.character()
+#+end_src
 
 #+reveal: split
-- 標準化したデータの箱ひげ図
-  #+begin_src R :file figs/js_scaled_boxplot.png :exports results :results graphics
-    js_data |> # 箱ひげ図．変数のばらつきをそろえる
-      mutate(across(where(is.double), \(x)c(scale(x)))) |>
-      pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
-      mutate(name = as_factor(name)) |>
-      ggplot(aes(x = name, y = value)) + # 既定値の name と value を利用
-      geom_boxplot(aes(fill = name), show.legend = FALSE) + # 変数ごとに色を変える
-      labs(x = NULL, y = NULL)
-  #+end_src
+- 変数のばらつきを確認する
+   
+#+begin_src R :file figs/js_scaled_boxplot.png :exports results :results graphics
+  js_data |> # 箱ひげ図．変数のばらつきをそろえる
+    mutate(across(where(is.double), \(x)c(scale(x)))) |>
+    pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+    mutate(name = as_factor(name)) |>
+    ggplot(aes(x = name, y = value)) + # 既定値の name と value を利用
+    geom_boxplot(aes(fill = name), alpha = 0.5,
+                 show.legend = FALSE) + # 変数ごとに色を変える
+    labs(x = NULL, y = NULL)
+#+end_src
 
-#+caption: 箱ひげ図 (データを標準化)
+#+caption: 標準化したデータの箱ひげ図
 #+name: fig:js_scaled_boxplot
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_scaled_boxplot.png]]
 
 #+reveal: split
-- 標準化したデータの密度推定
-  #+begin_src R :file figs/js_scaled_density.png :exports results :results graphics
-    js_data |> 
-      mutate(across(where(is.double), \(x)c(scale(x)))) |>
-      pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
-      mutate(name = as_factor(name)) |>
-      ggplot(aes(x = value)) + 
-      geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
-      labs(x = NULL, y = NULL, fill = NULL) +
-      theme(legend.position = "inside",
-            legend.position.inside = c(.95, .95),
-            legend.justification = c("right", "top"))
-  #+end_src
+- より詳細な分布を確認する
 
-#+caption: 密度推定 (データを標準化)
+#+begin_src R :file figs/js_scaled_density.png :exports results :results graphics
+  js_data |> 
+    mutate(across(where(is.double), \(x)c(scale(x)))) |>
+    pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+    mutate(name = as_factor(name)) |>
+    ggplot(aes(x = value)) + 
+    geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
+    labs(x = NULL, y = NULL, fill = NULL) +
+    theme(legend.position = "inside",
+          legend.position.inside = c(.95, .95),
+          legend.justification = c("right", "top"))
+#+end_src
+
+#+caption: 標準化したデータの確率密度
 #+name: fig:js_scaled_density
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_scaled_density.png]]
 
 #+reveal: split
-- 主成分負荷量を計算 (標準化後)
-  #+begin_src R :exports none
-    js_pca <-
-      js_data |>
-      select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
-      prcomp(scale. = TRUE) # 変数のばらつきを規格化
-  #+end_src
-  #+begin_src R :eval no :exports none
-    js_pca |>
-      tidy("loadings") |>
-      pivot_wider(names_from = "PC", names_prefix = "PC") |>
-      View() # 左上ペインに表として表示
-  #+end_src
-  #+begin_src R :exports results :results output html :tangle no
-    #' データの表示(reveal用)
-    js_pca |>
-      tidy("loadings") |>
-      pivot_wider(names_from = "PC", names_prefix = "PC") |>
-      gt() |>
-      fmt_number(decimals = 4) |>
-      tab_options(table.font.size = 24) |>
-      as_raw_html()
-  #+end_src
-  #+begin_src R :exports results :results value scalar latex :tangle no
-    #' データの表示(latex用)
-    js_pca |>
-      tidy("loadings") |>
-      pivot_wider(names_from = "PC", names_prefix = "PC") |>
-      gt() |> 
-      fmt_number(decimals = 4) |>
-      tab_options(table.font.size = 12) |>
-      as_latex() |> as.character()
-  #+end_src
+- 主成分負荷量を計算する (標準化後)
+
+#+begin_src R :exports none
+  js_pca <-
+    js_data |>
+    select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
+    prcomp(scale. = TRUE) # 変数のばらつきを規格化
+#+end_src
+#+begin_src R :eval no :exports none
+  js_pca |>
+    tidy("loadings") |>
+    pivot_wider(names_from = "PC", names_prefix = "PC") |>
+    View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  js_pca |>
+    tidy("loadings") |>
+    pivot_wider(names_from = "PC", names_prefix = "PC") |>
+    gt() |>
+    fmt_number(decimals = 4) |>
+    tab_caption("標準化した場合の主成分負荷量") |>
+    tab_options(table.font.size = 24) |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  js_pca |>
+    tidy("loadings") |>
+    pivot_wider(names_from = "PC", names_prefix = "PC") |>
+    gt() |> 
+    fmt_number(decimals = 4) |>
+    tab_caption("標準化した場合の主成分負荷量") |>
+    tab_options(table.font.size = 12, table.width = pct(70)) |>
+    as_latex() |> as.character()
+#+end_src
+
 - 主成分方向から読み取れること
-  - 第1 : 人の多さに関する成分(正の向きほど人が多い)
-  - 第2 : 農業生産力に関する成分(正の向きほど高い)
+   - 第1 : 人の多さに関する成分(正の向きほど人が多い)
+   - 第2 : 農業生産力に関する成分(正の向きほど高い)
 
 #+reveal: split
-- 主成分負荷量の表示
-  #+begin_src R :file figs/js_pcaloadings.png :exports results :results graphics
-    js_pca |>
-      tidy("loadings") |>
-      mutate(column = as_factor(column)) |>
-      ggplot(aes(x = PC, y = value, fill = column)) +
-      geom_bar(stat = "identity", width = 0.7,
-               position = position_dodge(width = 0.7)) +
-      scale_x_reverse() + coord_flip() +
-      labs(x = "主成分", y = "負荷量", fill = NULL)
-  #+end_src
+- 各主成分における負荷量の違いを確認する
+   
+#+begin_src R :file figs/js_pcaloadings.png :exports results :results graphics
+  js_pca |>
+    tidy("loadings") |>
+    mutate(column = as_factor(column)) |>
+    ggplot(aes(x = PC, y = value, fill = column)) +
+    geom_bar(stat = "identity", width = 0.7, alpha = 0.5,
+             position = position_dodge(width = 0.7, reverse = TRUE)) +
+    scale_x_reverse() + coord_flip() +
+    labs(x = "主成分", y = "負荷量", fill = NULL)
+#+end_src
 
 #+caption: 主成分負荷量の視覚化
 #+name: fig:js_pcaloadings
@@ -1632,23 +1658,28 @@ CLOCK: [2025-11-05 Wed 00:03]--[2025-11-05 Wed 00:03] =>  0:00
 [[file:figs/js_pcaloadings.png]]
 
 #+reveal: split
-- 主成分得点の表示
-  #+begin_src R :file figs/js_pcaplot.png :exports results :results graphics
-    autoplot(js_pca, # バイプロット
-             asp = 1, # 縦横比を設定
-             data = js_data, colour = "地方区分", # 地方ごとに色付け
-             label = TRUE, label.label = "都道府県名",   # ラベルの表示
-             label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
-             label.family = jp_font, label.size = 3,
-             loadings = TRUE, loadings.colour = "orchid", # 負荷の表示
-             loadings.label = TRUE, loadings.label.colour = "darkgray", # 負荷ラベルの表示
-             loadings.label.family = jp_font, loadings.label.size = 4) +
-      theme(legend.position = "inside",
-            legend.position.inside = c(.99, .99),
-            legend.justification = c("right", "top"))
-  #+end_src
+- 主成分得点を表示する
 
-#+caption: 主成分得点による散布図
+#+begin_src R :file figs/js_pcaplot.png :exports results :results graphics
+  autoplot(js_pca, # バイプロット
+           asp = 1, # 縦横比を設定
+           data = js_data,
+           colour = "地方区分", # 地方ごとに色付け
+           label = TRUE,
+           label.label = "都道府県名",   # ラベルの表示
+           label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+           label.size = 3,
+           loadings = FALSE,
+           loadings.colour = "orchid", # 負荷の表示
+           loadings.label = FALSE,
+           loadings.label.colour = "darkgray", # 負荷ラベルの表示
+           loadings.label.size = 4) +
+    theme(legend.position = "inside",
+          legend.position.inside = c(.99, .99),
+          legend.justification = c("right", "top"))
+#+end_src
+
+#+caption: 主成分得点の散布図
 #+name: fig:js_pcaplot
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
@@ -1656,75 +1687,85 @@ CLOCK: [2025-11-05 Wed 00:03]--[2025-11-05 Wed 00:03] =>  0:00
 
 #+reveal: split
 - データの標準化を行わない場合
-  #+begin_src R :exports none
-    js_pca <- js_data |>
-         select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
-         prcomp(scale. = FALSE) # 標準化しない
-  #+end_src
-  #+begin_src R :eval no :exports none
-    js_pca |>
-      tidy("loadings") |>
-      pivot_wider(names_from = "PC", names_prefix = "PC") |>
-      View() # 左上ペインに表として表示
-  #+end_src
-  #+begin_src R :exports results :results output html :tangle no
-    #' データの表示(reveal用)
-    js_pca |>
-      tidy("loadings") |>
-      pivot_wider(names_from = "PC", names_prefix = "PC") |>
-      gt() |>
-      fmt_number(decimals = 4) |>
-      tab_options(table.font.size = 24) |>
-      as_raw_html()
-  #+end_src
-  #+begin_src R :exports results :results value scalar latex :tangle no
-    #' データの表示(latex用)
-    js_pca |>
-      tidy("loadings") |>
-      pivot_wider(names_from = "PC", names_prefix = "PC") |>
-      gt() |> 
-      fmt_number(decimals = 4) |>
-      tab_options(table.font.size = 12) |>
-      as_latex() |> as.character()
-  #+end_src
-  - ばらつきの大きな変数に第1主成分は重みが偏る
+
+#+begin_src R :exports none
+  js_pca <- js_data |>
+    select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
+    prcomp(scale. = FALSE) # 標準化しない
+#+end_src
+#+begin_src R :eval no :exports none
+  js_pca |>
+    tidy("loadings") |>
+    pivot_wider(names_from = "PC", names_prefix = "PC") |>
+    View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  js_pca |>
+    tidy("loadings") |>
+    pivot_wider(names_from = "PC", names_prefix = "PC") |>
+    gt() |>
+    fmt_number(decimals = 4) |>
+    tab_caption("標準化しない場合の主成分負荷量") |>
+    tab_options(table.font.size = 24) |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  js_pca |>
+    tidy("loadings") |>
+    pivot_wider(names_from = "PC", names_prefix = "PC") |>
+    gt() |> 
+    fmt_number(decimals = 4) |>
+    tab_caption("標準化しない場合の主成分負荷量") |>
+    tab_options(table.font.size = 12, table.width = pct(70)) |>
+    as_latex() |> as.character()
+#+end_src
+
+- ばらつきの大きな変数に主成分方向が偏る
 
 #+reveal: split
-- 主成分負荷量の表示
-  #+begin_src R :file figs/js_pcaloadings_non.png :exports results :results graphics
-    js_pca |>
-      tidy("loadings") |>
-      mutate(column = as_factor(column)) |>
-      ggplot(aes(x = PC, y = value, fill = column)) +
-      geom_bar(stat = "identity", width = 0.7,
-               position = position_dodge(width = 0.7)) +
-      scale_x_reverse() + coord_flip() +
-      labs(x = "主成分", y = "負荷量", fill = NULL)
-  #+end_src
+- 主成分負荷量を比較する
+#+begin_src R :file figs/js_pcaloadings_non.png :exports results :results graphics
+  js_pca |>
+    tidy("loadings") |>
+    mutate(column = as_factor(column)) |>
+    ggplot(aes(x = PC, y = value, fill = column)) +
+    geom_bar(stat = "identity", width = 0.7, alpha = 0.5,
+             position = position_dodge(width = 0.7, reverse = TRUE)) +
+    scale_x_reverse() + coord_flip() +
+    labs(x = "主成分", y = "負荷量", fill = NULL)
+#+end_src
 
-#+caption: 主成分負荷量の視覚化
+#+caption: 標準化しない場合の主成分負荷量
 #+name: fig:js_pcaloadings_non
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaloadings_non.png]]
-#+reveal: split
-- 主成分得点の表示
-  #+begin_src R :file figs/js_pcaplot_non.png :exports results :results graphics
-    autoplot(js_pca, # バイプロット
-             asp = 1, # 縦横比を設定
-             data = js_data, colour = "地方区分", # 地方ごとに色付け
-             label = TRUE, label.label = "都道府県名",   # ラベルの表示
-             label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
-             label.family = jp_font, label.size = 3,
-             loadings = TRUE, loadings.colour = "orchid", # 負荷の表示
-             loadings.label = TRUE, loadings.label.colour = "darkgray", # 負荷ラベルの表示
-             loadings.label.family = jp_font, loadings.label.size = 4) +
-      theme(legend.position = "inside",
-            legend.position.inside = c(.99, .01),
-            legend.justification = c("right", "bottom"))
-  #+end_src
 
-#+caption: 主成分得点による散布図(標準化なし)
+#+reveal: split
+- 主成分得点を比較する
+
+#+begin_src R :file figs/js_pcaplot_non.png :exports results :results graphics
+  autoplot(js_pca, # バイプロット
+           asp = 1, # 縦横比を設定
+           data = js_data,
+           colour = "地方区分", # 地方ごとに色付け
+           label = TRUE,
+           label.label = "都道府県名",   # ラベルの表示
+           label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+           label.size = 3,
+           loadings = FALSE,
+           loadings.colour = "orchid", # 負荷の表示
+           loadings.label = FALSE,
+           loadings.label.colour = "darkgray", # 負荷ラベルの表示
+           loadings.label.size = 4) +
+    theme(legend.position = "inside",
+          legend.position.inside = c(.99, .01),
+          legend.justification = c("right", "bottom"))
+#+end_src
+
+#+caption: 標準化しない場合の主成分得点の散布図
 #+name: fig:js_pcaplot_non
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
