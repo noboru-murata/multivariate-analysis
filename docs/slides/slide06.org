@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-11-17 17:16:39 mura>
+# Time-stamp: <2025-11-24 12:55:42 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -158,7 +158,7 @@
 
 #+caption: 散布図行列
 #+name: fig:uc-pairs
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/uc-pairs.png]]
 
@@ -187,7 +187,7 @@
 
 #+caption: 主成分得点の散布図
 #+name: fig:uc-biplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/uc-biplot.png]]
 
@@ -204,7 +204,7 @@
 #+end_src
 #+caption: 主成分得点の散布図(中心部の拡大)
 #+name: fig:uc-biplot-zoom
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/uc-biplot-zoom.png]]
 
@@ -263,7 +263,7 @@
 
 #+caption: 県別の生活環境(教育・労働などに関連する項目)
 #+name: fig:ja-pairs1
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ja-pairs1.png]]
 
@@ -280,7 +280,7 @@
 
 #+caption: 県別の生活環境(教育・労働などに関連する項目)
 #+name: fig:ja-pairs2
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ja-pairs2.png]]
 
@@ -297,7 +297,7 @@
 
 #+caption: 県別の生活環境(教育・労働などに関連する項目)
 #+name: fig:ja-pairs3
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ja-pairs3.png]]
 
@@ -319,7 +319,7 @@
 #+end_src
 #+caption: 県別の生活環境の主成分分析
 #+name: fig:ja-biplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ja-biplot.png]]
 
@@ -359,10 +359,10 @@
 #+begin_src R :exports results :results output html :tangle no
   #' データの表示(reveal用)
   ja_data |>
-    slice(1:15) |>
+    slice(1:14) |>
     gt() |>
     tab_caption("都道府県別の人口関連データ") |>
-    tab_options(table.font.size = 20) |>
+    tab_options(table.font.size = 19) |>
     as_raw_html()
 #+end_src
 #+begin_src R :exports results :results value scalar latex :tangle no
@@ -387,7 +387,7 @@
 
 #+caption: 人口関連データの散布図
 #+name: fig:ja-pairs1
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ja-pairs1.png]]
 
@@ -411,7 +411,7 @@
 
 #+caption: 主成分得点のバイプロット
 #+name: fig:ja-biplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ja-biplot.png]]
 
@@ -1474,12 +1474,11 @@
           strip.text.y = element_text(size = 11),
           axis.text.x = element_text(size = 9),
           axis.text.y = element_text(size = 9))
-
 #+end_src
 
 #+caption: データの散布図
 #+name: fig:js_pairs
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pairs.png]]
 
@@ -1498,7 +1497,7 @@
 
 #+caption: 変数別の箱ひげ図
 #+name: fig:js_boxplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_boxplot.png]]
 
@@ -1519,7 +1518,7 @@
 
 #+caption: 変数別の確率密度
 #+name: fig:js_density
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_density.png]]
 
@@ -1569,7 +1568,7 @@
 
 #+caption: 標準化したデータの箱ひげ図
 #+name: fig:js_scaled_boxplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_scaled_boxplot.png]]
 
@@ -1591,7 +1590,7 @@
 
 #+caption: 標準化したデータの確率密度
 #+name: fig:js_scaled_density
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_scaled_density.png]]
 
@@ -1653,7 +1652,7 @@
 
 #+caption: 主成分負荷量の視覚化
 #+name: fig:js_pcaloadings
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaloadings.png]]
 
@@ -1681,7 +1680,7 @@
 
 #+caption: 主成分得点の散布図
 #+name: fig:js_pcaplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaplot.png]]
 
@@ -1739,7 +1738,7 @@
 
 #+caption: 標準化しない場合の主成分負荷量
 #+name: fig:js_pcaloadings_non
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaloadings_non.png]]
 
@@ -1767,7 +1766,7 @@
 
 #+caption: 標準化しない場合の主成分得点の散布図
 #+name: fig:js_pcaplot_non
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaplot_non.png]]
 

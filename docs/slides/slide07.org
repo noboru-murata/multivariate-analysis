@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-11-17 17:22:37 mura>
+# Time-stamp: <2025-11-24 12:59:59 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -417,7 +417,7 @@
 
 #+caption: データの散布図
 #+name: fig:07_pairs_raw
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_pairs_raw.png]]
   
@@ -433,7 +433,7 @@
 
 #+caption: 各変数の箱ひげ図
 #+name: fig:07_boxplot_raw
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_boxplot_raw.png]]
    
@@ -460,7 +460,7 @@
 
 #+caption: 標準化したデータの散布図
 #+name: fig:07_pairs
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_pairs.png]]
 
@@ -477,7 +477,7 @@
 
 #+caption: 標準化したデータの箱ひげ図
 #+name: fig:07_boxplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_boxplot.png]]
    
@@ -726,7 +726,7 @@
 
 #+caption: データの散布図
 #+name: fig:js_pairs
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pairs.png]]
 
@@ -747,61 +747,9 @@
 
 #+caption: 変数別の確率密度
 #+name: fig:js_density
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_density.png]]
-
-#+reveal: split
-- データのばらつきを揃える
-   
-#+begin_src R :exports none
-  #' データの標準化
-  js_data_std <-
-    js_data |>
-    mutate(across(where(is.double), \(x)signif(c(scale(x)), digits = 3)))
-#+end_src
-#+begin_src R :eval no :exports none
-  js_data_std |> View() # 左上ペインに表として表示
-#+end_src
-#+begin_src R :exports results :results output html :tangle no
-  #' データの表示(reveal用)
-  js_data_std |>
-    slice(1:15) |>
-    gt() |>
-    tab_caption("標準化したデータ") |>
-    tab_options(table.font.size = 20) |>
-    as_raw_html()
-#+end_src
-#+begin_src R :exports results :results value scalar latex :tangle no
-  #' データの表示(latex用)
-  js_data_std |>
-    gt() |> 
-    tab_caption("標準化したデータ") |>
-    tab_options(table.font.size = 12, table.width = pct(85)) |>
-    as_latex() |> as.character()
-#+end_src
-
-#+reveal: split
-- 変数のばらつきを確認する
-   
-#+begin_src R :file figs/js_scaled_density.png :exports results :results graphics
-  js_data |> 
-    mutate(across(where(is.double), \(x)c(scale(x)))) |>
-    pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
-    mutate(name = as_factor(name)) |>
-    ggplot(aes(x = value)) + 
-    geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
-    labs(x = NULL, y = NULL, fill = NULL) +
-    theme(legend.position = "inside",
-          legend.position.inside = c(.95, .95),
-          legend.justification = c("right", "top"))
-#+end_src
-
-#+caption: 標準化したデータの確率密度
-#+name: fig:js_scaled_density
-#+attr_html: height 100%
-#+attr_latex: :width 0.6\linewidth
-[[file:figs/js_scaled_density.png]]
 
 #+reveal: split
 #+begin_src R :exports none
@@ -857,7 +805,7 @@
 
 #+caption: 標準化しない場合の主成分負荷量
 #+name: fig:js_pcaloadings_non
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaloadings_non.png]]
 
@@ -919,7 +867,7 @@
 
 #+caption: 寄与率と累積寄与率
 #+name: fig:js_pcs_non
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcs_non.png]]
 
@@ -947,7 +895,7 @@
 
 #+caption: 主成分得点の散布図
 #+name: fig:js_pcaplot_non
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaplot_non.png]]
    
@@ -976,9 +924,61 @@
 
 #+caption: 主成分得点の散布図
 #+name: fig:js_pcaplot32_non
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaplot32_non.png]]
+
+#+reveal: split
+- データのばらつきを揃える
+   
+#+begin_src R :exports none
+  #' データの標準化
+  js_data_std <-
+    js_data |>
+    mutate(across(where(is.double), \(x)signif(c(scale(x)), digits = 3)))
+#+end_src
+#+begin_src R :eval no :exports none
+  js_data_std |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  js_data_std |>
+    slice(1:15) |>
+    gt() |>
+    tab_caption("標準化したデータ") |>
+    tab_options(table.font.size = 20) |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  js_data_std |>
+    gt() |> 
+    tab_caption("標準化したデータ") |>
+    tab_options(table.font.size = 12, table.width = pct(85)) |>
+    as_latex() |> as.character()
+#+end_src
+
+#+reveal: split
+- 変数のばらつきを確認する
+   
+#+begin_src R :file figs/js_scaled_density.png :exports results :results graphics
+  js_data |> 
+    mutate(across(where(is.double), \(x)c(scale(x)))) |>
+    pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+    mutate(name = as_factor(name)) |>
+    ggplot(aes(x = value)) + 
+    geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
+    labs(x = NULL, y = NULL, fill = NULL) +
+    theme(legend.position = "inside",
+          legend.position.inside = c(.95, .95),
+          legend.justification = c("right", "top"))
+#+end_src
+
+#+caption: 標準化したデータの確率密度
+#+name: fig:js_scaled_density
+#+attr_html: :height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/js_scaled_density.png]]
 
 #+reveal: split
 #+begin_src R :exports none
@@ -1004,7 +1004,7 @@
 
 #+caption: 標準化しない場合の主成分負荷量
 #+name: fig:js_pcaloadings
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaloadings.png]]
 
@@ -1068,7 +1068,7 @@
 
 #+caption: 寄与率と累積寄与率
 #+name: fig:js_pcs
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcs.png]]
 
@@ -1096,7 +1096,7 @@
 
 #+caption: 主成分得点の散布図
 #+name: fig:js_pcaplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaplot.png]]
    
@@ -1125,7 +1125,7 @@
 
 #+caption: 主成分得点の散布図
 #+name: fig:js_pcaplot32
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_pcaplot32.png]]
 
@@ -1142,7 +1142,7 @@
 
 #+caption: データの散布図
 #+name: fig:07_pairs_raw
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_pairs_raw.png]]
   
@@ -1158,7 +1158,7 @@
 
 #+caption: 各変数の箱ひげ図
 #+name: fig:07_boxplot_raw
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_boxplot_raw.png]]
 ** COMMENT データの標準化
@@ -1174,7 +1174,7 @@
 
 #+caption: 標準化したデータの散布図
 #+name: fig:07_pairs
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_pairs.png]]
 
@@ -1190,7 +1190,7 @@
 
 #+caption: 各変数の箱ひげ図
 #+name: fig:07_boxplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_boxplot.png]]
    
@@ -1261,7 +1261,7 @@
 
 #+caption: 主成分得点による散布図 (標準化なし)
 #+name: fig:07_pcaplot12_raw
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_pcaplot12_raw.png]]
 
@@ -1281,7 +1281,7 @@
 
 #+caption: 主成分得点による散布図 (標準化なし)
 #+name: fig:07_pcaplot32_raw
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_pcaplot32_raw.png]]
 
@@ -1339,7 +1339,7 @@
 
 #+caption: 主成分得点による散布図 (標準化あり)
 #+name: fig:07_pcaplot12
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_pcaplot12.png]]
 
@@ -1359,7 +1359,7 @@
 
 #+caption: 主成分得点による散布図 (標準化あり)
 #+name: fig:07_pcaplot32
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_pcaplot32.png]]
 
@@ -1939,6 +1939,7 @@
 
 - 主成分負荷量 (標準化あり)
 
+#+begin_leftcol
 #+begin_src R :eval no :exports none
   js_pca |>
     tidy("loadings") |>
@@ -1953,7 +1954,7 @@
     gt() |>
     fmt_number(decimals = 4) |>
     tab_caption("主成分負荷量") |>
-    tab_options(table.font.size = 19) |>
+    tab_options(table.font.size = 16) |>
     as_raw_html()
 #+end_src
 #+begin_src R :exports results :results value scalar latex :tangle no
@@ -1967,9 +1968,16 @@
     tab_options(table.font.size = 12, table.width = pct(70)) |>
     as_latex() |> as.character()
 #+end_src
+#+end_leftcol
+#+begin_rightcol
+#+attr_html: :width 80%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/js_pcaloadings.png]]
+#+end_rightcol
 
 - 寄与率
 
+#+begin_leftcol40
 #+begin_src R :exports none
   #' 寄与率に関する表を作成
   js_pcs_tab <- 
@@ -1991,7 +1999,7 @@
     gt() |>      
     fmt_number(columns = !1, decimals = 3) |>
     tab_caption("寄与率") |>
-    tab_options(table.font.size = 19) |>
+    tab_options(table.font.size = 16) |>
     as_raw_html()
 #+end_src
 #+begin_src R :exports results :results value scalar latex :tangle no
@@ -2003,6 +2011,12 @@
     tab_options(table.font.size = 12, table.width = pct(60)) |>
     as_latex() |> as.character()
 #+end_src
+#+end_leftcol40
+#+begin_rightcol60
+#+attr_html: :width 80%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/js_pcs.png]]
+#+end_rightcol60
 
 #+reveal: split
 - 第1,2主成分によるバイプロット
@@ -2028,7 +2042,7 @@
 
 #+caption: バイプロット(第主成分得点と負荷量の同時散布図)
 #+name: fig:js_biplot
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_biplot.png]]
    
@@ -2057,7 +2071,7 @@
 
 #+caption: 第3主成分(横軸)と第2主成分(縦軸)のバイプロット
 #+name: fig:js_biplot32
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_biplot32.png]]
    
@@ -2086,7 +2100,7 @@
 
 #+caption: 第1,2主成分によるバイプロットの拡大図
 #+name: fig:js_biplot_zoom
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/js_biplot_zoom.png]]
 
@@ -2145,7 +2159,7 @@
    
 #+caption: 主成分分析のバイプロット(第1,2)
 #+name: fig:07_biplot12
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_biplot12.png]]
 
@@ -2166,7 +2180,7 @@
 
 #+caption: 主成分分析のバイプロット(第3,2)
 #+name: fig:07_biplot32
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_biplot32.png]]
 
@@ -2187,7 +2201,7 @@
 
 #+caption: 主成分分析のバイプロット(第1,2)
 #+name: fig:07_biplot12e
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_biplot12e.png]]
 
@@ -2209,7 +2223,7 @@
 
 #+caption: 主成分分析のバイプロット(第3,2)
 #+name: fig:07_biplot32e
-#+attr_html: height 100%
+#+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/07_biplot32e.png]]
 

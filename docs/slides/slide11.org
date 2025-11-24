@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-12-16 18:49:34 mura>
+# Time-stamp: <2024-12-20 11:54:04 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -15,7 +15,7 @@
 * COMMENT メモ
 [[file:README.org::第11講]]
   
-* 講義の内容
+* COMMENT 講義の内容
 :PROPERTIES:
 :ID:       1957D10C-281F-41A0-ACE9-1119E2E55796
 :END:
@@ -52,7 +52,7 @@
           ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
-* COMMENT 講義概要
+* 講義概要
 :PROPERTIES:
 :ID:       6411F06A-9DF9-4E9A-AE03-52D6A80FE3EF
 :END:
@@ -313,7 +313,7 @@
 - 最適な対応 \(C\) : クラスタ内変動の総和が最小
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -638,7 +638,7 @@
 [[file:figs/11_nhclst.png]]
  
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -830,7 +830,7 @@
   - 各クラスタ内の県名を表示しなさい
   - 2次元散布図に各クラスタを表示しなさい
 - データセット ~omusubi.csv~ でも確認しなさい
-** 解答例
+** COMMENT 解答例
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 関数 pam による非階層的クラスタリング
@@ -909,7 +909,7 @@
 #+end_src
 
 
-* 解析事例
+* COMMENT 解析事例
 # 早稲田大学
 ** 都道府県別の社会生活統計指標
 :PROPERTIES:
@@ -1164,7 +1164,7 @@
 - 距離の計算を適切に行えば階層的方法でも利用可
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1241,7 +1241,7 @@
   #+end_quote
   
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1291,7 +1291,7 @@
     - クラスタ距離: 群平均法
   - 凝集係数を用いて2つのデータ距離の評価を行いなさい
   - 凝集係数が低いいくつかのデータを削除して評価しなさい
-** 解答例
+** COMMENT 解答例
 #+begin_src R :exports none
   #' ---------------------------------------------------------------------------
   #' @practice 凝集係数による距離の検討
@@ -1614,7 +1614,7 @@
 #+end_src
 
 
-* 解析事例
+* COMMENT 解析事例
 # 早稲田大学
 ** 都道府県別の社会生活統計指標
 :PROPERTIES:

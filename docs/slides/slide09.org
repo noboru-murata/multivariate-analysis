@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-11-30 15:07:01 mura>
+# Time-stamp: <2025-11-08 21:52:52 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -15,7 +15,7 @@
 * COMMENT メモ
 [[file:README.org::第9講]]
   
-* 講義の内容
+* COMMENT 講義の内容
 :PROPERTIES:
 :ID:       51934CE4-A9B9-4CAB-965A-9DFB4AFE7B7A
 :END:
@@ -54,7 +54,7 @@
           ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
-* COMMENT 講義概要
+* 講義概要
 :PROPERTIES:
 :ID:       4BDC5A54-EE17-4A76-8EA7-06BEA1841BA7
 :END:
@@ -346,7 +346,7 @@
   - 判別関数の良さ(2値判別の難しさ)を測る基準の一つ
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -445,7 +445,7 @@
     と呼ばれる評価指標の一つである
 
 
-* 解析の事例
+* COMMENT 解析の事例
 # 早稲田大学
 ** データについて
 - 気象庁より取得した東京の気候データ \\
@@ -723,12 +723,12 @@
 
 
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** データセットの準備
+** COMMENT *データセットの準備*
 :PROPERTIES:
 :END:
 - 以下のデータセットを使用
@@ -750,7 +750,7 @@
                  .default = "D")))
     #+end_src
 
-** R : 判別結果の評価
+** COMMENT *R : 判別結果の評価*
 :PROPERTIES:
 :ID:       122E64CD-BC8C-4ECB-96C9-29443B23443D
 :END:
@@ -785,7 +785,7 @@
     #' 詳細は '?caret::confusionMatrix' を参照
   #+end_src
 
-** R : 混同行列
+** COMMENT *R : 混同行列*
 :PROPERTIES:
 :END:
 - 関数 ~yardstick::conf_mat()~
@@ -809,7 +809,7 @@
     autoplot(object, type = c("mosaic", "heatmap"))
   #+end_src
 
-** R : ROC曲線
+** COMMENT *R : ROC曲線*
 :PROPERTIES:
 :END:
 - 関数 ~yardstick::roc_curve()~
@@ -841,7 +841,7 @@
     #' 詳細は '?yardstick::roc_auc' を参照
   #+end_src
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -925,7 +925,7 @@
   #' ---------------------------------------------------------------------------
 #+end_src
     
-** R : 訓練・試験データの分割
+** COMMENT *R : 訓練・試験データの分割*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -947,7 +947,7 @@
     testing(x, ...)
   #+end_src
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1054,12 +1054,12 @@
   - \(k=n\) として上記を実行
 
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : LOO交叉検証法
+** COMMENT *R : LOO交叉検証法*
 :PROPERTIES:
 :ID:       319FA54A-CA0C-4B02-A18B-ED5036192953
 :END:
@@ -1074,7 +1074,7 @@
     #' 2次判別についても同様
   #+end_src
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1140,7 +1140,7 @@
     ##  number: k-重交叉検証のブロック数 (k)
   #+end_src
 
-** R : k-重交叉検証法
+** COMMENT *R : k-重交叉検証法*
 :PROPERTIES:
 :ID:       D135DD1F-1AEE-4B1B-894E-6285C47748AF
 :END:
@@ -1181,7 +1181,7 @@
     ##  number: k-重交叉検証のブロック数 (k)
   #+end_src
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1290,7 +1290,7 @@
 - 前回用いたデータについて線形・2次どちらの判別方法が望ましいか検証してみよう
 
 
-* 解析の事例
+* COMMENT 解析の事例
 # 早稲田大学
 ** データについて
 :PROPERTIES:
