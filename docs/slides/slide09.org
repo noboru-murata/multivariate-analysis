@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-11-08 21:52:52 mura>
+# Time-stamp: <2025-12-08 13:27:15 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -15,7 +15,7 @@
 * COMMENT メモ
 [[file:README.org::第9講]]
   
-* COMMENT 講義の内容
+* 講義の内容
 :PROPERTIES:
 :ID:       51934CE4-A9B9-4CAB-965A-9DFB4AFE7B7A
 :END:
@@ -31,30 +31,40 @@
   library(conflicted)
   conflicts_prefer(
     dplyr::filter(),
-    dplyr::select(),
     dplyr::lag(),
+    dplyr::select(),
+    scales::discard(),
+    recipes::fixed(),
     yardstick::spec(),
-    yardstick::precision(),
-    yardstick::recall(),
-  )
-  library(tidyverse)
+    recipes::step(),
+    )
+  library(tidyverse)  
   library(ggfortify)
-  library(MASS)
+  library(ggrepel)
+  library(GGally)
   library(tidymodels)
-  library(gt)
+  library(MASS)
+  library(gt)         
+  library(gtsummary)  
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
     if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
-      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
+      jp_font <- "BIZUDGothic-Regular"
     else
-      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
+      jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+  }
   library(see)
   options(ggplot2.discrete.colour = function() scale_colour_material(),
           ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
-* 講義概要
+* COMMENT 講義概要
 :PROPERTIES:
 :ID:       4BDC5A54-EE17-4A76-8EA7-06BEA1841BA7
 :END:
@@ -168,7 +178,7 @@
   \begin{equation}
     \delta_k(\boldsymbol{x})
     =
-    -\frac{1}{2}\det\Sigma_k
+    -\frac{1}{2}\log\det\Sigma_k
     -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
     \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)
     +\log\pi_k
@@ -346,7 +356,7 @@
   - 判別関数の良さ(2値判別の難しさ)を測る基準の一つ
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -386,7 +396,7 @@
 - 相関係数の定義に従って計算すればよい
   #+begin_quote
   \begin{equation}
-    \rho
+    \phi
     =
     \frac{\mathrm{Cov}(Y,\hat{Y})}
     {\sqrt{\mathrm{Var}(Y)\mathrm{Var}(\hat{Y})}}
@@ -435,7 +445,7 @@
 - したがって以下のようにまとめられる
   #+begin_quote
   \begin{equation}
-    \rho
+    \phi
     =
     \frac{TP\cdot TN-FP\cdot FN}
     {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
@@ -445,7 +455,7 @@
     と呼ばれる評価指標の一つである
 
 
-* COMMENT 解析の事例
+* 解析の事例
 # 早稲田大学
 ** データについて
 - 気象庁より取得した東京の気候データ \\
@@ -461,6 +471,7 @@
     #' 東京の気象データによる判別分析
     #' データの整理
     tw_data <- read_csv("data/tokyo_weather.csv")
+    da_metrics <- read_csv("data/da_metrics.csv")
     tw_subset  <- tw_data |> 
       filter(month %in% c(8,9)) |> # 8,9月のデータ
       select(temp, humid, month) |> # 気温・湿度・月を選択
@@ -632,50 +643,58 @@
 #+begin_leftcol
 #+begin_src R :eval no :exports none
   #' データの表示
-  tibble(指標 = summary(tw_lda_cm)[[".metric"]],
-         値 = summary(tw_lda_cm)[[".estimate"]]) |>
+  tibble(##指標 = summary(tw_lda_cm)[[".metric"]],
+    指標 = da_metrics[["name"]],
+    値 = summary(tw_lda_cm)[[".estimate"]]) |>
     View()
 #+end_src
 #+begin_src R :exports results :results output html :tangle no
   #' データの表示(reveal用)
-  tibble(指標 = summary(tw_lda_cm)[[".metric"]],
-         値 = summary(tw_lda_cm)[[".estimate"]]) |>
+  tibble(##指標 = summary(tw_lda_cm)[[".metric"]],
+    指標 = da_metrics[["name"]],
+    値 = summary(tw_lda_cm)[[".estimate"]]) |>
     gt(caption = "線形判別") |>
     fmt_number(decimals = 4) |>
     as_raw_html()
 #+end_src
-#+begin_src R :exports results :results output latex :tangle no
+#+begin_src R :exports results :results value scalar latex :tangle no
   #' データの表示(latex用)
-  tibble(指標 = summary(tw_lda_cm)[[".metric"]],
-         値 = summary(tw_lda_cm)[[".estimate"]]) |>
+  tibble(## 指標 = summary(tw_lda_cm)[[".metric"]],
+    指標 = da_metrics[["name"]],
+    値 = summary(tw_lda_cm)[[".estimate"]]) |>
     gt(caption = "線形判別") |>
     fmt_number(decimals = 4) |>
-    tab_options(table.font.size = 12) |>
+    tab_options(table.font.size = 12,
+                table.width = pct(60)) |>
     as_latex() |> as.character()
 #+end_src
 #+end_leftcol
 #+begin_rightcol
 #+begin_src R :eval no :exports none
   #' データの表示
-  tibble(指標 = summary(tw_qda_cm)[[".metric"]],
-         値 = summary(tw_qda_cm)[[".estimate"]]) |>
+  tibble(##指標 = summary(tw_qda_cm)[[".metric"]],
+    指標 = da_metrics[["name"]],
+    値 = summary(tw_qda_cm)[[".estimate"]]) |>
     View()
 #+end_src
 #+begin_src R :exports results :results output html :tangle no
   #' データの表示(reveal用)
-  tibble(指標 = summary(tw_qda_cm)[[".metric"]],
-         値 = summary(tw_qda_cm)[[".estimate"]]) |>
+  tibble(##指標 = summary(tw_qda_cm)[[".metric"]],
+    指標 = da_metrics[["name"]],
+    値 = summary(tw_qda_cm)[[".estimate"]]) |>
     gt(caption = "2次判別") |>
     fmt_number(decimals = 4) |>
     as_raw_html()
 #+end_src
-#+begin_src R :exports results :results output latex :tangle no
+#+begin_src R :exports results :results value scalar latex :tangle no
   #' データの表示(latex用)
-  tibble(指標 = summary(tw_qda_cm)[[".metric"]],
-         値 = summary(tw_qda_cm)[[".estimate"]]) |>
+  tibble(##指標 = summary(tw_qda_cm)[[".metric"]],
+    指標 = da_metrics[["name"]],
+    値 = summary(tw_qda_cm)[[".estimate"]]) |>
     gt(caption = "2次判別") |>
     fmt_number(decimals = 4) |>
-    tab_options(table.font.size = 12) |>
+    tab_options(table.font.size = 12,
+                table.width = pct(60)) |>
     as_latex() |> as.character()
 #+end_src
 #+end_rightcol
@@ -723,7 +742,7 @@
 
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1045,7 +1064,7 @@
 
 ** 交叉検証法
 - *cross-validation (CV)* 
-- \(k\)-重交叉検証法 (\(k\)-fold cross-validation; \(k\)-fold CV)
+- \(k\)重交叉検証法 (\(k\)-fold cross-validation; \(k\)-fold CV)
   - \(n\) 個のデータを \(k\) ブロックにランダムに分割
   - 第 \(i\) ブロックを除いた \(k{-}1\) ブロックで判別関数を推定
   - 除いておいた第 \(i\) ブロックで予測誤差を評価
@@ -1054,7 +1073,7 @@
   - \(k=n\) として上記を実行
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1150,7 +1169,7 @@
     #' 詳細は 'rsample::vfold_cv' を参照
     vfold_cv(data, v = 10, repeats = 1,
              strata = NULL, breaks = 4, pool = 0.1, ...)
-    #' 最も簡単な処理の流れ(以下の関数の組わ合わせ)
+    #' 最も簡単な処理の流れ(以下の関数の組み合わせ)
     #' 詳細は 'workflows::workflow'
     #' および 'tune::fit_resamples' を参照
     workflow() |> 
@@ -1290,7 +1309,7 @@
 - 前回用いたデータについて線形・2次どちらの判別方法が望ましいか検証してみよう
 
 
-* COMMENT 解析の事例
+* 解析の事例
 # 早稲田大学
 ** データについて
 :PROPERTIES:
@@ -1361,14 +1380,17 @@
     wq_data |>
       slice(1:15) |>
       gt() |>
+      tab_options(table.font.size = 16) |>
       as_raw_html()
-  #+end_src  
-  #+begin_src R :exports results :results output latex :tangle no
+  #+end_src
+  #+begin_src R :exports results :results value scalar latex :tangle no
     #' データの表示(latex用)
     wq_data |>
+      select(1:5,7:9,grade) |>
       slice(1:15) |>
-      gt() |> 
-      tab_options(table.font.size = 12) |>
+      gt(caption = "Wine Quality Data Set の一部") |> 
+      tab_options(table.font.size = 10,
+                  table.width = pct(100)) |>
       as_latex() |> as.character()
   #+end_src
 

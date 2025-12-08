@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-11-25 10:21:09 mura>
+# Time-stamp: <2025-12-08 13:32:17 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -35,6 +35,7 @@
     dplyr::select(),
     dplyr::lag(),
   )
+  library(MASS) # 判別分析のため
   library(ggfortify)
   #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
@@ -81,6 +82,7 @@
   library(gt)
   library(gtsummary)
   library(ggfortify)
+  library(GGally)
   library(ggrepel)
   #' macOSのための日本語表示の設定
   if(Sys.info()["sysname"] == "Darwin") { # macOSか調べる
@@ -90,8 +92,17 @@
 #+end_src
 
 
-* 判別分析の例
+* COMMENT 判別分析の例
 ** 乳癌の良性・悪性の判別
+- データセット
+  - ~MASS::biopsy~ 
+    #+begin_quote
+    *Biopsy Data on Breast Cancer Patients* \\
+    This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. There are 699 rows and 11 columns.
+    #+end_quote
+    - 詳細は '?MASS::biopsy' を参照
+
+#+reveal: split
 #+caption: 乳癌の生検データ
 #+name: tbl:biopsy
 #+begin_src R :exports none
@@ -114,8 +125,9 @@
 #+begin_src R :exports results :results value scalar latex :tangle no
   #' データの表示(latex用)
   bio_data |>
+    slice(1:15) |>
     gt() |>
-    tab_options(table.font.size = 9) |>
+    tab_options(table.font.size = 9, latex.tbl.pos = "H") |>
     as_latex() |> as.character()
 #+end_src
 
@@ -176,6 +188,103 @@ bio_data |>
   - 2次式の場合 : *2次判別分析* (quadratic discriminant analysis)
 
 ** 判別分析の例
+# 早稲田大学
+- データセット
+  - *Biopsy Data on Breast Cancer Patients*
+    #+begin_quote
+    This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. There are 699 rows and 11 columns.
+    #+end_quote
+** COMMENT 判別分析の例
+# 東京大学
+- データセット
+  - ~MASS::biopsy~ 
+    #+begin_quote
+    *Biopsy Data on Breast Cancer Patients* \\
+    This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. There are 699 rows and 11 columns.
+    #+end_quote
+    - 詳細は '?MASS::biopsy' を参照
+** 判別分析の例
+#+caption: 乳癌の生検データ
+#+name: tbl:biopsy
+#+begin_src R :exports none
+  #' 判別分析の例
+  #' 表の作成
+  bio_data <- MASS::biopsy |>
+    as_tibble() |>
+    na.omit() # NA を除く
+#+end_src
+#+begin_src R :eval no :exports none
+  bio_data |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  bio_data |>
+    slice(1:15) |>
+    gt() |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  bio_data |>
+    slice(1:15) |>
+    gt() |>
+    tab_options(table.font.size = 9, latex.tbl.pos = "H") |>
+    as_latex() |> as.character()
+#+end_src
+
+#+reveal: split
+#+begin_src R :file figs/bio-pairs.png :exports results :results graphics
+      bio_data |>
+        select(!ID) |> # IDを除く
+        ggpairs(upper = list(continuous = wrap("cor", size = 3.5)),
+                diag = list(continuous = wrap("densityDiag", alpha = 0.7),
+                            mapping = aes(colour = class)),
+                lower = list(continuous = wrap("points", alpha = .7),
+                             mapping = aes(colour = class))) +
+    theme(strip.text.x = element_text(size = 11),
+          strip.text.y = element_text(size = 11),
+          axis.text.x = element_text(size = 7),
+          axis.text.y = element_text(size = 8))
+#+end_src
+#+caption: 9種類の生検の散布図
+#+name: fig:bio-pairs
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bio-pairs.png]]
+
+#+reveal: split
+#+begin_src R :file figs/bio-pca.png :exports results :results graphics :height 700
+  bio_data |> select(where(is.numeric)) |> prcomp() |> # 主成分分析
+    autoplot(data = bio_data,
+             colour = "class") +
+      theme(legend.position = "inside",
+            legend.position.inside = c(.95, .95),
+            legend.justification = c("right", "top"))
+#+end_src
+#+caption: 主成分分析を用いて2次元に縮約した生検と良性・悪性の関係
+#+name: fig:bio-pca
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bio-pca.png]]
+
+#+reveal: split
+#+begin_src R :file figs/bio-lda.png :exports results :results graphics :height 700
+  bio_lda <- lda(class ~ . -ID, data = bio_data)
+  bio_data |>
+    mutate(x = predict(bio_lda)[["x"]]) |>
+    ggplot(aes(x = x)) +
+    geom_histogram(aes(fill = class), alpha = 0.7,
+                   show.legend = FALSE) +
+    facet_grid(class ~ .)
+#+end_src
+
+#+caption: 線形判別関数による判別関数値の分布
+#+name: fig:bio-lda
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/bio-lda.png]]
+
+** その他の例
 - [[color:green][検査結果から患者が病気を罹患しているか判定する]]
   - \(X=\) 検査結果
   - \(Y=\) 病気・健康
@@ -509,7 +618,7 @@ bio_data |>
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 線形判別
+** COMMENT *R : 線形判別*
 :PROPERTIES:
 :ID:       BB276D04-1D56-40CC-898A-800551D44DFD
 :END:
@@ -547,7 +656,7 @@ bio_data |>
 :END:
 - [[./code/09-weather.r][09-weather.r]] を確認してみよう
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       91548DC4-4AE6-44E4-AFB8-D5BF457D40CC
@@ -698,7 +807,7 @@ bio_data |>
   \begin{equation}
     \delta_{k}(\boldsymbol{x})
     =
-    -\frac{1}{2}\det\Sigma_{k}
+    -\frac{1}{2}\log\det\Sigma_{k}
     -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
     \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
     +\log\pi_{k}
@@ -717,12 +826,12 @@ bio_data |>
     &\Leftrightarrow
       \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
     &\Leftrightarrow
-      -\frac{1}{2}\det\Sigma_{k}
+      -\frac{1}{2}\log\det\Sigma_{k}
       -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
       \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
       +\log\pi_{k}\\
     &\phantom{\Leftrightarrow}\quad <
-      -\frac{1}{2}\det\Sigma_l
+      -\frac{1}{2}\log\det\Sigma_l
       -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
       \Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
       +\log\pi_l\\
@@ -791,12 +900,12 @@ bio_data |>
     &\Leftrightarrow
       \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
     &\Leftrightarrow
-      -\frac{1}{2}\det\Sigma_{k}
+      -\frac{1}{2}\log\det\Sigma_{k}
       -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
       \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
       +\log\pi_{k}\\
     &\phantom{\Leftrightarrow}\quad <
-      -\frac{1}{2}\det\Sigma_l
+      -\frac{1}{2}\log\det\Sigma_l
       -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
       \Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
       +\log\pi_l\\
@@ -811,7 +920,7 @@ bio_data |>
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 2次判別
+** COMMENT *R : 2次判別*
 :PROPERTIES:
 :ID:       B4D138CC-63A9-4EDB-ABD4-3CC6E5E769F0
 :END:
@@ -841,7 +950,7 @@ bio_data |>
 :END:
 - [[./code/09-quad.r][09-quad.r]] を確認してみよう
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       DCDE0C9C-8B65-48D9-BCF1-C8AE856FFB68
@@ -908,7 +1017,7 @@ bio_data |>
   - 正規分布を仮定する場合は一般には2次判別
 - 2値判別の統合
   - 2クラスでの比較 : 最大の組合せ数 \({}_{K}C_{2}\) 
-  - グループでの比較 : 最大の組合せ数 \(2^{K}-2\)
+  - グループでの比較 : 最大の組合せ数 \(2^{K-1}-1\)
 - \(K{-}1\) 個の特徴量への変換
   - 説明変数の線形結合による特徴量の構成
   - 異なる\(K\)種の点の集合を\(K{-}1\)次元空間に配置
@@ -1104,7 +1213,7 @@ bio_data |>
   - MASS::crabs
   - rattle::wine
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       55127149-41D2-41FA-A6BC-589ED8381433

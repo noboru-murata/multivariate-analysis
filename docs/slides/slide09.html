@@ -15,7 +15,9 @@
 
 <link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/font-awesome/css/fontawesome.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/chalkboard/style.css"/>
 
 <link rel="stylesheet" href="./reveal.js/local/mycourse.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -43,8 +45,8 @@
 
 </section>
 <section>
-<section id="slide-org7236a65">
-<h2 id="org7236a65">講義の内容</h2>
+<section id="slide-orgb05963c">
+<h2 id="orgb05963c">講義の内容</h2>
 <ul>
 <li>第1回 : 判別分析の考え方</li>
 <li><b>第2回 : 分析の評価</b></li>
@@ -53,13 +55,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orga87be5e">
-<h2 id="orga87be5e">判別分析の復習</h2>
-<div class="outline-text-2" id="text-orga87be5e">
+<section id="slide-org1364060">
+<h2 id="org1364060">判別分析の復習</h2>
+<div class="outline-text-2" id="text-org1364060">
 </div>
 </section>
-<section id="slide-orgd836b6f">
-<h3 id="orgd836b6f">判別分析</h3>
+<section id="slide-orged5e8a6">
+<h3 id="orged5e8a6">判別分析</h3>
 <ul>
 <li>個体の特徴量から
 その個体の属するクラスを予測する関係式を構成</li>
@@ -87,8 +89,8 @@
 
 </ul>
 </section>
-<section id="slide-org06709ba">
-<h3 id="org06709ba">判別関数</h3>
+<section id="slide-org28fabbf">
+<h3 id="org28fabbf">判別関数</h3>
 <ul>
 <li>判別の手続き
 <ul>
@@ -121,8 +123,8 @@
 
 </ul>
 </section>
-<section id="slide-org3549545">
-<h3 id="org3549545">線形判別</h3>
+<section id="slide-orge27acdd">
+<h3 id="orge27acdd">線形判別</h3>
 <ul>
 <li>\(f_k(\boldsymbol{x})\) の仮定
 <ul>
@@ -164,8 +166,8 @@
 
 </ul>
 </section>
-<section id="slide-org689fb99">
-<h3 id="org689fb99">2次判別</h3>
+<section id="slide-org7747ee4">
+<h3 id="org7747ee4">2次判別</h3>
 <ul>
 <li>\(f_k(\boldsymbol{x})\) の仮定
 <ul>
@@ -196,7 +198,7 @@
 \begin{equation}
   \delta_k(\boldsymbol{x})
   =
-  -\frac{1}{2}\det\Sigma_k
+  -\frac{1}{2}\log\det\Sigma_k
   -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_k)^{\mathsf{T}}
   \Sigma_k^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_k)
   +\log\pi_k
@@ -207,8 +209,8 @@
 
 </ul>
 </section>
-<section id="slide-orgce1ffd4">
-<h3 id="orgce1ffd4">Fisherの線形判別</h3>
+<section id="slide-orgaec567b">
+<h3 id="orgaec567b">Fisherの線形判別</h3>
 <ul>
 <li>新しい特徴量 \(Z=\boldsymbol{\alpha}^{\mathsf{T}} X\) を考える</li>
 <li>良い \(Z\) の基準
@@ -241,13 +243,13 @@ Fisherの基準
 </section>
 </section>
 <section>
-<section id="slide-org9c3694e">
-<h2 id="org9c3694e">2値判別分析の評価</h2>
-<div class="outline-text-2" id="text-org9c3694e">
+<section id="slide-org1ce71bf">
+<h2 id="org1ce71bf">2値判別分析の評価</h2>
+<div class="outline-text-2" id="text-org1ce71bf">
 </div>
 </section>
-<section id="slide-org070e776">
-<h3 id="org070e776">誤り率</h3>
+<section id="slide-orgc933627">
+<h3 id="orgc933627">誤り率</h3>
 <ul>
 <li><p>
 単純な誤り
@@ -273,8 +275,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-orgc4cba38">
-<h3 id="orgc4cba38">混同行列</h3>
+<section id="slide-org7f1b88e">
+<h3 id="org7f1b88e">混同行列</h3>
 <font size=6>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -315,8 +317,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-orgd050f6b">
-<h3 id="orgd050f6b">混同行列 (転置したもの)</h3>
+<section id="slide-orgf75fda6">
+<h3 id="orgf75fda6">混同行列 (転置したもの)</h3>
 <font size=6>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -356,8 +358,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-orgf546542">
-<h3 id="orgf546542">基本的な評価基準</h3>
+<section id="slide-org4369d1b">
+<h3 id="org4369d1b">基本的な評価基準</h3>
 <ul>
 <li><p>
 定義
@@ -426,8 +428,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-org496af3e">
-<h3 id="org496af3e">F-値</h3>
+<section id="slide-orgafe6b0f">
+<h3 id="orgafe6b0f">F-値</h3>
 <ul>
 <li><p>
 定義 (<b>F-measure, F-score</b>)
@@ -462,8 +464,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-org19879ca">
-<h3 id="org19879ca">Cohen の kappa 値</h3>
+<section id="slide-orgf7d9457">
+<h3 id="orgf7d9457">Cohen の kappa 値</h3>
 <ul>
 <li><p>
 定義 (Cohen&rsquo;s <b>kappa measure</b>)
@@ -493,8 +495,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-org60ed483">
-<h3 id="org60ed483">受信者動作特性曲線</h3>
+<section id="slide-org10d88b0">
+<h3 id="org10d88b0">受信者動作特性曲線</h3>
 <ul>
 <li><b>ROC曲線</b> (receiver operating characteristic curve)</li>
 <li><p>
@@ -555,11 +557,11 @@ Fisherの基準
 </section>
 </section>
 <section>
-<section id="slide-org1cd10cf" data-background="#fef4f4">
-<h2 id="org1cd10cf">演習</h2>
+<section id="slide-org9ad157f" data-background="#fef4f4">
+<h2 id="org9ad157f">演習</h2>
 </section>
-<section id="slide-org297953c" data-background="#fef4f4">
-<h3 id="org297953c">問題</h3>
+<section id="slide-org14fa4bd" data-background="#fef4f4">
+<h3 id="org14fa4bd">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -573,8 +575,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-org703bbe1" data-background="#fef4f4">
-<h3 id="org703bbe1">解答例</h3>
+<section id="slide-org65d0ef2" data-background="#fef4f4">
+<h3 id="org65d0ef2">解答例</h3>
 <ul>
 <li><p>
 最大最小と平均の関係から以下が成り立つ
@@ -615,7 +617,7 @@ Fisherの基準
 <blockquote>
 <div>
 \begin{equation}
-  \rho
+  \phi
   =
   \frac{\mathrm{Cov}(Y,\hat{Y})}
   {\sqrt{\mathrm{Var}(Y)\mathrm{Var}(\hat{Y})}}
@@ -694,7 +696,7 @@ Fisherの基準
 <blockquote>
 <div>
 \begin{equation}
-  \rho
+  \phi
   =
   \frac{TP\cdot TN-FP\cdot FN}
   {\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}       
@@ -712,11 +714,11 @@ Fisherの基準
 </section>
 </section>
 <section>
-<section id="slide-orga9c3b7e">
-<h2 id="orga9c3b7e">解析の事例</h2>
+<section id="slide-org0b80c1a">
+<h2 id="org0b80c1a">解析の事例</h2>
 </section>
-<section id="slide-orgb2a7ab5">
-<h3 id="orgb2a7ab5">データについて</h3>
+<section id="slide-org5cddeda">
+<h3 id="org5cddeda">データについて</h3>
 <ul>
 <li>気象庁より取得した東京の気候データ <br />
 <ul>
@@ -727,8 +729,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-org9de86b7">
-<h3 id="org9de86b7">気温と湿度による月の判別</h3>
+<section id="slide-orgee4296d">
+<h3 id="orgee4296d">気温と湿度による月の判別</h3>
 <ul>
 <li><p>
 温度と湿度による8,9月の線形判別
@@ -737,7 +739,7 @@ Fisherの基準
 </ul>
 
 
-<div id="orga1c2fc6" class="figure">
+<div id="org83defdc" class="figure">
 <p><img src="figs/09_lda.png" alt="09_lda.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>線形判別</p>
@@ -753,26 +755,26 @@ Fisherの基準
 </ul>
 
 
-<div id="org12eff9c" class="figure">
+<div id="org2dc80be" class="figure">
 <p><img src="figs/09_qda.png" alt="09_qda.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>2次判別</p>
 </div>
 </section>
-<section id="slide-org37afd54">
-<h3 id="org37afd54">混同行列の比較</h3>
-<div class="leftcol" id="org4d59a02">
+<section id="slide-org58b05db">
+<h3 id="org58b05db">混同行列の比較</h3>
+<div class="leftcol" id="org71f506b">
 
-<div id="orge4aa4d1" class="figure">
+<div id="orgec451d6" class="figure">
 <p><img src="figs/09_lda_confmat.png" alt="09_lda_confmat.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>線形判別の混同行列</p>
 </div>
 
 </div>
-<div class="rightcol" id="org427ced5">
+<div class="rightcol" id="orge88bc9f">
 
-<div id="org4b736b3" class="figure">
+<div id="orgd14523d" class="figure">
 <p><img src="figs/09_qda_confmat.png" alt="09_qda_confmat.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>2次判別の混同行列</p>
@@ -780,9 +782,9 @@ Fisherの基準
 
 </div>
 </section>
-<section id="slide-orgeaf81c6">
-<h3 id="orgeaf81c6">さまざまな評価指標の比較</h3>
-<div class="leftcol" id="org0c82498">
+<section id="slide-org692de93">
+<h3 id="org692de93">さまざまな評価指標の比較</h3>
+<div class="leftcol" id="org5eebf01">
 <div id="buozfuufii" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
@@ -794,40 +796,39 @@ Fisherの基準
     </tr>
   </thead>
   <tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">accuracy</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7869</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">kap</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.5711</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">sens</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9677</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">spec</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6000</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">ppv</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7143</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">npv</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9474</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">mcc</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6129</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">j_index</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.5677</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">bal_accuracy</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7839</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">detection_prevalence</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6885</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">precision</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7143</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">recall</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9677</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">f_meas</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.8219</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">精度 (accuracy)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7377</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">kappa係数 (Cohen's kappa coefficient)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.4707</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">感度 (sensitivity)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">1.0000</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">特異度 (specificity)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.4667</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">陽性的中率 (positive predictive value)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6596</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">陰性的中率 (negative predictive value)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">1.0000</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">phi係数 (Matthews correlation coefficient)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.5548</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Jaccard 係数 (Jaccard index)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.4667</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">バランス精度 (balanced accuracy)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7333</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">予測陽性率 (detection prevalence)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7705</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">適合率 (precision)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6596</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">再現率 (recall)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">1.0000</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">F値 (F-measure)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7949</td></tr>
   </tbody>
-  
   
 </table>
 </div>
 
 </div>
-<div class="rightcol" id="orgf1155d4">
+<div class="rightcol" id="orgf2a42df">
 <div id="ibxenzbtnf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
@@ -839,54 +840,53 @@ Fisherの基準
     </tr>
   </thead>
   <tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">accuracy</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7705</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">kap</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.5384</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">sens</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9355</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">spec</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6000</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">ppv</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7073</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">npv</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9000</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">mcc</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.5703</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">j_index</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.5355</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">bal_accuracy</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7677</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">detection_prevalence</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6721</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">precision</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7073</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">recall</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9355</td></tr>
-    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">f_meas</td>
-<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.8056</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">精度 (accuracy)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7213</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">kappa係数 (Cohen's kappa coefficient)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.4379</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">感度 (sensitivity)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9677</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">特異度 (specificity)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.4667</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">陽性的中率 (positive predictive value)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6522</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">陰性的中率 (negative predictive value)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9333</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">phi係数 (Matthews correlation coefficient)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.5043</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">Jaccard 係数 (Jaccard index)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.4344</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">バランス精度 (balanced accuracy)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7172</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">予測陽性率 (detection prevalence)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7541</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">適合率 (precision)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.6522</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">再現率 (recall)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.9677</td></tr>
+    <tr style="border-style: none;"><td headers="指標" class="gt_row gt_left" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: left;" valign="middle" align="left">F値 (F-measure)</td>
+<td headers="値" class="gt_row gt_right" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: right; font-variant-numeric: tabular-nums;" valign="middle" align="right">0.7792</td></tr>
   </tbody>
-  
   
 </table>
 </div>
 
 </div>
 </section>
-<section id="slide-org3fa26a5">
-<h3 id="org3fa26a5">ROC曲線の比較</h3>
-<div class="leftcol" id="org3b49b9d">
+<section id="slide-orga06eb33">
+<h3 id="orga06eb33">ROC曲線の比較</h3>
+<div class="leftcol" id="orged16f99">
 
-<div id="org30460b4" class="figure">
+<div id="org0d710e6" class="figure">
 <p><img src="figs/09_lda_roc.png" alt="09_lda_roc.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>線形判別のROC曲線</p>
 </div>
 
 </div>
-<div class="rightcol" id="orgae888c7">
+<div class="rightcol" id="orgca466b0">
 
-<div id="org5fa3206" class="figure">
+<div id="orgaa4ace7" class="figure">
 <p><img src="figs/09_qda_roc.png" alt="09_qda_roc.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>2次判別の混同行列</p>
@@ -896,13 +896,13 @@ Fisherの基準
 </section>
 </section>
 <section>
-<section id="slide-org040d86b">
-<h2 id="org040d86b">予測誤差</h2>
-<div class="outline-text-2" id="text-org040d86b">
+<section id="slide-org98676ef">
+<h2 id="org98676ef">予測誤差</h2>
+<div class="outline-text-2" id="text-org98676ef">
 </div>
 </section>
-<section id="slide-orgb931492">
-<h3 id="orgb931492">訓練誤差と予測誤差</h3>
+<section id="slide-org3339872">
+<h3 id="org3339872">訓練誤差と予測誤差</h3>
 <ul>
 <li><b>訓練誤差</b> :
 既知データに対する誤り (training error)</li>
@@ -919,8 +919,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-org68ae7f2">
-<h3 id="org68ae7f2">交叉検証</h3>
+<section id="slide-org6dd29df">
+<h3 id="org6dd29df">交叉検証</h3>
 <ul>
 <li>データを訓練データと試験データに分割して用いる
 <ul>
@@ -936,11 +936,11 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-org943bf75">
-<h3 id="org943bf75">交叉検証法</h3>
+<section id="slide-org353d04d">
+<h3 id="org353d04d">交叉検証法</h3>
 <ul>
 <li><b>cross-validation (CV)</b></li>
-<li>\(k\)-重交叉検証法 (\(k\)-fold cross-validation; \(k\)-fold CV)
+<li>\(k\)重交叉検証法 (\(k\)-fold cross-validation; \(k\)-fold CV)
 <ul>
 <li>\(n\) 個のデータを \(k\) ブロックにランダムに分割</li>
 <li>第 \(i\) ブロックを除いた \(k{-}1\) ブロックで判別関数を推定</li>
@@ -958,11 +958,11 @@ Fisherの基準
 </section>
 </section>
 <section>
-<section id="slide-orge1b6391">
-<h2 id="orge1b6391">解析の事例</h2>
+<section id="slide-org784350d">
+<h2 id="org784350d">解析の事例</h2>
 </section>
-<section id="slide-org830fa11">
-<h3 id="org830fa11">データについて</h3>
+<section id="slide-org3551efd">
+<h3 id="org3551efd">データについて</h3>
 <ul>
 <li>UC Irvine Machine Learning Repository の公開データ
 <ul>
@@ -1254,26 +1254,25 @@ In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 <td headers="grade" class="gt_row gt_center" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: center;" valign="middle" align="center">C</td></tr>
   </tbody>
 
-
 </table>
 </div></li>
 
 </ul>
 </section>
-<section id="slide-orga68738d">
-<h3 id="orga68738d">線形判別の訓練誤差と予測誤差</h3>
-<div class="leftcol" id="orgc05b154">
+<section id="slide-org0b65dbf">
+<h3 id="org0b65dbf">線形判別の訓練誤差と予測誤差</h3>
+<div class="leftcol" id="org2704040">
 
-<div id="orgecf275e" class="figure">
+<div id="org90789ed" class="figure">
 <p><img src="figs/09_lda_train_cm.png" alt="09_lda_train_cm.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>訓練誤差</p>
 </div>
 
 </div>
-<div class="rightcol" id="org657a189">
+<div class="rightcol" id="orge624234">
 
-<div id="orgbd76f21" class="figure">
+<div id="org0b8eae3" class="figure">
 <p><img src="figs/09_lda_test_cm.png" alt="09_lda_test_cm.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>予測誤差</p>
@@ -1281,20 +1280,20 @@ In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 
 </div>
 </section>
-<section id="slide-org4c8decb">
-<h3 id="org4c8decb">2次判別の訓練誤差と予測誤差</h3>
-<div class="leftcol" id="org1367b03">
+<section id="slide-org8a285c6">
+<h3 id="org8a285c6">2次判別の訓練誤差と予測誤差</h3>
+<div class="leftcol" id="org9c3bc52">
 
-<div id="org310de68" class="figure">
+<div id="org76eedb4" class="figure">
 <p><img src="figs/09_qda_train_cm.png" alt="09_qda_train_cm.png" />
 </p>
 <p><span class="figure-number">Figure 9: </span>訓練誤差</p>
 </div>
 
 </div>
-<div class="rightcol" id="orgca2d810">
+<div class="rightcol" id="orgd223088">
 
-<div id="org104b07f" class="figure">
+<div id="org4ad8cf8" class="figure">
 <p><img src="figs/09_qda_test_cm.png" alt="09_qda_test_cm.png" />
 </p>
 <p><span class="figure-number">Figure 10: </span>予測誤差</p>
@@ -1302,20 +1301,20 @@ In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 
 </div>
 </section>
-<section id="slide-org11a7cd0">
-<h3 id="org11a7cd0">LOO交叉検証による予測誤差の評価</h3>
-<div class="leftcol" id="org23420da">
+<section id="slide-org620be89">
+<h3 id="org620be89">LOO交叉検証による予測誤差の評価</h3>
+<div class="leftcol" id="orgfb201e8">
 
-<div id="org07d4657" class="figure">
+<div id="org643ea38" class="figure">
 <p><img src="figs/09_lda_loo_cm.png" alt="09_lda_loo_cm.png" />
 </p>
 <p><span class="figure-number">Figure 11: </span>線形判別</p>
 </div>
 
 </div>
-<div class="rightcol" id="orgabdad9b">
+<div class="rightcol" id="org2d71e88">
 
-<div id="orgda51334" class="figure">
+<div id="org30064f4" class="figure">
 <p><img src="figs/09_qda_loo_cm.png" alt="09_qda_loo_cm.png" />
 </p>
 <p><span class="figure-number">Figure 12: </span>2次判別</p>
@@ -1325,8 +1324,8 @@ In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 </section>
 </section>
 <section>
-<section id="slide-org9aca582">
-<h2 id="org9aca582">次回の予定</h2>
+<section id="slide-orgba052a9">
+<h2 id="orgba052a9">次回の予定</h2>
 <ul>
 <li><b>第1回 : クラスタ分析の考え方と階層的方法</b></li>
 <li>第2回 : 非階層的方法と分析の評価</li>
@@ -1340,7 +1339,7 @@ In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236.
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
 <script src="./reveal.js/plugin/menu/menu.js"></script>
 <script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
-<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/plugin/chalkboard/plugin.js"></script>
 <script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
@@ -1363,10 +1362,10 @@ overview: true,
 transition: 'fade',
 transitionSpeed: 'default',
 showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
-spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
+spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealChalkboard ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [

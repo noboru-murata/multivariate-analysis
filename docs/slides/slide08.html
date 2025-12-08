@@ -15,7 +15,9 @@
 
 <link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
 
-<link rel="stylesheet" href="./reveal.js/plugin/drawer/drawer.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/menu/font-awesome/css/fontawesome.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/chalkboard/style.css"/>
 
 <link rel="stylesheet" href="./reveal.js/local/mycourse.css"/>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -43,8 +45,8 @@
 
 </section>
 <section>
-<section id="slide-orge13a400">
-<h2 id="orge13a400">講義の内容</h2>
+<section id="slide-orgceb5bdf">
+<h2 id="orgceb5bdf">講義の内容</h2>
 <ul>
 <li><b>第1回 : 判別分析の考え方</b></li>
 <li>第2回 : 分析の評価</li>
@@ -53,14 +55,60 @@
 </section>
 </section>
 <section>
-<section id="slide-org2b9ac2c">
-<h2 id="org2b9ac2c">判別分析の例</h2>
-<div class="outline-text-2" id="text-org2b9ac2c">
+<section id="slide-orge11a577">
+<h2 id="orge11a577">判別分析の考え方</h2>
+<div class="outline-text-2" id="text-orge11a577">
 </div>
 </section>
-<section id="slide-org213b630">
-<h3 id="org213b630">乳癌の良性・悪性の判別</h3>
-<div id="ylpoeebdbg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<section id="slide-org35927d0">
+<h3 id="org35927d0">判別分析</h3>
+<ul>
+<li><p>
+判別分析 (<b>discriminant analysis</b>) の目的
+</p>
+<blockquote>
+<p>
+個体の特徴量からその個体の属する
+<b>クラス</b>
+を予測する関係式を構成する方法
+</p>
+</blockquote></li>
+<li>関係式 : <b>判別関数</b> (discriminant function)
+<ul>
+<li>説明変数 : \(X=(X_{1},\dots,X_{q})\)</li>
+<li>目的変数 : \(Y\) (\(K(\geq2)\) 個のクラスラベル)</li>
+
+</ul></li>
+<li>判別関数による分類
+<ul>
+<li>1次式の場合 : <b>線形判別分析</b> (linear discriminant analysis)</li>
+<li>2次式の場合 : <b>2次判別分析</b> (quadratic discriminant analysis)</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org9c1663f">
+<h3 id="org9c1663f">判別分析の例</h3>
+<ul>
+<li>データセット
+<ul>
+<li><p>
+<b>Biopsy Data on Breast Cancer Patients</b>
+</p>
+<blockquote>
+<p>
+This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. There are 699 rows and 11 columns.
+</p>
+</blockquote></li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-orge0c7794">
+<h3 id="orge0c7794">判別分析の例</h3>
+<div id="tvkqutocdf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" bgcolor="#FFFFFF">
   <thead style="border-style: none;">
@@ -246,14 +294,13 @@
 <td headers="class" class="gt_row gt_center" style="border-style: none; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; text-align: center;" valign="middle" align="center">malignant</td></tr>
   </tbody>
   
-  
 </table>
 </div>
 
 </section>
 <section>
 
-<div id="orgccf3ee1" class="figure">
+<div id="orgc3c65d8" class="figure">
 <p><img src="figs/bio-pairs.png" alt="bio-pairs.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>9種類の生検の散布図</p>
@@ -262,7 +309,7 @@
 </section>
 <section>
 
-<div id="org57a312e" class="figure">
+<div id="orgbf582e8" class="figure">
 <p><img src="figs/bio-pca.png" alt="bio-pca.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>主成分分析を用いて2次元に縮約した生検と良性・悪性の関係</p>
@@ -271,49 +318,14 @@
 </section>
 <section>
 
-<div id="org87efe22" class="figure">
+<div id="org6f04f5e" class="figure">
 <p><img src="figs/bio-lda.png" alt="bio-lda.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>線形判別関数による判別関数値の分布</p>
 </div>
 </section>
-</section>
-<section>
-<section id="slide-orgd03b29d">
-<h2 id="orgd03b29d">判別分析の考え方</h2>
-<div class="outline-text-2" id="text-orgd03b29d">
-</div>
-</section>
-<section id="slide-org05dac37">
-<h3 id="org05dac37">判別分析</h3>
-<ul>
-<li><p>
-判別分析 (<b>discriminant analysis</b>) の目的
-</p>
-<blockquote>
-<p>
-個体の特徴量からその個体の属する
-<b>クラス</b>
-を予測する関係式を構成する方法
-</p>
-</blockquote></li>
-<li>関係式 : <b>判別関数</b> (discriminant function)
-<ul>
-<li>説明変数 : \(X=(X_{1},\dots,X_{q})\)</li>
-<li>目的変数 : \(Y\) (\(K(\geq2)\) 個のクラスラベル)</li>
-
-</ul></li>
-<li>判別関数による分類
-<ul>
-<li>1次式の場合 : <b>線形判別分析</b> (linear discriminant analysis)</li>
-<li>2次式の場合 : <b>2次判別分析</b> (quadratic discriminant analysis)</li>
-
-</ul></li>
-
-</ul>
-</section>
-<section id="slide-org550582d">
-<h3 id="org550582d">判別分析の例</h3>
+<section id="slide-orgd467524">
+<h3 id="orgd467524">その他の例</h3>
 <ul>
 <li><span style="color:green;">検査結果から患者が病気を罹患しているか判定する</span>
 <ul>
@@ -336,8 +348,8 @@
 
 </ul>
 </section>
-<section id="slide-org012af7c">
-<h3 id="org012af7c">判別分析の考え方</h3>
+<section id="slide-org15341c0">
+<h3 id="org15341c0">判別分析の考え方</h3>
 <ul>
 <li>確率による定式化
 <ol>
@@ -370,8 +382,8 @@
 
 </ul>
 </section>
-<section id="slide-org7cc61d8">
-<h3 id="org7cc61d8">条件付確率</h3>
+<section id="slide-org2ebd4ac">
+<h3 id="org2ebd4ac">条件付確率</h3>
 <ul>
 <li>以下では \(X\) は離散型の \(q\) 次元確率変数として説明</li>
 <li><p>
@@ -394,8 +406,8 @@
 
 </ul>
 </section>
-<section id="slide-org5e05415">
-<h3 id="org5e05415">条件付確率の表現</h3>
+<section id="slide-orgd486169">
+<h3 id="orgd486169">条件付確率の表現</h3>
 <ul>
 <li>\(Y\)の条件付確率 \(p_{k}(\boldsymbol{x})\) のモデル化の方針
 <ul>
@@ -424,11 +436,11 @@
 </section>
 </section>
 <section>
-<section id="slide-orgb3a964e" data-background="#fef4f4">
-<h2 id="orgb3a964e">演習</h2>
+<section id="slide-orga8676fc" data-background="#fef4f4">
+<h2 id="orga8676fc">演習</h2>
 </section>
-<section id="slide-org0739b0a" data-background="#fef4f4">
-<h3 id="org0739b0a">問題</h3>
+<section id="slide-org32cef19" data-background="#fef4f4">
+<h3 id="org32cef19">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -440,8 +452,8 @@
 
 </ul>
 </section>
-<section id="slide-org660bd37" data-background="#fef4f4">
-<h3 id="org660bd37">解答例</h3>
+<section id="slide-org9516455" data-background="#fef4f4">
+<h3 id="org9516455">解答例</h3>
 <ul>
 <li><p>
 Bayesの定理を用いればよい
@@ -476,13 +488,13 @@ Bayesの定理を用いればよい
 </section>
 </section>
 <section>
-<section id="slide-org3f584e0">
-<h2 id="org3f584e0">事後確率による判別</h2>
-<div class="outline-text-2" id="text-org3f584e0">
+<section id="slide-orgd5e7fd3">
+<h2 id="orgd5e7fd3">事後確率による判別</h2>
+<div class="outline-text-2" id="text-orgd5e7fd3">
 </div>
 </section>
-<section id="slide-org47cd645">
-<h3 id="org47cd645">Bayes の公式</h3>
+<section id="slide-org2718b28">
+<h3 id="org2718b28">Bayes の公式</h3>
 <ul>
 <li><p>
 \(f_{k}(\boldsymbol{x})\) から \(p_{k}(\boldsymbol{x})\) を得る数学的原理
@@ -518,8 +530,8 @@ Bayes の公式 (Bayes&rsquo; formula)
 
 </ul>
 </section>
-<section id="slide-org8e33107">
-<h3 id="org8e33107">Bayes の公式の略証</h3>
+<section id="slide-orgf790502">
+<h3 id="orgf790502">Bayes の公式の略証</h3>
 <ul>
 <li><p>
 定義より
@@ -575,8 +587,8 @@ Bayes の公式 (Bayes&rsquo; formula)
 
 </ul>
 </section>
-<section id="slide-org7d0b82b">
-<h3 id="org7d0b82b">事前確率と事後確率</h3>
+<section id="slide-org031e503">
+<h3 id="org031e503">事前確率と事後確率</h3>
 <ul>
 <li><b>事前確率</b> : \(\pi_{k}=P(Y=k)\) (prior probability)
 <ul>
@@ -611,8 +623,8 @@ Bayes の公式による書き換え
 
 </ul>
 </section>
-<section id="slide-org65edacb">
-<h3 id="org65edacb">事前確率の決め方</h3>
+<section id="slide-org704a0d7">
+<h3 id="org704a0d7">事前確率の決め方</h3>
 <ul>
 <li><p>
 事前に特別な情報がない場合
@@ -649,13 +661,13 @@ Bayes の公式による書き換え
 </section>
 </section>
 <section>
-<section id="slide-orgf5fe153">
-<h2 id="orgf5fe153">線形判別分析</h2>
-<div class="outline-text-2" id="text-orgf5fe153">
+<section id="slide-org6851315">
+<h2 id="org6851315">線形判別分析</h2>
+<div class="outline-text-2" id="text-org6851315">
 </div>
 </section>
-<section id="slide-orgac97fd2">
-<h3 id="orgac97fd2">判別関数</h3>
+<section id="slide-org5ee5d5f">
+<h3 id="org5ee5d5f">判別関数</h3>
 <ul>
 <li>判別の手続き
 <ol>
@@ -689,8 +701,8 @@ Bayes の公式による書き換え
 
 </ul>
 </section>
-<section id="slide-org8eb028d">
-<h3 id="org8eb028d">線形判別</h3>
+<section id="slide-org5152f21">
+<h3 id="org5152f21">線形判別</h3>
 <ul>
 <li>\(f_{k}(\boldsymbol{x})\) の仮定
 <ul>
@@ -732,8 +744,8 @@ Bayes の公式による書き換え
 
 </ul>
 </section>
-<section id="slide-org2c8b639">
-<h3 id="org2c8b639">平均・分散の推定</h3>
+<section id="slide-org9c41ae9">
+<h3 id="org9c41ae9">平均・分散の推定</h3>
 <ul>
 <li><p>
 平均の推定 (クラスごとに行う)
@@ -772,11 +784,11 @@ Bayes の公式による書き換え
 </section>
 </section>
 <section>
-<section id="slide-org7745892" data-background="#fef4f4">
-<h2 id="org7745892">演習</h2>
+<section id="slide-org467ac49" data-background="#fef4f4">
+<h2 id="org467ac49">演習</h2>
 </section>
-<section id="slide-org2650b21" data-background="#fef4f4">
-<h3 id="org2650b21">問題</h3>
+<section id="slide-orgc10d23f" data-background="#fef4f4">
+<h3 id="orgc10d23f">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -811,8 +823,8 @@ Bayes の公式による書き換え
 
 </ul>
 </section>
-<section id="slide-org8b71e9c" data-background="#fef4f4">
-<h3 id="org8b71e9c">解答例</h3>
+<section id="slide-org507c6ba" data-background="#fef4f4">
+<h3 id="org507c6ba">解答例</h3>
 <ul>
 <li><p>
 同値関係を順に確認すればよい
@@ -844,13 +856,13 @@ Bayes の公式による書き換え
 </section>
 </section>
 <section>
-<section id="slide-orga9efac7">
-<h2 id="orga9efac7">2次判別分析</h2>
-<div class="outline-text-2" id="text-orga9efac7">
+<section id="slide-orge44e4aa">
+<h2 id="orge44e4aa">2次判別分析</h2>
+<div class="outline-text-2" id="text-orge44e4aa">
 </div>
 </section>
-<section id="slide-org97dd58c">
-<h3 id="org97dd58c">2次判別</h3>
+<section id="slide-org859b20e">
+<h3 id="org859b20e">2次判別</h3>
 <ul>
 <li>\(f_{k}(\boldsymbol{x})\) の仮定
 <ul>
@@ -881,7 +893,7 @@ Bayes の公式による書き換え
 \begin{equation}
   \delta_{k}(\boldsymbol{x})
   =
-  -\frac{1}{2}\det\Sigma_{k}
+  -\frac{1}{2}\log\det\Sigma_{k}
   -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
   \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
   +\log\pi_{k}
@@ -892,8 +904,8 @@ Bayes の公式による書き換え
 
 </ul>
 </section>
-<section id="slide-org2b74911">
-<h3 id="org2b74911">平均・分散の推定</h3>
+<section id="slide-org524ce34">
+<h3 id="org524ce34">平均・分散の推定</h3>
 <ul>
 <li><p>
 平均の推定 (クラスごとに行う)
@@ -932,11 +944,11 @@ Bayes の公式による書き換え
 </section>
 </section>
 <section>
-<section id="slide-orgced7139" data-background="#fef4f4">
-<h2 id="orgced7139">演習</h2>
+<section id="slide-org7447548" data-background="#fef4f4">
+<h2 id="org7447548">演習</h2>
 </section>
-<section id="slide-org796d6a1" data-background="#fef4f4">
-<h3 id="org796d6a1">問題</h3>
+<section id="slide-org68343dc" data-background="#fef4f4">
+<h3 id="org68343dc">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -971,8 +983,8 @@ Bayes の公式による書き換え
 
 </ul>
 </section>
-<section id="slide-org611d09d" data-background="#fef4f4">
-<h3 id="org611d09d">解答例</h3>
+<section id="slide-org6b69cea" data-background="#fef4f4">
+<h3 id="org6b69cea">解答例</h3>
 <ul>
 <li><p>
 同値関係を順に確認すればよい
@@ -986,12 +998,12 @@ Bayes の公式による書き換え
   &\Leftrightarrow
     \log f_{k}(\boldsymbol{x})+\log\pi_{k} < \log f_l(\boldsymbol{x})+\log\pi_l\\
   &\Leftrightarrow
-    -\frac{1}{2}\det\Sigma_{k}
+    -\frac{1}{2}\log\det\Sigma_{k}
     -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
     \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
     +\log\pi_{k}\\
   &\phantom{\Leftrightarrow}\quad <
-    -\frac{1}{2}\det\Sigma_l
+    -\frac{1}{2}\log\det\Sigma_l
     -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_l)^{\mathsf{T}}
     \Sigma_l^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_l)
     +\log\pi_l\\
@@ -1006,13 +1018,13 @@ Bayes の公式による書き換え
 </section>
 </section>
 <section>
-<section id="slide-orga4ae887">
-<h2 id="orga4ae887">さまざまな多値判別</h2>
-<div class="outline-text-2" id="text-orga4ae887">
+<section id="slide-org2d1b74f">
+<h2 id="org2d1b74f">さまざまな多値判別</h2>
+<div class="outline-text-2" id="text-org2d1b74f">
 </div>
 </section>
-<section id="slide-orgf037df8">
-<h3 id="orgf037df8">多値判別の構成方法</h3>
+<section id="slide-org80c2ada">
+<h3 id="org80c2ada">多値判別の構成方法</h3>
 <ul>
 <li>判別関数の比較
 <ul>
@@ -1023,7 +1035,7 @@ Bayes の公式による書き換え
 <li>2値判別の統合
 <ul>
 <li>2クラスでの比較 : 最大の組合せ数 \({}_{K}C_{2}\)</li>
-<li>グループでの比較 : 最大の組合せ数 \(2^{K}-2\)</li>
+<li>グループでの比較 : 最大の組合せ数 \(2^{K-1}-1\)</li>
 
 </ul></li>
 <li>\(K{-}1\) 個の特徴量への変換
@@ -1036,8 +1048,8 @@ Bayes の公式による書き換え
 
 </ul>
 </section>
-<section id="slide-org2af1f81">
-<h3 id="org2af1f81">変動の分解</h3>
+<section id="slide-orgfe937d4">
+<h3 id="orgfe937d4">変動の分解</h3>
 <ul>
 <li>3種類の変動
 <ul>
@@ -1076,11 +1088,11 @@ Bayes の公式による書き換え
 </section>
 </section>
 <section>
-<section id="slide-orgec13373" data-background="#fef4f4">
-<h2 id="orgec13373">演習</h2>
+<section id="slide-orgb5bee2f" data-background="#fef4f4">
+<h2 id="orgb5bee2f">演習</h2>
 </section>
-<section id="slide-org4817bec" data-background="#fef4f4">
-<h3 id="org4817bec">問題</h3>
+<section id="slide-org3b0843d" data-background="#fef4f4">
+<h3 id="org3b0843d">問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -1104,8 +1116,8 @@ Bayes の公式による書き換え
 
 </ul>
 </section>
-<section id="slide-org1490c49" data-background="#fef4f4">
-<h3 id="org1490c49">解答例</h3>
+<section id="slide-org20774a6" data-background="#fef4f4">
+<h3 id="org20774a6">解答例</h3>
 <ul>
 <li><p>
 定義どおりに計算する
@@ -1213,13 +1225,13 @@ Bayes の公式による書き換え
 </section>
 </section>
 <section>
-<section id="slide-orga297721">
-<h2 id="orga297721">Fisher の判別分析</h2>
-<div class="outline-text-2" id="text-orga297721">
+<section id="slide-orga1f2adf">
+<h2 id="orga1f2adf">Fisher の判別分析</h2>
+<div class="outline-text-2" id="text-orga1f2adf">
 </div>
 </section>
-<section id="slide-org0e191f7">
-<h3 id="org0e191f7">Fisherの線形判別</h3>
+<section id="slide-org1fe5b72">
+<h3 id="org1fe5b72">Fisherの線形判別</h3>
 <ul>
 <li>判別のための特徴量 \(Z=\boldsymbol{\alpha}^{\mathsf{T}} X\)
 <ul>
@@ -1252,8 +1264,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-org07f33d4">
-<h3 id="org07f33d4">Fisherの線形判別の解</h3>
+<section id="slide-org26e861f">
+<h3 id="org26e861f">Fisherの線形判別の解</h3>
 <ul>
 <li>\(\boldsymbol{\alpha}\) は \(W^{-1}B\) の固有ベクトル (主成分分析と同様)
 <ul>
@@ -1290,11 +1302,11 @@ Fisherの基準
 </section>
 </section>
 <section>
-<section id="slide-orgb913aca">
-<h2 id="orgb913aca">解析の事例</h2>
+<section id="slide-org9fc6a6c">
+<h2 id="org9fc6a6c">解析の事例</h2>
 </section>
-<section id="slide-org48d59c7">
-<h3 id="org48d59c7">データについて</h3>
+<section id="slide-orgc66447c">
+<h3 id="orgc66447c">データについて</h3>
 <ul>
 <li>気象庁より取得した東京の気候データ
 <ul>
@@ -1305,8 +1317,8 @@ Fisherの基準
 
 </ul>
 </section>
-<section id="slide-orgb8c68d6">
-<h3 id="orgb8c68d6">気温と湿度による月の判別</h3>
+<section id="slide-org014ff64">
+<h3 id="org014ff64">気温と湿度による月の判別</h3>
 <ul>
 <li><p>
 9,10月のデータの散布図
@@ -1315,7 +1327,7 @@ Fisherの基準
 </ul>
 
 
-<div id="orgbdfb5e7" class="figure">
+<div id="org98f8ba4" class="figure">
 <p><img src="figs/08_pairs.png" alt="08_pairs.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>散布図</p>
@@ -1331,7 +1343,7 @@ Fisherの基準
 </ul>
 
 
-<div id="orgea6610e" class="figure">
+<div id="org3b5f2ab" class="figure">
 <p><img src="figs/08_lda_value.png" alt="08_lda_value.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>線形判別 (判別関数の値)</p>
@@ -1347,7 +1359,7 @@ Fisherの基準
 </ul>
 
 
-<div id="orgf3ce2a6" class="figure">
+<div id="org7960be8" class="figure">
 <p><img src="figs/08_lda.png" alt="08_lda.png" />
 </p>
 <p><span class="figure-number">Figure 6: </span>線形判別 (判別境界)</p>
@@ -1363,7 +1375,7 @@ Fisherの基準
 </ul>
 
 
-<div id="org5dd51bf" class="figure">
+<div id="orgd73b579" class="figure">
 <p><img src="figs/08_qda.png" alt="08_qda.png" />
 </p>
 <p><span class="figure-number">Figure 7: </span>2次判別</p>
@@ -1379,7 +1391,7 @@ Fisherの線形判別 (多値)
 </ul>
 
 
-<div id="org07a6f77" class="figure">
+<div id="org9587f4c" class="figure">
 <p><img src="figs/08_multi.png" alt="08_multi.png" />
 </p>
 <p><span class="figure-number">Figure 8: </span>多値判別</p>
@@ -1387,8 +1399,8 @@ Fisherの線形判別 (多値)
 </section>
 </section>
 <section>
-<section id="slide-org583ae42">
-<h2 id="org583ae42">次回の予定</h2>
+<section id="slide-orge9a5468">
+<h2 id="orge9a5468">次回の予定</h2>
 <ul>
 <li>第1回 : 判別分析の考え方</li>
 <li><b>第2回 : 分析の評価</b></li>
@@ -1402,7 +1414,7 @@ Fisherの線形判別 (多値)
 <script src="./reveal.js/plugin/zoom/zoom.js"></script>
 <script src="./reveal.js/plugin/menu/menu.js"></script>
 <script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
-<script src="./reveal.js/plugin/drawer/drawer.js"></script>
+<script src="./reveal.js/plugin/chalkboard/plugin.js"></script>
 <script src="./reveal.js/dist/theme/hidelinks.js"></script>
 <script>
 // Full list of configuration options available here:
@@ -1425,10 +1437,10 @@ overview: true,
 transition: 'fade',
 transitionSpeed: 'default',
 showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
-spotlight: { size: 80, initialPresentationMode: false, }, drawer: { toggleDrawKey: "d", toggleBoardKey: "c", pathSize: 3, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
+spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
 
 // Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealDrawer ],
+plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealChalkboard ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
