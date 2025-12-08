@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-12-08 13:27:15 mura>
+# Time-stamp: <2025-12-08 14:40:52 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -733,7 +733,7 @@
 [[file:figs/09_lda_roc.png]]
 #+end_leftcol
 #+begin_rightcol
-#+caption: 2次判別の混同行列
+#+caption: 2次判別のROC曲線
 #+name: fig:09_qda_roc
 #+attr_html: height 100%
 #+attr_latex: :width 0.6\linewidth
