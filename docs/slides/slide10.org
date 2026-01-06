@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2024-12-12 10:59:03 mura>
+# Time-stamp: <2026-01-06 13:17:53 mura>
 #+STARTUP: hidestars content indent
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
@@ -15,7 +15,7 @@
 * COMMENT メモ
 [[file:README.org::第10講]]
 
-* COMMENT 講義の内容
+* 講義の内容
 :PROPERTIES:
 :ID:       67BA72E8-0F1A-4886-8DC5-389510617DF1
 :END:
@@ -38,21 +38,29 @@
   library(gt)
   library(GGally)
   library(ggfortify)
+  library(ggrepel)
   library(cluster)
   library(ggdendro)
-  #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
-    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
-      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
-    else
-      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
+    ## if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+    ##   jp_font <- "BIZUDGothic-Regular"
+    ## else
+    ##   jp_font <- "HiraMaruProN-W4"
+    ## 
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+  }
   library(see)
   options(ggplot2.discrete.colour = function() scale_colour_material(),
           ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
-* 講義概要
+* COMMENT 講義概要
 :PROPERTIES:
 :ID:       B7608B47-96BE-4EED-90B0-E82720BBAC51
 :END:
@@ -71,18 +79,29 @@
     dplyr::filter(),
     dplyr::select(),
     dplyr::lag(),
-  )
+    )
   library(tidyverse)
   library(gt)
   library(ggfortify)
+  library(ggrepel)
   library(GGally)
   library(cluster)
   library(ggdendro)
+  #' macOSのための日本語表示の設定
+  if(Sys.info()["sysname"] == "Darwin") { # macOSか調べる
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+    par(family = jp_font)
+  } else {jp_font <- NULL}
 #+end_src
 
 
-* クラスタ分析の例
-** 実データによる例
+* COMMENT クラスタ分析の例
+** COMMENT 実データによる例
 :PROPERTIES:
 :END:
 # 東京大学 (再)
@@ -99,7 +118,7 @@
     Area   : 地方区分
     #+end_example
 
-** COMMENT 実データによる例
+** 実データによる例
 :PROPERTIES:
 :END:
 # 早稲田大学 (再)
@@ -234,6 +253,121 @@
   - 異なるクラスタに属する個体どうしは異なる性質
 - さらなるデータ解析やデータの可視化に利用
 - 教師なし学習の代表的な手法の一つ
+** クラスタ分析の例
+# 東京大学 (再)/早稲田大学
+- 総務省統計局より取得した都道府県別の社会生活統計指標の一部
+  - 総務省 [[https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0]]
+    #+begin_example
+    都道府県名　
+    地方区分　　
+    森林面積割合 : 森林面積割合 (%) 2014年
+    農業産出額　 : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+    人口割合　　 : 全国総人口に占める人口割合 (%) 2015年
+    土地生産性　 : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+    商品販売額　 : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+    #+end_example
+
+#+reveal: split
+#+begin_src R :exports none
+  #' @exercise 実データによるクラスタ分析の例
+  #' 以下の例で用いる分析のための関数の詳細は今回・次回で解説
+  #' データの読み込み
+  js_data <-
+    read_csv("data/japan_social2.csv",
+             col_types = list(地方区分 = col_factor()))
+#+end_src
+#+begin_src R :eval no :exports none
+  js_data |> View() # 左上ペインに表として表示
+#+end_src
+#+begin_src R :exports results :results output html :tangle no
+  #' データの表示(reveal用)
+  js_data |>
+    slice(1:15) |>
+    gt() |>
+    tab_options(table.font.size = 20) |>
+    as_raw_html()
+#+end_src
+#+begin_src R :exports results :results value scalar latex :tangle no
+  #' データの表示(latex用)
+  js_data |>
+    gt() |>
+    tab_options(table.font.size = 9, table.width = pct(80)) |>
+    as_latex() |> as.character()
+#+end_src
+
+# #+reveal: split
+# - データの内容
+#   #+html: <font size=5>
+#   #+begin_src R :exports results :results output html :tangle no
+#     #' データの表示(reveal用)
+#     library(gt)
+#     js_data |> slice(1:15) |> 
+#       gt() |> as_raw_html()
+#   #+end_src
+#   #+html: </font>
+#   #+begin_src R :exports results :results output latex :tangle no
+#     #' データの表示(latex用)
+#     js_data |> slice(1:15) |> 
+#       gt() |> as_latex()
+#   #+end_src
+
+#+reveal: split
+#+begin_src R :file figs/js_cluspairs.png :exports results :results graphics :height 700
+  #' データの視覚化
+  js_data |> # 散布図．いくつかの変数は相関強いことがわかる
+    ggpairs(columns = 3:7,
+            legend = c(2,1), # 2行1列のグラフから凡例を作成
+            upper = list(continuous = wrap("cor", size = 3.5)),
+            diag = list(continuous = wrap("densityDiag", alpha = .5),
+                        mapping = aes(colour = 地方区分)),
+            lower = list(continuous = wrap("points", alpha = .5),
+                         mapping = aes(colour = 地方区分))) +
+    theme(text = element_text(size = 10))
+#+end_src
+#+caption: 散布図
+#+name: fig:js_cluspairs
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/js_cluspairs.png]]
+
+#+reveal: split
+#+begin_src R :file figs/js_pcaplot.png :exports results :results graphics
+  js_data |> 
+    column_to_rownames(var = "都道府県名") |> 
+    select(where(is.double)) |> 
+    pam(1) |> # クラスタリングしない
+    autoplot(data = js_data,
+             colour = "地方区分",
+             label = TRUE,
+             label.repel = TRUE,
+             label.show.legend = FALSE) +
+    theme(legend.position = c(.9,.3))
+#+end_src
+#+caption: 主成分得点による散布図
+#+name: fig:js_pcaplot
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/js_pcaplot.png]]
+
+#+reveal: split
+#+begin_src R :file figs/js_clusplot.png :exports results :results graphics
+  #' クラスタ分析
+  js_data |> 
+    column_to_rownames(var = "都道府県名") |> 
+    select(where(is.double)) |> 
+    pam(6) |>
+    autoplot(frame = TRUE,
+             frame.type = "convex",
+             label = TRUE,
+             label.repel = TRUE,
+             label.show.legend = FALSE) +
+    theme(legend.position = c(.9,.2))
+#+end_src
+#+caption: 散布図上のクラスタ構造 (クラスタ分析の概念図)
+#+name: fig:js_clusplot
+#+attr_html: height 100%
+#+attr_latex: :width 0.6\linewidth
+[[file:figs/js_clusplot.png]]
 
 ** クラスタ分析の考え方
 - 階層的方法
@@ -264,14 +398,11 @@
 :ID:       47ACA170-C74E-4F57-8282-4A96BAD56F80
 :END:
 - [[color:green][社会生活統計指標の一部(関東地方)]]
-  #+begin_src R :exports none
-    js_data <- bind_cols(
-      read_csv(file="data/japan_social.csv"),
-      read_csv(file="data/prefecture.csv"))
-    js_kanto <- js_data |> 
+  #+begin_src R :exports none 
+    js_kanto <-
+      js_data |>
       slice(8:14) |>
-      select(jp,2:6) |>
-      set_names(c("都道府県名","森林面積割合","農業産出額","人口割合","土地生産性","商品販売額"))
+      select(-地方区分)
   #+end_src
   #+begin_src R :eval no :exports none
     js_kanto |> View() # 左上ペインに表として表示
@@ -286,7 +417,7 @@
     #' データの表示(latex用)
     js_kanto |>
       gt() |>
-      tab_options(table.font.size = 9) |>
+      tab_options(table.font.size = 9, table.width = pct(80)) |>
       as_latex() |> as.character()
   #+end_src
 
@@ -295,10 +426,8 @@
   library(cluster)
   myPlot <- function(k) {
     if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-    tmpa <- js_data |>
-      slice(8:14) |>
-      select(2:6,jp) |>
-      column_to_rownames(var = "jp")
+    tmpa <- js_kanto |>
+      column_to_rownames(var = "都道府県名")
     # tmpa <- js_data[8:14,]
     tmpb <- list(c(1,2,3,4,1,6,7),
                  c(1,2,3,1,1,6,7),
@@ -404,10 +533,8 @@
 #+reveal: split
 #+begin_src R :file figs/10_dendro.png :exports results :results graphics :tangle no
   if(Sys.info()["sysname"]=="Darwin"){par(family="HiraginoSans-W4")}
-  js_data |>
-    slice(8:14) |>
-    select(2:6,jp) |>
-    column_to_rownames(var = "jp") |>
+  js_kanto |>
+    column_to_rownames(var = "都道府県名") |>
     scale() |>
     agnes() |>
     plot(which.plots=2, main="",sub="",xlab="")
@@ -472,7 +599,7 @@
 - 擬似的な距離でもアルゴリズムは動く
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -565,12 +692,12 @@
   #+end_quote
   
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : クラスタ分析
+** COMMENT *R : クラスタ分析*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       122E64CD-BC8C-4ECB-96C9-29443B23443D
@@ -614,7 +741,7 @@
     ## i,j: 行・列の指定 (数値ベクトル，データフレームの行名)
   #+end_src
 
-** R : データ間の距離の計算
+** COMMENT *R : データ間の距離の計算*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       F308DB23-6E0F-48FA-8845-55C7FC617ACC
@@ -636,11 +763,11 @@
           warnType = TRUE)
     #' x: データフレーム
     #' metric: 距離 (標準はユークリッド距離，他は"manhattan"など)
-    #' stand: 正規化(平均と絶対偏差の平均による)の有無
+    #' stand: 標準化(平均と絶対偏差の平均による)の有無
     #' 返値は dissimilarity class
   #+end_src
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       D22E87E3-E968-4F93-9ED3-CFA9473F2463
@@ -652,9 +779,9 @@
       column_to_rownames(var = "Pref") |> # 'Pref'を行名に変換
       select(-Area) # 地方名は除く
   #+end_src
-  - 正規化せずにユークリッド距離とマンハッタン距離の計算を行いなさい
-  - 正規化して上記と同様の計算を行いなさい 
-  - 関東の都県同士の距離を表示しなさい (daisyによる正規化を用いなさい)
+  - 標準化せずにユークリッド距離とマンハッタン距離の計算を行いなさい
+  - 標準化して上記と同様の計算を行いなさい 
+  - 関東の都県同士の距離を表示しなさい (daisyによる標準化を用いなさい)
   - 大阪と四国の間の距離を表示しなさい
   - ユークリッド距離とマンハッタン距離の散布図を描き比較しなさい
     
@@ -683,16 +810,16 @@
   as.matrix(js_dist_euc)[1:5,1:5]
   as.matrix(js_daisy_euc)[1:5,1:5]
 
-  #' 正規化したユークリッド距離とマンハッタン距離の計算
+  #' 標準化したユークリッド距離とマンハッタン距離の計算
   js_dist_euc <- dist(scale(js_df), method = "euclidean")
   js_dist_man <- dist(scale(js_df), method = "manhattan")
   js_daisy_euc <- daisy(js_df, metric = "euclidean", stand = TRUE)
   js_daisy_man <- daisy(js_df, metric = "manhattan", stand = TRUE)
-  #' 正規化の方法が異なることに注意
+  #' 標準化の方法が異なることに注意
   as.matrix(js_dist_man)[10:15,10:15]
   as.matrix(js_daisy_man)[10:15,10:15]
 
-  #' 以下 daisy による正規化を用いる
+  #' 以下 daisy による標準化を用いる
   #' 関東の都県同士の距離を表示しなさい
   glimpse(js_daisy_euc) # 距離行列のもつ情報を見る
   attr(js_daisy_euc, "Labels") # 県名を確認 ('attributes(js_daisy_euc)$Labels' でも良い)
@@ -758,7 +885,7 @@
     % =\min\left\{D(C_{a},C_{c}), D(C_{b},C_{c})\right\}
   \end{equation}
   #+end_quote
-
+  - \(A+B\)は集合\(A,B\)の直和を表す．
 ** 最長距離法
 - 最も遠い対象間の距離を用いる方法
   #+begin_quote
@@ -798,13 +925,13 @@
 - データの性質に応じて距離は適宜使い分ける
   - データ間の距離の選択
   - クラスタ間の距離の選択
-- 変数の正規化は必要に応じて行う
+- 変数の標準化は必要に応じて行う
   - 物理的な意味合いを積極的に利用する場合はそのまま
-  - 単位の取り方などによる分析の不確定性を避ける場合は平均0，分散1に正規化
+  - 単位の取り方などによる分析の不確定性を避ける場合は平均0，分散1に標準化
 - データの性質を鑑みて適切に前処理
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -881,12 +1008,12 @@
   #+end_quote
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 階層的クラスタリング
+** COMMENT *R : 階層的クラスタリング*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       F217C7F8-45C2-48ED-9642-0BFA62F9E9B9
@@ -929,7 +1056,7 @@
     #' tree: stats::hclust() の返値
   #+end_src
   
-** R : 2次元でのクラスタ表示
+** COMMENT *R : 2次元でのクラスタ表示*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       06758554-01AD-44DD-B4A1-25B987E163B4
@@ -955,7 +1082,7 @@
              col.p = "dark green", col.txt = col.p, col.clus = 5，...)
     #' x: データフレーム
     #' clus: クラスタ分割
-    #' stand: 正規化の有無
+    #' stand: 標準化の有無
     #' lines: クラスタ間の繋がりの表示 (0:無，1:外，2:中心)
     #' shade: 網掛けの有無
     #' labels: ラベルの表示 (0:無，2:データとクラスタ, 3:データ, 4:クラスタ, など)
@@ -971,20 +1098,19 @@
 #     #' 詳細は '?ggfortify::autoplot.kmeans()' を参照
 #   #+end_src
 
-
 ** COMMENT 演習: 階層的クラスタリング
 :PROPERTIES:
 :reveal_background: #EEEEFF
 :END:
 - [[./code/11-hclust.r][11-hclust.r]] を確認してみよう
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       745A8CD2-BAA4-4F94-8DF0-968E33E8D1CE
 :END:
 - 都道府県別の社会生活統計指標を用いて以下の分析を行いなさい
-  - 平均0，分散1に正規化したデータのユークリッド距離を用いて，
+  - 平均0，分散1に標準化したデータのユークリッド距離を用いて，
     群平均法による階層的クラスタリングを行いなさい
   - クラスタ数を5つとして分割を行いなさい
 ** COMMENT 解答例
@@ -994,7 +1120,7 @@
 #+end_src
 #+begin_src R :eval no :exports none
   #' クラスタリングの実行
-  #' 正規化してユークリッド距離を測る
+  #' 標準化してユークリッド距離を測る
   js_dist <- js_df |> scale() |> dist() # 'dist(scale(js_df))' でも良い
   js_hclust <- js_dist |>
     hclust(method = "average") # 群平均法
@@ -1062,7 +1188,7 @@
   #' ---------------------------------------------------------------------------
 #+end_src
 
-** R : ~package::cluster~ の利用 
+** COMMENT *R : ~package::cluster~ の利用 *
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       2E0591D8-A5AC-4640-A560-8F95B9978D92
@@ -1074,7 +1200,7 @@
           keep.diss = n < 100, keep.data = !diss, trace.lev = 0)
     #' x: データフレーム，または距離行列
     #' metric: 距離 (標準はユークリッド距離，他は 'manhattan' など)
-    #' stand: 正規化(平均と絶対偏差の平均による)の有無
+    #' stand: 標準化(平均と絶対偏差の平均による)の有無
     #' method: 分析法 (標準は群平均法，他は 'single', 'complete' など)
   #+end_src
 - 視覚化のための補助的な関数 (base R系)
@@ -1088,7 +1214,7 @@
   #+end_src
 #  - 関数 ~stats::cutree()~, ~stats::rect.hclust()~ も利用可能
 
-** データセットの準備
+** COMMENT *データセットの準備*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1117,7 +1243,7 @@
    総数    30,318人    100.0%
   #+end_example
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       126BE363-3942-4D86-B307-3A95240D3AAF
@@ -1279,28 +1405,29 @@
 #+end_src
 
 
-* COMMENT 解析事例
+* 解析事例
 # 早稲田大学
 ** 都道府県別の社会生活統計指標
 :PROPERTIES:
 :ID:       18026234-D183-45BA-96C2-F7A94C09F8EC
 :END:
 - 各データを正規化
-  #+begin_example
-  Forest : 森林面積割合 (%) 2014年
-  Agri   : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-  Ratio  : 全国総人口に占める人口割合 (%) 2015年
-  Land   : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-  Goods  : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
-  #+end_example
+   #+begin_example
+   森林面積割合 : 森林面積割合 (%) 2014年
+   農業産出額　 : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+   人口割合　　 : 全国総人口に占める人口割合 (%) 2015年
+   土地生産性　 : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+   商品販売額　 : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+   #+end_example
 - 分析方法 : Euclid 距離 + 群平均法
 
 #+reveal: split
 #+begin_src R :file figs/10_jsclst.png :exports results :results graphics :tangle yes
   #' 階層的クラスタリングの実行:
-  js_hclust <- js_data |>
-    select(2:6,jp) |>
-    column_to_rownames(var = "jp") |>
+  js_hclust <-
+    js_data |>
+    select(-地方区分) |>
+    column_to_rownames(var = "都道府県名") |>
     agnes(stand = TRUE)
   js_hclust |>
     as.dendrogram() |>
@@ -1322,7 +1449,7 @@
   js_clust <- cutree(js_hclust, k = k)  # クラスタを作成
   js_dendr <- dendro_data(js_hclust, type="rectangle") # ggplot用に変換
   js_rect <- left_join(label(js_dendr),
-                       tibble(label = js_data[["jp"]],
+                       tibble(label = js_data[["都道府県名"]],
                               cluster = js_clust)) |>
     group_by(cluster) |>
     summarize(xmin = min(x)-0.3, xmax = max(x)+0.3)
@@ -1432,7 +1559,7 @@
     select(ume:etc,jp,area_jp) |>
     set_names(c("梅","鮭","昆布","鰹","明太子","鱈子","ツナ","その他","県名","地方")) |>
     GGally::ggpairs(columns = 1:8,
-                    upper = list(continuous = "cor"),
+                    upper = list(continuous = wrap("cor", size = 4.0)),
                     diag = list(continuous = "barDiag"),
                     lower = list(continuous = wrap("points", size = 0.5),
                                  ## wrap("smooth", se = FALSE, size = 0.5),

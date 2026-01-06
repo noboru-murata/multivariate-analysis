@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2024-12-20 11:54:04 mura>
+# Time-stamp: <2026-01-06 14:15:04 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -15,7 +15,7 @@
 * COMMENT メモ
 [[file:README.org::第11講]]
   
-* COMMENT 講義の内容
+* 講義の内容
 :PROPERTIES:
 :ID:       1957D10C-281F-41A0-ACE9-1119E2E55796
 :END:
@@ -33,26 +33,36 @@
     dplyr::filter(),
     dplyr::select(),
     dplyr::lag(),
-    )
+  )
   library(tidyverse)
+  library(gt)
   library(GGally)
   library(ggfortify)
+  library(ggrepel)
   library(cluster)
   library(ggdendro)
-  library(gt)
-  #' 日本語表示・色の設定 (ggplot)
   theme_set(theme_gray(base_size = 16))
   if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
-    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
-      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
-    else
-      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
+    ## if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
+    ##   jp_font <- "BIZUDGothic-Regular"
+    ## else
+    ##   jp_font <- "HiraMaruProN-W4"
+    ## 
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+  } else {
+    jp_font <- par("family")
+  }
   library(see)
   options(ggplot2.discrete.colour = function() scale_colour_material(),
           ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
-* 講義概要
+* COMMENT 講義概要
 :PROPERTIES:
 :ID:       6411F06A-9DF9-4E9A-AE03-52D6A80FE3EF
 :END:
@@ -157,8 +167,7 @@
       }
     }
   }
-  if(Sys.info()["sysname"]=="Darwin"){par(family="BIZUDGothic-Regular")}
-  par(mfrow=c(4,2), mar=rep(0.5,4))
+  par(mfrow=c(4,2), mar=rep(0.5,4), family=jp_font)
   myPlot(0)
   myPlot(1)
   myPlot(2)
@@ -201,7 +210,7 @@
     if(Sys.info()["sysname"]=="Darwin"){par(family="BIZUDGothic-Regular")}
     tmpa <- js_data |>
       slice(8:14) |>
-      select(2:6,jp) |>
+      select(3:7,jp) |>
       column_to_rownames(var = "jp")
     # tmpa <- js_data[8:14,]
     tmpb <- list(c(1,2,3,4,1,6,7),
@@ -233,7 +242,7 @@
   for(i in 0:6) myPlot(i)
   js_data |>
     slice(8:14) |>
-    select(2:6,jp) |>
+    select(3:7,jp) |>
     column_to_rownames(var = "jp") |>
     scale() |>
     agnes() |>
@@ -313,7 +322,7 @@
 - 最適な対応 \(C\) : クラスタ内変動の総和が最小
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -517,7 +526,7 @@
   om_subset |>
     mutate(県名 = rownames(om_subset), .before = 1) |>
     gt() |>
-    tab_options(table.font.size = 9) |>
+    tab_options(table.font.size = 9, table.width = pct(80)) |>
     as_latex() |> as.character()
 #+end_src
 
@@ -638,12 +647,12 @@
 [[file:figs/11_nhclst.png]]
  
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : \(k\)-平均法
+** COMMENT *R : \(k\)-平均法*
 :PROPERTIES:
 :ID:       BF14B712-D1D7-4CDA-BE9C-3BDCFDD7822F
 :END:
@@ -662,7 +671,7 @@
     - 例えば測定値の単位により異なる
     - 必要ならば主成分分析の場合と同様にデータの標準化を行う
 
-** R : 2次元でのクラスタ表示
+** COMMENT *R : 2次元でのクラスタ表示*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -675,7 +684,7 @@
   #+end_src
 - 関数 ~cluster::clusplot()~ を利用することもできる
       
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       F4543112-3BC2-4689-8887-5510E8A66EE1
@@ -790,7 +799,7 @@
   #' ---------------------------------------------------------------------------
 #+end_src
 
-** R : \(k\)-メドイド法 
+** COMMENT *R : \(k\)-メドイド法 *
 :PROPERTIES:
 :ID:       23F6D185-357C-4973-95B4-184D0335F0BC
 :END:
@@ -818,7 +827,7 @@
 :END:
 - [[./code/12-kmeans.r][12-kmeans.r]] を確認してみよう
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       95C3E2F9-62C2-48DA-A6D2-F3315F356388
@@ -909,20 +918,20 @@
 #+end_src
 
 
-* COMMENT 解析事例
+* 解析事例
 # 早稲田大学
 ** 都道府県別の社会生活統計指標
 :PROPERTIES:
 :ID:       4724A63D-8650-4583-8996-DD8E06C7BA77
 :END:
 - データの属性
-  #+begin_example
-  Forest : 森林面積割合 (%) 2014年
-  Agri   : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
-  Ratio  : 全国総人口に占める人口割合 (%) 2015年
-  Land   : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
-  Goods  : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
-  #+end_example
+   #+begin_example
+   森林面積割合 : 森林面積割合 (%) 2014年
+   農業産出額　 : 就業者１人当たり農業産出額(販売農家）(万円) 2014年
+   人口割合　　 : 全国総人口に占める人口割合 (%) 2015年
+   土地生産性　 : 土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+   商品販売額　 : 商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+   #+end_example
 - 平均0，分散1に正規化して解析
 
 #+reveal: split
@@ -931,16 +940,16 @@
     ### 総務省統計局の統計データによる例
     library(cluster)
     library(RColorBrewer)
-    js_data <- bind_cols(
-      read_csv(file="data/japan_social.csv"),
-      read_csv(file="data/prefecture.csv"))
+    js_data <-
+      read_csv("data/japan_social2.csv",
+               col_types = list(地方区分 = col_factor()))
 
     ## k-平均法の実行: 
     set.seed(1234)
     k <- 7 # 分割数を指定
     js_km <- js_data |>
-      select(Pref,Forest:Goods) |>
-      column_to_rownames(var = "Pref") |>
+      select(-地方区分) |>
+      column_to_rownames(var = "都道府県名") |>
       scale() |>
       kmeans(centers=k, nstart=20)
   #+end_src
@@ -948,7 +957,7 @@
     ## 結果の確認 (各クラスター内の県名を表示)
     for(i in 1:k){
            cat("=== cluster",i,"===\n")
-           print(js_data[["jp"]][js_km$cluster==i])
+           print(js_data[["都道府県名"]][js_km$cluster==i])
     }
   #+end_src
   
@@ -972,9 +981,10 @@
 - ユークリッド距離 + k-メドイド法 
   #+begin_src R :exports results :tangle yes
     ## k-medoids の実行
-    js_pam <- js_data |>
-      select(Pref,Forest:Goods) |>
-      column_to_rownames(var = "Pref") |>
+    js_pam <-
+      js_data |>
+      select(-地方区分) |>
+      column_to_rownames(var = "都道府県名") |>
       scale() |>
       pam(k=k)
     ## metric="manhattan", stand=TRUE)
@@ -983,7 +993,7 @@
     ## 結果の確認 (各クラスター内の県名を表示)
     for(i in 1:k){
            cat("=== cluster",i,"===\n")
-           print(js_data[["jp"]][js_pam$clustering==i])
+           print(js_data[["都道府県名"]][js_pam$clustering==i])
     }
   #+end_src
 
@@ -1164,7 +1174,7 @@
 - 距離の計算を適切に行えば階層的方法でも利用可
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1241,12 +1251,12 @@
   #+end_quote
   
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 凝集係数
+** COMMENT *R : 凝集係数*
 :PROPERTIES:
 :ID:       5EFEBBAA-7795-4ED3-9A25-C5506764F4B9
 :END:
@@ -1278,7 +1288,7 @@
                yaxRight = fromLeft, y.mar = 2.4 + max.strlen/2.5, ...)
   #+end_src
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       EAEFCCDA-22C8-40F1-8F9A-462C6E2AD824
@@ -1449,7 +1459,7 @@
 #               fill = "red", alpha = 0.6)
 # #+end_src
 
-** R : シルエット係数
+** COMMENT *R : シルエット係数*
 :PROPERTIES:
 :ID:       6AF1B625-7D2F-40F4-9AC5-236684343A73
 :END:
@@ -1505,7 +1515,7 @@
 :END:
 - [[./code/12-eval.r][12-eval.r]] を確認してみよう
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       AA8EF433-1EEC-4705-BFB1-EE300889D6F1
@@ -1614,7 +1624,7 @@
 #+end_src
 
 
-* COMMENT 解析事例
+* 解析事例
 # 早稲田大学
 ** 都道府県別の社会生活統計指標
 :PROPERTIES:
@@ -1627,19 +1637,39 @@
     
 #+reveal: split
 #+begin_src R :file figs/11_jsbannereuc.png :exports results :results graphics
-  js_agnes_euc <- js_data |>
-    select(Forest:Goods,jp) |>
-    column_to_rownames(var = "jp") |>
+  js_agnes_euc <-
+    js_data |>
+    select(-地方区分) |>
+    column_to_rownames(var = "都道府県名") |>
     agnes(metric = "euclidean",
           stand = TRUE,
           method = "average")
-  if(Sys.info()["sysname"]=="Darwin"){par(family="BIZUDGothic-Regular")}
-  plot(js_agnes_euc, which.plots=1,
-       sub = paste("凝集係数 = ",round(js_agnes_euc$ac, digits = 3)),
-       nmax.lab=50, 
-       max.strlen=5, 
-       cex.axis=0.5,
-       main="")
+  ## if(Sys.info()["sysname"]=="Darwin"){par(family="BIZUDGothic-Regular")}
+  ## plot(js_agnes_euc, which.plots=1,
+  ##      sub = paste("凝集係数 = ",round(js_agnes_euc$ac, digits = 3)),
+  ##      nmax.lab=50, 
+  ##      max.strlen=5, 
+  ##      cex.axis=0.5,
+  ##      main="")
+  my_bannerplot <- function(object, # agnesの返値
+                            fill = "orange", alpha = 0.6, ...) {
+    p <- tibble(x = object[["height"]],
+                y = length(object[["height"]]):1) |>
+      ggplot() +
+      geom_rect(aes(xmin = x, xmax = max(x),
+                    ymin = y, ymax = y+1), 
+                fill = fill, alpha = alpha) + 
+      scale_y_continuous(breaks = length(object[["order.lab"]]):1,
+                         expand = expansion(add = 0.5),
+                         labels = object[["order.lab"]],
+                         position = "right") +
+      labs(caption = paste("凝集係数(平均) = ",
+                           round(object[["ac"]], digits = 3)))
+    p
+  }
+  my_bannerplot(js_agnes_euc,
+                fill = "red", alpha = 0.6) +
+    theme(axis.text.y = element_text(size = 9))
 #+end_src
 #+caption: 凝集係数 (ユークリッド距離)
 #+name: fig:11_jsbannereuc
@@ -1664,19 +1694,23 @@ file:figs/11_jsdendroeuc.png
 
 #+reveal: split
 #+begin_src R :file figs/11_jsbannerman.png :exports results :results graphics
-  js_agnes_man <- js_data |>
-    select(Forest:Goods,jp) |>
-    column_to_rownames(var = "jp") |>
+  js_agnes_man <-
+    js_data |>
+    select(-地方区分) |>
+    column_to_rownames(var = "都道府県名") |>
     agnes(metric = "manhattan",
           stand = TRUE,
           method = "average")
-  if(Sys.info()["sysname"]=="Darwin"){par(family="BIZUDGothic-Regular")}
-  plot(js_agnes_man, which.plots=1,
-       sub = paste("凝集係数 = ",round(js_agnes_man$ac, digits = 3)),
-       nmax.lab=50, 
-       max.strlen=5, 
-       cex.axis=0.5,
-       main="")
+  my_bannerplot(js_agnes_man,
+                fill = "red", alpha = 0.6) +
+    theme(axis.text.y = element_text(size = 9))
+  ## if(Sys.info()["sysname"]=="Darwin"){par(family="BIZUDGothic-Regular")}
+  ## plot(js_agnes_man, which.plots=1,
+  ##      sub = paste("凝集係数 = ",round(js_agnes_man$ac, digits = 3)),
+  ##      nmax.lab=50, 
+  ##      max.strlen=5, 
+  ##      cex.axis=0.5,
+  ##      main="")
 #+end_src
 #+caption: 凝集係数 (マンハッタン距離)
 #+name: fig:11_jsbannerman
@@ -1705,17 +1739,17 @@ file:figs/11_jsdendroman.png
   #+begin_src R :exports results
     cat("凝集係数 (ユークリッド距離)\n")
     (js_data |>
-      select(Forest:Goods,jp) |>
+      select(-地方区分) |>
       slice(-c(1,13,45,46)) |>
-      column_to_rownames(var = "jp") |>
+      column_to_rownames(var = "都道府県名") |>
       agnes(metric = "euclidean",
             stand = TRUE,
             method = "average"))$ac |> round(digits = 3)
     cat("凝集係数 (マンハッタン距離)\n")
     (js_data |>
-      select(Forest:Goods,jp) |>
+      select(-地方区分) |>
       slice(-c(1,13,45,46)) |>
-      column_to_rownames(var = "jp") |>
+      column_to_rownames(var = "都道府県名") |>
       agnes(metric = "manhattan",
             stand = TRUE,
             method = "average"))$ac |> round(digits = 3)
@@ -1750,8 +1784,8 @@ file:figs/11_jsdendroman.png
     pam(k = 7) |>
     silhouette() |>
     autoplot() +
-    labs(x = "都道府県(クラスタ)",
-         y = "シルエット係数")
+    labs(x = "都道府県(クラスタ)", y = NULL,
+         caption= paste("シルエット係数(平均) =",om_sil|>filter(k==7)|>pull(sil)))
 #+end_src
 #+caption: シルエット係数の分布 (k=7)
 #+name: fig:11_omsil7
@@ -1765,8 +1799,8 @@ file:figs/11_omsil7.png
     pam(k = 8) |>
     silhouette() |>
     autoplot() +
-    labs(x = "都道府県(クラスタ)",
-         y = "シルエット係数")
+    labs(x = "都道府県(クラスタ)", y = NULL,
+         caption= paste("シルエット係数(平均) =",om_sil|>filter(k==8)|>pull(sil)))
 #+end_src
 #+caption: シルエット係数の分布 (k=8)
 #+name: fig:11_omsil8
@@ -1780,8 +1814,8 @@ file:figs/11_omsil8.png
     pam(k = 9) |>
     silhouette() |>
     autoplot() +
-    labs(x = "都道府県(クラスタ)",
-         y = "シルエット係数")
+    labs(x = "都道府県(クラスタ)", y = NULL,
+         caption= paste("シルエット係数(平均) =",om_sil|>filter(k==9)|>pull(sil)))
 #+end_src
 #+caption: シルエット係数の分布 (k=9)
 #+name: fig:11_omsil9

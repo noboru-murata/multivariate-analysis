@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-01-06 17:08:37 mura>
+# Time-stamp: <2025-12-22 17:45:32 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 #+PROPERTY: header-args:R+ :width 1344 :height 960 :res 144
@@ -18,7 +18,7 @@
 * COMMENT メモ
 [[file:README.org::第12講]]
 
-* 講義の内容
+* COMMENT 講義の内容
 :PROPERTIES:
 :ID:       80D38122-6D21-4493-B8F9-B89F29097EFE
 :END:
@@ -54,7 +54,7 @@
           ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
-* COMMENT 講義概要
+* 講義概要
 :PROPERTIES:
 :ID:       B06C0D8B-F2E3-4196-A968-DA4D93DD276A
 :END:
@@ -76,9 +76,19 @@
     dplyr::lag(),
     )
   library(tidyverse)
+  library(ggrepel)
   library(fable)
   library(tsibble)
   library(feasts)
+  #' macOSのための日本語表示の設定
+  if(Sys.info()["sysname"] == "Darwin") { # macOSか調べる
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+  } else {jp_font <- NULL}
 #+end_src
 
 
@@ -392,7 +402,7 @@
 [[file:figs/ts_rw.png]]
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -457,12 +467,12 @@
   #+end_quote
 
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 時系列データの扱い
+** COMMENT *R : 時系列データの扱い*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -481,7 +491,7 @@
     #+end_src
     - https://otexts.com/fpp3/ (textbook)
       
-** R : 時系列の作成
+** COMMENT *R : 時系列の作成*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       FCF431A0-5CF5-41D0-A3A1-0BBCDFE75A6C
@@ -551,7 +561,7 @@
   - その他の詳細は ~?plot.ts~ を参照
   - 表示が異なる関数 ~ts.plot()~ もあるので調べてみよう
 
-** R : 時系列の描画
+** COMMENT *R : 時系列の描画*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       10AAB94B-BC6A-4B39-9DFF-A31B8C960646
@@ -602,7 +612,7 @@
 :END:
 - [[./code/13-rw.r][13-rw.r]] を確認してみよう
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       2C8D3738-900E-4637-8FDB-7C6F827F07E9
@@ -920,7 +930,7 @@
 [[file:figs/ts_arma.png]]
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -982,7 +992,7 @@
   #+end_quote
 
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1005,7 +1015,7 @@
 :END:
 - [[./code/13-arma.r][13-arma.r]] を確認してみよう
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       DB3D47F3-9943-40AF-8F81-DAEB96F54966
@@ -1313,7 +1323,7 @@
 [[file:figs/ts_armaacf.png]]
 
 
-* 演習
+* COMMENT 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1388,12 +1398,12 @@
     Levinson–Durbin アルゴリズムが知られている
 
 
-* COMMENT 実習
+* 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 自己相関・自己共分散の計算・描画
+** COMMENT *R : 自己相関・自己共分散の計算・描画*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       53DE1CC8-0CB7-45DE-9186-B05CDAD42779
@@ -1435,7 +1445,7 @@
       toy_acf |> autoplot()
     #+end_src
     
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       EB3F9793-345E-44E2-B8D9-A4D66898B140
@@ -1489,6 +1499,7 @@
 * 次回の内容
 - 第1回 : 時系列の基本モデル
 - *第2回 : モデルの推定と予測*
+
 
 * Footnotes
 * COMMENT ローカル変数
