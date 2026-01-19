@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-01-06 14:15:04 mura>
+# Time-stamp: <2026-01-12 14:43:12 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 # C-c C-x C-v でinlineを切り替え
@@ -57,9 +57,9 @@
   } else {
     jp_font <- par("family")
   }
-  library(see)
-  options(ggplot2.discrete.colour = function() scale_colour_material(),
-          ggplot2.discrete.fill = function() scale_fill_material())
+  ## library(see)
+  ## options(ggplot2.discrete.colour = function() scale_colour_material(),
+  ##         ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
 * COMMENT 講義概要

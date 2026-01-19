@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-12-22 17:45:32 mura>
+# Time-stamp: <2026-01-19 11:07:36 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 #+PROPERTY: header-args:R+ :width 1344 :height 960 :res 144
@@ -18,7 +18,7 @@
 * COMMENT メモ
 [[file:README.org::第12講]]
 
-* COMMENT 講義の内容
+* 講義の内容
 :PROPERTIES:
 :ID:       80D38122-6D21-4493-B8F9-B89F29097EFE
 :END:
@@ -38,23 +38,23 @@
     dplyr::lag(),
     )
   library(tidyverse)
+  library(ggrepel)
   library(fable)
   library(tsibble)
   library(feasts)
   library(gt)
-  #' 日本語表示・色の設定 (ggplot)
-  theme_set(theme_gray(base_size = 16))
-  if(Sys.info()[["sysname"]] == "Darwin") { # MacOSか確認
-    if(length(grep("BIZUDPGothic", systemfonts::system_fonts()[["name"]]))>0) 
-      theme_update(text = element_text(family = "BIZUDGothic-Regular"))
-    else
-      theme_update(text = element_text(family = "HiraMaruProN-W4"))}
-  library(see)
-  options(ggplot2.discrete.colour = function() scale_colour_material(),
-          ggplot2.discrete.fill = function() scale_fill_material())
+  #' macOSのための日本語表示の設定
+  if(Sys.info()["sysname"] == "Darwin") { # macOSか調べる
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+  } else {jp_font <- NULL}
 #+end_src
 
-* 講義概要
+* COMMENT 講義概要
 :PROPERTIES:
 :ID:       B06C0D8B-F2E3-4196-A968-DA4D93DD276A
 :END:
@@ -402,7 +402,7 @@
 [[file:figs/ts_rw.png]]
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -467,7 +467,7 @@
   #+end_quote
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -930,7 +930,7 @@
 [[file:figs/ts_arma.png]]
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -992,7 +992,7 @@
   #+end_quote
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1323,7 +1323,7 @@
 [[file:figs/ts_armaacf.png]]
 
 
-* COMMENT 演習
+* 演習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1398,7 +1398,7 @@
     Levinson–Durbin アルゴリズムが知られている
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:

@@ -3,7 +3,7 @@
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
-# Time-stamp: <2026-01-06 13:17:53 mura>
+# Time-stamp: <2026-01-12 14:43:28 mura>
 #+STARTUP: hidestars content indent
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
@@ -55,9 +55,9 @@
     update_geom_defaults("text_repel", list(family = theme_get()$text$family))
     update_geom_defaults("label_repel", list(family = theme_get()$text$family))
   }
-  library(see)
-  options(ggplot2.discrete.colour = function() scale_colour_material(),
-          ggplot2.discrete.fill = function() scale_fill_material())
+  ## library(see)
+  ## options(ggplot2.discrete.colour = function() scale_colour_material(),
+  ##         ggplot2.discrete.fill = function() scale_fill_material())
 #+end_src
 
 * COMMENT 講義概要

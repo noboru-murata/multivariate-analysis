@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2025-01-13 14:04:37 mura>
+# Time-stamp: <2026-01-19 11:11:32 mura>
 :REVEAL:
 #+SETUPFILE: "./reveal.js/local/mycourse.org"
 #+PROPERTY: header-args:R+ :width 1344 :height 960 :res 144
@@ -69,17 +69,35 @@
 #+end_src
 #+begin_src R :exports none
   ### 第13講 サンプルコード
-  library(conflicted)
-  conflicts_prefer(
+  library(conflicted) # 関数名の衝突を警告
+  conflicts_prefer(   # 優先的に使う関数を指定
     dplyr::filter(),
-    dplyr::select(),
     dplyr::lag(),
-  )
-  library(tidyverse)
+    dplyr::select(),
+    scales::discard(),
+    recipes::fixed(),
+    yardstick::spec(),
+    recipes::step(),
+    )
+  library(tidyverse)  
+  library(ggfortify)
+  library(ggrepel)
+  library(GGally)
+  library(gt)         
+  library(gtsummary)  
   library(fable)
   library(tsibble)
   library(feasts)
   library(urca)
+  #' macOSのための日本語表示の設定
+  if(Sys.info()["sysname"] == "Darwin") { # macOSか調べる
+    jp_font <- "HiraMaruProN-W4"
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+  } else {jp_font <- NULL}
 #+end_src
 
 
@@ -376,7 +394,7 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : 自己相関・自己共分散の計算・描画
+** COMMENT *R : 自己相関・自己共分散の計算・描画*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       53DE1CC8-0CB7-45DE-9186-B05CDAD42779
@@ -444,7 +462,7 @@
   #+end_src
   - 詳細は ~?acf~ を参照
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       7158EAD0-BAC6-4447-9EEC-17643CFB43F0
@@ -797,7 +815,7 @@
 :reveal_background: #fef4f4
 :END:
 # 東京大学
-** R : ARモデルの推定
+** COMMENT *R : ARモデルの推定*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
@@ -936,7 +954,7 @@
       auto.arima(y) 
     #+end_src
 
-** R : ARIMAモデルの推定
+** COMMENT *R : ARIMAモデルの推定*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
@@ -981,7 +999,7 @@
   #+end_src
   - resid() でも可
 
-** R : モデルを扱うための補助的な関数
+** COMMENT *R : モデルを扱うための補助的な関数*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -1012,7 +1030,7 @@
   - あてはめ値は ~fitted()/fitted.values()~ でも可 
   - 残差は ~residuals()/resid()~ でも可
 
-** R : モデルの評価
+** COMMENT *R : モデルの評価*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       39D2C3C7-DE66-4A8C-A4D3-500348BD5C28
@@ -1081,7 +1099,7 @@
 :END:
 - [[./code/14-armaest.r][14-armaest.r]] を確認してみよう
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       A889F721-75F9-4138-A718-65634969BE1B
@@ -1167,7 +1185,7 @@
     #+end_quote
     - 対数変換と階差で微小な比率の変動を抽出
 
-** R : 時系列クラスの作成(再掲)
+** COMMENT *R : 時系列クラスの作成(再掲)*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       0BCEEF10-A8C6-49F1-9AC4-E9BCA8005756
@@ -1195,7 +1213,7 @@
       AirPassengers |> as_tsibble() # 時系列オブジェクトの変換
     #+end_src
 
-** R : 部分系列の切り出し
+** COMMENT *R : 部分系列の切り出し*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       BED95133-44EC-4FD9-85F1-B398EAF628DD
@@ -1248,7 +1266,7 @@
   #+end_src
   - その他の詳細は ~?stats::window~ を参照
 
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       999544D3-132B-4F98-B199-2C626228B967
@@ -1349,12 +1367,14 @@
 [[file:figs/ap_arima.png]]
 
 ** 分解モデルによる予測
-- トレンド成分+季節成分+ランダム成分への分解
+- *トレンド* + *季節* + *ランダム* 成分への分解
   #+begin_quote
   \begin{equation}
     X_{t}=T_{t}+S_{t}+R_{t}
   \end{equation}
+  #+end_quote
   あるいは
+  #+begin_quote
   \begin{equation}
     X_{t}=T_{t}\times S_{t}\times R_{t}\qquad
     (\log X_{t}=\log T_{t} + \log S_{t} + \log R_{t})
@@ -1397,7 +1417,7 @@
          x = "Year", y = "Passengers/1000")
 #+end_src
 #+name: fig:ap_ets
-#+caption: ETSモデル(expornential smoothing)による予測
+#+caption: ETSモデル(exponential smoothing)による予測
 #+attr_html: :height 100%
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/ap_ets.png]]
@@ -2043,7 +2063,7 @@
 #+attr_latex: :width 0.6\linewidth
 [[file:figs/covid_8wave_sts_pred.png]]
   
-** まとめ
+** 分析のまとめ
 - 感染者数の推移は非定常なデータ
 - 構造が時不変と考えられる区間を捉えれば
   - 時系列の適切な変換 (指数的な増大のため対数変換)
@@ -2090,7 +2110,7 @@
   #+end_src
   - 詳細は ~?forecast~ を参照
 
-** R : 時系列の予測
+** COMMENT *R : 時系列の予測*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       F44EE2C7-D0B3-4915-B891-53F8C7D70BB4
@@ -2113,7 +2133,7 @@
     #+end_src
     - 描画には ~fabletools::autoplot.fbl_ts()~ が利用される
 
-** R : 分解モデルの推定
+** COMMENT *R : 分解モデルの推定*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       77CA9B1D-FD52-4F1F-8CB0-7B9731E1D0E4
@@ -2243,7 +2263,7 @@
   lines(tw_test, col="red") # 真値を重ね描き
 #+end_src
      
-** 練習問題
+** COMMENT *練習問題*
 :PROPERTIES:
 :reveal_background: #fef4f4
 :ID:       F7A8D68B-3003-4D17-8920-C799A2E1752A
@@ -2520,6 +2540,7 @@
   - 自習 (レポート作成)
   - 質問などある人は Zoom にて受付 (9:30-10:00)
    
+
 * Footnotes
 * COMMENT ローカル変数
 # Local Variables:
