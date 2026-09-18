@@ -8,7 +8,7 @@ format:
     theme: [default, _quarto/scss/lecture.scss]
     slide-level: 3
     max-scale: 2.0 
-    embed-resources: false
+    embed-resources: true
     include-in-header: _quarto/lib/mathjax-fix.html
     center: true
     controls: true
