@@ -1,1673 +1,1430 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<title>数学的準備</title>
-<meta name="author" content="村田 昇"/>
-<style type="text/css">
-.underline { text-decoration: underline; }
-</style>
-<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+<html lang="en"><head>
+<script src="slide02_files/libs/clipboard/clipboard.min.js"></script>
+<script src="slide02_files/libs/quarto-html/tabby.min.js"></script>
+<script src="slide02_files/libs/quarto-html/popper.min.js"></script>
+<script src="slide02_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="slide02_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="slide02_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="slide02_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
-<link rel="stylesheet" href="./reveal.js/dist/theme/oer-reveal.css" id="theme"/>
+  <meta name="author" content="村田 昇">
+  <title>数学的準備</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="slide02_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="slide02_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="slide02_files/libs/revealjs/dist/theme/quarto-a19f1b5f9a738796ea787173eebc5d5a.css">
+  <link href="slide02_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="slide02_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="slide02_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="slide02_files/libs/revealjs/plugin/reveal-pointer/pointer.css" rel="stylesheet">
+  <link href="slide02_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <!-- mathjax-fix.html ------------------------------------------------------
+       \mathcal{} や \mathbb{} が Chrome で豆腐(▯)になるときの対処。
 
-<link rel="stylesheet" href="./reveal.js/dist/theme/fonts/source-sans-pro/source-sans-pro.css"/>
+         format:
+           revealjs:
+             include-in-header: mathjax-fix.html
 
-<link rel="stylesheet" href="./reveal.js/plugin/menu/menu.css"/>
+       Quarto の revealjs は reveal.js の math プラグイン経由で MathJax 2.7.9 を
+       TeX-AMS_HTML-full 構成で読み込む。この構成の出力は HTML-CSS で、字形は
+       MathJax_Script などの専用 Web フォントで描かれる。MathJax は起動時に
+       「ローカルに使えそうな数式フォント(TeX / STIX)があるか」を調べ、あると
+       判断すると Web フォントを読まずにそちらを使う。その判定が外れると
+       U+1D4AF (𝒯) のような Unicode 数学英数字記号がそのまま出力され、
+       フォールバック先のフォントにその符号位置が無ければ豆腐になる。
+       ブラウザごとにインストール済みフォントの見え方とフォールバックの経路が
+       違うので、Safari では出て Chrome では出ない、という差が生じる。
 
-<link rel="stylesheet" href="./reveal.js/plugin/menu/font-awesome/css/fontawesome.css"/>
+       下の設定はローカルフォントの利用を止め、常に MathJax の Web フォントを
+       使わせる。これが本命の対処。
+  --------------------------------------------------------------------------- -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      "HTML-CSS": {
+        availableFonts: [],     // ローカルフォントを使わない
+        preferredFont: null,
+        webFont: "TeX"          // 常に MathJax の TeX Web フォントを取得する
+      }
+    });
+  </script>
 
-<link rel="stylesheet" href="./reveal.js/plugin/chalkboard/style.css"/>
-
-<link rel="stylesheet" href="./reveal.js/local/mycourse.css"/>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- それでも直らない場合(社内ネットワークで cdn.jsdelivr.net のフォントが
+       取れないなど)は、上をコメントアウトして下を有効にする。SVG 出力は字形を
+       パスとして描くのでフォントを一切必要とせず、どのブラウザでも同じ結果に
+       なる。print-pdf 出力にも強い。拡大したときの再描画がないぶん、重い数式が
+       多いスライドではわずかに軽くなることもある。
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Register.StartupHook("End Jax", function () {
+      return MathJax.Hub.setRenderer("SVG");
+    });
+  </script>
+  -->
 </head>
-<body>
-<div class="reveal">
-<div class="slides">
-<section id="sec-title-slide">
-<!-- This is an HTML template for the title slide. -->
-<!-- Embed logos as necessary. -->
-<!-- <a class="nooutlink" href="url"><img class="state-background your-logo-class" src="whatever.png" alt="Whatever" /></a> -->
-<div class="talk-title">
-    <h1 class="no-toc-progress">数学的準備</h1>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">数学的準備</h1>
+  <p class="subtitle">多変量解析 - 第2講</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+村田 昇
 </div>
-<div class="talk-subtitle">
-    <p>多変量解析 - 第2講</p>
 </div>
-<div class="keyboard-usage">
-    <p>(Press <code>?</code> for help, <code>n</code> and <code>p</code> for next and previous slide)</p>
-</div>
-<div class="talk-author">
-  <p>村田 昇<br />
-  </p>
 </div>
 
 </section>
-<section>
-<section id="slide-orgdb9daae">
-<h2 id="orgdb9daae">講義の内容</h2>
+<section id="講義の内容" class="title-slide slide level1 center">
+<h1>講義の内容</h1>
 <ul>
 <li>確率
 <ul>
 <li>確率分布</li>
 <li>確率質量関数・確率密度関数</li>
-<li>正規分布 (\(\chi^2\)分布，\(t\)分布，\(F\)分布 )</li>
-
+<li>正規分布 (<span class="math inline">\(\chi^2\)</span>分布，<span class="math inline">\(t\)</span>分布，<span class="math inline">\(F\)</span>分布 )</li>
 </ul></li>
 <li>統計
 <ul>
 <li>統計量 (標本平均，不偏分散・共分散，相関係数)</li>
 <li>最尤法 (尤度関数)</li>
 <li>Bayes の定理</li>
-
 </ul></li>
 <li>検定の考え方
 <ul>
 <li>統計的仮説検定</li>
-
 </ul></li>
-
 </ul>
 </section>
-</section>
-<section>
-<section id="slide-org17ed2eb">
-<h2 id="org17ed2eb">確率</h2>
-<div class="outline-text-2" id="text-org17ed2eb">
-</div>
-</section>
-<section id="slide-orgca4ee8e">
-<h3 id="orgca4ee8e">確率分布</h3>
-<ul>
-<li><p>
-定義
-</p>
-<blockquote>
-<p>
-注目する事象(標本空間の部分集合)に対して，
-それが起きる確率(区間 \([0,1]\) の実数)を返す関数
-</p>
-<div>
-\begin{equation}
-  P(\text{事象})=\text{確率値}
-\end{equation}
 
+<section>
+<section id="確率" class="title-slide slide level1 center">
+<h1>確率</h1>
+
+</section>
+<section id="確率分布" class="title-slide slide level2 center">
+<h2>確率分布</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>
-を <b>確率分布</b> という．
-</p>
-</blockquote></li>
+<p><strong>定義</strong></p>
+</div>
+<div class="callout-content">
+<p>注目する事象(標本空間の部分集合)に対して， それが起きる確率(区間 <span class="math inline">\([0,1]\)</span> の実数)を返す関数</p>
+<p><span class="math display">\[\begin{equation}
+  P(\text{事象})=\text{確率値}
+\end{equation}\]</span></p>
+<p>を <strong>確率分布</strong> という．</p>
+</div>
+</div>
+</div>
+<ul>
 <li>応用上重要な分布
 <ul>
 <li>離散分布</li>
 <li>連続分布 (絶対連続な分布)</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-org862bd6b">
-<h3 id="org862bd6b">確率質量関数</h3>
-<ul>
-<li><p>
-離散分布を記述する方法
-</p>
-<blockquote>
-<p>
-1つの見本点 \(x\) からなる事象(根元事象という)を \(A=\{x\}\) とする．
-事象 \(A\) の起きる確率
-</p>
-<div>
-\begin{equation}
+
+<section id="確率質量関数" class="title-slide slide level2 center">
+<h2>確率質量関数</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>離散分布を記述する方法</strong></p>
+</div>
+<div class="callout-content">
+<p>1つの見本点 <span class="math inline">\(x\)</span> からなる事象(根元事象という)を <span class="math inline">\(A=\{x\}\)</span> とする． 事象 <span class="math inline">\(A\)</span> の起きる確率</p>
+<p><span class="math display">\[\begin{equation}
   P(A=\{x\})= p(x)
-\end{equation}
-
+\end{equation}\]</span></p>
+<p>を表す関数 <span class="math inline">\(p\)</span> を <strong>確率質量関数</strong> という．</p>
 </div>
-<p>
-を表す関数 \(p\) を <b>確率質量関数</b> という．
-</p>
-</blockquote></li>
-
-</ul>
+</div>
+</div>
 </section>
-<section id="slide-orgd78f739">
-<h3 id="orgd78f739">確率密度関数</h3>
-<ul>
-<li><p>
-連続分布を記述する方法
-</p>
-<blockquote>
-<p>
-事象 \(A\) が起きる確率は
-<b>確率密度関数</b> \(p\) の積分
-</p>
-<div>
-\begin{equation}
+
+<section id="確率密度関数" class="title-slide slide level2 center">
+<h2>確率密度関数</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>連続分布を記述する方法</strong></p>
+</div>
+<div class="callout-content">
+<p>事象 <span class="math inline">\(A\)</span> が起きる確率は <strong>確率密度関数</strong> <span class="math inline">\(p\)</span> の積分</p>
+<p><span class="math display">\[\begin{equation}
   P(A)=\int_A p(x)dx
-\end{equation}
-
+\end{equation}\]</span></p>
+<p>で表される．</p>
 </div>
-<p>
-で表される．
-</p>
-</blockquote></li>
-
-</ul>
-
-</section>
-<section>
+</div>
+</div>
 <ul>
-<li><p>
-事象 \(A\) が十分小さな集合の場合
-</p>
-<blockquote>
-<p>
-\(A\) に含まれる適当な点を \(x\) とし，
-\(A\) の大きさ(考える空間により体積や面積に相当)を
-\(|A|\) と書くことにすれば，
-事象 \(A\) の起きる確率を密度と事象の大きさの積
-</p>
-<div>
-\begin{equation}
+<li>事象 <span class="math inline">\(A\)</span> が十分小さな集合の場合
+<ul>
+<li><p><span class="math inline">\(A\)</span> に含まれる適当な点を <span class="math inline">\(x\)</span> とし， <span class="math inline">\(A\)</span> の大きさ(考える空間により体積や面積に相当)を <span class="math inline">\(|A|\)</span> と書くことにすれば， 事象 <span class="math inline">\(A\)</span> の起きる確率を密度と事象の大きさの積で近似することができる．</p>
+<p><span class="math display">\[\begin{equation}
   P(A)=\int_A p(x)dx
   \simeq p(x)\cdot|A|
-\end{equation}
-
-</div>
-<p>
-で近似することができる．
-</p>
-</blockquote></li>
-
+\end{equation}\]</span></p></li>
+</ul></li>
 </ul>
 </section>
-<section id="slide-org3c25167">
-<h3 id="org3c25167">正規分布 (normal/Gaussian distribution)</h3>
-<div class="leftcol" id="orgc561428">
 
-<div id="org3a4c751" class="figure">
-<p><img src="figs/pdf_norm.png" alt="pdf_norm.png" width="100%" />
-</p>
-<p><span class="figure-number">Figure 1: </span>正規分布 (平均\(0\),分散\(1\))</p>
+<section id="正規分布-normalgaussian-distribution" class="title-slide slide level2 center">
+<h2>正規分布 (normal/Gaussian distribution)</h2>
+<div class="columns">
+<div class="column fig-tall" style="width:45%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-2-1.png" width="480"></p>
+<figcaption>正規分布 (平均0,分散)</figcaption>
+</figure>
 </div>
-
 </div>
-<div class="rightcol" id="orgbf9cca7">
-<blockquote>
+</div>
+</div><div class="column" style="width:55%;">
 <ul>
-<li>標本空間 : \((-\infty,\infty)\)</li>
-<li>母数 : 平均 \(\mu\), 分散 \(\sigma^{2}\)</li>
-<li><p>
-密度関数 :
-</p>
-<div>
-\begin{equation}
+<li><p>標本空間 : <span class="math inline">\((-\infty,\infty)\)</span></p></li>
+<li><p>母数 : 平均 <span class="math inline">\(\mu\)</span>, 分散 <span class="math inline">\(\sigma^{2}\)</span></p></li>
+<li><p>密度関数 :</p>
+<p><span class="math display">\[\begin{equation}
   p(x)
   =
   \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^{2}}{2\sigma^{2}}}
-\end{equation}
-
-</div></li>
-<li>備考 : \(\mu=0,\sigma=1\) のとき
-<b>標準正規分布</b> と呼ぶ．</li>
-
+\end{equation}\]</span></p></li>
+<li><p>備考 : <span class="math inline">\(\mu=0,\sigma=1\)</span> のとき <strong>標準正規分布</strong> と呼ぶ．</p></li>
 </ul>
-</blockquote>
-
-</div>
+</div></div>
 </section>
-<section id="slide-org306866e">
-<h3 id="org306866e">多次元正規分布</h3>
+
+<section id="多次元正規分布" class="title-slide slide level2 center">
+<h2>多次元正規分布</h2>
 <ul>
-<li>標本空間 : \(\mathbb{R}^{p}\)</li>
-<li>母数 : 平均 \(\boldsymbol{\mu}\), 分散共分散行列 \(\Sigma\)</li>
-<li><p>
-密度関数 :
-</p>
-<div>
-\begin{equation}
+<li><p>標本空間 : <span class="math inline">\(\mathbb{R}^{p}\)</span></p></li>
+<li><p>母数 : 平均 <span class="math inline">\(\boldsymbol{\mu}\)</span>, 分散共分散行列 <span class="math inline">\(\Sigma\)</span></p></li>
+<li><p>密度関数 :</p>
+<p><span class="math display">\[\begin{equation}
   p(\boldsymbol{x})
   =\frac{1}{\sqrt{(2\pi)^p|\Sigma|}}
   e^{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^{\mathsf{T}}
     \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})}
-\end{equation}
-
-</div></li>
-
+\end{equation}\]</span></p></li>
 </ul>
 </section>
-<section id="slide-org6d53c93">
-<h3 id="org6d53c93">正規分布の特徴付け</h3>
+
+<section id="正規分布の特徴付け" class="title-slide slide level2 center">
+<h2>正規分布の特徴付け</h2>
 <ul>
 <li>性質
 <ul>
 <li>さまざまな誤差の集積は正規分布となる(中心極限定理)</li>
 <li>同じ分散(ばらつき)を持つ分布の中で最も情報量(エントロピー)が大きい</li>
-
 </ul></li>
 <li>用途
 <ul>
 <li>誤差の分布に関する知識がないときには正規分布だと考えておくと安全なことが多い</li>
 <li>多変量解析の多くの手法は誤差の分布に関して正規性を仮定して導出する</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-org0dfb13a">
-<h3 id="org0dfb13a">\(\chi^{2}\)分布 (\(\chi^{2}\)-distribution)</h3>
-<div class="leftcol" id="org2f109e1">
 
-<div id="org3377287" class="figure">
-<p><img src="figs/pdf_chisq.png" alt="pdf_chisq.png" width="100%" />
-</p>
-<p><span class="figure-number">Figure 2: </span>\(\chi^{2}\)分布 (自由度\(3\))</p>
+<section id="chi2分布-chi2-distribution" class="title-slide slide level2 center">
+<h2><span class="math inline">\(\chi^{2}\)</span>分布 (<span class="math inline">\(\chi^{2}\)</span>-distribution)</h2>
+<div class="columns">
+<div class="column fig-tall" style="width:45%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-3-1.png" width="480"></p>
+<figcaption>カイ2乗分布 (自由度3)</figcaption>
+</figure>
 </div>
-
 </div>
-<div class="rightcol" id="org3dc48ae">
-<blockquote>
+</div>
+</div><div class="column" style="width:55%;">
 <ul>
-<li>標本空間 : \([0,\infty)\)</li>
-<li>母数 : 自由度 \(\nu\)</li>
-<li><p>
-密度関数 :
-</p>
-<div>
-\begin{align}
+<li><p>標本空間 : <span class="math inline">\([0,\infty)\)</span></p></li>
+<li><p>母数 : 自由度 <span class="math inline">\(\nu\)</span></p></li>
+<li><p>密度関数 :</p>
+<p><span class="math display">\[\begin{align}
   p(x)
-  &=
+  &amp;=
     \frac{1}{2^{\nu/2}\Gamma(\frac{\nu}{2})}x^{\nu/2-1}e^{-x/2}\\
-  &\quad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
-\end{align}
-
-</div></li>
-<li>備考 : 標準正規分布に従う独立な確率変数の2乗和の分布</li>
-
+  &amp;\quad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
+\end{align}\]</span></p></li>
+<li><p>備考 : 標準正規分布に従う独立な確率変数の2乗和の分布</p></li>
 </ul>
-</blockquote>
-
-</div>
+</div></div>
 </section>
-<section id="slide-orge9a4449">
-<h3 id="orge9a4449">\(\chi^{2}\)分布の特徴付け</h3>
+
+<section id="chi2分布の特徴付け" class="title-slide slide level2 center">
+<h2><span class="math inline">\(\chi^{2}\)</span>分布の特徴付け</h2>
 <ul>
 <li>性質
 <ul>
-<li><p>
-標準正規分布に従う独立な確率変数の2乗和の分布
-</p>
-<blockquote>
-<div>
-\begin{align}
-  Z&=\sum_{i=1}^{\nu}X_{i}^{2}
+<li><p>標準正規分布に従う独立な確率変数の2乗和の分布</p>
+<p><span class="math display">\[\begin{align}
+  Z&amp;=\sum_{i=1}^{\nu}X_{i}^{2}
      \sim \chi^{2}(\nu)
      \quad\text{(自由度 \(\nu\) の \(\chi^{2}\) 分布)}\\
-   &X_{i}\sim \mathcal{N}(0,1)\;(i=1,\dotsc,\nu)
+   &amp;X_{i}\sim \mathcal{N}(0,1)\;(i=1,\dotsc,\nu)
      \quad\text{(標準正規分布)}
-\end{align}
-
-</div>
-</blockquote></li>
-<li>分散\(\sigma^{2}\)の正規分布に従う確率変数の不偏分散は
-\(\chi^{2}\)分布に従う確率変数の\(\sigma^{2}\)倍となる</li>
-
+\end{align}\]</span></p></li>
+<li><p>分散<span class="math inline">\(\sigma^{2}\)</span>の正規分布に従う確率変数の不偏分散は <span class="math inline">\(\chi^{2}\)</span>分布に従う確率変数の<span class="math inline">\(\sigma^{2}\)</span>倍となる</p></li>
 </ul></li>
 <li>用途
 <ul>
 <li>分散の大きさに関する検定に用いられる</li>
 <li>独立性検定・適合度検定などの検定でも用いられる</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-orge4f7113">
-<h3 id="orge4f7113">\(t\)分布 (Student&rsquo;s \(t\)-distribution)</h3>
-<div class="leftcol" id="org3489eb4">
 
-<div id="org8930e0d" class="figure">
-<p><img src="figs/pdf_t.png" alt="pdf_t.png" width="100%" />
-</p>
-<p><span class="figure-number">Figure 3: </span>\(t\)分布 (自由度\(3\))</p>
+<section id="t分布-students-t-distribution" class="title-slide slide level2 center">
+<h2><span class="math inline">\(t\)</span>分布 (Student’s <span class="math inline">\(t\)</span>-distribution)</h2>
+<div class="columns">
+<div class="column fig-tall" style="width:45%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-4-1.png" width="480"></p>
+<figcaption>t分布 (自由度3)</figcaption>
+</figure>
 </div>
-
 </div>
-<div class="rightcol" id="orge1fc60f">
-<blockquote>
+</div>
+</div><div class="column" style="width:55%;">
 <ul>
-<li>標本空間 : \((-\infty,\infty)\)</li>
-<li>母数 : 自由度 \(\nu\)</li>
-<li><p>
-密度関数 :
-</p>
-<div>
-\begin{equation}
+<li><p>標本空間 : <span class="math inline">\((-\infty,\infty)\)</span></p></li>
+<li><p>母数 : 自由度 <span class="math inline">\(\nu\)</span></p></li>
+<li><p>密度関数 :</p>
+<p><span class="math display">\[\begin{equation}
   p(x)=
   \frac{\Gamma\left(\frac{\nu+1}{2}\right)}
   {\sqrt{\nu\pi}\Gamma\left(\frac{\nu}{2}\right)}
   \left(1+\frac{x^{2}}{\nu}\right)^{-\frac{1}{2}(\nu+1)}
-\end{equation}
-
-</div></li>
-<li>備考 : 標準正規分布と
-\(\chi^{2}\)分布に従う独立な
-確率変数の比の分布</li>
-
+\end{equation}\]</span></p></li>
+<li><p>備考 : 標準正規分布と <span class="math inline">\(\chi^{2}\)</span>分布に従う独立な 確率変数の比の分布</p></li>
 </ul>
-</blockquote>
-
-</div>
+</div></div>
 </section>
-<section id="slide-orgba941ee">
-<h3 id="orgba941ee">\(t\)分布の特徴付け</h3>
+
+<section id="t分布の特徴付け" class="title-slide slide level2 center">
+<h2><span class="math inline">\(t\)</span>分布の特徴付け</h2>
 <ul>
 <li>性質
 <ul>
-<li><p>
-標準正規分布と \(\chi^{2}\)分布に従う独立な確率変数の比の分布
-</p>
-<blockquote>
-<div>
-\begin{align}
-  Z&=\frac{X}{\sqrt{Y/\nu}}
+<li><p>標準正規分布と <span class="math inline">\(\chi^{2}\)</span>分布に従う独立な確率変数の比の分布</p>
+<p><span class="math display">\[\begin{align}
+  Z&amp;=\frac{X}{\sqrt{Y/\nu}}
      \sim \mathcal{T}(\nu)
      \quad\text{(自由度 \(\nu\) の \(t\) 分布)}\\
-   &X\sim \mathcal{N}(0,1),
+   &amp;X\sim \mathcal{N}(0,1),
      \quad
      Y\sim \chi^{2}(\nu)
-\end{align}
-
-</div>
-</blockquote></li>
-<li>正規分布に従う確率変数の標本平均と真の値の差は
-不偏分散で標準化すると\(t\)分布に従う確率変数となる</li>
-
+\end{align}\]</span></p></li>
+<li><p>正規分布に従う確率変数の標本平均と真の値の差は 不偏分散で標準化すると<span class="math inline">\(t\)</span>分布に従う確率変数となる</p></li>
 </ul></li>
 <li>用途
 <ul>
 <li>平均値を推定する問題の検定に利用される</li>
 <li>信頼区間の構成に利用される</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-orgd72a539">
-<h3 id="orgd72a539">\(F\)分布 (\(F\)-distribution)</h3>
-<div class="leftcol" id="org0e9fdb0">
 
-<div id="orga34da4c" class="figure">
-<p><img src="figs/pdf_F.png" alt="pdf_F.png" width="100%" />
-</p>
-<p><span class="figure-number">Figure 4: </span>\(F\)分布 (自由度\(3,5\))</p>
+<section id="f分布-f-distribution" class="title-slide slide level2 center">
+<h2><span class="math inline">\(F\)</span>分布 (<span class="math inline">\(F\)</span>-distribution)</h2>
+<div class="columns">
+<div class="column fig-tall" style="width:45%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-5-1.png" width="480"></p>
+<figcaption>F分布 (自由度3,5)</figcaption>
+</figure>
 </div>
-
 </div>
-<div class="rightcol" id="org4cee5f1">
-<blockquote>
+</div>
+</div><div class="column" style="width:55%;">
 <ul>
-<li>標本空間 : \([0,\infty)\)</li>
-<li>母数 : 自由度 \(\nu_{1},\nu_{2}\)</li>
-<li><p>
-密度関数 :
-</p>
-<div>
-\begin{align}
+<li><p>標本空間 : <span class="math inline">\([0,\infty)\)</span></p></li>
+<li><p>母数 : 自由度 <span class="math inline">\(\nu_{1},\nu_{2}\)</span></p></li>
+<li><p>密度関数 :</p>
+<p><span class="math display">\[\begin{align}
   p(x)
-  &=
+  &amp;=
   \frac{(\nu_{1}/\nu_{2})^{\nu_{1}/2}}{B(\nu_{1}/2,\nu_{2}/2)}
   \frac{x^{\nu_{1}/2-1}}{(1+\nu_{1}x/\nu_{2})^{(\nu_{1}+\nu_{2})/2}}\\
-  &\quad B(x,y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1} dt
-\end{align}
-
-</div></li>
-<li>備考 : \(\chi^{2}\)分布に従う独立な確率変数の比の分布</li>
-
+  &amp;\quad B(x,y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1} dt
+\end{align}\]</span></p></li>
+<li><p>備考 : <span class="math inline">\(\chi^{2}\)</span>分布に従う独立な確率変数の比の分布</p></li>
 </ul>
-</blockquote>
-
-</div>
+</div></div>
 </section>
-<section id="slide-org75afb60">
-<h3 id="org75afb60">\(F\)分布の特徴付け</h3>
+
+<section id="f分布の特徴付け" class="title-slide slide level2 center">
+<h2><span class="math inline">\(F\)</span>分布の特徴付け</h2>
 <ul>
 <li>性質
 <ul>
-<li><p>
-\(\chi^{2}\)分布に従う独立な確率変数の比の分布
-</p>
-<blockquote>
-<div>
-\begin{align}
-  Z&=\frac{Y_{1}/\nu_{1}}{Y_{2}/\nu_{2}}
+<li><p><span class="math inline">\(\chi^{2}\)</span>分布に従う独立な確率変数の比の分布</p>
+<p><span class="math display">\[\begin{align}
+  Z&amp;=\frac{Y_{1}/\nu_{1}}{Y_{2}/\nu_{2}}
      \sim \mathcal{F}(\nu_{1},\nu_{2})
      \quad\text{(自由度\(\nu_{1},\nu_{2}\)の\(F\)分布)}\\
-   &Y_{i}\sim \chi^{2}(\nu_{i})\;(i=1,2)
-\end{align}
-
-</div>
-</blockquote></li>
-<li>正規分布に従う確率変数の2つの独立な標本の不偏分散の比は
-\(F\)分布に従う確率変数となる</li>
-
+   &amp;Y_{i}\sim \chi^{2}(\nu_{i})\;(i=1,2)
+\end{align}\]</span></p></li>
+<li><p>正規分布に従う確率変数の2つの独立な標本の不偏分散の比は <span class="math inline">\(F\)</span>分布に従う確率変数となる</p></li>
 </ul></li>
 <li>用途
 <ul>
 <li>分散を推定する問題の検定に利用される</li>
 <li>分散の信頼区間の構成に利用される</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-org3999735">
-<h3 id="org3999735">大数の強法則</h3>
-<ul>
-<li><p>
-定理の主張
-</p>
-<blockquote>
-<p>
-\(\{X_n\}\) を確率変数列として
-</p>
-<div>
-\begin{equation}
+
+<section id="大数の強法則" class="title-slide slide level2 center">
+<h2>大数の強法則</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>定理</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\(\{X_n\}\)</span> を確率変数列として</p>
+<p><span class="math display">\[\begin{equation}
   S_n=\sum_{k=1}^n X_k
-\end{equation}
-
-</div>
-<p>
-とする．
-\(\{X_n\}\) が独立で，
-\(\{\mathrm{Var}(X_n)\}\) が有界ならば
-</p>
-<div>
-\begin{equation}
+\end{equation}\]</span></p>
+<p>とする． <span class="math inline">\(\{X_n\}\)</span> が独立で， <span class="math inline">\(\{\mathrm{Var}(X_n)\}\)</span> が有界ならば</p>
+<p><span class="math display">\[\begin{equation}
   \frac{S_n-\mathbb{E}[S_n]}{n}\to 0 \text{ a.s.}
-\end{equation}
-
+\end{equation}\]</span></p>
+<p>が成り立つ．</p>
 </div>
-<p>
-が成り立つ．
-</p>
-</blockquote></li>
-
-</ul>
+</div>
+</div>
 </section>
-<section id="slide-orgfa3735f">
-<h3 id="orgfa3735f">同分布の中心極限定理</h3>
-<ul>
-<li><p>
-定理の主張
-</p>
-<blockquote>
-<p>
-\(\{X_n\}\) は独立で，
-平均 \(\mu\) ，標準偏差 \(\sigma\) 
-の同じ分布に従うとする．
-このとき，すべての実数 \(a < b\) に対して
-</p>
-<div>
-\begin{equation}
+
+<section id="同分布の中心極限定理" class="title-slide slide level2 center">
+<h2>同分布の中心極限定理</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>定理</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\(\{X_n\}\)</span> は独立で， 平均 <span class="math inline">\(\mu\)</span> ，標準偏差 <span class="math inline">\(\sigma\)</span> の同じ分布に従うとする． このとき，すべての実数 <span class="math inline">\(a &lt; b\)</span> に対して</p>
+<p><span class="math display">\[\begin{equation}
   P\Bigl(a\leq\frac{\sqrt{n}(\bar{X}_n-\mu)}{\sigma}\leq b \Bigr)
   \to\frac{1}{\sqrt{2\pi}}\int_a^be^{-\frac{x^2}{2}}dx\quad
   (n\to\infty)
-\end{equation}
-
+\end{equation}\]</span></p>
+<p>が成り立つ．</p>
 </div>
-<p>
-が成り立つ．
-</p>
-</blockquote></li>
-
-</ul>
-
+</div>
+</div>
 </section>
-<section>
+<section class="slide level3 center">
+
 <ul>
-<li><p>
-定理の意味
-</p>
-<blockquote>
-<p>
-\(X_i\) の分布が何であっても，
-サンプル数 \(n\) が十分大きければ，
-標本平均と真の平均の差
-\(\bar{X}_n-\mu\) 
-の分布は，
-<b>標準正規分布</b> を利用して
-</p>
-<div>
-\begin{equation}
+<li>定理の意味
+<ul>
+<li><p><span class="math inline">\(X_i\)</span> の分布が何であっても， サンプル数 <span class="math inline">\(n\)</span> が十分大きければ， 標本平均と真の平均の差 <span class="math inline">\(\bar{X}_n-\mu\)</span> の分布は， <strong>標準正規分布</strong> を利用して</p>
+<p><span class="math display">\[\begin{equation}
   P\Bigl(a\frac{\sigma}{\sqrt{n}}\leq\bar{X}_n-\mu\leq
   b\frac{\sigma}{\sqrt{n}} \Bigr)
   \simeq
   \frac{1}{\sqrt{2\pi}}\int_a^be^{-\frac{x^2}{2}}dx
-\end{equation}
-
-</div>
-<p>
-で近似できる．
-</p>
-</blockquote></li>
-
+\end{equation}\]</span></p>
+<p>で近似できる．</p></li>
+</ul></li>
 </ul>
 </section>
-<section id="slide-orgd360c11">
-<h3 id="orgd360c11">推定量の漸近正規性</h3>
+
+<section id="推定量の漸近正規性" class="title-slide slide level2 center">
+<h2>推定量の漸近正規性</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>漸近正規性</strong></p>
+</div>
+<div class="callout-content">
+<p>多くの推定量 <span class="math inline">\(\hat{\theta}\)</span> の分布は正規分布で近似できる</p>
+</div>
+</div>
+</div>
 <ul>
-<li><p>
-<b>漸近正規性</b>
-</p>
-<blockquote>
-<p>
-多くの推定量 \(\hat{\theta}\) の分布は正規分布で近似できる
-</p>
-</blockquote>
+<li>いずれも中心極限定理にもとづく
 <ul>
 <li>モーメントに基づく記述統計量は漸近正規性をもつ</li>
 <li>最尤推定量は広い範囲の確率分布に対して漸近正規性をもつ</li>
-<li>いずれも中心極限定理にもとづく</li>
-
 </ul></li>
 <li>データ数が多いときには推定量の評価に正規分布から導かれる分布が利用できる</li>
-
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-org97626ae" data-background="#fef4f4">
-<h2 id="org97626ae">演習</h2>
+<section id="演習" class="title-slide slide level1 center" data-background-color="#fef4f4">
+<h1>演習</h1>
+
 </section>
-<section id="slide-org7d9b02f" data-background="#fef4f4">
-<h3 id="org7d9b02f">問題</h3>
+<section id="問題" class="title-slide slide level2 center">
+<h2>問題</h2>
 <ul>
-<li><p>
-標準正規分布の密度関数
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>標準正規分布の密度関数</p>
+<p><span class="math display">\[\begin{equation}
   p(x)
   =
   \frac{1}{\sqrt{2\pi}}e^{-\frac{x^{2}}{2}}
-\end{equation}
-
-</div>
-</blockquote>
-<p>
-を\(\mathbb{R}\)上で積分すると
-1となることを確かめよ
-</p></li>
-<li>標準正規分布に従う確率変数を\(X\)とする．
-\(X\)が
-0付近の値をとる確率と
-1付近の値をとる確率の比を求めよ</li>
-
+\end{equation}\]</span></p>
+<p>を<span class="math inline">\(\mathbb{R}\)</span>上で積分すると 1となることを確かめよ</p></li>
+<li><p>標準正規分布に従う確率変数を<span class="math inline">\(X\)</span>とする． <span class="math inline">\(X\)</span>が 0付近の値をとる確率と 1付近の値をとる確率の比を求めよ</p></li>
 </ul>
 </section>
-<section id="slide-org10f72c1" data-background="#fef4f4">
-<h3 id="org10f72c1">解答例</h3>
+
+<section id="解答例" class="title-slide slide level2 center">
+<h2>解答例</h2>
 <ul>
-<li><p>
-2つの標準正規分布の積を考えて，
-重積分を極座標に変換すればよい
-</p>
-<blockquote>
-<div>
-\begin{align}
-  &\int_{-\infty}^{\infty}
+<li><p>2つの標準正規分布の積を考えて， 重積分を極座標に変換すればよい</p>
+<p><span class="math display">\[\begin{align}
+  &amp;\int_{-\infty}^{\infty}
     \int_{-\infty}^{\infty}
     e^{-x^{2}/2}e^{-y^{2}/2}dxdy\\
-  &=
+  &amp;=
     \int_{0}^{2\pi}
     \int_{0}^{\infty}
     e^{-r^{2}/2}rdrd\theta
     =
     2\pi\int_{0}^{\infty}e^{-z}dz
     =2\pi
-\end{align}
-
-</div>
-</blockquote></li>
-
+\end{align}\]</span></p></li>
 </ul>
-
 </section>
-<section data-background="#fef4f4">
+<section class="slide level3 center">
+
 <ul>
-<li><p>
-微小な区間 \(\Delta\) を考えて，
-密度を用いた近似計算を利用すればよい
-</p>
-<blockquote>
-<div>
-\begin{align}
-  &\frac{P(X\text{が0付近})}{P(X\text{が1付近})}\\
-  &\simeq\frac{p(0)|\Delta|}{p(1)|\Delta|}
+<li><p>微小な区間 <span class="math inline">\(\Delta\)</span> を考えて， 密度を用いた近似計算を利用すればよい</p>
+<p><span class="math display">\[\begin{align}
+  &amp;\frac{P(X\text{が0付近})}{P(X\text{が1付近})}\\
+  &amp;\simeq\frac{p(0)|\Delta|}{p(1)|\Delta|}
     =\frac{\exp(0)}{\exp(-1/2)}=\sqrt{e}\simeq 1.65
-\end{align}
-
-</div>
-</blockquote></li>
-
+\end{align}\]</span></p></li>
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-orgf30ea75">
-<h2 id="orgf30ea75">統計</h2>
-<div class="outline-text-2" id="text-orgf30ea75">
-</div>
+<section id="統計" class="title-slide slide level1 center">
+<h1>統計</h1>
+
 </section>
-<section id="slide-orga0b42bb">
-<h3 id="orga0b42bb">記述統計量</h3>
+<section id="記述統計量" class="title-slide slide level2 center">
+<h2>記述統計量</h2>
 <ul>
-<li><b>記述統計量</b> (または要約統計量・基本統計量)
+<li><p><strong>記述統計量</strong> (または要約統計量・基本統計量)</p>
 <ul>
 <li>データを簡潔に要約して表すための統計値</li>
 <li>その集団全体の特徴を表す重要な指標</li>
-
 </ul></li>
-<li>一般に確率分布は未知</li>
-<li><p>
-手に入る少数のサンプル(観測データ)から <b>推定</b> 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>一般に確率分布は未知</p></li>
+<li><p>手に入る少数のサンプル(観測データ)から <strong>推定</strong></p>
+<p><span class="math display">\[\begin{equation}
   X_1,X_2,\dots,X_n
-\end{equation}
-
-</div>
-</blockquote></li>
-<li>真の値と観測データによる推定には差が存在</li>
-
+\end{equation}\]</span></p></li>
+<li><p>真の値と観測データによる推定には差が存在</p></li>
 </ul>
 </section>
-<section id="slide-org18f4816">
-<h3 id="org18f4816">平均</h3>
+
+<section id="平均" class="title-slide slide level2 center">
+<h2>平均</h2>
 <ul>
-<li>データの代表値を表す記述統計量</li>
-<li><p>
-<b>平均</b> (mean) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>データの代表値を表す記述統計量</p></li>
+<li><p><strong>平均</strong> (mean)</p>
+<p><span class="math display">\[\begin{equation}
   \mu=\mathbb{E}[X]
   =
   \begin{cases}
-    \sum_{x\in\Omega} x p(x), &\text{(離散分布の場合)}\\
-    \int_{x\in\Omega} x p(x)dx, &\text{(連続分布の場合)}
+    \sum_{x\in\Omega} x p(x), &amp;\text{(離散分布の場合)}\\
+    \int_{x\in\Omega} x p(x)dx, &amp;\text{(連続分布の場合)}
   \end{cases}
-\end{equation}
-
-</div>
-</blockquote></li>
-<li><p>
-<b>標本平均</b> (sample mean) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+\end{equation}\]</span></p></li>
+<li><p><strong>標本平均</strong> (sample mean)</p>
+<p><span class="math display">\[\begin{equation}
   \bar{X}
   =\frac{1}{n}\sum_{i=1}^{n}X_{i}
   =\frac{X_{1}+\dotsb+X_{n}}{n}
   % =\frac{X_1+X_2+\cdots+X_n}{n}
-\end{equation}
-
-</div>
-</blockquote></li>
-
+\end{equation}\]</span></p></li>
 </ul>
 </section>
-<section id="slide-orgf8d0fa7">
-<h3 id="orgf8d0fa7">分散</h3>
-<ul>
-<li>データのばらつき具合を表す記述統計量</li>
-<li><p>
-<b>分散</b> (variance) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  \mathrm{Var}(X)=\sigma^{2}=\mathbb{E}[(X-\mu)^{2}]
-\end{equation}
 
-</div>
-</blockquote></li>
-<li><p>
-<b>標本分散</b> (sample variance) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<section id="分散" class="title-slide slide level2 center">
+<h2>分散</h2>
+<ul>
+<li><p>データのばらつき具合を表す記述統計量</p></li>
+<li><p><strong>分散</strong> (variance)</p>
+<p><span class="math display">\[\begin{equation}
+  \mathrm{Var}(X)=\sigma^{2}=\mathbb{E}[(X-\mu)^{2}]
+\end{equation}\]</span></p></li>
+<li><p><strong>標本分散</strong> (sample variance)</p>
+<p><span class="math display">\[\begin{equation}
   S^{2}
   =\frac{1}{n}\sum_{i=1}^n(X_{i}-\bar{X})^{2}
   =\frac{(X_{1}-\bar{X})^{2}+\dotsb+(X_{n}-\bar{X})^{2}}{n}
   % =\frac{(X_1-\bar{X})^2+(X_2-\bar{X})^2+\cdots+(X_n-\bar{X})^2}{n}
-\end{equation}
-
-</div>
-</blockquote></li>
-
+\end{equation}\]</span></p></li>
 </ul>
 </section>
-<section id="slide-orgf2e27e5">
-<h3 id="orgf2e27e5">標本平均・分散の不偏性</h3>
+
+<section id="標本平均分散の不偏性" class="title-slide slide level2 center">
+<h2>標本平均・分散の不偏性</h2>
 <ul>
-<li><p>
-標本平均は \(\mu\) の <b>不偏推定量である</b> 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>標本平均は <span class="math inline">\(\mu\)</span> の <strong>不偏推定量である</strong></p>
+<p><span class="math display">\[\begin{equation}
   \mathbb{E}[\bar{X}]=\mu
-\end{equation}
-
-</div>
-</blockquote></li>
-<li><p>
-標本分散は \(\sigma^2\) の <b>不偏推定量ではない</b> 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+\end{equation}\]</span></p></li>
+<li><p>標本分散は <span class="math inline">\(\sigma^2\)</span> の <strong>不偏推定量ではない</strong></p>
+<p><span class="math display">\[\begin{equation}
   \mathbb{E}[S^2]=\frac{n-1}{n}\sigma^2
-\end{equation}
-
-</div>
-</blockquote>
+\end{equation}\]</span></p>
 <ul>
-<li>標本分散は平均的には真の分散を <b>過小推定</b> する</li>
-
+<li>標本分散は平均的には真の分散を <strong>過小推定</strong> する</li>
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-org81adcd1">
-<h3 id="org81adcd1">不偏分散</h3>
+
+<section id="不偏分散" class="title-slide slide level2 center">
+<h2>不偏分散</h2>
 <ul>
-<li>不偏性を担保した分散の推定量</li>
-<li><p>
-バイアス補正 :
-標本分散に \(n/(n-1)\) を乗じたもの
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>不偏性を担保した分散の推定量</p></li>
+<li><p>バイアス補正 : 標本分散に <span class="math inline">\(n/(n-1)\)</span> を乗じたもの</p>
+<p><span class="math display">\[\begin{equation}
   s^2=\frac{n}{n-1}S^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2
-\end{equation}
-
-</div>
-</blockquote>
-<p>
-は \(\sigma^2\) の不偏推定量となる
-</p></li>
-
+\end{equation}\]</span></p>
+<p>は <span class="math inline">\(\sigma^2\)</span> の不偏推定量となる</p></li>
 </ul>
 </section>
-<section id="slide-org9c47255">
-<h3 id="org9c47255">標準偏差</h3>
-<ul>
-<li><p>
-<b>標準偏差</b> (standard deviation) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  \sigma=\sqrt{\mathrm{Var}(X)}=(\mathbb{E}[(X-\mu)^{2}])^{1/2}
-\end{equation}
 
-</div>
-</blockquote>
+<section id="標準偏差" class="title-slide slide level2 center">
+<h2>標準偏差</h2>
+<ul>
+<li><p><strong>標準偏差</strong> (standard deviation)</p>
+<p><span class="math display">\[\begin{equation}
+  \sigma=\sqrt{\mathrm{Var}(X)}=(\mathbb{E}[(X-\mu)^{2}])^{1/2}
+\end{equation}\]</span></p>
 <ul>
 <li>分散の平方根</li>
-
 </ul></li>
-<li><p>
-<b>標本標準偏差</b> (sample standard deviation) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p><strong>標本標準偏差</strong> (sample standard deviation)</p>
+<p><span class="math display">\[\begin{equation}
   \hat\sigma=s
-\end{equation}
-
-</div>
-</blockquote>
+\end{equation}\]</span></p>
 <ul>
-<li>通常, 不偏分散の平方根 \(s\) を用いる</li>
-
+<li>通常, 不偏分散の平方根 <span class="math inline">\(s\)</span> を用いる</li>
 </ul></li>
-<li>一般に \(s\) は標準偏差 \(\sigma\) の <b>不偏推定量ではない</b></li>
-
+<li><p>一般に <span class="math inline">\(s\)</span> は標準偏差 <span class="math inline">\(\sigma\)</span> の <strong>不偏推定量ではない</strong></p></li>
 </ul>
 </section>
-<section id="slide-org1e481e8">
-<h3 id="org1e481e8">標準化</h3>
+
+<section id="標準化" class="title-slide slide level2 center">
+<h2>標準化</h2>
 <ul>
-<li>複数データの分析のために単位や基準を揃える方法</li>
-<li><p>
-データ \(X_{1},X_{2},\dotsc,X_{n}\) の標準化 (standardization)
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>複数データの分析のために単位や基準を揃える方法</p></li>
+<li><p>データ <span class="math inline">\(X_{1},X_{2},\dotsc,X_{n}\)</span> の標準化 (standardization)</p>
+<p><span class="math display">\[\begin{equation}
   Z_{i}=\frac{X_i-\bar{X}}{s}\quad(i=1,2,\dotsc,n)
-\end{equation}
-
-</div>
-</blockquote>
+\end{equation}\]</span></p>
 <ul>
-<li>\(s\) の代わりに \(S\) で割って定義する文献もある</li>
-<li>定義から \(Z_{1},Z_{2},\dotsc,Z_{n}\) の標本平均は0,
-不偏分散は1 に規格化される</li>
-
+<li><span class="math inline">\(s\)</span> の代わりに <span class="math inline">\(S\)</span> で割って定義する文献もある</li>
+<li>定義から <span class="math inline">\(Z_{1},Z_{2},\dotsc,Z_{n}\)</span> の標本平均は0, 不偏分散は1 に規格化される</li>
 </ul></li>
-<li>\(Z_{i}\) : <b>標準得点</b> (standard score) または <b>Zスコア</b> (Z-score) と呼ばれる</li>
-
+<li><p><span class="math inline">\(Z_{i}\)</span> : <strong>標準得点</strong> (standard score) または <strong>Zスコア</strong> (Z-score) と呼ばれる</p></li>
 </ul>
 </section>
-<section id="slide-org191901c">
-<h3 id="org191901c">偏差値</h3>
+
+<section id="偏差値" class="title-slide slide level2 center">
+<h2>偏差値</h2>
 <ul>
-<li>別の基準での標準化
+<li><p>別の基準での標準化</p>
 <ul>
 <li>教育学や心理学では, 平均50, 標準偏差10が好まれる</li>
-
 </ul></li>
-<li><p>
-標本平均50, 標準偏差10への線形変換
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>標本平均50, 標準偏差10への線形変換</p>
+<p><span class="math display">\[\begin{equation}
   T_{i}=10Z_{i}+50\quad(i=1,\dotsc,n)
-\end{equation}
-
-</div>
-</blockquote></li>
-<li>\(T_{i}\) :
-<b>偏差値得点</b> または <b>Tスコア</b> (T-score) と呼ばれる</li>
-
+\end{equation}\]</span></p></li>
+<li><p><span class="math inline">\(T_{i}\)</span> : <strong>偏差値得点</strong> または <strong>Tスコア</strong> (T-score) と呼ばれる</p></li>
 </ul>
 </section>
-<section id="slide-org1f69191">
-<h3 id="org1f69191">共分散</h3>
+
+<section id="共分散" class="title-slide slide level2 center">
+<h2>共分散</h2>
 <ul>
-<li>複数のデータ間の関係を知るための記述統計量</li>
-<li><p>
-<b>共分散</b> (covariance) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>複数のデータ間の関係を知るための記述統計量</p></li>
+<li><p><strong>共分散</strong> (covariance)</p>
+<p><span class="math display">\[\begin{equation}
   \mathrm{Cov}(X,Y)=\mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]
-\end{equation}
-
-</div>
-</blockquote></li>
-<li><p>
-<b>標本共分散</b> (sample covariance) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+\end{equation}\]</span></p></li>
+<li><p><strong>標本共分散</strong> (sample covariance)</p>
+<p><span class="math display">\[\begin{equation}
   \mathrm{Cov}(X,Y)=\frac{\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})}{n-1}
-\end{equation}
-
-</div>
-</blockquote></li>
-
+\end{equation}\]</span></p></li>
 </ul>
 </section>
-<section id="slide-orgca9cbfa">
-<h3 id="orgca9cbfa">相関</h3>
-<ul>
-<li>2種類のデータ間の比例関係の大きさ</li>
-<li><p>
-<b>相関</b> (correlation) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  \rho=\frac{\mathrm{Cov}(X,Y)}{\sqrt{\mathrm{Var}(X)\mathrm{Var}(Y)}}
-\end{equation}
 
-</div>
-</blockquote></li>
-<li><p>
-<b>標本相関</b> (sample correlation) 
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<section id="相関" class="title-slide slide level2 center">
+<h2>相関</h2>
+<ul>
+<li><p>2種類のデータ間の比例関係の大きさ</p></li>
+<li><p><strong>相関</strong> (correlation)</p>
+<p><span class="math display">\[\begin{equation}
+  \rho=\frac{\mathrm{Cov}(X,Y)}{\sqrt{\mathrm{Var}(X)\mathrm{Var}(Y)}}
+\end{equation}\]</span></p></li>
+<li><p><strong>標本相関</strong> (sample correlation)</p>
+<p><span class="math display">\[\begin{equation}
   \rho=\frac{\sum_{i=1}^n(X_i-\bar{X})(Y_i-\bar{Y})}
   {\sqrt{\sum_{i=1}^n(X_i-\bar{X})^2}\sqrt{\sum_{i=1}^n(Y_i-\bar{Y})^2}}
-\end{equation}
-
-</div>
-</blockquote></li>
-
+\end{equation}\]</span></p></li>
 </ul>
 </section>
-<section id="slide-org9557782">
-<h3 id="org9557782">離散分布の尤度関数</h3>
+
+<section id="離散分布の尤度関数" class="title-slide slide level2 center">
+<h2>離散分布の尤度関数</h2>
 <ul>
-<li>\(X_1=x_1,X_2=x_2,\dots,X_n=x_n\) の同時確率
+<li><span class="math inline">\(X_1=x_1,X_2=x_2,\dots,X_n=x_n\)</span> の同時確率
 <ul>
-<li>確率質量関数 : \(f_{\boldsymbol{\theta}}(x)\)</li>
-<li>確率質量関数のパラメタ : \(\boldsymbol{\theta}=(\theta_1,\dots,\theta_p)\)</li>
-<li><p>
-独立な確率変数の同時確率
-</p>
-<blockquote>
-<div>
-\begin{align}
-  & P(X_1=x_1,X_2=x_2,\dots,X_n=x_n)
+<li><p>確率質量関数 : <span class="math inline">\(f_{\boldsymbol{\theta}}(x)\)</span></p></li>
+<li><p>確率質量関数のパラメタ : <span class="math inline">\(\boldsymbol{\theta}=(\theta_1,\dots,\theta_p)\)</span></p></li>
+<li><p>独立な確率変数の同時確率</p>
+<p><span class="math display">\[\begin{align}
+  &amp; P(X_1=x_1,X_2=x_2,\dots,X_n=x_n)
     =\prod_{i=1}^nP(X_i=x_i)\\
-  &=
+  &amp;=
     \prod_{i=1}^nf_{\boldsymbol{\theta}}(x_i)
     =f_{\boldsymbol{\theta}}(x_1)\cdot
     f_{\boldsymbol{\theta}}(x_2)\cdots
     f_{\boldsymbol{\theta}}(x_n)
-\end{align}
-
-</div>
-</blockquote></li>
-
+\end{align}\]</span></p></li>
 </ul></li>
-
 </ul>
-
 </section>
-<section>
-<ul>
-<li><p>
-定義
-</p>
-<blockquote>
-<p>
-パラメタ \(\boldsymbol{\theta}\) に対して
-観測データ \(X_1,X_2,\dots,X_n\) が得られる理論上の確率
-</p>
-<div>
-\begin{equation}
+<section class="slide level3 center">
+
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>定義</strong></p>
+</div>
+<div class="callout-content">
+<p>パラメタ <span class="math inline">\(\boldsymbol{\theta}\)</span> に対して 観測データ <span class="math inline">\(X_1,X_2,\dots,X_n\)</span> が得られる理論上の確率</p>
+<p><span class="math display">\[\begin{equation}
   L(\boldsymbol{\theta})
   =\prod_{i=1}^nf_{\boldsymbol{\theta}}(X_i)
-\end{equation}
-
+\end{equation}\]</span></p>
+<p>を <span class="math inline">\(\boldsymbol{\theta}\)</span> の <strong>尤度</strong> と言い， <span class="math inline">\(\boldsymbol{\theta}\)</span> の関数 <span class="math inline">\(L\)</span> を <strong>尤度関数</strong> と呼ぶ．</p>
 </div>
-<p>
-を
-\(\boldsymbol{\theta}\) の 
-<b>尤度</b> と言い，
-\(\boldsymbol{\theta}\) の関数 \(L\) を <b>尤度関数</b> と呼ぶ．
-</p>
-</blockquote>
+</div>
+</div>
 <ul>
-<li>観測データ 
-\(X_1,X_2,\dots,X_n\) 
-が現れるのにパラメタ 
-\(\boldsymbol{\theta}\) 
-の値がどの程度尤もらしいかを測る尺度となる</li>
-
-</ul></li>
-
+<li>観測データ <span class="math inline">\(X_1,X_2,\dots,X_n\)</span> が現れるのにパラメタ <span class="math inline">\(\boldsymbol{\theta}\)</span> の値がどの程度尤もらしいかを測る尺度となる</li>
 </ul>
 </section>
-<section id="slide-org55bc980">
-<h3 id="org55bc980">連続分布の尤度関数</h3>
+
+<section id="連続分布の尤度関数" class="title-slide slide level2 center">
+<h2>連続分布の尤度関数</h2>
 <ul>
-<li>\(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta\) の同時確率
+<li><span class="math inline">\(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta\)</span> の同時確率
 <ul>
-<li>確率密度関数 : \(f_{\boldsymbol{\theta}}(x)\)</li>
-<li>確率密度関数のパラメタ : \(\boldsymbol{\theta}=(\theta_1,\dots,\theta_p)\)</li>
-<li><p>
-独立な確率変数の同時確率
-</p>
-<blockquote>
-<div>
-\begin{align}
-  & P(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta)
-    =\prod_{i=1}^nP(x_i\leq X_i\leq x_i+\delta)\\
-  &\simeq
+<li><p>確率密度関数 : <span class="math inline">\(f_{\boldsymbol{\theta}}(x)\)</span></p></li>
+<li><p>確率密度関数のパラメタ : <span class="math inline">\(\boldsymbol{\theta}=(\theta_1,\dots,\theta_p)\)</span></p></li>
+<li><p>独立な確率変数の同時確率</p>
+<p><span class="math display">\[\begin{align}
+  &amp; P(x_1\leq X_1\leq x_1+\delta,\dotsc,x_n\leq X_n\leq x_n+\delta)\\
+  &amp;=\prod_{i=1}^nP(x_i\leq X_i\leq x_i+\delta)\\
+  &amp;\simeq
     \prod_{i=1}^nf_{\boldsymbol{\theta}}(x_i)\delta
     =f_{\boldsymbol{\theta}}(x_1)\cdot
     f_{\boldsymbol{\theta}}(x_2)\cdots
     f_{\boldsymbol{\theta}}(x_n)\delta^{n}
-\end{align}
-
-</div>
-</blockquote></li>
-
+\end{align}\]</span></p></li>
 </ul></li>
-
 </ul>
-
 </section>
-<section>
-<ul>
-<li><p>
-定義
-</p>
-<blockquote>
-<p>
-パラメタ \(\boldsymbol{\theta}\) に対して
-観測データ \(X_1,X_2,\dots,X_n\) が得られる理論上の確率密度
-</p>
-<div>
-\begin{equation}
+<section class="slide level3 center">
+
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>定義</strong></p>
+</div>
+<div class="callout-content">
+<p>パラメタ <span class="math inline">\(\boldsymbol{\theta}\)</span> に対して 観測データ <span class="math inline">\(X_1,X_2,\dots,X_n\)</span> が得られる理論上の確率密度</p>
+<p><span class="math display">\[\begin{equation}
   L(\boldsymbol{\theta})
   =\prod_{i=1}^nf_{\boldsymbol{\theta}}(X_i)
-\end{equation}
-
+\end{equation}\]</span></p>
+<p>を <span class="math inline">\(\boldsymbol{\theta}\)</span> の <strong>尤度</strong> と言い， <span class="math inline">\(\boldsymbol{\theta}\)</span> の関数 <span class="math inline">\(L\)</span> を <strong>尤度関数</strong> と呼ぶ．</p>
 </div>
-<p>
-を
-\(\boldsymbol{\theta}\) の 
-<b>尤度</b> と言い，
-\(\boldsymbol{\theta}\) の関数 \(L\) を <b>尤度関数</b> と呼ぶ．
-</p>
-</blockquote>
+</div>
+</div>
 <ul>
 <li>確率ではないので1より大きな値となることもある</li>
-
-</ul></li>
-
 </ul>
 </section>
-<section id="slide-org29a3287">
-<h3 id="org29a3287">最尤法</h3>
+
+<section id="最尤法" class="title-slide slide level2 center">
+<h2>最尤法</h2>
 <ul>
-<li><p>
-最尤法
-</p>
-<blockquote>
-<p>
-観測データに対して「最も尤もらしい」パラメタ値を
-\(\boldsymbol{\theta}\) の推定量として採用する方法
-を最尤法という．
-</p>
-</blockquote></li>
-<li><p>
-最尤推定量
-</p>
-<blockquote>
-<p>
-\(\Theta\) を尤度関数の定義域として，
-尤度関数を最大とする  \(\hat{\boldsymbol{\theta}}\) 
-</p>
-<div>
-\begin{equation}
+<li>観測データに対して「最も尤もらしい」パラメタ値を <span class="math inline">\(\boldsymbol{\theta}\)</span> の推定量として採用する方法 を最尤法という．</li>
+</ul>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>最尤推定量</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\(\Theta\)</span> を尤度関数の定義域として， 尤度関数を最大とする <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span></p>
+<p><span class="math display">\[\begin{equation}
   L(\hat{\boldsymbol{\theta}})
   =\max_{\boldsymbol{\theta}\in\Theta}L(\boldsymbol{\theta}).
-\end{equation}
-
+\end{equation}\]</span></p>
+<p>を <span class="math inline">\(\boldsymbol{\theta}\)</span> の <strong>最尤推定量</strong> という．</p>
 </div>
-<p>
-を 
-\(\boldsymbol{\theta}\) 
-の <b>最尤推定量</b> という．
-</p>
-</blockquote></li>
-
-</ul>
+</div>
+</div>
 </section>
-<section id="slide-orge112d70">
-<h3 id="orge112d70">Bayes の定理 (基本形)</h3>
-<ul>
-<li><p>
-定理
-</p>
-<blockquote>
-<p>
-条件付確率では次の等式が成り立つ．
-</p>
-<div>
-\begin{equation}
+
+<section id="bayes-の定理-基本形" class="title-slide slide level2 center">
+<h2>Bayes の定理 (基本形)</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>定理</strong></p>
+</div>
+<div class="callout-content">
+<p>条件付確率では次の等式が成り立つ．</p>
+<p><span class="math display">\[\begin{equation}
   P(A|B)
   =\frac{P(A)P(B|A)}{P(B)}.
-\end{equation}
-
+\end{equation}\]</span></p>
 </div>
-</blockquote>
+</div>
+</div>
 <ul>
-<li>左辺と右辺で事象 \(A,B\) の役割が異なる</li>
-
-</ul></li>
-
+<li>左辺と右辺で事象 <span class="math inline">\(A,B\)</span> の役割が異なる</li>
 </ul>
 </section>
-<section id="slide-org77bbcee">
-<h3 id="org77bbcee">Bayes の定理 (一般形)</h3>
-<ul>
-<li><p>
-定理
-</p>
-<blockquote>
-<p>
-\(\Omega=A_1+A_2+\dotsb+A_n\) のとき
-</p>
-<div>
-\begin{equation}
+
+<section id="bayes-の定理-一般形" class="title-slide slide level2 center">
+<h2>Bayes の定理 (一般形)</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>定理</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\(\Omega=A_1+A_2+\dotsb+A_n\)</span> のとき</p>
+<p><span class="math display">\[\begin{equation}
   P(A_i|B)
   =\frac{P(A_i)P(B|A_i)}{\sum_{k=1}^nP(A_k)P(B|A_k)}
-\end{equation}
-
+\end{equation}\]</span></p>
+<p>が成り立つ．</p>
 </div>
-<p>
-が成り立つ．
-</p>
-</blockquote></li>
-
-</ul>
+</div>
+</div>
 </section>
 </section>
 <section>
-<section id="slide-org6ca6f54" data-background="#fef4f4">
-<h2 id="org6ca6f54">演習</h2>
+<section id="演習-1" class="title-slide slide level1 center" data-background-color="#fef4f4">
+<h1>演習</h1>
+
 </section>
-<section id="slide-orga7e1870" data-background="#fef4f4">
-<h3 id="orga7e1870">問題</h3>
+<section id="問題-1" class="title-slide slide level2 center">
+<h2>問題</h2>
 <ul>
-<li><p>
-以下の問に答えなさい
-</p>
-<blockquote>
-<p>
-A先生は大の野球ファンで，
-球団Hの勝敗で翌日の機嫌が左右されるとしよう．
-よくよく調べた結果
-</p>
+<li><p>以下の問に答えなさい</p>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p>A先生は大の野球ファンで， 球団Hの勝敗で翌日の機嫌が左右される． よくよく調べた結果</p>
 <ul>
 <li>球団Hが勝つと90%の確率で機嫌が良い</li>
 <li>球団Hが負けると70%の確率で機嫌が悪い</li>
-
 </ul>
-<p>
-が成り立っているとする．
-</p>
-
-<p>
-また球団Hの勝率は現在のところ
-</p>
+<p>が成り立っているとする．</p>
+<p>また球団Hの勝率は現在のところ</p>
 <ul>
 <li>球団Hは60%の確率で勝つ</li>
 <li>球団Hは40%の確率で負ける</li>
-
 </ul>
-<p>
-となっているとする．
-</p>
-</blockquote>
+<p>となっているとする．</p>
+</div>
+</div>
+</div>
 <ul>
 <li>A先生が機嫌が良いときに球団Hが勝った確率は？</li>
 <li>A先生が機嫌が悪いときに球団Hが負けた確率は？</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-orgf5aef5b" data-background="#fef4f4">
-<h3 id="orgf5aef5b">解答例</h3>
+
+<section id="解答例-1" class="title-slide slide level2 center">
+<h2>解答例</h2>
 <ul>
-<li><p>
-まず事象を定義する
-</p>
-<blockquote>
-<div>
-\begin{align}
-  A&:\text{先生の機嫌が良い}&
-  && A^{c}&:\text{先生の機嫌が悪い}\\
-  H&:\text{球団が勝つ}&
-  && H^{c}&:\text{球団が負ける}
-\end{align}
-
-</div>
-</blockquote></li>
-<li><p>
-条件を書き下す
-</p>
-<blockquote>
-<div>
-\begin{align}
-  P(A|H)&=0.9&
-  && P(A^{c}|H)&=0.1\\
-  P(A^{c}|H^{c})&=0.7&
-  && P(A|H^{c})&=0.3\\
-  P(H)&=0.6&
-  && P(H^{c})&=0.4
-\end{align}
-
-</div>
-</blockquote></li>
-
+<li><p>まず事象を定義する</p>
+<p><span class="math display">\[\begin{align}
+  A&amp;:\text{先生の機嫌が良い}&amp;
+  &amp;&amp; A^{c}&amp;:\text{先生の機嫌が悪い}\\
+  H&amp;:\text{球団が勝つ}&amp;
+  &amp;&amp; H^{c}&amp;:\text{球団が負ける}
+\end{align}\]</span></p></li>
+<li><p>条件を書き下す</p>
+<p><span class="math display">\[\begin{align}
+  P(A|H)&amp;=0.9&amp;
+  &amp;&amp; P(A^{c}|H)&amp;=0.1\\
+  P(A^{c}|H^{c})&amp;=0.7&amp;
+  &amp;&amp; P(A|H^{c})&amp;=0.3\\
+  P(H)&amp;=0.6&amp;
+  &amp;&amp; P(H^{c})&amp;=0.4
+\end{align}\]</span></p></li>
 </ul>
-
 </section>
-<section data-background="#fef4f4">
+<section class="slide level3 center">
+
 <ul>
-<li><p>
-A先生が機嫌が良いときに球団Hが勝った確率は？
-</p>
-<blockquote>
-<div>
-\begin{align}
+<li><p>A先生が機嫌が良いときに球団Hが勝った確率は？</p>
+<p><span class="math display">\[\begin{align}
   P(H|A)
-  &=\frac{P(A,H)}{P(A)}\\
-  &=\frac{P(A,H)}{P(A,H)+P(A,H^{c})}\\
-  &=\frac{P(A|H)P(H)}{P(A|H)P(H)+P(A|H^{c})P(H^{c})}\\
-  &=\frac{0.9\times 0.6}{0.9\times 0.6+0.3\times 0.4}\\
-  &=\frac{9}{11}\simeq 0.818
-\end{align}
-
-</div>
-</blockquote></li>
-
+  &amp;=\frac{P(A,H)}{P(A)}\\
+  &amp;=\frac{P(A,H)}{P(A,H)+P(A,H^{c})}\\
+  &amp;=\frac{P(A|H)P(H)}{P(A|H)P(H)+P(A|H^{c})P(H^{c})}\\
+  &amp;=\frac{0.9\times 0.6}{0.9\times 0.6+0.3\times 0.4}\\
+  &amp;=\frac{9}{11}\simeq 0.818
+\end{align}\]</span></p></li>
 </ul>
-
 </section>
-<section data-background="#fef4f4">
+<section class="slide level3 center">
+
 <ul>
-<li><p>
-A先生が機嫌が悪いときに球団Hが負けた確率は？
-</p>
-<blockquote>
-<div>
-\begin{align}
+<li><p>A先生が機嫌が悪いときに球団Hが負けた確率は？</p>
+<p><span class="math display">\[\begin{align}
   P(H^{c}|A^{c})
-  &=\frac{P(A^{c},H^{c})}{P(A^{c})}\\
-  &=\frac{P(A^{c},H^{c})}{P(A^{c},H)+P(A^{c},H^{c})}\\
-  &=\frac{P(A^{c}|H^{c})P(H^{c})}{P(A^{c}|H)P(H)+P(A^{c}|H^{c})P(H^{c})}\\
-  &=\frac{0.7\times 0.4}{0.1\times 0.6+0.7\times 0.4}\\
-  &=\frac{14}{17}\simeq 0.824
-\end{align}
-
-</div>
-</blockquote></li>
-
+  &amp;=\frac{P(A^{c},H^{c})}{P(A^{c})}\\
+  &amp;=\frac{P(A^{c},H^{c})}{P(A^{c},H)+P(A^{c},H^{c})}\\
+  &amp;=\frac{P(A^{c}|H^{c})P(H^{c})}{P(A^{c}|H)P(H)+P(A^{c}|H^{c})P(H^{c})}\\
+  &amp;=\frac{0.7\times 0.4}{0.1\times 0.6+0.7\times 0.4}\\
+  &amp;=\frac{14}{17}\simeq 0.824
+\end{align}\]</span></p></li>
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-orgc13ab7d">
-<h2 id="orgc13ab7d">検定の考え方</h2>
-<div class="outline-text-2" id="text-orgc13ab7d">
-</div>
+<section id="検定の考え方" class="title-slide slide level1 center">
+<h1>検定の考え方</h1>
+
 </section>
-<section id="slide-orgfad5d77">
-<h3 id="orgfad5d77">統計的仮説検定</h3>
+<section id="統計的仮説検定" class="title-slide slide level2 center">
+<h2>統計的仮説検定</h2>
 <ul>
-<li>ある現象・母集団に対して仮定された仮説の真偽を
-データに基づいて統計的に検証する方法</li>
+<li>ある現象・母集団に対して仮定された仮説の真偽を データに基づいて統計的に検証する方法</li>
 <li>検定の基本的手続き
-<ol>
+<ol type="1">
 <li>帰無仮説(および対立仮説)を立てる</li>
 <li>データから計算できる統計量を設定する
 <ul>
-<li><b>検定統計量</b> という</li>
-
+<li><strong>検定統計量</strong> という</li>
 </ul></li>
 <li>帰無仮説のもとで検定統計量が従う標本分布を求める
 <ul>
-<li><b>帰無分布</b> という</li>
-
+<li><strong>帰無分布</strong> という</li>
 </ul></li>
 <li>実際のデータから検定統計量の値を計算する</li>
-<li>計算された検定統計量の値が
-仮説が正しいときに十分高い確率で
-得られるかどうかを判断する
+<li>計算された検定統計量の値が 仮説が正しいときに十分高い確率で 得られるかどうかを判断する
 <ul>
-<li>この閾値を <b>有意水準</b> という</li>
-
+<li>この閾値を <strong>有意水準</strong> という</li>
 </ul></li>
-
 </ol></li>
-
 </ul>
 </section>
-<section id="slide-org4861ef6">
-<h3 id="org4861ef6">例題</h3>
+
+<section id="例題" class="title-slide slide level2 center">
+<h2>例題</h2>
 <ul>
 <li>表の出る確率が高くなるよう細工したコインを見つける問題を考える
 <ul>
-<li class="fragment appear">何回か投げてみる</li>
-<li class="fragment appear">表が裏より出やすければ「いかさま」と判断する</li>
-<li class="fragment appear">どのくらい表が出たら怪しいと考えられるだろうか?</li>
-
+<li>何回か投げてみる</li>
+<li>表が裏より出やすければ「いかさま」と判断する</li>
+<li>どのくらい表が出たら怪しいと考えられるだろうか?</li>
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-orgfd1c305">
-<h3 id="orgfd1c305">問題</h3>
+<section id="問題-2" class="slide level3 center">
+<h3>問題</h3>
 <ul>
-<li>いかさまのないコイン(表の出る確率が0.5)を20回投げたとき，
-表が \(k\) 回出る確率を求めなさい</li>
-
+<li>いかさまのないコイン(表の出る確率が0.5)を20回投げたとき， 表が <span class="math inline">\(k\)</span> 回出る確率を求めなさい</li>
 </ul>
 </section>
-<section id="slide-org7115662">
-<h3 id="org7115662">解答</h3>
+<section id="解答" class="slide level3 center">
+<h3>解答</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li><p>
-以下の式で計算される
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  P(\text{表の回数}=k)
+<li><p>以下の式で計算される</p>
+<p><span class="math display">\[\begin{multline}
+  P(\text{表の回数}=k)\\
   =
   \left(20\atop k\right)
   0.5^{k} (1-0.5)^{20-k}
-\end{equation}
-
+\end{multline}\]</span></p></li>
+</ul>
+</div><div class="column fig-tall" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-6-1.png" width="480"></p>
+<figcaption>いかさまのないコインの場合</figcaption>
+</figure>
 </div>
-</blockquote></li>
-
+</div>
+</div>
+</div></div>
+</section>
+<section id="問題-3" class="slide level3 center">
+<h3>問題</h3>
+<ul>
+<li>いかさまのあるコイン(表の出る確率が0.6)を20回投げたとき， 表が <span class="math inline">\(k\)</span> 回出る確率を求めなさい</li>
 </ul>
 </section>
-<section>
-
-<div id="org6c19a74" class="figure">
-<p><img src="figs/pval_null_n_20.png" alt="pval_null_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 5: </span>いかさまのないコインの場合</p>
-</div>
-</section>
-<section id="slide-orgfdd120a">
-<h3 id="orgfdd120a">問題</h3>
+<section id="解答-1" class="slide level3 center">
+<h3>解答</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>いかさまのあるコイン(表の出る確率が0.6)を20回投げたとき，
-表が \(k\) 回出る確率を求めなさい</li>
-
-</ul>
-</section>
-<section id="slide-org944acaf">
-<h3 id="org944acaf">解答</h3>
-<ul>
-<li><p>
-以下の式で計算される
-</p>
-<blockquote>
-<div>
-\begin{equation}
-  P(\text{表の回数}=k)
+<li><p>以下の式で計算される</p>
+<p><span class="math display">\[\begin{multline}
+  P(\text{表の回数}=k)\\
   =
   \left(20\atop k\right)
   0.6^{k} (1-0.6)^{20-k}
-\end{equation}
-
+\end{multline}\]</span></p></li>
+</ul>
+</div><div class="column fig-tall" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-7-1.png" width="480"></p>
+<figcaption>いかさまのないコインの場合</figcaption>
+</figure>
 </div>
-</blockquote></li>
+</div>
+</div>
+</div></div>
+</section>
+<section class="slide level3 center">
 
+<div class="fig-tall">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-8-1.png" width="480"></p>
+<figcaption>いかさまの有無による違い</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="問題-4" class="slide level3 center">
+<h3>問題</h3>
+<ul>
+<li>いかさまのないコインを20回投げたとき， 15回以上表が出る確率はいくつか</li>
 </ul>
 </section>
-<section>
-
-<div id="org303cbe0" class="figure">
-<p><img src="figs/pval_alt_n_20.png" alt="pval_alt_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 6: </span>いかさまのないコインの場合</p>
-</div>
-</section>
-<section>
-
-<div id="org7746dc3" class="figure">
-<p><img src="figs/pval_both_n_20.png" alt="pval_both_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 7: </span>いかさまの有無による違い</p>
-</div>
-</section>
-<section id="slide-orgcea45db">
-<h3 id="orgcea45db">問題</h3>
+<section id="解答-2" class="slide level3 center">
+<h3>解答</h3>
 <ul>
-<li>いかさまのないコインを20回投げたとき，
-15回以上表が出る確率はいくつか</li>
-
-</ul>
-</section>
-<section id="slide-orgc187ba4">
-<h3 id="orgc187ba4">解答</h3>
-<ul>
-<li><p>
-以下の式で計算される
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>以下の式で計算される</p>
+<p><span class="math display">\[\begin{equation}
   P(\text{表の回数}\ge 15)
   =
   \sum_{k=15}^{20}\left(20\atop k\right)
   0.5^{k} (1-0.5)^{20-k}
   =
   0.02
-\end{equation}
-
-</div>
-</blockquote></li>
-<li>「20回投げて表が出た回数」を検定統計量と考える</li>
-<li>「20回投げて15回以上表が出たら怪しい」と考える
+\end{equation}\]</span></p></li>
+<li><p>「20回投げて表が出た回数」を検定統計量と考える</p></li>
+<li><p>「20回投げて15回以上表が出たら怪しい」と考える</p>
 <ul>
-<li>怪しいと考える検定統計量の領域を <b>棄却域</b> という</li>
-
+<li>怪しいと考える検定統計量の領域を <strong>棄却域</strong> という</li>
 </ul></li>
-<li>この方策で「いかさまのないコイン」を間違えて怪しいとしてしまう確率は0.02である
+<li><p>この方策で「いかさまのないコイン」を間違えて怪しいとしてしまう確率は0.02である</p>
 <ul>
-<li><b>第一種の過誤</b> (type-I error) という</li>
-
+<li><strong>第一種の過誤</strong> (type-I error) という</li>
 </ul></li>
-
-</ul>
-
-</section>
-<section>
-
-<div id="org1224700" class="figure">
-<p><img src="figs/pval_null_cum_n_20.png" alt="pval_null_cum_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 8: </span>いかさまのないコインの場合</p>
-</div>
-</section>
-<section id="slide-org0d07e8a">
-<h3 id="org0d07e8a">問題</h3>
-<ul>
-<li>いかさまのあるコインを20回投げたとき，
-15回以上表が出る確率はいくつか</li>
-
 </ul>
 </section>
-<section id="slide-org52a2014">
-<h3 id="org52a2014">解答</h3>
+<section class="slide level3 center">
+
+<div class="fig-tall">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-9-1.png" width="480"></p>
+<figcaption>いかさまのないコインの場合</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="問題-5" class="slide level3 center">
+<h3>問題</h3>
 <ul>
-<li><p>
-以下の式で計算される
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li>いかさまのあるコインを20回投げたとき， 15回以上表が出る確率はいくつか</li>
+</ul>
+</section>
+<section id="解答-3" class="slide level3 center">
+<h3>解答</h3>
+<ul>
+<li><p>以下の式で計算される</p>
+<p><span class="math display">\[\begin{equation}
   P(\text{表の回数}\ge 15)
   =
   \sum_{k=15}^{20}\left(20\atop k\right)
   0.6^{k} (1-0.6)^{20-k}
   =
   0.13
-\end{equation}
-
-</div>
-</blockquote>
+\end{equation}\]</span></p>
 <ul>
 <li>この方法で「いかさまのあるコイン」を見分けられる確率は13%程度となる</li>
 <li>これを検出力 (power) という</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section>
+<section class="slide level3 center">
 
-<div id="org44bcbd4" class="figure">
-<p><img src="figs/pval_alt_cum_n_20.png" alt="pval_alt_cum_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 9: </span>いかさまのあるコインの場合</p>
+<div class="columns fig-tall">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-10-1.png" width="480"></p>
+<figcaption>いかさまのあるコインの場合</figcaption>
+</figure>
 </div>
-</section>
-<section>
-
-<div id="org32be199" class="figure">
-<p><img src="figs/pval_both_cum_n_20.png" alt="pval_both_cum_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 10: </span>いかさまの有無による違い</p>
 </div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-11-1.png" width="480"></p>
+<figcaption>いかさまの有無による違い</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
 </section>
-<section id="slide-org36dc81d">
-<h3 id="org36dc81d">問題</h3>
+<section id="問題-6" class="slide level3 center">
+<h3>問題</h3>
 <ul>
-<li>もっとあからさまにいかさまのあるコイン(表の出る確率が0.9)を20回投げたとき，
-15回以上表が出る確率はいくつか</li>
-
+<li>もっとあからさまにいかさまのあるコイン(表の出る確率が0.9)を20回投げたとき， 15回以上表が出る確率はいくつか</li>
 </ul>
 </section>
-<section id="slide-orga6489c1">
-<h3 id="orga6489c1">解答</h3>
+<section id="解答-4" class="slide level3 center">
+<h3>解答</h3>
 <ul>
-<li><p>
-以下の式で計算される
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>以下の式で計算される</p>
+<p><span class="math display">\[\begin{equation}
   P(\text{表の回数}\ge 15)
   =
   \sum_{k=15}^{20}\left(20\atop k\right)
   0.9^{k} (1-0.9)^{20-k}
   =
   0.98
-\end{equation}
-
-</div>
-</blockquote>
+\end{equation}\]</span></p>
 <ul>
 <li>この方法で「あからさまにいかさまのあるコイン」を見分けられる確率は98%程度となる</li>
 <li>対立仮説によって検出力は異なる</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section>
+<section class="slide level3 center">
 
-<div id="orgeffe508" class="figure">
-<p><img src="figs/pval_alt2_cum_n_20.png" alt="pval_alt2_cum_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 11: </span>いかさまのあるコインの場合</p>
+<div class="columns fig-tall">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-12-1.png" width="480"></p>
+<figcaption>いかさまのあるコインの場合</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-13-1.png" width="480"></p>
+<figcaption>いかさまの有無による違い</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section class="slide level3 center">
+
+<div class="fig-tall" width="50%">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-14-1.png" width="480"></p>
+<figcaption>対立仮説による検出力の違い</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </section>
-<section>
-
-<div id="orgdcbf6b1" class="figure">
-<p><img src="figs/pval_both2_cum_n_20.png" alt="pval_both2_cum_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 12: </span>いかさまの有無による違い</p>
-</div>
-</section>
-<section>
-
-<div id="org2575631" class="figure">
-<p><img src="figs/pval_power_n_20.png" alt="pval_power_n_20.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 13: </span>対立仮説による検出力の違い</p>
-</div>
-</section>
-<section id="slide-org88355c8">
-<h3 id="org88355c8">問題</h3>
+<section id="問題-7" class="slide level3 center">
+<h3>問題</h3>
 <ul>
-<li>いかさまのないコインを100回投げたとき，
-60回以上表が出る確率はいくつか</li>
-
+<li>いかさまのないコインを100回投げたとき， 60回以上表が出る確率はいくつか</li>
 </ul>
 </section>
-<section id="slide-orgbc76885">
-<h3 id="orgbc76885">解答</h3>
+<section id="解答-5" class="slide level3 center">
+<h3>解答</h3>
 <ul>
-<li><p>
-以下の式で計算される
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>以下の式で計算される</p>
+<p><span class="math display">\[\begin{equation}
   P(\text{表の回数}\ge 60)
   =
   \sum_{k=60}^{100}\left(100\atop k\right)
   0.5^{k} (1-0.5)^{100-k}
   =
   0.028
-\end{equation}
-
-</div>
-</blockquote></li>
-<li>異なる検定統計量「100回投げて表が出た回数」を考えている</li>
-
+\end{equation}\]</span></p></li>
+<li><p>異なる検定統計量「100回投げて表が出た回数」を考えている</p></li>
 </ul>
 </section>
-<section id="slide-orgd7f5703">
-<h3 id="orgd7f5703">問題</h3>
+<section id="問題-8" class="slide level3 center">
+<h3>問題</h3>
 <ul>
-<li>いかさまのあるコインを100回投げたとき，
-60回以上表が出る確率はいくつか</li>
-
+<li>いかさまのあるコインを100回投げたとき， 60回以上表が出る確率はいくつか</li>
 </ul>
 </section>
-<section id="slide-org88f1770">
-<h3 id="org88f1770">解答</h3>
+<section id="解答-6" class="slide level3 center">
+<h3>解答</h3>
 <ul>
-<li><p>
-以下の式で計算される
-</p>
-<blockquote>
-<div>
-\begin{equation}
+<li><p>以下の式で計算される</p>
+<p><span class="math display">\[\begin{equation}
   P(\text{表の回数}\ge 60)
   =
   \sum_{k=60}^{100}\left(100\atop k\right)
   0.6^{k} (1-0.6)^{100-k}
   =
   0.543
-\end{equation}
-
-</div>
-</blockquote>
+\end{equation}\]</span></p>
 <ul>
 <li>同じ仮説だとしても検定統計量によって検出力は異なる．</li>
-
 </ul></li>
-
 </ul>
-
 </section>
-<section>
+<section class="slide level3 center">
 
-<div id="orgf9286cb" class="figure">
-<p><img src="figs/pval_both_cum_n_100.png" alt="pval_both_cum_n_100.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 14: </span>いかさまの有無による違い</p>
+<div class="columns fig-tall">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-15-1.png" width="480"></p>
+<figcaption>いかさまの有無による違い</figcaption>
+</figure>
 </div>
-</section>
-<section>
-
-<div id="org1dabe56" class="figure">
-<p><img src="figs/pval_power_n_100.png" alt="pval_power_n_100.png" height="100%" />
-</p>
-<p><span class="figure-number">Figure 15: </span>対立仮説による検出力の違い</p>
 </div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slide02_files/figure-revealjs/unnamed-chunk-16-1.png" width="480"></p>
+<figcaption>対立仮説による検出力の違い</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
 </section>
-<section id="slide-orgde75ea6">
-<h3 id="orgde75ea6">問題</h3>
+<section id="問題-9" class="slide level3 center">
+<h3>問題</h3>
 <ul>
 <li>以下の問に答えなさい
 <ul>
@@ -1676,248 +1433,566 @@ A先生が機嫌が悪いときに球団Hが負けた確率は？
 <li>ある検定統計量を用いて有意水準0.05の検定を考える</li>
 <li>設定した検定統計量の検出力は0.8であることがわかっている</li>
 <li>このときどの程度のいかさまを見破ることができるだろうか?</li>
-
 </ul></li>
-
 </ul>
 </section>
-<section id="slide-org19d915a">
-<h3 id="org19d915a">解答例</h3>
+<section id="解答例-2" class="slide level3 center">
+<h3>解答例</h3>
 <ul>
 <li>以下おおざっぱな考え方を示す
 <ul>
-<li>いかさまを検出できる確率は0.8なので，
-平均的には\(10\times0.8=8\)個の
-いかさまコインを見付けられる</li>
-<li>有意水準0.05なので，
-平均的には\(90\times0.05=4.5\)個
-誤っていかさまコインだと判定してしまう</li>
-<li>見破ったと考える12.5個のうち，
-本当にいかさまをしているのは8個なので，
-64%しか当たらないことになる</li>
-
+<li>いかさまを検出できる確率は0.8なので， 平均的には<span class="math inline">\(10\times0.8=8\)</span>個の いかさまコインを見付けられる</li>
+<li>有意水準0.05なので， 平均的には<span class="math inline">\(90\times0.05=4.5\)</span>個 誤っていかさまコインだと判定してしまう</li>
+<li>見破ったと考える12.5個のうち， 本当にいかさまをしているのは8個なので， 64%しか当たらないことになる</li>
 </ul></li>
 <li>実際の状況に合わせて検定の意味を考える必要がある</li>
-
 </ul>
 </section>
 </section>
 <section>
-<section id="slide-org03f0f8d">
-<h2 id="org03f0f8d">p値とその誤解</h2>
-<div class="outline-text-2" id="text-org03f0f8d">
-</div>
-</section>
-<section id="slide-org5e31055">
-<h3 id="org5e31055">p値とは</h3>
-<blockquote>
-<p>
-おおざっぱにいうと，
-p値とは特定の統計モデルのもとで，
-データの統計的要約
-(たとえば，2グループ比較での標本平均の差)
-が観察された値と等しいか，それよりも極端な値をとる確率である．
-</p>
-</blockquote>
-<ul>
-<li><b>p値</b> は観測された値を使った検定の第一種の過誤の確率として定義される</li>
+<section id="p値とその誤解" class="title-slide slide level1 center">
+<h1>p値とその誤解</h1>
 
+</section>
+<section id="p値とは" class="title-slide slide level2 center">
+<h2>p値とは</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>定義</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>p値</strong> は観測された値を使った検定の第一種の過誤の確率として定義される</p>
+</div>
+</div>
+</div>
+<ul>
+<li>大雑把にいうと， p値とは特定の統計モデルのもとで， データの統計的要約 (たとえば，2グループ比較での標本平均の差) が観察された値と等しいか，それよりも極端な値をとる確率である．</li>
 </ul>
 </section>
-<section id="slide-orgaf2e9ba">
-<h3 id="orgaf2e9ba">良くある間違った記述</h3>
+
+<section id="良くある間違った記述" class="title-slide slide level2 center">
+<h2>良くある間違った記述</h2>
 <ul>
 <li>p値は帰無仮説が正しい確率である</li>
 <li>有意水準を5%に設定して帰無仮説を棄却した場合，その判断が誤りである確率は5%である</li>
 <li>p値が0.01ということは帰無仮説を棄却しても100回に1回しか間違わない</li>
 <li>有意でない検定結果は帰無仮説が正しく，採択すべきであることを意味する</li>
 <li>有意な検定結果は帰無仮説が誤りであり，棄却すべきであることを意味する</li>
-
 </ul>
 </section>
-<section id="slide-org7c15fa2">
-<h3 id="org7c15fa2">ASAの提言</h3>
-<ul>
-<li>American Statistical Association
-<a href="https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf">https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf</a></li>
-<li>日本計量生物学会による和訳
-<a href="https://www.biometrics.gr.jp/news/all/ASA.pdf">https://www.biometrics.gr.jp/news/all/ASA.pdf</a></li>
 
+<section id="asaの提言" class="title-slide slide level2 center">
+<h2>ASAの提言</h2>
+<ul>
+<li>American Statistical Association <a href="https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf" class="uri">https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf</a></li>
+<li>日本計量生物学会による和訳 <a href="https://www.biometrics.gr.jp/news/all/ASA.pdf" class="uri">https://www.biometrics.gr.jp/news/all/ASA.pdf</a></li>
 </ul>
 </section>
-<section id="slide-orgedd4340">
-<h3 id="orgedd4340">提言の要旨</h3>
+<section id="提言の要旨-その1" class="slide level3 center">
+<h3>提言の要旨 (その1)</h3>
 <ul>
-<li><p>
-その1
-</p>
-<blockquote>
-<p>
-p値はデータと特定の統計モデルが矛盾する程度をしめす指標のひとつである
-</p>
-</blockquote>
-<ul class="fragment appear">
+<li>p値はデータと特定の統計モデルが矛盾する程度をしめす指標のひとつである
+<ul>
 <li>統計モデルはいくつもの仮定を含む</li>
 <li>帰無仮説は仮定の1つにすぎない</li>
-<li>p値が小さければ<br />
-<del>データと帰無仮説の矛盾の程度が大きい</del><br />
+<li>p値が小さければ<br>
+<del>データと帰無仮説の矛盾の程度が大きい</del><br>
 統計モデルの仮定のどれかが間違っている</li>
-
 </ul></li>
-
 </ul>
-
 </section>
-<section>
+<section id="提言の要旨-その2" class="slide level3 center">
+<h3>提言の要旨 (その2)</h3>
 <ul>
-<li><p>
-その2
-</p>
-<blockquote>
-<p>
-p値は，調べている仮説が正しい確率や，データが偶然のみで得られた確率を測るものではない
-</p>
-</blockquote>
-<ul class="fragment appear">
+<li>p値は，調べている仮説が正しい確率や，データが偶然のみで得られた確率を測るものではない
+<ul>
 <li>誤差をともなってばらつくのはデータである</li>
 <li>仮説や真の値は確率的でない</li>
 <li>データが偶然のみで得られることは統計モデルの仮定の一つである</li>
-
 </ul></li>
-
 </ul>
-
 </section>
-<section>
+<section id="提言の要旨-その3" class="slide level3 center">
+<h3>提言の要旨 (その3)</h3>
 <ul>
-<li><p>
-その3
-</p>
-<blockquote>
-<p>
-科学的な結論や，ビジネス，政策における決定は，p値がある値を超えたかどうかにのみ基づくべきではない
-</p>
-</blockquote>
-<ul class="fragment appear">
-<li>データ解析や科学的推論を機械的で明白なルールに貶めるようなやり方は
-誤った思い込みや貧弱な意思決定につながる</li>
-<li>科学的推論には研究デザイン，測定の質，外部のエビデンス，データ解析の背後にある
-仮定の妥当性が重要である</li>
-
+<li>科学的な結論や，ビジネス，政策における決定は，p値がある値を超えたかどうかにのみ基づくべきではない
+<ul>
+<li>データ解析や科学的推論を機械的で明白なルールに貶めるようなやり方は 誤った思い込みや貧弱な意思決定につながる</li>
+<li>科学的推論には研究デザイン，測定の質，外部のエビデンス，データ解析の背後にある 仮定の妥当性が重要である</li>
 </ul></li>
-
 </ul>
-
 </section>
-<section>
+<section id="提言の要旨-その4" class="slide level3 center">
+<h3>提言の要旨 (その4)</h3>
 <ul>
-<li><p>
-その4
-</p>
-<blockquote>
-<p>
-適正な推測のためには，すべてを報告する透明性が必要である
-</p>
-</blockquote>
-<ul class="fragment appear">
+<li>適正な推測のためには，すべてを報告する透明性が必要である
+<ul>
 <li>p値や関連する解析は選択して報告してはいけない</li>
 <li>研究の中で調べる仮説の数，データの選択基準，実行したすべての統計解析，計算したすべてのp値を開示すべきである</li>
-
 </ul></li>
-
 </ul>
-
 </section>
-<section>
+<section id="提言の要旨-その5" class="slide level3 center">
+<h3>提言の要旨 (その5)</h3>
 <ul>
-<li><p>
-その5
-</p>
-<blockquote>
-<p>
-p値や統計的有意性は，効果の大きさや結果の重要性を意味しない
-</p>
-</blockquote>
-<ul class="fragment appear">
+<li>p値や統計的有意性は，効果の大きさや結果の重要性を意味しない
+<ul>
 <li>統計的に有意であることは科学的に意味にあることと同義ではない</li>
 <li>どんなに小さな効果でもサンプルサイズが大きかったり測定精度が十分高ければ小さなp値になるし，その逆もしかり</li>
 <li>効果の推定値が同じ大きさでも，推定の精度が異なれば異なったp値となる</li>
-
 </ul></li>
-
 </ul>
-
 </section>
-<section>
+<section id="提言の要旨-その6" class="slide level3 center">
+<h3>提言の要旨 (その6)</h3>
 <ul>
-<li><p>
-その6
-</p>
-<blockquote>
-<p>
-p値は，それだけでは統計モデルや仮説に関するエビデンスの，よい指標とはならない
-</p>
-</blockquote>
-<ul class="fragment appear">
+<li>p値は，それだけでは統計モデルや仮説に関するエビデンスの，よい指標とはならない
+<ul>
 <li>背景情報や外部のエビデンスがなければ，p値は限られた情報しか提供しない</li>
 <li>p値が大きくても帰無仮説を好む証拠とはならない</li>
 <li>p値を計算したらデータ解析は終わりではない</li>
-
 </ul></li>
-
 </ul>
 </section>
 </section>
-<section>
-<section id="slide-orgbe7f0ae">
-<h2 id="orgbe7f0ae">次回の予定</h2>
+<section id="次回の予定" class="title-slide slide level1 center">
+<h1>次回の予定</h1>
 <ul>
-<li><b>第1日 : 回帰モデルの考え方と推定</b></li>
+<li><strong>第1日 : 回帰モデルの考え方と推定</strong></li>
 <li>第2日 : モデルの評価</li>
 <li>第3日 : モデルによる予測と発展的なモデル</li>
-
 </ul>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
 </div>
-</div>
-<script src="./reveal.js/dist/reveal.js"></script>
-<script src="./reveal.js/plugin/notes/notes.js"></script>
-<script src="./reveal.js/plugin/search/search.js"></script>
-<script src="./reveal.js/plugin/zoom/zoom.js"></script>
-<script src="./reveal.js/plugin/menu/menu.js"></script>
-<script src="./reveal.js/plugin/spotlight/spotlight.js"></script>
-<script src="./reveal.js/plugin/chalkboard/plugin.js"></script>
-<script src="./reveal.js/dist/theme/hidelinks.js"></script>
-<script>
-// Full list of configuration options available here:
-// https://github.com/hakimel/reveal.js#configuration
-Reveal.initialize({
+</div></div>
 
-controls: true,
-progress: true,
-history: true,
-center: true,
-slideNumber: 'c',
-rollingLinks: false,
-keyboard: true,
-mouseWheel: false,
-fragmentInURL: true,
-hashOneBasedIndex: false,
-pdfSeparateFragments: false,
-overview: true,
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="slide02_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="slide02_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="slide02_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="slide02_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="slide02_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="slide02_files/libs/revealjs/plugin/reveal-pointer/pointer.js"></script>
+  <script src="slide02_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
 
-transition: 'fade',
-transitionSpeed: 'default',
-showNotes: window.location.search.match( /print-pdf/gi ) ? 'separate-page' : false,
-spotlight: { size: 80, initialPresentationMode: false, }, keyboard: { 81: function() { RevealSpotlight.toggleSpotlight()}, 87: function() { RevealSpotlight.togglePresentationMode();}, },
+  <script src="slide02_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="slide02_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="slide02_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="slide02_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
-// Plugins with reveal.js 4.x
-plugins: [ RevealNotes, RevealSearch, RevealZoom, RevealMenu, RevealSpotlight, RevealChalkboard ],
+  <script>
 
-// Optional libraries used to extend reveal.js
-dependencies: [
-]
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'pointer': {"key":"q","color":"rgba(255, 0, 0, 0.4)","pointerSize":120,"alwaysVisible":false},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
 
-});
-</script>
-</body>
-</html>
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'visible',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        maxScale: 2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealPointer, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
