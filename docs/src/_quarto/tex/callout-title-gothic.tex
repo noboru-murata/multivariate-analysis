@@ -1,0 +1,35 @@
+% callout-title-gothic.tex ----------------------------------------------------
+% Quarto の callout は LaTeX では tcolorbox になり、タイトルは
+%
+%   title=\textcolor{...}{\faInfo}\hspace{0.5em}{注意すべき点}
+%
+% のように「書体指定なし」で埋め込まれます。全 callout のタイトル書体を
+% まとめて変えるフックが tcolorbox の fonttitle です。
+%
+%   format:
+%     pdf:
+%       include-in-header: callout-title-gothic.tex
+%
+% ■ \AtBeginDocument が必要な理由
+%   Quarto は include-in-header の内容を吐いたあとに tcolorbox を読み込むため、
+%   プリアンブルに \tcbset を直書きすると
+%     ! Undefined control sequence.  l.111 \tcbset
+%   になります。\AtBeginDocument に包めば読み込み後に実行されます。
+%
+% ■ \bfseries だけでは足りない理由
+%   \bfseries は「今の和文ファミリの太字」を選ぶので、本文が明朝なら
+%   太明朝（NotoSerifCJKjp-Bold など）になります。ゴシックにするには
+%   ファミリを明示的に切り替える必要があります。
+%
+%   \gtfamily … luatexja / jlreq / ltjsclasses / bxjs 系で使えるゴシック切替
+%   \sffamily … fontspec や xeCJK では sansfont / CJKsansfont に切り替わる
+%
+%   下の \providecommand は、\gtfamily が無い構成のときだけ \sffamily を
+%   代用するためのものです。どちらの構成でもそのまま動きます。
+%   (fontspec 系では sansfont: に和文ゴシックを指定しておいてください。)
+%------------------------------------------------------------------------------
+
+\AtBeginDocument{%
+  \providecommand{\gtfamily}{\sffamily}%
+  \tcbset{fonttitle=\gtfamily\bfseries}%
+}

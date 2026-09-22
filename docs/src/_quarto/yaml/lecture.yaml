@@ -24,6 +24,7 @@ format:
           \mathtoolsset{showonlyrefs,showmanualtags}	    
       - _quarto/tex/fig-scale.tex
       - _quarto/tex/table-center.tex
+      - _quarto/tex/callout-title-gothic.tex
   html: 
     self-contained: false
     grid: 

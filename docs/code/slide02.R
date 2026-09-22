@@ -1,7 +1,5 @@
 ### 第2講 資料
 
-### 第2講 資料
-
 #| fig-cap: "正規分布 (平均0,分散)"
 ggplot() + 
   geom_function(fun = \(x) dnorm(x,mean = 0,sd = 1),

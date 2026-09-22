@@ -28,6 +28,7 @@ format:
           \mathtoolsset{showonlyrefs,showmanualtags}	    
       - _quarto/tex/fig-scale.tex
       - _quarto/tex/table-center.tex
+      - _quarto/tex/callout-title-gothic.tex
   html: 
     self-contained: false
     grid: 
@@ -125,7 +126,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 
 ## 確率分布
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 定義
 注目する事象(標本空間の部分集合)に対して，
 それが起きる確率(区間 $[0,1]$ の実数)を返す関数
@@ -144,7 +145,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 
 ## 確率質量関数
 
-::: {.callout-note}
+::: {.callout-note icon="false"}
 ## 離散分布を記述する方法
 1つの見本点 $x$ からなる事象(根元事象という)を $A=\{x\}$ とする．
 事象 $A$ の起きる確率
@@ -159,7 +160,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 
 ## 確率密度関数
 
-::: {.callout-note}
+::: {.callout-note icon="false"}
 ## 連続分布を記述する方法
 事象 $A$ が起きる確率は
 **確率密度関数** $p$ の積分
@@ -413,7 +414,7 @@ ggplot() +
 
 ## 大数の強法則
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 定理
 $\{X_n\}$ を確率変数列として
 
@@ -435,7 +436,7 @@ $\{\mathrm{Var}(X_n)\}$ が有界ならば
 
 ## 同分布の中心極限定理
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 定理
 $\{X_n\}$ は独立で，
 平均 $\mu$ ，標準偏差 $\sigma$ 
@@ -473,7 +474,7 @@ $\{X_n\}$ は独立で，
 
 ## 推定量の漸近正規性
 
-::: {.callout-note}
+::: {.callout-note icon="false"}
 ## 漸近正規性
 多くの推定量 $\hat{\theta}$ の分布は正規分布で近似できる
 :::
@@ -689,7 +690,7 @@ $\{X_n\}$ は独立で，
 
 ---
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 定義
 パラメタ $\boldsymbol{\theta}$ に対して
 観測データ $X_1,X_2,\dots,X_n$ が得られる理論上の確率
@@ -731,7 +732,7 @@ $\boldsymbol{\theta}$ の関数 $L$ を **尤度関数** と呼ぶ．
 
 ---
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 定義
 パラメタ $\boldsymbol{\theta}$ に対して
 観測データ $X_1,X_2,\dots,X_n$ が得られる理論上の確率密度
@@ -756,7 +757,7 @@ $\boldsymbol{\theta}$ の関数 $L$ を **尤度関数** と呼ぶ．
     $\boldsymbol{\theta}$ の推定量として採用する方法
     を最尤法という．
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 最尤推定量
 $\Theta$ を尤度関数の定義域として，
 尤度関数を最大とする  $\hat{\boldsymbol{\theta}}$ 
@@ -774,7 +775,7 @@ $\boldsymbol{\theta}$
 
 ## Bayes の定理 (基本形)
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 定理
 条件付確率では次の等式が成り立つ．
 
@@ -789,7 +790,7 @@ $\boldsymbol{\theta}$
 
 ## Bayes の定理 (一般形)
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 定理
 $\Omega=A_1+A_2+\dotsb+A_n$ のとき
 
@@ -1220,7 +1221,7 @@ plot(prob,power,type="l",
 
 ## p値とは
 
-::: {.callout-important}
+::: {.callout-important icon="false"}
 ## 定義
 **p値** は観測された値を使った検定の第一種の過誤の確率として定義される
 :::
