@@ -1,0 +1,22 @@
+% ---------------------------------------------------------------------------
+% PDF 出力で table / figure フロートの中身を一律に中央寄せする
+%
+%   format:
+%     pdf:
+%       include-in-header:
+%         - table-center.tex
+%
+% gt は既定で
+%     \begin{table}
+%     \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}...}
+% という LaTeX を出す。\centering が入らないので、table.width を
+% 狭めた表は左寄せになる。
+%
+% 注意: \AtBeginEnvironment{table}{\centering} では効かない。
+% フロートは本体に入る直前に \@floatboxreset → \@parboxrestore を実行し、
+% \leftskip / \rightskip を既定に戻してしまうため。
+% \@floatboxreset 自体に追記すれば、リセットの後に \centering が効く。
+% ---------------------------------------------------------------------------
+\makeatletter
+\g@addto@macro\@floatboxreset{\centering}
+\makeatother

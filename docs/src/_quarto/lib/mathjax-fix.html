@@ -1,0 +1,41 @@
+<!-- mathjax-fix.html ------------------------------------------------------
+     \mathcal{} や \mathbb{} が Chrome で豆腐(▯)になるときの対処。
+
+       format:
+         revealjs:
+           include-in-header: mathjax-fix.html
+
+     Quarto の revealjs は reveal.js の math プラグイン経由で MathJax 2.7.9 を
+     TeX-AMS_HTML-full 構成で読み込む。この構成の出力は HTML-CSS で、字形は
+     MathJax_Script などの専用 Web フォントで描かれる。MathJax は起動時に
+     「ローカルに使えそうな数式フォント(TeX / STIX)があるか」を調べ、あると
+     判断すると Web フォントを読まずにそちらを使う。その判定が外れると
+     U+1D4AF (𝒯) のような Unicode 数学英数字記号がそのまま出力され、
+     フォールバック先のフォントにその符号位置が無ければ豆腐になる。
+     ブラウザごとにインストール済みフォントの見え方とフォールバックの経路が
+     違うので、Safari では出て Chrome では出ない、という差が生じる。
+
+     下の設定はローカルフォントの利用を止め、常に MathJax の Web フォントを
+     使わせる。これが本命の対処。
+--------------------------------------------------------------------------- -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      availableFonts: [],     // ローカルフォントを使わない
+      preferredFont: null,
+      webFont: "TeX"          // 常に MathJax の TeX Web フォントを取得する
+    }
+  });
+</script>
+
+<!-- それでも直らない場合(社内ネットワークで cdn.jsdelivr.net のフォントが
+     取れないなど)は、上をコメントアウトして下を有効にする。SVG 出力は字形を
+     パスとして描くのでフォントを一切必要とせず、どのブラウザでも同じ結果に
+     なる。print-pdf 出力にも強い。拡大したときの再描画がないぶん、重い数式が
+     多いスライドではわずかに軽くなることもある。
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Register.StartupHook("End Jax", function () {
+    return MathJax.Hub.setRenderer("SVG");
+  });
+</script>
+-->

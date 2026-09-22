@@ -1,0 +1,280 @@
+/*-- scss:defaults --*/
+
+// =============================================================================
+// default-header — decorated slide headers for Quarto reveal.js (light theme)
+//
+// Layers on top of Quarto's built-in default theme:
+//   h1 ... centered section title
+//   h2 ... logo on the left, title text right aligned, and a rule underneath
+//          that starts solid at the left and fades out towards the right
+//
+//   ---
+//   format:
+//     revealjs:
+//       theme: [default, default-header.scss]
+//   ---
+//
+// Companion to dracula-header.scss: same variable names, same per-slide
+// classes, so the two are drop-in interchangeable.
+// =============================================================================
+
+// -- Palette ------------------------------------------------------------------
+// Quarto's light defaults, repeated as literals: Quarto loads the *last*
+// theme's defaults first, so `default`'s variables do not exist yet here.
+$light-bg:     #fff !default;
+$light-ink:    #222 !default;
+$light-blue:   #2a76dd !default;   // Quarto's link color
+$light-violet: #6741d9 !default;
+$light-muted:  #6c757d !default;
+
+// -- Header rule ---------------------------------------------------------------
+// The gradient runs left to right and dies out at $header-rule-fade.
+$header-rule-color:   $light-blue !default;
+$header-rule-color-2: $light-violet !default;   // mid-way tint; set to
+                                                // $header-rule-color for a
+                                                // single-hue rule
+$header-rule-height:  4px !default;
+$header-rule-fade:    85% !default;    // where the rule reaches full transparency
+$header-rule-gap:     0.25em !default; // space between title and rule
+
+// -- Logo ----------------------------------------------------------------------
+// Replace $header-logo with your own file. A path is resolved relative to the
+// COMPILED theme css (…/_files/libs/revealjs/dist/theme/), not to the .qmd, so
+// a plain `url("logo.svg")` will not be found. Two things that do work:
+//
+//   1. an absolute URL or a site-root path
+//        $header-logo: url("/images/logo.svg");
+//   2. a data URI, as used by the placeholder below — self-contained, survives
+//      `embed-resources: true`, and needs no `resources:` entry
+//
+// `svg2datauri.py logo.png` prints the ready-made `$header-logo:` line for your
+// own SVG or PNG; paste it here or override it in your own theme file.
+$header-logo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 64' width='10' height='64' role='img' aria-label=''%3E%3Crect x='0' y='0' width='10' height='64' rx='5' fill='%232a76dd'/%3E%3C/svg%3E") !default;
+
+$header-logo-size:   1.15em !default;   // logo height, relative to the h2 font
+$header-logo-width:  0.18em !default;
+                     // The bundled logo.svg is a 10x64 bar, so the box is
+                     // narrow: 1.15em * 10/64. For a square logo use
+                     // $header-logo-size; for a wide one its own value,
+                     // e.g. 3.5em. The image is drawn with
+                     // `background-size: contain`, so it is never distorted
+                     // and a slightly generous width only adds empty space.
+$header-logo-gap:    0.5em !default;    // space between logo and title
+$header-logo-offset: 0 !default;        // nudge the logo vertically, e.g. 0.05em
+
+// For a logo that only exists on a dark background: draw a dark plate behind it
+// so it does not disappear into the white slide.
+$header-logo-plate:        false !default;
+$header-logo-plate-color:  $light-ink !default;
+$header-logo-plate-pad:    0.15em !default;
+$header-logo-plate-radius: 0.2em !default;
+
+// -- Headings ------------------------------------------------------------------
+// Headings take the colour of the bar logo and the left end of the rule, so the
+// three read as one mark. Set it to $light-ink for near-black headings instead.
+$presentation-heading-color: $header-rule-color !default;
+$header-h1-color: $presentation-heading-color !default;
+$header-h2-color: $presentation-heading-color !default;
+
+// Quarto's own default, repeated so this file also compiles on its own and so
+// the h1 size restore below has a value to use. Change it here to resize h1.
+$presentation-h1-font-size: 2.5em !default;
+
+
+// -- Vertical alignment of the slide body --------------------------------------
+// The header stays pinned at the top; only what follows it is aligned.
+// Deck-wide default — "top" | "center" | "bottom" — and per slide:
+//
+//   ## Title {.v-center}
+//   ## Title {.v-bottom}
+//   ## Title {.v-top}
+//
+// Implemented with flexbox and auto margins, so nothing else has to change.
+// Note: a slide that is aligned this way turns its direct children into flex
+// items, which switches off `float` on them — keep float-based column helpers
+// on top-aligned slides. Use reveal's own `center: false` (Quarto's default)
+// with this; `center: true` would move the header too.
+$slide-v-align: top !default;
+
+
+/*-- scss:rules --*/
+
+// =============================================================================
+// h1 — section title, centered
+// =============================================================================
+.reveal .slides section h1 {
+  text-align: center;
+  color: $header-h1-color;
+}
+
+// Pandoc marks every `# ...` slide as `title-slide slide level1`, and Quarto
+// then shrinks its heading to the h2 size unless reveal.js has already set
+// data-navigation-mode="linear". Keep h1 at its own size in every mode.
+.reveal .slides section.title-slide h1,
+.reveal .slides section.level1 h1 {
+  font-size: $presentation-h1-font-size;
+}
+
+// The deck's own title slide is #title-slide.quarto-title-block — leave it
+// alone so the title, author and date keep the base theme's layout.
+.reveal #title-slide .title {
+  text-align: inherit;
+}
+
+// =============================================================================
+// h2 — logo left, title right, fading rule underneath
+// =============================================================================
+.reveal .slides section h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;   // the title text sits on the right
+  gap: 0 $header-logo-gap;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.6em;
+  padding-bottom: 0;
+  text-align: right;
+  color: $header-h2-color;
+  border-bottom: none;         // the rule is drawn by ::after instead
+
+  // Logo. `margin-right: auto` is what pushes the title to the right edge.
+  &::before {
+    content: "";
+    flex: 0 0 auto;
+    margin-right: auto;
+    width: $header-logo-width;
+    height: $header-logo-size;
+    transform: translateY($header-logo-offset);
+    background-image: $header-logo;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: contain;
+  }
+
+  // Rule. `flex: 0 0 100%` puts it on its own line, full width.
+  // The gradient ends on the same hue at zero alpha rather than the `transparent`
+  // keyword, so it fades cleanly instead of drifting towards grey.
+  &::after {
+    content: "";
+    flex: 0 0 100%;
+    height: $header-rule-height;
+    margin-top: $header-rule-gap;
+    border-radius: $header-rule-height;
+    background-image: linear-gradient(
+      to right,
+      $header-rule-color 0%,
+      $header-rule-color-2 35%,
+      rgba($header-rule-color-2, 0) $header-rule-fade
+    );
+  }
+}
+
+// Dark plate behind a logo that has no transparency.
+@if $header-logo-plate {
+  .reveal .slides section h2::before {
+    box-sizing: content-box;
+    padding: $header-logo-plate-pad;
+    border-radius: $header-logo-plate-radius;
+    background-color: $header-logo-plate-color;
+    background-origin: content-box;
+  }
+}
+
+// Per-slide opt-outs. Pandoc puts `## Title {.no-logo}` on the *section*, not
+// on the h2, so both spellings are matched.
+.reveal .slides section.no-logo h2::before,
+.reveal .slides section h2.no-logo::before {
+  content: none;
+}
+
+.reveal .slides section.no-rule h2::after,
+.reveal .slides section h2.no-rule::after {
+  content: none;
+}
+
+// `{.plain-header}` turns both off at once.
+.reveal .slides section.plain-header h2 {
+  &::before,
+  &::after { content: none; }
+}
+
+// Vertical (nested) slides get a quieter, thinner rule so the hierarchy reads.
+.reveal .slides section section h2::after {
+  height: 2px;
+  opacity: 0.7;
+}
+
+// =============================================================================
+// Print / PDF
+// =============================================================================
+// Chrome drops backgrounds when printing unless this is set; without it the
+// gradient rule and the logo disappear from the exported PDF.
+html.print-pdf .reveal .slides section h2 {
+  &::before,
+  &::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+// =============================================================================
+// Vertical alignment — header at the top, body aligned in what is left
+// =============================================================================
+// Only the slide on screen becomes a flex container: reveal.js hides the others
+// with `display: none`, and overriding that unconditionally would reveal them.
+// print-pdf shows every slide at once, so it needs its own rule.
+@mixin slide-flex {
+  // reveal.css marks the visible slide `display: block !important`, so the
+  // override has to be !important as well.
+  display: flex !important;
+  flex-direction: column;
+  min-height: 100%;
+  box-sizing: border-box;
+
+  // Flex items default to min-height:auto and would refuse to shrink, which
+  // breaks the scroll boxes and tall figures.
+  > * { min-height: 0; }
+}
+
+// `> h2` gets the free space below it, so everything after the header moves
+// down; a second auto margin on the last child splits that space in two and
+// centres the block between them.
+@mixin slide-v-center {
+  > h1, > h2, > h3 { margin-bottom: auto; }
+  > :last-child { margin-bottom: auto; }
+}
+
+@mixin slide-v-bottom {
+  > h1, > h2, > h3 { margin-bottom: auto; }
+}
+
+// In print-pdf reveal wraps every slide in a `.pdf-page` div, so `.slides >
+// section` no longer matches — use a descendant combinator there.
+.reveal .slides > section.present,
+.reveal .slides > section > section.present,
+html.print-pdf .reveal .slides section {
+  &.v-center,
+  &.v-bottom,
+  &.v-top { @include slide-flex; }
+
+  &.v-center { @include slide-v-center; }
+  &.v-bottom { @include slide-v-bottom; }
+}
+
+// Deck-wide default. A slide that names its own alignment is left to it, and
+// the deck's title slide (.quarto-title-block) is skipped entirely: an auto
+// margin under its h1 would tear the subtitle, author and date away from the
+// title. `.v-top` opts a single slide back out.
+$v-align-skip: ":not(.v-top):not(.v-center):not(.v-bottom)";
+
+@if $slide-v-align != top {
+  .reveal .slides > section.present#{$v-align-skip}:not(.quarto-title-block),
+  .reveal .slides > section > section.present#{$v-align-skip},
+  html.print-pdf .reveal .slides section#{$v-align-skip}:not(.quarto-title-block) {
+    @include slide-flex;
+
+    @if $slide-v-align == center { @include slide-v-center; }
+    @if $slide-v-align == bottom { @include slide-v-bottom; }
+  }
+}

@@ -1479,36 +1479,6 @@ margin-right: 0; }
 <li><p>標準正規分布に従う確率変数を<span class="math inline">\(X\)</span>とする． <span class="math inline">\(X\)</span>が 0付近の値をとる確率と 1付近の値をとる確率の比を求めよ</p></li>
 </ul>
 </section>
-
-<section id="解答例" class="title-slide slide level2 center">
-<h2>解答例</h2>
-<ul>
-<li><p>2つの標準正規分布の積を考えて， 重積分を極座標に変換すればよい</p>
-<p><span class="math display">\[\begin{align}
-  &amp;\int_{-\infty}^{\infty}
-    \int_{-\infty}^{\infty}
-    e^{-x^{2}/2}e^{-y^{2}/2}dxdy\\
-  &amp;=
-    \int_{0}^{2\pi}
-    \int_{0}^{\infty}
-    e^{-r^{2}/2}rdrd\theta
-    =
-    2\pi\int_{0}^{\infty}e^{-z}dz
-    =2\pi
-\end{align}\]</span></p></li>
-</ul>
-</section>
-<section class="slide level3 center">
-
-<ul>
-<li><p>微小な区間 <span class="math inline">\(\Delta\)</span> を考えて， 密度を用いた近似計算を利用すればよい</p>
-<p><span class="math display">\[\begin{align}
-  &amp;\frac{P(X\text{が0付近})}{P(X\text{が1付近})}\\
-  &amp;\simeq\frac{p(0)|\Delta|}{p(1)|\Delta|}
-    =\frac{\exp(0)}{\exp(-1/2)}=\sqrt{e}\simeq 1.65
-\end{align}\]</span></p></li>
-</ul>
-</section>
 </section>
 <section>
 <section id="統計" class="title-slide slide level1 center">
@@ -1879,56 +1849,6 @@ margin-right: 0; }
 </ul></li>
 </ul>
 </section>
-
-<section id="解答例-1" class="title-slide slide level2 center">
-<h2>解答例</h2>
-<ul>
-<li><p>まず事象を定義する</p>
-<p><span class="math display">\[\begin{align}
-  A&amp;:\text{先生の機嫌が良い}&amp;
-  &amp;&amp; A^{c}&amp;:\text{先生の機嫌が悪い}\\
-  H&amp;:\text{球団が勝つ}&amp;
-  &amp;&amp; H^{c}&amp;:\text{球団が負ける}
-\end{align}\]</span></p></li>
-<li><p>条件を書き下す</p>
-<p><span class="math display">\[\begin{align}
-  P(A|H)&amp;=0.9&amp;
-  &amp;&amp; P(A^{c}|H)&amp;=0.1\\
-  P(A^{c}|H^{c})&amp;=0.7&amp;
-  &amp;&amp; P(A|H^{c})&amp;=0.3\\
-  P(H)&amp;=0.6&amp;
-  &amp;&amp; P(H^{c})&amp;=0.4
-\end{align}\]</span></p></li>
-</ul>
-</section>
-<section class="slide level3 center">
-
-<ul>
-<li><p>A先生が機嫌が良いときに球団Hが勝った確率は？</p>
-<p><span class="math display">\[\begin{align}
-  P(H|A)
-  &amp;=\frac{P(A,H)}{P(A)}\\
-  &amp;=\frac{P(A,H)}{P(A,H)+P(A,H^{c})}\\
-  &amp;=\frac{P(A|H)P(H)}{P(A|H)P(H)+P(A|H^{c})P(H^{c})}\\
-  &amp;=\frac{0.9\times 0.6}{0.9\times 0.6+0.3\times 0.4}\\
-  &amp;=\frac{9}{11}\simeq 0.818
-\end{align}\]</span></p></li>
-</ul>
-</section>
-<section class="slide level3 center">
-
-<ul>
-<li><p>A先生が機嫌が悪いときに球団Hが負けた確率は？</p>
-<p><span class="math display">\[\begin{align}
-  P(H^{c}|A^{c})
-  &amp;=\frac{P(A^{c},H^{c})}{P(A^{c})}\\
-  &amp;=\frac{P(A^{c},H^{c})}{P(A^{c},H)+P(A^{c},H^{c})}\\
-  &amp;=\frac{P(A^{c}|H^{c})P(H^{c})}{P(A^{c}|H)P(H)+P(A^{c}|H^{c})P(H^{c})}\\
-  &amp;=\frac{0.7\times 0.4}{0.1\times 0.6+0.7\times 0.4}\\
-  &amp;=\frac{14}{17}\simeq 0.824
-\end{align}\]</span></p></li>
-</ul>
-</section>
 </section>
 <section>
 <section id="検定の考え方" class="title-slide slide level1 center">
@@ -2294,7 +2214,7 @@ margin-right: 0; }
 </ul></li>
 </ul>
 </section>
-<section id="解答例-2" class="slide level3 center">
+<section id="解答例" class="slide level3 center">
 <h3>解答例</h3>
 <ul>
 <li>以下おおざっぱな考え方を示す

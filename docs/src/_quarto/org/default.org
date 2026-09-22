@@ -1,0 +1,5 @@
+#+OPTIONS: toc:nil
+#+PROPERTY: header-args:R :tangle yes
+#+QUARTO_FRONTMATTER: _quarto/yaml/default.yaml
+#+QUARTO_PREVIEW_ARGS: --port 4444
+#+QUARTO_RENDER_ARGS: --to revealjs

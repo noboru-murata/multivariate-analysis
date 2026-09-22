@@ -1,0 +1,25 @@
+% ---------------------------------------------------------------------------
+% PDF 出力の図を一律に縮小する（R チャンクの fig-width 等には触れない）
+%
+%   format:
+%     pdf:
+%       include-in-header:
+%         - fig-scale.tex
+%
+% 本文幅の何割を上限にするかは \figmaxwidth で決める。
+% 上限「だけ」を課すので、もともと小さい図は拡大されない。
+% チャンク側の out-width 指定はこちらより優先される。
+% ---------------------------------------------------------------------------
+\newlength{\figmaxwidth}
+\setlength{\figmaxwidth}{0.55\linewidth}   % ← ここを調整
+
+\makeatletter
+\def\figbounded{%
+  \ifdim\Gin@nat@width>\figmaxwidth
+    \figmaxwidth
+  \else
+    \Gin@nat@width
+  \fi}
+\makeatother
+
+\setkeys{Gin}{width=\figbounded}

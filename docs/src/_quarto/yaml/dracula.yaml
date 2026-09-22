@@ -1,0 +1,47 @@
+abstract: >
+  Example file for reference and testing by users
+keywords:
+  - Example
+license: "CC BY-NC"
+format:
+  revealjs: 
+    theme: [dracula, _quarto/scss/dracula-header.scss]
+    max-scale: 1.4
+    self-contained: false
+    center: false
+    controls: true
+    controls-layout: bottom-right
+    controls-back-arrows: visible
+    controls-tutorial: true
+    navigation-mode: vertical
+    auto-stretch: false
+  pdf:
+    keep-tex: true
+    echo: false
+    pdf-engine: lualatex
+    include-in-header: 
+      - text: |
+          \usepackage{luatexja-preset}
+          \usepackage{mathtools}
+      - _quarto/fig-scale.tex
+      - _quarto/table-center.tex
+  html: 
+    self-contained: false
+    grid: 
+      margin-width: 350px
+    code-fold: true
+revealjs-plugins:
+  - pointer
+pointer:
+  color: "rgba(255, 0, 0, 0.4)"
+  pointerSize: 120
+  alwaysVisible: false
+knitr:
+  opts_chunk:
+    fig.align: center
+execute:
+  warning: false
+  message: false
+  fig-height: 5
+  fig-width: 5
+  

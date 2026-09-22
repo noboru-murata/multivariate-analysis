@@ -1,0 +1,1154 @@
+/*-- scss:defaults --*/
+
+// =============================================================================
+// oerreveal-lecture — Quarto reveal.js theme (single file, no webfonts)
+//
+// Base:      oerreveal.css (OER-Reveal / Org-Reveal theme)
+//              SPDX-FileCopyrightText: 2014-2016 Hakim El Hattab
+//              SPDX-FileCopyrightText: 2017-2021, 2023-2024 Jens Lechtenbörger
+//              SPDX-License-Identifier: LicenseRef-MIT-HEH-JL
+// Overrides: lecture.css (indigo headings, light viewport, callout palette)
+//
+// Fonts follow the same approach as Quarto's own dracula theme: a system font
+// stack ending in `sans-serif`. Nothing is downloaded, so there is no
+// fonts.html, no fonts/ folder, and `quarto render` never tries to fetch
+// https://fonts.googleapis.com.
+//
+//   ---
+//   format:
+//     revealjs:
+//       theme: [default, oerreveal-lecture.scss]
+//   ---
+// =============================================================================
+
+
+// -----------------------------------------------------------------------------
+// 1. SIZE
+// -----------------------------------------------------------------------------
+// Everything on a reveal slide is sized in `em` off the root font size, so this
+// one number scales the whole deck. 1.0 reproduces Quarto's default sizing
+// (40px); lower values give the smaller, denser look of the oer-reveal decks.
+//
+// Reveal's canvas (1050x700) and its zoom limits are JavaScript config, not
+// CSS, so they cannot be set from here. If you want to go smaller still, add
+// to the YAML:  max-scale: 1.25   (Quarto's default is 2.0)
+//
+// Vertical centering is reveal.js config, not CSS — it offsets each slide's
+// `top` once it knows how tall the rendered content is. Heading and body move
+// together, which is what this deck wants, so it lives in the YAML:
+//
+//   format:
+//     revealjs:
+//       center: true
+//
+// This theme is set up for it: the section rule further down keeps the body
+// left aligned even though reveal then marks every slide with class `center`.
+$slide-scale: 0.85 !default;
+
+$presentation-font-size-root: 40px * $slide-scale !default;
+$presentation-line-height:    1.3 !default;
+$presentation-block-margin:   12px !default;
+
+// Title slide alignment. Quarto's default is `center`, which centers the
+// author, affiliation and date as well.
+$presentation-title-slide-text-align: left !default;
+
+// Tallest a figure, image or video may be. The slide canvas is 700px, so about
+// 25ex of a 34px root leaves room for a heading and a caption. Raise it for
+// figure-only decks, lower it if captions get clipped.
+$fig-max-height: 25ex !default;
+
+// Give every code-chunk figure exactly $fig-max-height and let its width follow
+// from the aspect ratio. Then a chunk never needs `out-width`: pick the ratio
+// with fig-width/fig-height and the figure fills the slide height either way.
+//
+//   #| fig-width: 5     # 1:1   (with fig-height: 5)
+//   #| fig-width: 8.9   # 16:9
+//
+// Set to false to fall back to knitr's own sizing, where `out-width` decides.
+$fig-fill-height: true !default;
+
+// Height for a slide or block marked `{.fig-tall}` — the stand-in for reveal's
+// r-stretch, which Quarto strips from code-chunk figures once
+// `auto-stretch: false` is set. Room for an h2 above it and nothing else.
+// (`{.fullfig}` is accepted as the former name of the same thing.)
+$fig-full-height: 33ex !default;
+
+// -- Scrollable regions -------------------------------------------------------
+// Height of a `::: {.scroll}` box. NOT expressed in vh: the slide is a fixed
+// 1050x700 canvas that reveal.js scales, so viewport units drift away from the
+// slide as the window changes. `ex` tracks the deck's own font size, so the box
+// keeps the same proportion of the slide at every scale.
+//
+//   26ex  ~ 467 canvas px — sits under an h2 with a little air left
+//   33ex  ~ 593 canvas px — as much as a headed slide can give ({.scroll-tall})
+$scroll-max-height:      26ex !default;
+$scroll-max-height-tall: 33ex !default;
+$scroll-thumb:           rgba(34, 34, 34, 0.35) !default;
+$scroll-track:           rgba(34, 34, 34, 0.07) !default;
+
+// Alignment of an h3 that titles its own slide (`slide-level: 3`).
+// "left" | "center". Individual slides override it with {.head-center} /
+// {.head-left}; see the rules section.
+$h3-text-align: left !default;
+
+$presentation-h1-font-size: 2.0em !default;   // title slide
+$presentation-h2-font-size: 1.6em !default;   // sections
+$presentation-h3-font-size: 1.25em !default;
+$presentation-h4-font-size: 1.05em !default;
+
+
+// -----------------------------------------------------------------------------
+// 2. FONTS
+// -----------------------------------------------------------------------------
+// The Japanese gothic families are named explicitly before the generic
+// `sans-serif`, so Japanese is gothic by intent rather than by whatever the
+// browser happens to default to.
+$font-family-sans-serif:
+  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+  "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+  "Yu Gothic UI", "Yu Gothic", YuGothic, Meiryo,
+  "Noto Sans JP", "Noto Sans CJK JP",
+  sans-serif !default;
+
+$font-family-monospace:
+  SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New",
+  "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo,
+  monospace !default;
+
+$presentation-heading-font: $font-family-sans-serif !default;
+
+// Same two stacks as plain strings, for use inside custom properties.
+// `#{...}` strips quotes, and an unquoted family name containing a digit or a
+// space is not always a valid CSS identifier, which would void the whole
+// declaration. Keep these in sync with the lists above.
+$font-stack-sans: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", YuGothic, Meiryo, "Noto Sans JP", "Noto Sans CJK JP", sans-serif' !default;
+$font-stack-mono: 'SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo, monospace' !default;
+
+
+// -----------------------------------------------------------------------------
+// 3. COLOR
+// -----------------------------------------------------------------------------
+$oer-heading:       #283593 !default;   // lecture.css indigo
+$oer-accent:        #981e32 !default;   // oer-reveal crimson: bold, highlight
+$oer-link:          #00568a !default;
+$oer-link-external: #107010 !default;
+$oer-gray:          #788a82 !default;
+$oer-text:          #222 !default;
+$oer-viewport-bg:   #fafafa !default;
+$oer-surface:       #f5f5f5 !default;
+$oer-quote-bg:      #f8f8f8 !default;
+$oer-example-bg:    #e0f2fe !default;
+
+$body-bg:    $oer-viewport-bg !default;
+$body-color: $oer-text !default;
+
+$presentation-heading-color:          $oer-heading !default;
+$presentation-heading-font-weight:    600 !default;
+$presentation-heading-line-height:    1.1 !default;
+$presentation-heading-letter-spacing: normal !default;
+$presentation-heading-text-transform: none !default;
+$presentation-heading-text-shadow:    none !default;
+
+$link-color:       $oer-link !default;
+$link-color-hover: $oer-link !default;
+$selection-bg:     $oer-accent !default;
+$selection-color:  #fff !default;
+
+$code-color:              dimgrey !default;
+$code-bg:                 whitesmoke !default;
+$code-block-bg:           $oer-surface !default;
+$code-block-border-color: transparent !default;
+$code-block-font-size:    0.55em !default;
+
+// Nested lists. Each level below the first is $list-nest-scale times the size
+// of the level above it, so level 2 is 0.8em, level 3 is 0.64em, and so on.
+// $list-nest-depth caps how many levels take part: with 3, levels 4, 5, ...
+// all stay at level 3's size instead of shrinking away to nothing. Set the
+// scale to 1 to switch the shrinking off entirely.
+$list-nest-scale: 0.9 !default;
+$list-nest-depth: 3 !default;
+
+$table-header-bg: #a0a0a0 !default;
+$table-stripe-bg: whitesmoke !default;
+
+// Callouts — left border colors are Quarto variables, backgrounds are ours.
+// These drive three things at once: the left bar, the title text and (via
+// Quarto) the tint of the title band. Each one is dark enough to stay legible
+// as text on its own band — amber in particular has to be a step darker than
+// it looks like it needs (#d97706 reaches only 2.9:1, below WCAG AA even for
+// large text).
+$callout-color-note:      #2a2ab9 !default;   // 8.3:1 on its band
+$callout-color-warning:   #b45309 !default;   // 4.4:1
+$callout-color-important: #c92a2a !default;   // 4.7:1
+$callout-color-tip:       #18794e !default;   // 4.7:1
+$callout-color-caution:   #92400e !default;   // 6.1:1
+
+$callout-bg-note:      #f8f8ff !default;
+$callout-bg-warning:   #fff8ef !default;
+$callout-bg-important: #fff8f8 !default;
+$callout-bg-tip:       #f8fffe !default;
+$callout-bg-caution:   #fffcef !default;
+
+$callout-default-color: #694040 !default;
+$callout-default-bg:    #fafafa !default;
+// Font size of a callout. $callout-font-size is relative to the slide's body
+// text and independent of the list scale above; $callout-title-font-size is
+// relative to the callout itself, so 1em keeps the title the same size as the
+// callout's body (which is how default and dracula read) and e.g. 1.15em makes
+// it stand out.
+//
+// Quarto's own value is 0.7em, and until the specificity fix in the rules
+// section that is what these slides actually showed — the theme's own
+// declaration never applied. 0.85em is the deliberate choice now, so callouts
+// come out noticeably larger than before; set 0.7em to go back.
+$callout-font-size:       0.85em !default;
+$callout-title-font-size: 1em !default;
+
+// Vertical breathing room in the tinted title band, as the top and bottom
+// margin of the title's <p>. Quarto's own value is 0.5em; 0.25em gives a
+// noticeably tighter band. Below roughly 0.15em the icon becomes the tallest
+// thing in the row and the band stops shrinking.
+$callout-title-pad-y:     0.25em !default;
+
+// Size of the callout icon (Quarto's own value is 1.25em). The icon shares the
+// title row with the text, so whichever of the two is taller decides the band
+// height — tightening $callout-title-pad-y alone stops having any effect once
+// the icon becomes the tallest thing in the row.
+$callout-icon-size:       1.25em !default;
+
+// Padding around the whole callout box. Keep the left/right components at 0:
+// Quarto already pads the title row and the body (0.5em each), so any outer
+// horizontal padding pushes the tinted title band inwards and leaves a gap
+// between it and the coloured left bar — which is exactly what default and
+// dracula do not do. Add vertical room here if you want a taller box, e.g.
+// `0.2em 0`.
+$callout-padding:       0 !default;
+
+// Rounded corners. Quarto's default and dracula use 4px; this theme goes a
+// little rounder. The box is clipped to this radius so the tinted title band
+// follows the curve instead of poking out of the top two corners; set it to 0
+// for a square box.
+$callout-radius:        8px !default;
+
+
+/*-- scss:mixins --*/
+
+@mixin oer-callout($color, $bg) {
+  width: 100%;
+  font-style: normal;
+  padding: $callout-padding;
+  border: none;
+  border-left: 5px solid $color;
+  border-radius: $callout-radius;
+  overflow: hidden;   // keeps the title band inside the rounded corners
+  background-color: $bg;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+
+  // The title is marked up as <p><strong>…</strong></p>. Left alone it comes
+  // out crimson, because the theme's `strong { color: $oer-accent }` catches
+  // it. Give it the callout's own colour instead — the same hue as the left
+  // bar, which is how default and dracula read.
+  //
+  // The inner <p> needs the style class repeated in the selector: Quarto sets
+  // `.reveal div.callout.callout-style-default div.callout-title p { color:
+  // var(--r-main-color) }`, and without that extra class our rule loses the
+  // specificity comparison and the title stays body-coloured.
+  > .callout-body > .callout-title,
+  > .callout-header { color: $color; }
+
+  &.callout-style-default > .callout-body > .callout-title,
+  &.callout-style-simple  > .callout-body > .callout-title,
+  > .callout-header {
+    p, strong, b { color: inherit; }
+  }
+}
+
+
+
+/*-- scss:rules --*/
+
+// =============================================================================
+// GLOBAL
+// =============================================================================
+.reveal-viewport {
+  background: $oer-viewport-bg;
+  background-color: $oer-viewport-bg;
+}
+
+// reveal.js resolves every font through these custom properties; redefining
+// them here beats any later `.reveal { font-family: ... }` rule.
+:root,
+.reveal {
+  --r-main-font: #{$font-stack-sans};
+  --r-heading-font: #{$font-stack-sans};
+  --r-code-font: #{$font-stack-mono};
+}
+
+.reveal {
+  font-family: var(--r-main-font);
+  font-weight: normal;
+
+  code, pre, kbd, samp { font-family: var(--r-code-font); }
+
+  .slides { text-align: left; }
+
+  .slides section,
+  .slides section > section {
+    line-height: $presentation-line-height;
+    font-weight: inherit;
+    padding: 0;
+  }
+
+  p {
+    margin: $presentation-block-margin 0;
+    line-height: $presentation-line-height;
+  }
+}
+
+// A slide given its own background — `## Title {background-color="#fff3bf"}` —
+// is marked by reveal.js as has-light-background / has-dark-background, and
+// Quarto then paints everything on it in one contrast-safe colour:
+//
+//   section.has-light-background, section.has-light-background h1 … h6
+//     { color: #222 }                    ($light-bg-text-color)
+//   section.has-light-background a       { color: #2a76dd }
+//
+// That selector is more specific than this theme's own `.reveal h2`, so a
+// coloured slide would lose the indigo headings, the crimson bold and the link
+// colours. Put them back; body text keeps Quarto's colour.
+section.has-dark-background {
+  &, h1, h2, h3, h4, h5, h6 { color: #fff; }
+}
+
+.reveal .slides section.has-light-background {
+  h1, h2, h3, h4, h5, h6 { color: $oer-heading; }
+
+  strong, b { color: $oer-accent; }
+
+  a[href] { color: $oer-link; }
+
+  a[href^="http"],
+  a[href^="mailto:"],
+  a[href^="ftp:"] { color: $oer-link-external; }
+}
+
+// On a dark slide the theme's accents are unreadable, so everything goes white.
+.reveal .slides section.has-dark-background {
+  strong, b,
+  a[href],
+  a[href^="http"],
+  a[href^="mailto:"],
+  a[href^="ftp:"] { color: #fff; }
+
+  code { background: rgba(255, 255, 255, 0.12); color: #fff; }
+}
+
+// =============================================================================
+// HEADINGS
+// =============================================================================
+.reveal {
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 $presentation-block-margin 0;
+    font-family: var(--r-heading-font);
+    color: $oer-heading;
+    text-align: left;
+    word-wrap: break-word;
+  }
+
+  // `# ...` section slides: the heading is centered, h2 and below stay left.
+  h1 { text-align: center; }
+
+  // `## {.fig-tall}` — a titleless slide that still carries a class — leaves
+  // an empty heading behind. Take its space back.
+  h1:empty, h2:empty, h3:empty, h4:empty { display: none; }
+}
+
+// -----------------------------------------------------------------------------
+// Deeper slide levels — `slide-level: 3` in the YAML
+// -----------------------------------------------------------------------------
+// Raising the slide level makes `###` start a slide too. Sizes need no change:
+// h1 stays the centered section divider, while h2 and h3 both read as slide
+// headings, h3 one step smaller ($presentation-h3-font-size — raise it if h3
+// feels too small in that role).
+//
+// Alignment is the one thing worth choosing. $h3-text-align sets the deck-wide
+// default for an h3 that titles its own slide; a single slide overrides it with
+//
+//   ### Title {.head-center}
+//   ### Title {.head-left}
+//
+// The classes work on an h1/h2 heading too, so the same two words cover every
+// slide whatever the slide level.
+@if $h3-text-align == center {
+  .reveal .slides section.level3 > h3 { text-align: center; }
+}
+
+// Per-slide override. Listed after the block above so that, at equal
+// specificity, the class on the slide is what decides.
+.reveal .slides section.head-center > h1,
+.reveal .slides section.head-center > h2,
+.reveal .slides section.head-center > h3 {
+  text-align: center;
+}
+
+.reveal .slides section.head-left > h1,
+.reveal .slides section.head-left > h2,
+.reveal .slides section.head-left > h3 {
+  text-align: left;
+}
+
+
+// Slide bodies are left aligned; only headings are centered (h1 above). This
+// is stated on the section itself so that it also holds for the structural
+// `center` class that reveal.js and Quarto add — to every `#` slide, and to
+// *all* slides once `center: true` is set for vertical centering.
+.reveal .slides > section,
+.reveal .slides > section > section {
+  text-align: left;
+}
+
+// Pandoc gives every `# ...` slide `class="title-slide slide level1"`, and
+// Quarto then shrinks its heading to the h2 size:
+//
+//   .reveal .title-slide h1 { font-size: $revealjs-h2-font-size; }
+//   .reveal[data-navigation-mode="linear"] .title-slide h1 { font-size: $revealjs-h1-font-size; }
+//
+// The full size is restored only in linear navigation mode, so with
+// `navigation-mode: vertical|grid`, and before reveal.js has set that
+// attribute, an h1 renders no larger than an h2. Restore it unconditionally.
+// (The deck's own title slide is `#title-slide.quarto-title-block`, which
+// carries neither class, so it keeps the size set in the title-slide block.)
+.reveal .slides section.title-slide h1,
+.reveal .slides section.level1 h1 {
+  font-size: $presentation-h1-font-size;
+}
+
+// Title slide. `$presentation-title-slide-text-align` (see defaults) handles
+// the container; the author block additionally needs the flex row that Quarto
+// uses for multiple authors to be undone, otherwise names stay centered even
+// when everything around them is left aligned.
+.reveal #title-slide,
+.reveal .title-slide,
+.reveal section.quarto-title-block {
+  text-align: $presentation-title-slide-text-align;
+
+  // Explicit, because `.reveal h1 { text-align: center }` above would
+  // otherwise beat the container's alignment by inheritance.
+  .title {
+    margin: 1.2em 0 0.5em 0;
+    color: $oer-heading;
+    text-align: $presentation-title-slide-text-align;
+  }
+
+  .subtitle {
+    font-size: 0.6em;
+    line-height: 1;
+    margin: 0 0 1.5rem 0;
+  }
+
+  // One size step down, applied on the outer blocks only.
+  .author,
+  .quarto-title-authors,
+  .institute,
+  .date {
+    text-align: $presentation-title-slide-text-align;
+    font-size: 0.6em;
+    line-height: 1.2;
+    margin: 0.2em 0;
+  }
+
+  // Multiple authors: Quarto lays these out as a centered flex row.
+  .quarto-title-authors {
+    display: block;
+    justify-content: flex-start;
+  }
+
+  .quarto-title-author {
+    padding-left: 0;
+    padding-right: 1.5em;
+    text-align: $presentation-title-slide-text-align;
+  }
+
+  // Inherit the size set above instead of shrinking a second time.
+  .quarto-title-author-name,
+  .quarto-title-affiliation,
+  .quarto-title-author-email {
+    font-size: 1em;
+    line-height: 1.2;
+    text-align: $presentation-title-slide-text-align;
+  }
+}
+
+// =============================================================================
+// LAYOUT
+// =============================================================================
+.reveal .footer,
+.reveal .slide-footer {
+  width: 100%;
+  text-align: center;
+  font-size: 2vh;
+  color: gray;
+  pointer-events: none;
+
+  p { margin: 0; }
+  a { color: gray; }
+}
+
+// Quarto's fullscreen overlay (menu / chalkboard) — no blur.
+.reveal > .overlay { backdrop-filter: unset !important; }
+
+// Quarto columns: ::: {.columns} / ::: {.column width="48%"}
+.reveal .columns { align-items: flex-start; }
+
+// Float helpers carried over from the Org decks.
+.reveal {
+  .floatright { float: right; text-align: right; }
+
+  .leftcol,  .leftcol30,  .leftcol40,  .leftcol60,  .leftcol70  { float: left;  box-sizing: border-box; }
+  .rightcol, .rightcol30, .rightcol40, .rightcol60, .rightcol70 { float: right; box-sizing: border-box; }
+
+  .leftcol,   .rightcol   { width: 48%; }
+  .leftcol30, .rightcol30 { width: 28%; }
+  .leftcol40, .rightcol40 { width: 38%; }
+  .leftcol60, .rightcol60 { width: 58%; }
+  .leftcol70, .rightcol70 { width: 68%; }
+}
+
+// =============================================================================
+// FIGURES & IMAGES
+// =============================================================================
+
+// Bare images float right (oer-reveal behaviour). Delete this block for the
+// usual Quarto centring.
+.reveal img {
+  margin: 5px;
+  float: right;
+}
+
+.reveal {
+  figure,
+  div.figure,
+  .quarto-figure {
+    position: relative;
+    text-align: center;
+    margin: $presentation-block-margin auto;
+  }
+
+  figure img,
+  div.figure img,
+  .quarto-figure img { float: none; }
+
+  figure p,
+  div.figure p { margin: 0; line-height: 1; }
+
+  figcaption,
+  .figure-caption {
+    margin: 0;
+    font-size: 0.5em;
+    line-height: 1;
+    color: rgba(34, 34, 34, 0.45);
+  }
+
+  // No figure / table numbering.
+  .figure-number,
+  .table-number { display: none; }
+
+  // Figures inside list items float right.
+  li > figure,
+  li > div.figure { float: right; }
+
+  // Nothing overflows the slide. `ex` is used rather than `vh` because the
+  // slide is a fixed 1050x700 canvas that reveal.js scales — viewport units
+  // would not track that.
+  img, figure, div.figure, object, svg, video, iframe {
+    max-width: 90%;
+    max-height: $fig-max-height;
+  }
+
+  // Figures produced by code chunks (knitr / jupyter). The aspect ratio itself
+  // belongs to the plotting device — set `fig-width` / `fig-height` in the
+  // YAML, not here — but this keeps a figure centred, stops the float above
+  // from grabbing it, and guarantees it fits the slide whatever `out-width`
+  // says. Also switch off reveal's auto-stretch in the YAML:
+  //
+  //   format:
+  //     revealjs:
+  //       auto-stretch: false
+  //       fig-width: 6
+  //       fig-height: 4.5      # 4:3
+  //
+  .cell-output-display {
+    text-align: center;
+
+    img, svg {
+      float: none;
+      margin-inline: auto;
+      max-height: $fig-max-height;
+    }
+
+    @if $fig-fill-height {
+      // `width: auto` is essential: knitr writes a width="…" attribute, and
+      // Chrome honours it while max-height clamps the height independently,
+      // which squashes the figure. Driving from the height with the width
+      // left auto keeps the ratio exact. object-fit is the safety net for a
+      // panorama wide enough to hit max-width.
+      img:not(.r-stretch) {
+        height: $fig-max-height;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+      }
+
+      // Only a figure that really has a caption gives up room for it. knitr
+      // wraps every plot in <figure>, caption or not, so the test has to be
+      // on figcaption rather than on the wrapper.
+      figure:has(figcaption) img:not(.r-stretch) {
+        height: calc(#{$fig-max-height} - 3ex);
+      }
+    }
+  }
+
+  // reveal sizes an auto-stretched figure itself; just keep the float rule
+  // above off it and letterbox rather than distort.
+  .r-stretch {
+    float: none;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  // `{.fig-tall}` — one figure filling the slide under the heading. This
+  // stands in for reveal's r-stretch: with `auto-stretch: false` Quarto strips
+  // the `.r-stretch` class from code-chunk output (and from a `::: {.r-stretch}`
+  // wrapper), so it cannot be re-applied to an R figure — only a markdown image
+  // keeps it, as `![](fig.png){.r-stretch}`. Sizing it here instead is
+  // deterministic, needs no JavaScript, and survives print-pdf, where r-stretch
+  // is unreliable.
+  //
+  // Two spellings, because a slide only carries a class if it has a heading:
+  //   ## Big picture {.fig-tall}    -> the class lands on the <section>
+  //   ::: {.fig-tall} ... :::       -> a wrapper div, the only way to mark a
+  //                                    slide that `---` created without one
+  //
+  // `.fullfig` is the former name, kept so existing decks keep working.
+  .slides section.fig-tall,
+  .slides section .fig-tall,
+  .slides section.fullfig,
+  .slides section .fullfig {
+    img, figure, div.figure, svg, video, iframe {
+      max-height: $fig-full-height;
+    }
+
+    @if $fig-fill-height {
+      .cell-output-display img:not(.r-stretch) {
+        height: $fig-full-height;
+      }
+
+      .cell-output-display figure:has(figcaption) img:not(.r-stretch) {
+        height: calc(#{$fig-full-height} - 3ex);
+      }
+    }
+  }
+
+  iframe, video { display: block; margin: 1ex auto; }
+
+  a img { transition: all 0.15s linear; }
+  a:hover img {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// =============================================================================
+// LISTS
+// =============================================================================
+.reveal {
+  ol, ul, dl {
+    text-align: left;
+    margin: 0;
+    padding-left: 40px;
+  }
+
+  ol { list-style-type: decimal; }
+  ul { list-style-type: disc; }
+  ul ul { list-style-type: square; }
+  ul ul ul { list-style-type: circle; }
+
+  // Nested lists shrink slightly. `em` compounds down the tree, so one rule
+  // gives level 2 $list-nest-scale, level 3 its square, and so on.
+  ul ul, ul ol, ol ol, ol ul {
+    display: block;
+    margin-left: 0;
+
+    @if $list-nest-scale != 1 {
+      font-size: $list-nest-scale * 1em;
+    }
+  }
+
+  // Stop the shrinking at $list-nest-depth levels: a list nested one level
+  // deeper than that takes its parent's size instead. Its selector carries one
+  // more type selector than the rule above, so it wins on specificity.
+  @if $list-nest-scale != 1 and $list-nest-depth >= 1 {
+    $nest-sel: ":is(ul, ol)";
+    @for $i from 2 through ($list-nest-depth + 1) {
+      $nest-sel: "#{$nest-sel} :is(ul, ol)";
+    }
+
+    #{$nest-sel} { font-size: 1em; }
+  }
+
+  .slides li {
+    line-height: 1.1;
+    margin: 0.5ex 0 0 0;
+
+    p { line-height: 1.1; margin: 0.5ex 0 0 0; }
+  }
+
+  dt { font-weight: bold; }
+  dd { margin-left: 40px; }
+}
+
+// =============================================================================
+// TEXT
+// =============================================================================
+.reveal {
+  strong, b {
+    font-weight: bold;
+    color: $oer-accent;
+  }
+
+  em, q { font-style: italic; }
+  q, blockquote { quotes: none; }
+
+  blockquote {
+    display: block;
+    width: 90%;
+    margin: $presentation-block-margin auto;
+    padding: 8px 12px;
+    font-style: italic;
+    font-size: 0.8em;
+    background-color: $oer-quote-bg;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+
+    p:first-child { margin-top: 0; }
+    p:last-child  { margin-bottom: 0; }
+  }
+
+  sup, sub { font-size: 70%; line-height: 0; }
+  sup { vertical-align: super; }
+  sub { vertical-align: sub; }
+
+  small {
+    display: inline-block;
+    font-size: 0.6em;
+    line-height: 1.2em;
+    vertical-align: top;
+
+    * { vertical-align: top; }
+  }
+
+  .smaller,
+  .smaller-nomargin,
+  .slide-source { line-height: 1.1; font-size: 0.6em; }
+
+  .smaller-nomargin { margin: 0; }
+
+  .slide-source {
+    text-align: right;
+    clear: both;
+    opacity: 0.6;
+  }
+
+  // Alignment helpers for `::: {.center}` and Org's div wrappers. Deliberately
+  // scoped away from <section>: reveal.js and Quarto also use `center` as a
+  // structural class on slide sections — on every `#` slide, and on *all*
+  // slides once `center: true` is set — so a bare `.center` would silently
+  // centre the body text of the whole deck.
+  div.center, p.center, span.center, .org-center { text-align: center; }
+  div.right,  p.right,  span.right,  .org-right  { text-align: right; }
+}
+
+// Example box — ::: {.example}
+.reveal .example {
+  background-color: $oer-example-bg;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+// =============================================================================
+// CODE
+// =============================================================================
+.reveal {
+  code {
+    color: $code-color;
+    background: $code-bg;
+  }
+
+  pre {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 1ex auto;
+    padding: 15px;
+    background-color: $code-block-bg;
+    border-radius: 5px;
+    box-shadow: none;
+    overflow: auto;
+    line-height: 1.2em;
+    max-height: 22em;
+    text-align: left;
+    font-size: $code-block-font-size;
+    word-wrap: normal;
+  }
+
+  pre code {
+    display: block;
+    padding: 0;
+    max-height: 400px;
+    background: none;
+    word-wrap: normal;
+  }
+
+  div.sourceCode {
+    margin: 1ex auto;
+    background-color: $code-block-bg;
+    border: none;
+    border-radius: 5px;
+
+    pre { background-color: transparent; box-shadow: none; }
+  }
+
+  .code-with-filename .code-with-filename-file {
+    font-size: 0.55em;
+    background-color: $code-bg;
+    color: $code-color;
+    border: none;
+    border-radius: 5px 5px 0 0;
+
+    pre { padding: 0.2em 0.6em; }
+  }
+
+  .cell-output pre { background-color: transparent; }
+}
+
+// =============================================================================
+// SCROLLABLE REGIONS
+// =============================================================================
+// For a table, listing or image that is taller or wider than the slide:
+//
+//   ::: {.scroll}       both axes, capped at $scroll-max-height
+//   ::: {.scroll-tall}  same, but as tall as a headed slide allows
+//   ::: {.scroll-y}     vertical only
+//   ::: {.scroll-x}     horizontal only, no height cap — for wide tables
+//
+// An inline `style="max-height: …"` still wins, so existing slides written that
+// way keep working.
+//
+// Quarto's own `## Slide {.scrollable}` makes the *whole* slide scroll; a box
+// like this is usually better in a lecture deck, because the heading stays put
+// while only the table moves, and it does not interact with auto-stretch.
+.reveal .slides section {
+  .scroll,
+  .scroll-tall,
+  .scroll-y,
+  .scroll-x {
+    // Keep the wheel inside the box instead of chaining to the page.
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+
+    // Content in a scroll box is shown at its natural size — the point is to
+    // reach it by scrolling, not to shrink it to fit.
+    img, svg, video, figure, div.figure, table {
+      max-width: none;
+      max-height: none;
+    }
+
+    .cell-output-display img {
+      height: auto;
+      max-height: none;
+    }
+
+    // pandoc writes `<col style="width: 2%">` for every column. Inside a
+    // shrink-to-fit wrapper the containing block is indefinite, and those
+    // percentages resolve to an absurd total — the only way past an inline
+    // style is !important.
+    colgroup col { width: auto !important; }
+
+    // Visible but quiet scrollbars, so it reads as scrollable.
+    scrollbar-width: thin;
+    scrollbar-color: $scroll-thumb $scroll-track;
+
+    &::-webkit-scrollbar { width: 10px; height: 10px; }
+    &::-webkit-scrollbar-track { background: $scroll-track; border-radius: 5px; }
+    &::-webkit-scrollbar-thumb {
+      background: $scroll-thumb;
+      border-radius: 5px;
+    }
+  }
+
+  .scroll {
+    max-height: $scroll-max-height;
+    overflow: auto;
+  }
+
+  .scroll-tall {
+    max-height: $scroll-max-height-tall;
+    overflow: auto;
+  }
+
+  // Horizontal scrolling only works if the blocks between the box and the wide
+  // content are allowed to outgrow it. Quarto nests a chunk table inside
+  // .cell > .cell-output-display, both of which would otherwise stay at the
+  // box's width and let the table spill invisibly. `min-width: 100%` keeps
+  // ordinary, narrow content full width so it still centres.
+  .scroll,
+  .scroll-tall,
+  .scroll-x {
+    > *,
+    .cell,
+    .cell-output-display,
+    .quarto-figure {
+      width: max-content;
+      min-width: 100%;
+    }
+  }
+
+  .scroll-y {
+    max-height: $scroll-max-height;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .scroll-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+// Paper has no scrollbars: let the box grow so nothing is silently cut off.
+// Content taller than the page will still run past it — split the table across
+// slides if that matters for the handout.
+html.print-pdf .reveal .slides section {
+  .scroll, .scroll-tall, .scroll-y, .scroll-x {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+// =============================================================================
+// TABLES
+// =============================================================================
+.reveal section table {
+  margin: $presentation-block-margin auto;
+  line-height: 1.1;
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  th {
+    background-color: $table-header-bg;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) { background-color: $table-stripe-bg; }
+
+  th, td {
+    font-size: 0.8em;
+    text-align: left;
+    padding: 0.2em 0.5em;
+    border-bottom: 2px solid;
+  }
+
+  th[align="center"], td[align="center"] { text-align: center; }
+  th[align="right"],  td[align="right"]  { text-align: right; }
+
+  tbody tr:last-child th,
+  tbody tr:last-child td { border-bottom: none; }
+}
+
+// =============================================================================
+// CALLOUTS
+// =============================================================================
+.reveal {
+  .callout                                      { @include oer-callout($callout-default-color,  $callout-default-bg); }
+  .callout.callout-note,      .callout-note      { @include oer-callout($callout-color-note,      $callout-bg-note); }
+  .callout.callout-warning,   .callout-warning   { @include oer-callout($callout-color-warning,   $callout-bg-warning); }
+  .callout.callout-important, .callout-important { @include oer-callout($callout-color-important, $callout-bg-important); }
+  .callout.callout-tip,       .callout-tip       { @include oer-callout($callout-color-tip,       $callout-bg-tip); }
+  .callout.callout-caution,   .callout-caution   { @include oer-callout($callout-color-caution,   $callout-bg-caution); }
+
+  // Layout. The tinted title band, the icon and the body spacing are all
+  // Quarto's own (`.callout-body > .callout-title` / `> .callout-content`,
+  // 0.5em of padding each); this theme only recolours the box, so the header
+  // lines up with the coloured bar exactly as it does in default and dracula.
+  // `.callout-header` / `.callout-body-container` are the pre-1.4 spellings,
+  // matched so the theme still behaves on an older Quarto.
+  .callout {
+    > .callout-header { padding: 0 0.5em; font-weight: 600; }
+
+    > .callout-body-container,
+    > .callout-body { padding: 0; font-size: 1em; }
+
+    p:first-child { margin-top: 0; }
+    p:last-child  { margin-bottom: 0; }
+  }
+
+  .callout.callout-style-simple > .callout-header { padding-bottom: 0; }
+}
+
+// Font sizes. These are deliberately written out at full length instead of
+// going into the mixin: Quarto's own rules are more specific than anything the
+// mixin can produce — `.reveal .slides section div.callout` is (0,3,2) and
+// `.reveal div.callout.callout-style-default div.callout-title` is (0,4,2) —
+// so a rule like `.reveal .callout { font-size: … }` (0,2,0) is silently
+// ignored. Matching their shape and coming later in the file is what makes
+// $callout-font-size actually take effect.
+.reveal .slides section div.callout {
+  font-size: $callout-font-size;
+}
+
+.reveal .slides section div.callout.callout-style-default > .callout-body > .callout-title,
+.reveal .slides section div.callout.callout-style-simple  > .callout-body > .callout-title,
+.reveal .slides section div.callout > .callout-header {
+  font-size: $callout-title-font-size;
+}
+
+// Height of the title band. It is set by the margins on the title's <p>, which
+// Quarto pins at 0.5em from
+// `.reveal div.callout.callout-style-default div.callout-title p` (0,4,3) —
+// so, as with the font size, the override has to out-specify that rule.
+.reveal .slides section div.callout.callout-style-default > .callout-body > .callout-title p,
+.reveal .slides section div.callout.callout-style-simple  > .callout-body > .callout-title p {
+  margin-top: $callout-title-pad-y;
+  margin-bottom: $callout-title-pad-y;
+}
+
+// The icon. Quarto draws it as an inline-block ::before with a 0.25em top
+// margin, inside an inline container that still carries the row's line-height,
+// so the container ends up noticeably taller than the icon itself (52.9px for
+// a 36.1px icon at 0.85em) and quietly props the band open. Making the
+// container a flex box with no line-height leaves the icon as the only thing
+// with height.
+.reveal .slides section div.callout > .callout-body > .callout-title > .callout-icon-container {
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.reveal .slides section div.callout.callout-style-default.callout-titled .callout-icon::before,
+.reveal .slides section div.callout.callout-style-simple.callout-titled  .callout-icon::before,
+.reveal .slides section div.callout .callout-icon::before {
+  width: $callout-icon-size;
+  height: $callout-icon-size;
+  background-size: $callout-icon-size $callout-icon-size;
+  margin-top: 0;   // Quarto's 0.25em, which pushes the icon down and the band open
+}
+
+// =============================================================================
+// LINKS
+// =============================================================================
+.reveal {
+  a[href] {
+    color: $oer-link;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  a[href^="http"],
+  a[href^="mailto:"],
+  a[href^="ftp:"] { color: $oer-link-external; }
+
+  a[href].hiddenlink { color: $oer-text; }
+
+  a[href]:hover {
+    font-weight: bold;
+    text-shadow: none;
+    border: none;
+  }
+
+  // External links carry a "↗", except inside figures, code and callouts.
+  a[href^="http"]:not(.nooutlink):not(.hiddenlink)::after {
+    content: "\00a0\2197";
+    font-size: 0.8em;
+  }
+
+  a[href].hiddenlink::after,
+  figure a[href]::after,
+  .sourceCode a[href]::after,
+  .callout a[href]::after,
+  a[href]:empty::after { content: none; }
+}
+
+// =============================================================================
+// FRAGMENTS
+// =============================================================================
+.reveal .slides section {
+  .fragment.highlight-red.visible {
+    font-weight: bold;
+    color: $oer-accent;
+  }
+
+  // "gray-out": visible from the start, dimmed once triggered.
+  .fragment.gray-out {
+    opacity: 1;
+    visibility: inherit;
+
+    &.visible { opacity: 0.5; }
+  }
+
+  .fragment.shrink.visible { transform: scale(0.7); transform-origin: left; }
+  .fragment.grow.visible   { transform: scale(1.3); transform-origin: left; }
+}
+
+// =============================================================================
+// BIBLIOGRAPHY
+// =============================================================================
+.reveal {
+  div.csl-bib-body,
+  #refs {
+    font-size: 0.6em;
+    overflow: auto;
+    padding-right: 5px;
+    max-height: 22em;
+  }
+
+  div.csl-entry {
+    padding-left: 1em;
+    text-indent: -1em;
+    line-height: normal;
+    margin-bottom: 0.4em;
+  }
+}
+
+// =============================================================================
+// CHROME
+// =============================================================================
+.reveal {
+  .controls { z-index: 30; }
+
+  .progress {
+    background: rgba(0, 0, 0, 0.2);
+
+    span { background: $oer-gray; }
+  }
+
+  .slide-number {
+    background-color: rgba(120, 138, 130, 0.2);
+    color: $oer-text;
+  }
+
+  // Menu hamburger, tinted blue (lecture.css).
+  .slide-menu-button .fa-bars::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(42, 118, 221)" class="bi bi-list" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/></svg>');
+  }
+}
+
+// =============================================================================
+// PRINT / PDF
+// =============================================================================
+html.print-pdf {
+  .reveal aside.notes { background: none; }
+
+  .reveal .slide-menu-button,
+  .reveal .quarto-chalkboard-buttons { display: none; }
+}

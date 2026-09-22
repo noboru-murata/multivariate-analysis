@@ -1,0 +1,52 @@
+/*-- scss:defaults --*/
+
+// Point the header logo at your own file, without touching the theme.
+// Add this file to `theme:` AFTER the header theme, so it wins:
+//
+//   format:
+//     revealjs:
+//       theme: [default, default-header.scss, logo.scss]
+//   resources:
+//     - images/
+//
+// (SCSS variables cannot be set from YAML, which is why this one-line file
+// exists. `theme:` is the only place Quarto lets you inject them.)
+//
+// Pick ONE of the three forms below.
+
+
+// -- 1. A file next to your .qmd ----------------------------------------------
+// Quarto compiles the theme to
+//   <doc>_files/libs/revealjs/dist/theme/quarto-<hash>.css
+// and a url() in CSS is resolved relative to the CSS file, so the path has to
+// climb five levels to get back to your .qmd directory. Verified on Quarto
+// 1.8; it also survives `embed-resources: true`, where pandoc inlines the
+// image for you.
+//
+//   images/logo.png  next to the .qmd  ->
+$header-logo: url("../../../../../images/logo.png");
+//
+//   logo.png directly next to the .qmd ->
+// $header-logo: url("../../../../../logo.png");
+//
+// Remember `resources:` so Quarto copies the file to the output directory.
+
+
+// -- 2. A data URI (most robust) ----------------------------------------------
+// No path at all, so nothing to break when Quarto changes its output layout.
+// Generate with:  python3 svg2datauri.py images/logo.png
+//
+// $header-logo: url("data:image/png;base64,iVBORw0KGgo...");
+
+
+// -- 3. A site-root or absolute URL -------------------------------------------
+// Only for a deck actually served over http(s) — a root-relative path does not
+// resolve when you open the .html straight off disk.
+//
+// $header-logo: url("/images/logo.png");
+
+
+// -- Shape --------------------------------------------------------------------
+// Square logos need nothing. For a wide one, `svg2datauri.py` prints the value
+// to use here:
+// $header-logo-width: 4.6em;

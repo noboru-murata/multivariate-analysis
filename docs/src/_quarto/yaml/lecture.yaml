@@ -1,0 +1,47 @@
+license: "CC BY-NC"
+format:
+  revealjs: 
+    theme: [default, _quarto/scss/lecture.scss]
+    slide-level: 3
+    max-scale: 2.0 
+    embed-resources: true
+    include-in-header: _quarto/lib/mathjax-fix.html
+    center: true
+    controls: true
+    controls-layout: bottom-right
+    controls-back-arrows: visible
+    controls-tutorial: true
+    navigation-mode: vertical
+    auto-stretch: false
+  pdf:
+    keep-tex: true
+    echo: false
+    pdf-engine: lualatex
+    include-in-header: 
+      - text: |
+          \usepackage{luatexja-preset}
+          \usepackage{mathtools}
+          \mathtoolsset{showonlyrefs,showmanualtags}	    
+      - _quarto/tex/fig-scale.tex
+      - _quarto/tex/table-center.tex
+  html: 
+    self-contained: false
+    grid: 
+      margin-width: 350px
+    code-fold: true
+revealjs-plugins:
+  - pointer
+pointer:
+  color: "rgba(255, 0, 0, 0.4)"
+  pointerSize: 120
+  alwaysVisible: false
+knitr:
+  opts_chunk:
+    fig.align: center
+execute:
+  warning: false
+  message: false
+  fig-height: 5
+  fig-width: 5
+filters:
+  - _quarto/lib/no-hrule.lua
