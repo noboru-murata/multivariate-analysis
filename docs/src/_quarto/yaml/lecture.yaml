@@ -1,7 +1,7 @@
 license: "CC BY-NC"
 format:
   revealjs: 
-    theme: [default, _quarto/scss/lecture.scss]
+    theme: [default, _quarto/scss/oerreveal-lecture.scss]
     slide-level: 3
     max-scale: 2.0 
     embed-resources: true
@@ -25,6 +25,7 @@ format:
       - _quarto/tex/fig-scale.tex
       - _quarto/tex/table-center.tex
       - _quarto/tex/callout-title-gothic.tex
+      - _quarto/tex/gt-table-tight.tex
   html: 
     self-contained: false
     grid: 

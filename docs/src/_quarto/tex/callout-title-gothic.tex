@@ -27,9 +27,19 @@
 %   下の \providecommand は、\gtfamily が無い構成のときだけ \sffamily を
 %   代用するためのものです。どちらの構成でもそのまま動きます。
 %   (fontspec 系では sansfont: に和文ゴシックを指定しておいてください。)
+%
+% ■ \ifdefined\tcbset のガードが必要な理由
+%   Quarto は「その文書に callout があるとき」だけ tcolorbox を読み込みます。
+%   callout の無い文書では \tcbset が未定義のまま \begin{document} に入り、
+%     Undefined control sequence.
+%     \__hook_toplevel begindocument ...family }\tcbset
+%   でコンパイルが止まります。ガードしておけば、callout のある文書でも
+%   無い文書でも同じ header をそのまま使えます。
 %------------------------------------------------------------------------------
 
 \AtBeginDocument{%
   \providecommand{\gtfamily}{\sffamily}%
-  \tcbset{fonttitle=\gtfamily\bfseries}%
+  \ifdefined\tcbset
+    \tcbset{fonttitle=\gtfamily\bfseries}%
+  \fi
 }

@@ -1,5 +1,6 @@
 *~
 *.json
 .hugo_build.lock
+.DS_Store
 themes/
 static/

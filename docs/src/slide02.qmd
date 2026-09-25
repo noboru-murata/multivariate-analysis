@@ -1,11 +1,11 @@
 ---
 title: 数学的準備
-subtitle: 多変量解析 - 第2講
+subtitle: 確率と統計の基礎事項
 author: 村田 昇
 license: "CC BY-NC"
 format:
   revealjs: 
-    theme: [default, _quarto/scss/lecture.scss]
+    theme: [default, _quarto/scss/oerreveal-lecture.scss]
     slide-level: 3
     max-scale: 2.0 
     embed-resources: true
@@ -29,6 +29,7 @@ format:
       - _quarto/tex/fig-scale.tex
       - _quarto/tex/table-center.tex
       - _quarto/tex/callout-title-gothic.tex
+      - _quarto/tex/gt-table-tight.tex
   html: 
     self-contained: false
     grid: 
@@ -104,6 +105,12 @@ if (Sys.info()["sysname"] == "Darwin") {
 library(see)
 options(ggplot2.discrete.colour = function() scale_colour_material(),
         ggplot2.discrete.fill = function() scale_fill_material())
+```
+
+```{=latex}
+\figfitboth
+\setlength{\figmaxheight}{0.42\textheight}
+\setlength{\figmaxwidth}{0.84\textwidth}
 ```
 
 

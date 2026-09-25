@@ -1,25 +1,72 @@
 % ---------------------------------------------------------------------------
-% PDF 出力の図を一律に縮小する（R チャンクの fig-width 等には触れない）
+% PDF 出力の図の大きさを一律に制限する（R チャンクの fig-width 等には触れない）
 %
 %   format:
 %     pdf:
 %       include-in-header:
-%         - fig-scale.tex
+%         - _quarto/tex/fig-scale.tex
 %
-% 本文幅の何割を上限にするかは \figmaxwidth で決める。
-% 上限「だけ」を課すので、もともと小さい図は拡大されない。
-% チャンク側の out-width 指定はこちらより優先される。
+% 上限「だけ」を課すので、もともと小さい図が拡大されることはありません。
+%
+% ■ 上限
+%   \figmaxwidth  … 本文幅に対する横幅の上限
+%   \figmaxheight … 本文高さに対する高さの上限
+%
+% ■ 3 つのモード
+%   \figfitwidth   幅だけを制限（従来の挙動。既定）
+%                  縦長の図は高さ方向に伸びたままになります。
+%   \figfitheight  高さだけを制限
+%                  横長の図は幅方向に広がります（ただし Quarto の
+%                  \pandocbounded が本文幅で受け止めるのではみ出しません）。
+%   \figfitboth    両方を制限（どちらか厳しい方に合わせて縮小）
+%                  縦横比は保たれます。スライド由来の図を PDF に並べるときは
+%                  これが一番安全です。
+%
+%   実測例（\figmaxwidth = 245.7pt, \figmaxheight = 320.2pt）
+%     元画像          width モード        height モード      both モード
+%     800x200 (横長)  245.7 x 61.4        803.0 x 200.7      245.7 x 61.4
+%     200x800 (縦長)  200.7 x 803.0       80.1 x 320.2       80.1 x 320.2
+%     100x80  (小)    そのまま            そのまま           そのまま
+%
+% ■ 注意
+%   \figfitwidth と \figfitheight は縦横どちらか一方のキーしか設定しないので、
+%   チャンク側の out-width / out-height がこれまでどおり優先され、指定すれば
+%   拡大もできます。\figfitboth は keepaspectratio を使う都合で両方のキーを
+%   埋めるため、out-width による「拡大」はできなくなります（縮小は可能）。
+%
+% ■ org ファイル側での切り替え
+%   本文の先頭あたりに raw LaTeX を置けば、そこから後の図に効きます。
+%
+%     #+begin_export latex
+%     \figfitboth
+%     \setlength{\figmaxheight}{0.45\textheight}
+%     #+end_export
+%
+%   ox-quarto は既定では latex の export block を捨ててしまうので、
+%   同梱の ox-quarto-export-block.el を読み込んでください。
 % ---------------------------------------------------------------------------
-\newlength{\figmaxwidth}
-\setlength{\figmaxwidth}{0.55\linewidth}   % ← ここを調整
 
+\newlength{\figmaxwidth}
+\newlength{\figmaxheight}
+\setlength{\figmaxwidth}{0.55\linewidth}    % ← ここを調整
+\setlength{\figmaxheight}{0.55\textheight}  % ← ここを調整
+
+% \Gin@nat@width / \Gin@nat@height は graphicx が画像ごとに設定する原寸。
+% キーの値は \includegraphics の時点で展開されるので、画像ごとに
+% 「原寸と上限の小さい方」が選ばれます。
 \makeatletter
-\def\figbounded{%
-  \ifdim\Gin@nat@width>\figmaxwidth
-    \figmaxwidth
-  \else
-    \Gin@nat@width
-  \fi}
+\def\figboundedw{%
+  \ifdim\Gin@nat@width>\figmaxwidth  \figmaxwidth  \else \Gin@nat@width  \fi}
+\def\figboundedh{%
+  \ifdim\Gin@nat@height>\figmaxheight \figmaxheight \else \Gin@nat@height \fi}
 \makeatother
 
-\setkeys{Gin}{width=\figbounded}
+% `!` は graphicx で「このキーは未指定」を表す値です。
+\newcommand{\figfitwidth}{%
+  \setkeys{Gin}{keepaspectratio=false,height=!,width=\figboundedw}}
+\newcommand{\figfitheight}{%
+  \setkeys{Gin}{keepaspectratio=false,width=!,height=\figboundedh}}
+\newcommand{\figfitboth}{%
+  \setkeys{Gin}{keepaspectratio=true,width=\figboundedw,height=\figboundedh}}
+
+\figfitwidth   % ← 既定のモード

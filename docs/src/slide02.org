@@ -1,10 +1,10 @@
 #+TITLE: 数学的準備
-#+SUBTITLE: 多変量解析 - 第2講
+#+SUBTITLE: 確率と統計の基礎事項
 #+AUTHOR: 村田 昇
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-09-22 15:00:36 mura>
+# Time-stamp: <2026-09-25 15:11:51 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -17,7 +17,7 @@
 - このスライドは早稲田大学専用
 
 
-* R language                                                         :ignore:
+* Preamble                                                           :ignore:
 :PROPERTIES:
 :ID:       5F59A584-245D-4B39-AE45-523B362D1E38
 :END:
@@ -25,6 +25,12 @@
   ### 第2講 資料
 #+end_src
 #+include: "preamble.R" src R 
+#+begin_export latex
+\figfitboth
+\setlength{\figmaxheight}{0.42\textheight}
+\setlength{\figmaxwidth}{0.84\textwidth}
+#+end_export
+
 
 * 講義の内容
 - 確率
@@ -1529,7 +1535,3 @@
 
 
 * Footnotes                                                          :ignore:
-* COMMENT ローカル変数
-# Local Variables:
-# org-latex-listings: minted
-# End:
