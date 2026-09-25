@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-09-25 15:10:20 mura>
+# Time-stamp: <2026-09-25 16:47:37 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -22,6 +22,7 @@
 
 * Preamble                                                           :ignore:
 :PROPERTIES:
+:ID:       ca0ce64a-529a-4e95-afd2-7b8f848070b3
 :END:
 #+begin_src R
   ### 第3講 資料
@@ -92,6 +93,7 @@
 *** データの概要
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       fc7b346f-e742-42ff-95b9-beb8ce2a4e4c
 :END:
 
 #+begin_src R
@@ -168,6 +170,7 @@
 *** 関連するデータの散布図
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       b3a02bcb-bc58-48a2-8a38-ee8ccd80285d
 :END:
 
 #+begin_src R
@@ -181,6 +184,7 @@
 *** 観測値とあてはめ値の比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       6a220104-38d2-4b25-b0c4-298990c230e8
 :END:
 
 #+begin_src R
@@ -218,6 +222,7 @@
 *** 決定係数(\(R^{2}\)・Adjusted \(R^{2}\))によるモデルの比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       db14da23-7a57-4d3f-a809-bb2b26566058
 :END:
 
 #+begin_src R
@@ -293,6 +298,7 @@
 *** \(F\)統計量によるモデルの比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       533296f6-f99b-41ec-8f05-5ecbd10e5a6e
 :END:
 
 #+begin_src R
@@ -367,6 +373,7 @@
 *** \(t\)統計量によるモデルの比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       7985c0a7-8548-4bd0-87e9-49785b506756
 :END:
 
 #+begin_src R
@@ -463,6 +470,7 @@
 *** モデル3の診断プロット
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       ad84492d-e711-4471-9ac1-7802da7ec50e
 :END:
 
 #+begin_src R
@@ -473,6 +481,7 @@
 *** モデル4の診断プロット
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       125c1f4c-a971-4aef-945a-0ff4c523ee58
 :END:
 
 #+begin_src R
@@ -483,6 +492,7 @@
 *** モデル5の診断プロット
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       a146f346-3d5e-4278-a675-4a1ff6e591ce
 :END:
 
 #+begin_src R
@@ -553,7 +563,7 @@
   以下の問に答えよ
   - 予測値 \(\hat{y}\) の平均を求めよ
   - 予測値 \(\hat{y}\) の分散を求めよ
-** 解答例
+** COMMENT 解答例
 :PROPERTIES:
 :reveal_background: #fef4f4
 :END:
@@ -659,7 +669,7 @@
     \end{equation}
   - 観測値と予測値の差 \(y-\hat{y}\) の平均と分散を求めよ
 
-** 解答例
+** COMMENT 解答例
 - \(C_{\alpha}\) の定義にもとづいて計算すればよい
   \begin{align}
     \alpha
@@ -1051,6 +1061,7 @@
 *** 推定されたモデル
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       a7a62124-97d9-4a83-ac89-931761ddf05c
 :END:
 
 #+begin_src R
@@ -1127,6 +1138,7 @@
 *** 8月モデルの信頼区間
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       5e2ea066-0494-4c63-ba44-732c8f9b9cbf
 :END:
      
 #+begin_src R
@@ -1144,6 +1156,7 @@
 *** 8月モデルの予測区間
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       7ff5a137-7554-4f33-b79e-be16ef1671ab
 :END:
 
 #+begin_src R
@@ -1161,6 +1174,7 @@
 *** 9月の予測値の信頼区間
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       91f4f1eb-69d7-44a0-87b6-929cd73698a3
 :END:
 
 #+begin_src R
@@ -1178,6 +1192,7 @@
 *** 9月の予測値の予測区間
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       5b460af8-280d-4849-8bd2-bf7998f15f94
 :END:
 
 #+begin_src R
@@ -1219,6 +1234,9 @@
 * 解析の事例
 # 早稲田大学
 ** 非線形変換による線形化
+:PROPERTIES:
+:ID:       7ec00453-31f4-40e9-ac82-40888b9939be
+:END:
 
 #+begin_columns
 
@@ -1271,6 +1289,7 @@
 *** 散布図 (変換なし)
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       5c520474-17aa-4a0a-ad86-30e99ca7473c
 :END:
 
 #+begin_src R
@@ -1289,6 +1308,7 @@
 *** 散布図 (体重を対数変換)
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       fc99e675-59eb-47d1-be44-752758932883
 :END:
 
 #+begin_src R
@@ -1308,6 +1328,7 @@
 *** 散布図 (体重と脳の重さを対数変換)
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       ac299fda-b6fc-4db8-bfac-6474ed80f989
 :END:
 
 #+begin_src R
@@ -1326,6 +1347,7 @@
 *** 単回帰 (回帰直線と信頼区間)
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       37df2ac4-9f2f-47c4-bc41-65cff8862b46
 :END:
 
 #+begin_src R
@@ -1345,6 +1367,7 @@
 *** 単回帰 (外れ値を除いた回帰直線と信頼区間)
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       eb261d33-06a2-40c4-8e56-54e47aaca650
 :END:
 
 #+begin_src R
@@ -1444,6 +1467,7 @@
 *** 関連データの散布図
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       99ed67e1-0f7f-4993-9839-a9373aa79fde
 :END:
 
 #+begin_src R
@@ -1459,6 +1483,7 @@
 *** 交互作用の効果
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       59ce5c16-8388-41ca-b0f7-463b74bba299
 :END:
 
 #+begin_columns
@@ -1550,6 +1575,7 @@
 *** 関連データの散布図
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       2cecf9dd-ba12-4a6c-88db-019640b1daec
 :END:
 
 #+begin_src R
@@ -1574,6 +1600,7 @@
 *** カテゴリカル変数の効果
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       2b619df0-ad6c-43af-8807-6e6471a53a2f
 :END:
 
 #+begin_columns
@@ -1655,6 +1682,7 @@
 *** 実測値とあてはめ値の関係
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       87aca001-a069-48be-8a31-90a6169423a1
 :END:
 
 #+begin_src R

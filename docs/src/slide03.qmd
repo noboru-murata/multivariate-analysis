@@ -337,84 +337,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     で微分して解の条件を求めなさい
 
 
-## 解答例
-
--   残差平方和を展開しておく
-    
-    \begin{align}
-      S(\boldsymbol{\beta})
-      &=
-        (\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
-        (\boldsymbol{y}-X\boldsymbol{\beta})\\
-      &=
-        \boldsymbol{y}^{\mathsf{T}}\boldsymbol{y}
-        -\boldsymbol{y}^{\mathsf{T}}X\boldsymbol{\beta}
-        -(X\boldsymbol{\beta})^{\mathsf{T}}\boldsymbol{y}
-        +(X\boldsymbol{\beta})^{\mathsf{T}}X\boldsymbol{\beta}\\
-      &=
-        \boldsymbol{y}^{\mathsf{T}}\boldsymbol{y}
-        -\boldsymbol{y}^{\mathsf{T}}X\boldsymbol{\beta}
-        -\boldsymbol{\beta}^{\mathsf{T}}X^{\mathsf{T}}\boldsymbol{y}
-        +\boldsymbol{\beta}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{\beta}\\
-    \end{align}
-
--   ベクトルによる微分を行うと以下のようになる
-    
-    \begin{align}
-      \frac{\partial S}{\partial\boldsymbol{\beta}}(\boldsymbol{\beta})
-      &=
-        -(\boldsymbol{y}^{\mathsf{T}}X)^{\mathsf{T}}
-        -X^{\mathsf{T}}\boldsymbol{y}
-        +(X^{\mathsf{T}}X+(X^{\mathsf{T}}X)^{\mathsf{T}})\boldsymbol{\beta}\\
-      &=
-        -2X^{\mathsf{T}}\boldsymbol{y}
-        +2X^{\mathsf{T}}X\boldsymbol{\beta}
-    \end{align}
-
----
-
--   したがって
-    $\boldsymbol{\beta}$
-    の満たす条件は以下となる
-    
-    \begin{equation}
-      -2X^{\mathsf{T}}\boldsymbol{y}
-      +2X^{\mathsf{T}}X\boldsymbol{\beta}
-      =0
-      \quad\text{ より }
-    \end{equation}
-    
-    \begin{equation}
-      X^{\mathsf{T}}X\boldsymbol{\beta}
-      =
-      X^{\mathsf{T}}\boldsymbol{y}
-    \end{equation}
-
-
-### 補足
-
--   成分ごとの計算は以下のようになる
-    
-    \begin{equation}
-      \frac{\partial S}{\partial\beta_j}(\boldsymbol{\beta})
-      =
-      -2\sum_{i=1}^n\Bigl(y_i-\sum_{k=0}^p\beta_kx_{ik}\Bigr)x_{ij}
-      =0
-    \end{equation}
-    
-    ただし，
-    $x_{i0}=1\; (i=1,\dotsc,n)$,
-    $j=0,1,\dotsc,p$
-    
-    \begin{equation}
-      \sum_{i=1}^nx_{ij}\Bigl(\sum_{k=0}^px_{ik}\beta_k\Bigr)
-      =
-      \sum_{i=1}^nx_{ij}y_i\quad(j=0,1,\dotsc,p)
-    \end{equation}
-    
-    $x_{ij}$ は行列 $X$ の $(i,j)$ 成分であることに注意
-
-
 # 正規方程式
 
 
@@ -554,53 +476,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
         \end{equation}
 
 
-## 解答例
-
--   残差の表現を整理する
-    
-    \begin{align}
-      \boldsymbol{\hat{\epsilon}}
-      &=
-        \boldsymbol{y}-\boldsymbol{\hat{y}}
-        =
-        \boldsymbol{y}-X\boldsymbol{\hat{\beta}}\\
-      &=
-        \boldsymbol{y}-X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}
-    \end{align}
--   左から $X^{\mathsf{T}}$ を乗じる
-    
-    \begin{equation}
-      X^{\mathsf{T}}\boldsymbol{y}-X^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}
-      =
-      X^{\mathsf{T}}\boldsymbol{y}-X^{\mathsf{T}}\boldsymbol{y}
-      =\boldsymbol{0}
-    \end{equation}
--   行列 $X$ の 1列目が $\boldsymbol{1}$ であることより明らか
-
----
-
--   説明変数の標本平均をデザイン行列で表す
-    
-    \begin{equation}
-      \boldsymbol{1}^{\mathsf{T}}X
-      =
-      n(1,\boldsymbol{\bar{x}}^{\mathsf{T}})
-    \end{equation}
--   したがって以下が成立する
-    
-    \begin{align}
-      n(1,\boldsymbol{\bar{x}}^{\mathsf{T}})\boldsymbol{\hat{\beta}}
-      &=
-        \boldsymbol{1}^{\mathsf{T}}X\boldsymbol{\hat{\beta}}\\
-      &=
-        \boldsymbol{1}^{\mathsf{T}}\boldsymbol{\hat{y}}
-        =
-        \boldsymbol{1}^{\mathsf{T}}\boldsymbol{y}\\
-      &=
-        n\bar{y}
-    \end{align}
-
-
 # 残差の分解
 
 
@@ -677,57 +552,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
         \begin{equation}
           S_y=S+S_r
         \end{equation}
-
-
-## 解答例
-
--   残差の表現を整理する
-    
-    \begin{align}
-      \boldsymbol{\hat{\epsilon}}
-      &=
-        \boldsymbol{y}-X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}\\
-      &=
-        (I-X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\boldsymbol{y}
-    \end{align}
--   左から $\boldsymbol{\hat{y}}$ を乗じる
-    
-    \begin{align}
-      \boldsymbol{\hat{y}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}
-      &=
-        \boldsymbol{\hat{\beta}}^{\mathsf{T}}X^{\mathsf{T}}
-        (I-X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\boldsymbol{y}\\
-      &=
-        \boldsymbol{\hat{\beta}}^{\mathsf{T}}
-        (X^{\mathsf{T}}-X^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\boldsymbol{y}\\
-      &=
-        \boldsymbol{\hat{\beta}}^{\mathsf{T}}
-        (X^{\mathsf{T}}-X^{\mathsf{T}})\boldsymbol{y}=0
-    \end{align}
-
----
-
--   以下の関係を用いて展開すればよい
-    
-    \begin{equation}
-      \boldsymbol{y}-\bar{\boldsymbol{y}}
-      =\boldsymbol{y}-\boldsymbol{\hat{y}}+\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}}
-    \end{equation}
-    
-    ただし $\bar{\boldsymbol{y}}=\bar{y}\boldsymbol{1}$
--   このとき以下の項は0になる
-    
-    \begin{equation}
-      (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})^{\mathsf{T}}
-      (\boldsymbol{y}-\boldsymbol{\hat{y}})
-      =
-      \boldsymbol{\hat{y}}^{\mathsf{T}}
-      (\boldsymbol{y}-\boldsymbol{\hat{y}})
-      -
-      \bar{y}\boldsymbol{1}^{\mathsf{T}}
-      (\boldsymbol{y}-\boldsymbol{\hat{y}})
-      =0
-    \end{equation}
 
 
 # 決定係数

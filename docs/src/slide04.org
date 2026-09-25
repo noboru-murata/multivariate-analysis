@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-09-25 15:12:16 mura>
+# Time-stamp: <2026-09-25 16:47:07 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -22,6 +22,7 @@
 
 * Preamble                                                           :ignore:
 :PROPERTIES:
+:ID:       4c051712-6a7f-42ff-b84d-f18797ad6240
 :END:
 #+begin_src R
   ### 第4講 資料
@@ -174,6 +175,7 @@
 *** データの概要
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       fe18ecfb-acce-4f03-b373-0207070618ec
 :END:
 
 #+begin_src R
@@ -245,6 +247,7 @@
 *** 関連するデータの散布図
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       e1d7b7f8-49bb-4113-bc60-f9e81603120c
 :END:
 
 #+begin_src R
@@ -258,6 +261,7 @@
 *** モデル1の推定結果
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       61213991-7969-4494-b0b5-af39173a6db5
 :END:
 
 #+begin_src R
@@ -272,6 +276,7 @@
 *** モデル2の推定結果
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       615785c1-2b60-45d2-ae37-8eaf390f4e35
 :END:
 
 #+begin_src R
@@ -286,6 +291,7 @@
 *** モデル3の推定結果
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       404ac95f-3dde-4947-8bf9-1ba376c7ec52
 :END:
 
 #+begin_src R
@@ -311,6 +317,7 @@
 *** 観測値とあてはめ値の比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       bd909db2-41ad-41fe-ae99-2dc3760a09f5
 :END:
 
 #+begin_src R
@@ -335,6 +342,7 @@
 *** 決定係数によるモデルの比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       ea1032e1-63ad-4fc1-a8bb-c4f39c57efcd
 :END:
 
 #+begin_src R
@@ -475,7 +483,7 @@
         X^{\mathsf{T}}H=X^{\mathsf{T}}
       \end{equation}
 
-** ヒント
+** COMMENT ヒント
 - いずれも \(H\) の定義にもとづいて計算すればよい
    \begin{align}
      H^{\mathsf{T}}
@@ -534,7 +542,7 @@
      \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
    \end{align}
 
-** 推定量の分布
+** COMMENT 推定量の分布
 # 東京大学
 - *誤差の仮定* : 独立，平均0 分散 \(\sigma^{2}\) の正規分布
 - 推定量は以下の多変量正規分布に従う
@@ -555,7 +563,7 @@
      \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
    \end{equation}
 
-** 分散の推定
+** COMMENT 分散の推定
 # 東京大学
 - 通常 \(\sigma^{2}\) は未知，必要な場合には不偏分散で代用
    \begin{equation}
@@ -567,7 +575,7 @@
 - これらの性質を利用してモデルの評価を行う
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :QUARTO_ATTR: {background-color="#fef4f4"}
 :END:
@@ -585,7 +593,7 @@
    - 平均は \(\boldsymbol{\beta}\) (真の母数)となること
    - 共分散行列は \(\sigma^{2}(X^{\mathsf{T}}X)^{-1}\) となること
 
-** 解答例
+** COMMENT 解答例
 - 定義にもとづいて計算する
    \begin{align}
      \mathbb{E}[\boldsymbol{\hat{\beta}}]
@@ -678,7 +686,7 @@
 
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :QUARTO_ATTR: {background-color="#fef4f4"}
 :END:
@@ -703,7 +711,7 @@
    - 回帰のばらつき \(S_{r}\) をハット行列 \(H\) と
       目的変数 \(\boldsymbol{y}\) で表せ
       
-** 解答例
+** COMMENT 解答例
 - ハット行列 \(H\) を用いた表現を利用する
    \begin{align}
      \boldsymbol{\hat{\epsilon}}
@@ -846,7 +854,7 @@
 #   - \(p\)値が小さいときは帰無仮説が誤り結論するのが自然
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :QUARTO_ATTR: {background-color="#fef4f4"}
 :END:
@@ -924,14 +932,14 @@
 #   \end{equation}
 
 
-* 実習
+* COMMENT 実習
 :PROPERTIES:
 :QUARTO_ATTR: {background-color="#fef4f4"}
 :END:
 # 東京大学
 
 
-* 補足
+* COMMENT 補足
 # 東京大学
 ** R : 診断プロット
 :PROPERTIES:
@@ -964,6 +972,9 @@
 * 解析の事例
 # 早稲田大学
 ** 気温に影響を与える要因の分析(再掲)
+:PROPERTIES:
+:ID:       15d52894-7a50-40ea-854e-d68d6a5cec45
+:END:
 
 #+begin_content-visible :when-format "html"
 #+begin_scroll-tall
@@ -993,6 +1004,7 @@
 *** 観測値とあてはめ値の比較(再掲)
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       f65a4266-8db8-430f-81f2-22a426acf3f8
 :END:
 
 #+begin_src R
@@ -1015,6 +1027,7 @@
 *** \(t\)統計量・\(F\)統計量によるモデルの比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       c3f5de52-24e5-40fd-83a9-dd0f6e35a040
 :END:
 
 #+begin_src R
@@ -1079,6 +1092,7 @@
 *** モデル3の診断プロット
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       7be44096-92d5-4101-83dc-2fcd341f8fcf
 :END:
 
 #+begin_src R
@@ -1089,6 +1103,7 @@
 *** モデル4の診断プロット
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       249a77c2-3a38-46e0-bbc9-a192c0d68800
 :END:
 
 #+begin_src R
@@ -1099,6 +1114,7 @@
 *** モデル5の診断プロット
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       50d583d2-e23d-48c4-984a-fae2b7b1800a
 :END:
 
 #+begin_src R

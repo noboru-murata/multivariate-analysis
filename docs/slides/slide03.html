@@ -1296,76 +1296,6 @@ margin-right: 0; }
 <li>残差平方和 <span class="math inline">\(S(\boldsymbol{\beta})\)</span> をベクトル <span class="math inline">\(\boldsymbol{\beta}\)</span> で微分して解の条件を求めなさい</li>
 </ul>
 </section>
-
-<section id="解答例" class="title-slide slide level2 center">
-<h2>解答例</h2>
-<ul>
-<li><p>残差平方和を展開しておく</p>
-<p><span class="math display">\[\begin{align}
-  S(\boldsymbol{\beta})
-  &amp;=
-    (\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
-    (\boldsymbol{y}-X\boldsymbol{\beta})\\
-  &amp;=
-    \boldsymbol{y}^{\mathsf{T}}\boldsymbol{y}
-    -\boldsymbol{y}^{\mathsf{T}}X\boldsymbol{\beta}
-    -(X\boldsymbol{\beta})^{\mathsf{T}}\boldsymbol{y}
-    +(X\boldsymbol{\beta})^{\mathsf{T}}X\boldsymbol{\beta}\\
-  &amp;=
-    \boldsymbol{y}^{\mathsf{T}}\boldsymbol{y}
-    -\boldsymbol{y}^{\mathsf{T}}X\boldsymbol{\beta}
-    -\boldsymbol{\beta}^{\mathsf{T}}X^{\mathsf{T}}\boldsymbol{y}
-    +\boldsymbol{\beta}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{\beta}\\
-\end{align}\]</span></p></li>
-<li><p>ベクトルによる微分を行うと以下のようになる</p>
-<p><span class="math display">\[\begin{align}
-  \frac{\partial S}{\partial\boldsymbol{\beta}}(\boldsymbol{\beta})
-  &amp;=
-    -(\boldsymbol{y}^{\mathsf{T}}X)^{\mathsf{T}}
-    -X^{\mathsf{T}}\boldsymbol{y}
-    +(X^{\mathsf{T}}X+(X^{\mathsf{T}}X)^{\mathsf{T}})\boldsymbol{\beta}\\
-  &amp;=
-    -2X^{\mathsf{T}}\boldsymbol{y}
-    +2X^{\mathsf{T}}X\boldsymbol{\beta}
-\end{align}\]</span></p></li>
-</ul>
-</section>
-<section class="slide level3 center">
-
-<ul>
-<li><p>したがって <span class="math inline">\(\boldsymbol{\beta}\)</span> の満たす条件は以下となる</p>
-<p><span class="math display">\[\begin{equation}
-  -2X^{\mathsf{T}}\boldsymbol{y}
-  +2X^{\mathsf{T}}X\boldsymbol{\beta}
-  =0
-  \quad\text{ より }
-\end{equation}\]</span></p>
-<p><span class="math display">\[\begin{equation}
-  X^{\mathsf{T}}X\boldsymbol{\beta}
-  =
-  X^{\mathsf{T}}\boldsymbol{y}
-\end{equation}\]</span></p></li>
-</ul>
-</section>
-<section id="補足" class="slide level3 center">
-<h3>補足</h3>
-<ul>
-<li><p>成分ごとの計算は以下のようになる</p>
-<p><span class="math display">\[\begin{equation}
-  \frac{\partial S}{\partial\beta_j}(\boldsymbol{\beta})
-  =
-  -2\sum_{i=1}^n\Bigl(y_i-\sum_{k=0}^p\beta_kx_{ik}\Bigr)x_{ij}
-  =0
-\end{equation}\]</span></p>
-<p>ただし， <span class="math inline">\(x_{i0}=1\; (i=1,\dotsc,n)\)</span>, <span class="math inline">\(j=0,1,\dotsc,p\)</span></p>
-<p><span class="math display">\[\begin{equation}
-  \sum_{i=1}^nx_{ij}\Bigl(\sum_{k=0}^px_{ik}\beta_k\Bigr)
-  =
-  \sum_{i=1}^nx_{ij}y_i\quad(j=0,1,\dotsc,p)
-\end{equation}\]</span></p>
-<p><span class="math inline">\(x_{ij}\)</span> は行列 <span class="math inline">\(X\)</span> の <span class="math inline">\((i,j)\)</span> 成分であることに注意</p></li>
-</ul>
-</section>
 </section>
 <section>
 <section id="正規方程式" class="title-slide slide level1 center">
@@ -1547,53 +1477,6 @@ Figure 1: <span class="math inline">\(n=3\)</span> , <span class="math inline">
 </ul></li>
 </ul>
 </section>
-
-<section id="解答例-1" class="title-slide slide level2 center">
-<h2>解答例</h2>
-<ul>
-<li><p>残差の表現を整理する</p>
-<p><span class="math display">\[\begin{align}
-  \boldsymbol{\hat{\epsilon}}
-  &amp;=
-    \boldsymbol{y}-\boldsymbol{\hat{y}}
-    =
-    \boldsymbol{y}-X\boldsymbol{\hat{\beta}}\\
-  &amp;=
-    \boldsymbol{y}-X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}
-\end{align}\]</span></p></li>
-<li><p>左から <span class="math inline">\(X^{\mathsf{T}}\)</span> を乗じる</p>
-<p><span class="math display">\[\begin{equation}
-  X^{\mathsf{T}}\boldsymbol{y}-X^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}
-  =
-  X^{\mathsf{T}}\boldsymbol{y}-X^{\mathsf{T}}\boldsymbol{y}
-  =\boldsymbol{0}
-\end{equation}\]</span></p></li>
-<li><p>行列 <span class="math inline">\(X\)</span> の 1列目が <span class="math inline">\(\boldsymbol{1}\)</span> であることより明らか</p></li>
-</ul>
-</section>
-<section class="slide level3 center">
-
-<ul>
-<li><p>説明変数の標本平均をデザイン行列で表す</p>
-<p><span class="math display">\[\begin{equation}
-  \boldsymbol{1}^{\mathsf{T}}X
-  =
-  n(1,\boldsymbol{\bar{x}}^{\mathsf{T}})
-\end{equation}\]</span></p></li>
-<li><p>したがって以下が成立する</p>
-<p><span class="math display">\[\begin{align}
-  n(1,\boldsymbol{\bar{x}}^{\mathsf{T}})\boldsymbol{\hat{\beta}}
-  &amp;=
-    \boldsymbol{1}^{\mathsf{T}}X\boldsymbol{\hat{\beta}}\\
-  &amp;=
-    \boldsymbol{1}^{\mathsf{T}}\boldsymbol{\hat{y}}
-    =
-    \boldsymbol{1}^{\mathsf{T}}\boldsymbol{y}\\
-  &amp;=
-    n\bar{y}
-\end{align}\]</span></p></li>
-</ul>
-</section>
 </section>
 <section>
 <section id="残差の分解" class="title-slide slide level1 center">
@@ -1676,56 +1559,6 @@ Figure 1: <span class="math inline">\(n=3\)</span> , <span class="math inline">
 </ul></li>
 </ul>
 </section>
-
-<section id="解答例-2" class="title-slide slide level2 center">
-<h2>解答例</h2>
-<ul>
-<li><p>残差の表現を整理する</p>
-<p><span class="math display">\[\begin{align}
-  \boldsymbol{\hat{\epsilon}}
-  &amp;=
-    \boldsymbol{y}-X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}\\
-  &amp;=
-    (I-X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\boldsymbol{y}
-\end{align}\]</span></p></li>
-<li><p>左から <span class="math inline">\(\boldsymbol{\hat{y}}\)</span> を乗じる</p>
-<p><span class="math display">\[\begin{align}
-  \boldsymbol{\hat{y}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}
-  &amp;=
-    \boldsymbol{\hat{\beta}}^{\mathsf{T}}X^{\mathsf{T}}
-    (I-X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\boldsymbol{y}\\
-  &amp;=
-    \boldsymbol{\hat{\beta}}^{\mathsf{T}}
-    (X^{\mathsf{T}}-X^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\boldsymbol{y}\\
-  &amp;=
-    \boldsymbol{\hat{\beta}}^{\mathsf{T}}
-    (X^{\mathsf{T}}-X^{\mathsf{T}})\boldsymbol{y}=0
-\end{align}\]</span></p></li>
-</ul>
-</section>
-<section class="slide level3 center">
-
-<ul>
-<li><p>以下の関係を用いて展開すればよい</p>
-<p><span class="math display">\[\begin{equation}
-  \boldsymbol{y}-\bar{\boldsymbol{y}}
-  =\boldsymbol{y}-\boldsymbol{\hat{y}}+\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}}
-\end{equation}\]</span></p>
-<p>ただし <span class="math inline">\(\bar{\boldsymbol{y}}=\bar{y}\boldsymbol{1}\)</span></p></li>
-<li><p>このとき以下の項は0になる</p>
-<p><span class="math display">\[\begin{equation}
-  (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})^{\mathsf{T}}
-  (\boldsymbol{y}-\boldsymbol{\hat{y}})
-  =
-  \boldsymbol{\hat{y}}^{\mathsf{T}}
-  (\boldsymbol{y}-\boldsymbol{\hat{y}})
-  -
-  \bar{y}\boldsymbol{1}^{\mathsf{T}}
-  (\boldsymbol{y}-\boldsymbol{\hat{y}})
-  =0
-\end{equation}\]</span></p></li>
-</ul>
-</section>
 </section>
 <section>
 <section id="決定係数" class="title-slide slide level1 center">
@@ -1806,20 +1639,20 @@ Figure 1: <span class="math inline">\(n=3\)</span> , <span class="math inline">
 <div class="scroll-tall">
 <div class="cell" data-layout-align="center" data-tbl-cap="東京の8月の気候データ">
 <div class="cell-output-display">
-<div id="uobmrgljov" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#uobmrgljov table {
+<div id="mlsscadili" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mlsscadili table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#uobmrgljov thead, #uobmrgljov tbody, #uobmrgljov tfoot, #uobmrgljov tr, #uobmrgljov td, #uobmrgljov th {
+#mlsscadili thead, #mlsscadili tbody, #mlsscadili tfoot, #mlsscadili tr, #mlsscadili td, #mlsscadili th {
 border-style: none;
 }
-#uobmrgljov p {
+#mlsscadili p {
 margin: 0;
 padding: 0;
 }
-#uobmrgljov .gt_table {
+#mlsscadili .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -1844,11 +1677,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#uobmrgljov .gt_caption {
+#mlsscadili .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#uobmrgljov .gt_title {
+#mlsscadili .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -1859,7 +1692,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#uobmrgljov .gt_subtitle {
+#mlsscadili .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -1870,7 +1703,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#uobmrgljov .gt_heading {
+#mlsscadili .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -1881,12 +1714,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#uobmrgljov .gt_bottom_border {
+#mlsscadili .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#uobmrgljov .gt_col_headings {
+#mlsscadili .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -1900,7 +1733,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#uobmrgljov .gt_col_heading {
+#mlsscadili .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1919,7 +1752,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#uobmrgljov .gt_column_spanner_outer {
+#mlsscadili .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1930,13 +1763,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#uobmrgljov .gt_column_spanner_outer:first-child {
+#mlsscadili .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#uobmrgljov .gt_column_spanner_outer:last-child {
+#mlsscadili .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#uobmrgljov .gt_column_spanner {
+#mlsscadili .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -1947,10 +1780,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#uobmrgljov .gt_spanner_row {
+#mlsscadili .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#uobmrgljov .gt_group_heading {
+#mlsscadili .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1975,7 +1808,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#uobmrgljov .gt_empty_group_heading {
+#mlsscadili .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -1989,13 +1822,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#uobmrgljov .gt_from_md > :first-child {
+#mlsscadili .gt_from_md > :first-child {
 margin-top: 0;
 }
-#uobmrgljov .gt_from_md > :last-child {
+#mlsscadili .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#uobmrgljov .gt_row {
+#mlsscadili .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2013,7 +1846,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#uobmrgljov .gt_stub {
+#mlsscadili .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2025,7 +1858,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#uobmrgljov .gt_stub_row_group {
+#mlsscadili .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2038,13 +1871,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#uobmrgljov .gt_row_group_first td {
+#mlsscadili .gt_row_group_first td {
 border-top-width: 2px;
 }
-#uobmrgljov .gt_row_group_first th {
+#mlsscadili .gt_row_group_first th {
 border-top-width: 2px;
 }
-#uobmrgljov .gt_summary_row {
+#mlsscadili .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2053,14 +1886,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#uobmrgljov .gt_first_summary_row {
+#mlsscadili .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#uobmrgljov .gt_first_summary_row.thick {
+#mlsscadili .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#uobmrgljov .gt_last_summary_row {
+#mlsscadili .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2069,7 +1902,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#uobmrgljov .gt_grand_summary_row {
+#mlsscadili .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2078,7 +1911,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#uobmrgljov .gt_first_grand_summary_row {
+#mlsscadili .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2087,7 +1920,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#uobmrgljov .gt_last_grand_summary_row_top {
+#mlsscadili .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2096,10 +1929,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#uobmrgljov .gt_striped {
+#mlsscadili .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#uobmrgljov .gt_table_body {
+#mlsscadili .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2107,7 +1940,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#uobmrgljov .gt_footnotes {
+#mlsscadili .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2120,7 +1953,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#uobmrgljov .gt_footnote {
+#mlsscadili .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -2128,7 +1961,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#uobmrgljov .gt_sourcenotes {
+#mlsscadili .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2141,64 +1974,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#uobmrgljov .gt_sourcenote {
+#mlsscadili .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#uobmrgljov .gt_left {
+#mlsscadili .gt_left {
 text-align: left;
 }
-#uobmrgljov .gt_center {
+#mlsscadili .gt_center {
 text-align: center;
 }
-#uobmrgljov .gt_right {
+#mlsscadili .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#uobmrgljov .gt_font_normal {
+#mlsscadili .gt_font_normal {
 font-weight: normal;
 }
-#uobmrgljov .gt_font_bold {
+#mlsscadili .gt_font_bold {
 font-weight: bold;
 }
-#uobmrgljov .gt_font_italic {
+#mlsscadili .gt_font_italic {
 font-style: italic;
 }
-#uobmrgljov .gt_super {
+#mlsscadili .gt_super {
 font-size: 65%;
 }
-#uobmrgljov .gt_footnote_marks {
+#mlsscadili .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#uobmrgljov .gt_asterisk {
+#mlsscadili .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#uobmrgljov .gt_indent_1 {
+#mlsscadili .gt_indent_1 {
 text-indent: 5px;
 }
-#uobmrgljov .gt_indent_2 {
+#mlsscadili .gt_indent_2 {
 text-indent: 10px;
 }
-#uobmrgljov .gt_indent_3 {
+#mlsscadili .gt_indent_3 {
 text-indent: 15px;
 }
-#uobmrgljov .gt_indent_4 {
+#mlsscadili .gt_indent_4 {
 text-indent: 20px;
 }
-#uobmrgljov .gt_indent_5 {
+#mlsscadili .gt_indent_5 {
 text-indent: 25px;
 }
-#uobmrgljov .katex-display {
+#mlsscadili .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#uobmrgljov div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mlsscadili div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -2692,20 +2525,20 @@ height: 0px !important;
 <div class="scroll-tall">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="mxfxtfaatb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mxfxtfaatb table {
+<div id="mnjgsdcggh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mnjgsdcggh table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#mxfxtfaatb thead, #mxfxtfaatb tbody, #mxfxtfaatb tfoot, #mxfxtfaatb tr, #mxfxtfaatb td, #mxfxtfaatb th {
+#mnjgsdcggh thead, #mnjgsdcggh tbody, #mnjgsdcggh tfoot, #mnjgsdcggh tr, #mnjgsdcggh td, #mnjgsdcggh th {
 border-style: none;
 }
-#mxfxtfaatb p {
+#mnjgsdcggh p {
 margin: 0;
 padding: 0;
 }
-#mxfxtfaatb .gt_table {
+#mnjgsdcggh .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -2730,11 +2563,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_caption {
+#mnjgsdcggh .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#mxfxtfaatb .gt_title {
+#mnjgsdcggh .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -2745,7 +2578,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#mxfxtfaatb .gt_subtitle {
+#mnjgsdcggh .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -2756,7 +2589,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#mxfxtfaatb .gt_heading {
+#mnjgsdcggh .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -2767,12 +2600,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_bottom_border {
+#mnjgsdcggh .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_col_headings {
+#mnjgsdcggh .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2786,7 +2619,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_col_heading {
+#mnjgsdcggh .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2805,7 +2638,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#mxfxtfaatb .gt_column_spanner_outer {
+#mnjgsdcggh .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2816,13 +2649,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#mxfxtfaatb .gt_column_spanner_outer:first-child {
+#mnjgsdcggh .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#mxfxtfaatb .gt_column_spanner_outer:last-child {
+#mnjgsdcggh .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#mxfxtfaatb .gt_column_spanner {
+#mnjgsdcggh .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -2833,10 +2666,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#mxfxtfaatb .gt_spanner_row {
+#mnjgsdcggh .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#mxfxtfaatb .gt_group_heading {
+#mnjgsdcggh .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2861,7 +2694,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#mxfxtfaatb .gt_empty_group_heading {
+#mnjgsdcggh .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -2875,13 +2708,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#mxfxtfaatb .gt_from_md > :first-child {
+#mnjgsdcggh .gt_from_md > :first-child {
 margin-top: 0;
 }
-#mxfxtfaatb .gt_from_md > :last-child {
+#mnjgsdcggh .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#mxfxtfaatb .gt_row {
+#mnjgsdcggh .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2899,7 +2732,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#mxfxtfaatb .gt_stub {
+#mnjgsdcggh .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2911,7 +2744,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mxfxtfaatb .gt_stub_row_group {
+#mnjgsdcggh .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2924,13 +2757,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#mxfxtfaatb .gt_row_group_first td {
+#mnjgsdcggh .gt_row_group_first td {
 border-top-width: 2px;
 }
-#mxfxtfaatb .gt_row_group_first th {
+#mnjgsdcggh .gt_row_group_first th {
 border-top-width: 2px;
 }
-#mxfxtfaatb .gt_summary_row {
+#mnjgsdcggh .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2939,14 +2772,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mxfxtfaatb .gt_first_summary_row {
+#mnjgsdcggh .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_first_summary_row.thick {
+#mnjgsdcggh .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#mxfxtfaatb .gt_last_summary_row {
+#mnjgsdcggh .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2955,7 +2788,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_grand_summary_row {
+#mnjgsdcggh .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2964,7 +2797,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mxfxtfaatb .gt_first_grand_summary_row {
+#mnjgsdcggh .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2973,7 +2806,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_last_grand_summary_row_top {
+#mnjgsdcggh .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2982,10 +2815,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_striped {
+#mnjgsdcggh .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#mxfxtfaatb .gt_table_body {
+#mnjgsdcggh .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2993,7 +2826,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_footnotes {
+#mnjgsdcggh .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -3006,7 +2839,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_footnote {
+#mnjgsdcggh .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -3014,7 +2847,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mxfxtfaatb .gt_sourcenotes {
+#mnjgsdcggh .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -3027,64 +2860,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#mxfxtfaatb .gt_sourcenote {
+#mnjgsdcggh .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mxfxtfaatb .gt_left {
+#mnjgsdcggh .gt_left {
 text-align: left;
 }
-#mxfxtfaatb .gt_center {
+#mnjgsdcggh .gt_center {
 text-align: center;
 }
-#mxfxtfaatb .gt_right {
+#mnjgsdcggh .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#mxfxtfaatb .gt_font_normal {
+#mnjgsdcggh .gt_font_normal {
 font-weight: normal;
 }
-#mxfxtfaatb .gt_font_bold {
+#mnjgsdcggh .gt_font_bold {
 font-weight: bold;
 }
-#mxfxtfaatb .gt_font_italic {
+#mnjgsdcggh .gt_font_italic {
 font-style: italic;
 }
-#mxfxtfaatb .gt_super {
+#mnjgsdcggh .gt_super {
 font-size: 65%;
 }
-#mxfxtfaatb .gt_footnote_marks {
+#mnjgsdcggh .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#mxfxtfaatb .gt_asterisk {
+#mnjgsdcggh .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#mxfxtfaatb .gt_indent_1 {
+#mnjgsdcggh .gt_indent_1 {
 text-indent: 5px;
 }
-#mxfxtfaatb .gt_indent_2 {
+#mnjgsdcggh .gt_indent_2 {
 text-indent: 10px;
 }
-#mxfxtfaatb .gt_indent_3 {
+#mnjgsdcggh .gt_indent_3 {
 text-indent: 15px;
 }
-#mxfxtfaatb .gt_indent_4 {
+#mnjgsdcggh .gt_indent_4 {
 text-indent: 20px;
 }
-#mxfxtfaatb .gt_indent_5 {
+#mnjgsdcggh .gt_indent_5 {
 text-indent: 25px;
 }
-#mxfxtfaatb .katex-display {
+#mnjgsdcggh .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#mxfxtfaatb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mnjgsdcggh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>

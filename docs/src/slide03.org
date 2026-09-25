@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-09-25 15:12:04 mura>
+# Time-stamp: <2026-09-25 16:46:06 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -21,6 +21,7 @@
 
 * Preamble                                                           :ignore:
 :PROPERTIES:
+:ID:       f4be5766-8797-4c98-a476-1ca33a3b311f
 :END:
 #+begin_src R
   ### 第3講 資料
@@ -242,7 +243,7 @@
    \(\boldsymbol{\beta}\)
    で微分して解の条件を求めなさい
 
-** 解答例
+** COMMENT 解答例
 - 残差平方和を展開しておく
    \begin{align}
      S(\boldsymbol{\beta})
@@ -444,7 +445,7 @@
         (1,\boldsymbol{\bar{x}}^{\mathsf{T}})\boldsymbol{\hat{\beta}}
       \end{equation}
 
-** 解答例
+** COMMENT 解答例
 - 残差の表現を整理する
    \begin{align}
      \boldsymbol{\hat{\epsilon}}
@@ -563,7 +564,7 @@
         S_y=S+S_r
       \end{equation}
 
-** 解答例
+** COMMENT 解答例
 - 残差の表現を整理する
    \begin{align}
      \boldsymbol{\hat{\epsilon}}
@@ -663,6 +664,7 @@
 *** データの概要
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       9cd21490-759c-4274-8049-d731895e0ae4
 :END:
 
 #+begin_src R
@@ -734,6 +736,7 @@
 *** 関連するデータの散布図
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       32454558-503b-40db-b726-77e67163975a
 :END:
 
 #+begin_src R
@@ -747,6 +750,7 @@
 *** モデル1の推定結果
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       3056e409-94bb-470b-bb99-2c316fc9cf02
 :END:
 
 #+begin_src R
@@ -761,6 +765,7 @@
 *** モデル2の推定結果
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       e08150a8-4580-40a7-b350-92167e97da3d
 :END:
 
 #+begin_src R
@@ -775,6 +780,7 @@
 *** モデル3の推定結果
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       dde842de-2a54-41db-b83c-05c350ce5cfa
 :END:
 
 #+begin_src R
@@ -800,6 +806,7 @@
 *** 観測値とあてはめ値の比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       4a12a94e-baca-4819-83bc-ad88300cafc3
 :END:
 
 #+begin_src R
@@ -822,6 +829,7 @@
 *** 決定係数によるモデルの比較
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
+:ID:       d2369e3b-2bf4-436c-87c6-93c1e550264a
 :END:
 
 #+begin_src R

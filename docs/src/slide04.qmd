@@ -592,29 +592,6 @@ tw_gt |>
         \end{equation}
 
 
-## ヒント
-
--   いずれも $H$ の定義にもとづいて計算すればよい
-    
-    \begin{align}
-      H^{\mathsf{T}}
-      &=
-        (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})^{\mathsf{T}}\\
-      H^{2}
-      &=
-        (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})
-        (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})\\
-      (I-H)^{2}
-      &=
-        I-2H+H^{2}\\
-      HX
-      &=
-        (X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}})X\\
-      X^{\mathsf{T}}H
-      &=(HX)^{\mathsf{T}}
-    \end{align}
-
-
 # 推定量の統計的性質
 
 
@@ -661,46 +638,6 @@ tw_gt |>
     \end{align}
 
 
-## 推定量の分布
-
--   **誤差の仮定** : 独立，平均0 分散 $\sigma^{2}$ の正規分布
--   推定量は以下の多変量正規分布に従う
-    
-    \begin{align}
-      \mathbb{E}[\boldsymbol{\hat{\beta}}]
-      &=\mathbb{E}[\boldsymbol{\beta}
-        +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}]
-        =\boldsymbol{\beta}\\
-      \mathrm{Cov}(\boldsymbol{\hat{\beta}})
-      &=\mathbb{E}[
-        (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})
-         (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})^{\mathsf{T}}]
-        =\sigma^{2}(X^{\mathsf{T}}X)^{-1}
-    \end{align}
-    
-    \begin{equation}
-      \boldsymbol{\hat{\beta}}
-      \sim
-      \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
-    \end{equation}
-
-
-## 分散の推定
-
--   通常 $\sigma^{2}$ は未知，必要な場合には不偏分散で代用
-    
-    \begin{equation}
-      \hat{\sigma^{2}}
-      =\frac{S}{n{-}p{-}1}
-      =\frac{1}{n{-}p{-}1}\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}
-      =\frac{1}{n{-}p{-}1}\sum_{i=1}^n\hat{\epsilon}_i^2
-    \end{equation}
--   これらの性質を利用してモデルの評価を行う
-
-
-# 実習 {background-color="#fef4f4"}
-
-
 # 演習 {background-color="#fef4f4"}
 
 
@@ -710,49 +647,6 @@ tw_gt |>
     最小二乗推定量 $\boldsymbol{\hat{\beta}}$ について以下を示しなさい
     -   平均は $\boldsymbol{\beta}$ (真の母数)となること
     -   共分散行列は $\sigma^{2}(X^{\mathsf{T}}X)^{-1}$ となること
-
-
-## 解答例
-
--   定義にもとづいて計算する
-    
-    \begin{align}
-      \mathbb{E}[\boldsymbol{\hat{\beta}}]
-      &=
-        \mathbb{E}[\boldsymbol{\beta}
-        +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}]\\
-      &=
-        \boldsymbol{\beta}
-        +(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\mathbb{E}[\boldsymbol{\epsilon}]\\
-      &=
-        \boldsymbol{\beta}
-    \end{align}
-
----
-
--   定義にもとづいて計算する
-    
-    \begin{align}
-      \mathrm{Cov}(\boldsymbol{\hat{\beta}})
-      &=
-        \mathbb{E}[
-        (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})
-        (\boldsymbol{\hat{\beta}}-\boldsymbol{\beta})^{\mathsf{T}}]\\
-      &=
-        \mathbb{E}[(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{\epsilon}
-        \boldsymbol{\epsilon}^{\mathsf{T}}X(X^{\mathsf{T}}X)^{-1}]\\
-      &=
-        (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-        \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
-        X(X^{\mathsf{T}}X)^{-1}\\
-      &=
-        (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}
-        (\sigma^{2}I)
-        X(X^{\mathsf{T}}X)^{-1}\\
-      &=
-        \sigma^{2}
-        (X^{\mathsf{T}}X)^{-1}
-    \end{align}
 
 
 # 誤差の評価
@@ -824,9 +718,6 @@ tw_gt |>
     -   $\hat{\beta}_j$ の精度の評価指標
 
 
-# 実習 {background-color="#fef4f4"}
-
-
 # 演習 {background-color="#fef4f4"}
 
 
@@ -844,117 +735,6 @@ tw_gt |>
         \end{equation}
     -   回帰のばらつき $S_{r}$ をハット行列 $H$ と
         目的変数 $\boldsymbol{y}$ で表せ
-
-
-## 解答例
-
--   ハット行列 $H$ を用いた表現を利用する
-    
-    \begin{align}
-      \boldsymbol{\hat{\epsilon}}
-      &=
-        (I_{n}-H)\boldsymbol{\epsilon}\\
-      \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
-      &=
-        \mathbb{E}[\boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}]\\
-      &=
-        \mathbb{E}[\mathrm{tr}
-        (\boldsymbol{\hat{\epsilon}}
-        \boldsymbol{\hat{\epsilon}}^{\mathsf{T}})]\\
-      &=
-        \mathbb{E}[\mathrm{tr}
-        (I_{n}-H)\boldsymbol{\epsilon}
-        \boldsymbol{\epsilon}^{\mathsf{T}}(I_{n}-H)]\\
-      &=
-        \mathrm{tr}(I_{n}-H)
-        \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]
-        (I_{n}-H)\\
-      &=
-        \mathrm{tr}
-        (I_{n}-H)(\sigma^{2}I_{n})(I_{n}-H)\\
-      &=
-        \sigma^{2}\mathrm{tr}(I_{n}-H)
-    \end{align}
-    
-    -   $I_{n}$ は $n\times n$ 単位行列
-
----
-
--   さらに以下が成立する
-    
-    \begin{align}
-      \mathrm{tr} H
-      &=
-        \mathrm{tr} X(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\\
-      &=
-        \mathrm{tr} (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}X\\
-      &=
-        \mathrm{tr} I_{p{+}1}\\
-      &=p+1
-    \end{align}
-    
-    -   行列のサイズに注意
-
----
-
--   $H$ の性質より以下が成り立つ
-    
-    \begin{align}
-      H\boldsymbol{1} &=\boldsymbol{1}\\
-      \boldsymbol{\hat{y}} &= H\boldsymbol{y}
-    \end{align}
--   行列 $M$ を以下で定める
-    
-    \begin{equation}
-      M = \frac{1}{n}\boldsymbol{1}\boldsymbol{1}^{\mathsf{T}}
-    \end{equation}
-    
-    このとき以下が成り立つ
-    
-    \begin{align}
-      &M^{2} = M\\
-      &HM = MH = M
-    \end{align}
-
----
-
--   行列 $M$ を用いると目的変数の平均は以下で表される
-    
-    \begin{equation}
-      \boldsymbol{\bar{y}} = M\boldsymbol{y}
-    \end{equation}
--   $S_{r}$ の定義から
-    
-    \begin{align}
-      S_{r}
-      &=
-        (\boldsymbol{\hat{y}}-\boldsymbol{\bar{y}})^{\mathsf{T}}
-        (\boldsymbol{\hat{y}}-\boldsymbol{\bar{y}}) \\
-      &=
-        ((H-M)\boldsymbol{y})^{\mathsf{T}}
-        ((H-M)\boldsymbol{y}) \\
-      &=
-        \boldsymbol{y}^{\mathsf{T}}(H-M)^{\mathsf{T}}
-        (H-M)\boldsymbol{y} \\
-      &=
-        \boldsymbol{y}^{\mathsf{T}}
-        (H-M)\boldsymbol{y} \\
-      &=
-        \mathrm{tr} (H-M)\boldsymbol{y}\boldsymbol{y}^{\mathsf{T}}
-    \end{align}
-
----
-
--   後に $\beta_{1}=\dotsb=\beta_{p}=0$ ならば
-    
-    \begin{align}
-      \mathbb{E}[\boldsymbol{y}\boldsymbol{y}^{\mathsf{T}}]
-      &= \beta_{0}^{2} \boldsymbol{1}\boldsymbol{1}^{\mathsf{T}}
-        + \mathbb{E}[\boldsymbol{\epsilon}\boldsymbol{\epsilon}^{\mathsf{T}}]\\
-      &= n \beta_{0}^{2} M + \sigma^{2}I_{n}
-    \end{align}
-    
-    となることを利用して，モデルの評価のための統計量を導く
 
 
 # 係数の評価
@@ -1001,9 +781,6 @@ $t$統計量 ($t$-statistic)
       \quad\text{(両側検定)}
     \end{equation}
 -   **帰無仮説 $H_{0}$ が正しければ $p$値は小さくならない**
-
-
-# 実習 {background-color="#fef4f4"}
 
 
 # モデルの評価
@@ -1081,42 +858,6 @@ $F$統計量 ($F$-statistic)
       \quad\text{(片側検定)}
     \end{equation}
 -   **帰無仮説 $H_{0}$ が正しければ $p$値は小さくならない**
-
-
-# 実習 {background-color="#fef4f4"}
-
-
-# 補足
-
-
-## R : 診断プロット
-
--   回帰モデルのあてはまりを視覚的に評価
-    
-    -   **Residuals vs Fitted**: 
-        あてはめ値(予測値)と残差の関係
-    -   **Normal Q-Q**:
-        残差の正規性の確認
-    -   **Scale-Location**:
-        あてはめ値と正規化した残差の関係
-    -   **Residuals vs Leverage**:
-        正規化した残差とテコ比の関係
-    
-    などが用意されている
-    
-    ```{r}
-    #| echo: true
-    #| eval: false
-    #' 関数 stats::lm() による推定結果の診断プロット
-    推定結果 <- lm(目的変数 ~ 説明変数1 + 説明変数2, data = データフレーム)
-    #' 関数 ggfortify::autoplot() を利用する
-    #' 必要であれば 'install.packages("ggfortify")' を実行
-    library(ggfortify)
-    autoplot(推定結果)
-    #' 診断プロットは1から6まで用意されており 1,2,3,5 がまとめて表示される
-    #' 個別に表示する場合は 'autoplot(推定結果, which = 1)' のように指定する
-    #' 詳細は '?ggfortify::autoplot.lm' を参照
-    ```
 
 
 # 解析の事例
