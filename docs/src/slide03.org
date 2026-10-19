@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-09-25 16:46:06 mura>
+# Time-stamp: <2026-10-19 12:55:21 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -27,11 +27,13 @@
   ### 第3講 資料
 #+end_src
 #+include: "preamble.R" src R 
+#+begin_content-visible :when-format "pdf"
 #+begin_export latex
 \figfitboth
 \setlength{\figmaxheight}{0.42\textheight}
 \setlength{\figmaxwidth}{0.84\textwidth}
 #+end_export
+#+end_content-visible
 
 
 * 講義の内容
@@ -68,17 +70,17 @@
 
 ** 線形回帰
 - 任意の \(f\) では一般的すぎて分析に不向き
-- \(f\) として *1次関数* を考える
+- \(f\) として *1次関数* を考える \\
    ある定数 \(\beta_0,\beta_1,\dots,\beta_p\) を用いた式 :
    \begin{equation}
      f(x_1,\dots,x_p)=\beta_0+\beta_1x_1+\cdots+\beta_px_p
    \end{equation}
-   - 1次関数の場合 : *線形回帰* (linear regression)
-   - 一般の場合 : 非線形回帰 (nonlinear regression)
+  - 1次関数の場合 : *線形回帰* (linear regression)
+  - 一般の場合 : 非線形回帰 (nonlinear regression)
 - 非線形関係は新たな説明変数の導入で対応可能
-   - 適切な多項式 : \(x_j^2, x_jx_k, x_jx_kx_l,\dotsc\)
-   - その他の非線形変換 : \(\log x_j, x_j^\alpha,\dotsc\)
-   - 全ての非線形関係ではないことに注意
+  - 適切な多項式 : \(x_j^2, x_jx_k, x_jx_kx_l,\dotsc\)
+  - その他の非線形変換 : \(\log x_j, x_j^\alpha,\dotsc\)
+  - 全ての非線形関係ではないことに注意
 
 ** 回帰係数
 - 線形回帰式
@@ -86,7 +88,7 @@
      y=\beta_0+\beta_1x_1+\cdots+\beta_px_p
    \end{equation}
    - \(\beta_0,\beta_1,\dots,\beta_p\) : *回帰係数* (regression coefficients)
-   - \(\beta_0\) : *定数項 / 切片* (constant term / intersection)
+   - \(\beta_0\) : *定数項 / 切片* (constant term / intercept)
 - 線形回帰分析 (linear regression analysis)
    - 未知の回帰係数をデータから決定する分析方法
    - 決定された回帰係数の統計的な性質を診断
@@ -230,7 +232,7 @@
    \end{equation}
    ただし \(x_{i0}=1\; (i=1,\dotsc,n)\)
 
-
+   
 * 演習
 :PROPERTIES:
 :QUARTO_ATTR: {background-color="#fef4f4"}
@@ -324,10 +326,10 @@
 
 ** 正規方程式の解
 - 正規方程式の基本的な性質
+   - 正規方程式の解は最小二乗推定量であるための必要十分条件
    - 正規方程式は必ず解をもつ (一意に決まらない場合もある)
-   - 正規方程式の解は最小二乗推定量であるための必要条件
 - 解の一意性の条件
-   - Gram 行列 \(X^{\mathsf{T}}X\) が *正則*
+   - Gram 行列 \(X^{\mathsf{T}}X\) が *正則* (逆行列をもつ)
    - \(X\) の列ベクトルが独立 (後述)
 
 #+begin_callout-important :icon false :title "正規方程式の解"
@@ -363,7 +365,7 @@
    - 似た性質をもつ説明変数の重複は避ける
     
 ** 推定の幾何学的解釈
-- *あてはめ値 / 予測値* (fitted values / predicted values)
+- *あてはめ値* (fitted values)
    \begin{equation}
      \boldsymbol{\hat{y}}
      =
@@ -375,11 +377,21 @@
 
 #+caption: \(n=3\) , \(p+1=2\) の場合の最小二乗法による推定
 #+name: fig-projection
-#+attr_quarto: :width 75% :fig-align "center"
+#+attr_quarto: :width 65% :fig-align "center"
 [[file:figs/projection.png]]
 
 -----
 
+#+begin_columns
+#+attr_quarto: :width "50%"
+#+begin_column
+#+caption: \(n=3\) , \(p+1=2\) の場合
+#+attr_quarto: :width 100% :fig-align "center"
+[[file:figs/projection.png]]
+#+end_column
+
+#+attr_quarto: :width "50%"
+#+begin_column
 - 最小二乗推定量 \(\boldsymbol{\hat{y}}\) の幾何学的性質
    - \(L[X]\) : \(X\) の列ベクトルが張る \(\mathbb{R}^n\) の線形部分空間
    - \(X\) の階数が \(p{+}1\) ならば \(L[X]\) の次元は \(p{+}1\) (解の一意性)
@@ -391,6 +403,8 @@
       \begin{equation}
         \boldsymbol{\hat{\epsilon}}\cdot\boldsymbol{\hat{y}}=0
       \end{equation}
+#+end_column
+#+end_columns
 
 ** 線形回帰式と標本平均
 - \(\boldsymbol{x}_i=(x_{i1},\dotsc,x_{ip})^{\mathsf{T}}\):
@@ -489,7 +503,7 @@
   
 * 残差の分解
 ** 最小二乗推定量の残差
-- 観測値と推定値 \(\boldsymbol{\hat{\beta}}\) による予測値の差
+- 観測値と推定値 \(\boldsymbol{\hat{\beta}}\) によるあてはめ値の差
    \begin{equation}
      \hat{\epsilon}_i=
      y_i-(\hat{\beta}_0+\hat{\beta}_1 x_{i1}+\dotsb+\hat{\beta}_px_{ip})
@@ -497,7 +511,7 @@
    \end{equation}
    - 誤差項 \(\epsilon_1,\dotsc,\epsilon_n\) の推定値
    - 全てができるだけ小さいほど良い
-   - 予測値とは独立に偏りがないほど良い
+   - あてはめ値とは独立に偏りがないほど良い
 - 残差ベクトル
    \begin{equation}
      \boldsymbol{\hat{\epsilon}}
@@ -511,7 +525,7 @@
 
 ** 平方和の分解
 - \(\bar{\boldsymbol{y}}=\bar{y}\boldsymbol{1}=(\bar{y},\bar{y},\dotsc,\bar{y})^{\mathsf{T}}\) :
-   標本平均のベクトル 
+   標本平均のベクトル (データ数=\(n\)次元)
 - いろいろなばらつき
    - \(S_y=(\boldsymbol{y}-\bar{\boldsymbol{y}})^{\mathsf{T}}
       (\boldsymbol{y}-\bar{\boldsymbol{y}})\) :
@@ -813,16 +827,16 @@
   #| fig-width: 6
   #' 観測値とあてはめ値の比較
   tw_subset |>
-    mutate(モデル1 = fitted(tw_lm1),    # モデルごとに予測値をデータフレームに追加
+    mutate(モデル1 = fitted(tw_lm1),    # モデルごとにあてはめ値をデータフレームに追加
            モデル2 = fitted(tw_lm2),
            モデル3 = fitted(tw_lm3),
            モデル4 = fitted(tw_lm4),
            モデル5 = fitted(tw_lm5)) |>
-    pivot_longer(starts_with("モデル"), # モデルをラベルとして予測値をまとめる
+    pivot_longer(starts_with("モデル"), # モデルをラベルとしてあてはめ値をまとめる
                  names_to = "model", values_to = "fitted") |>
-    ggplot(aes(x = 気温, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
+    ggplot(aes(x = 気温, y = fitted)) + # 気温の実測値をx軸，あてはめ値をy軸で表示
     geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
-    geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
+    geom_point(aes(colour = model, shape = model)) + # あてはめ値をモデル別に表示
     labs(y = "あてはめ値") 
 #+end_src
       

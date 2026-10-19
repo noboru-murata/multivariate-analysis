@@ -2,14 +2,34 @@
 title: 数学的準備
 subtitle: 確率と統計の基礎事項
 author: 村田 昇
+# lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
+# 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
+#   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / burgundy / dracula)．pdf と html は配色によらない．
+#   dracula では表紙の title-bg を外し，コードも dracula 配色にする (ox-quarto-ext-palette-rules)．
+# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる．
 license: "CC BY-NC"
+csl: _quarto/csl/apa.csl            # 文献の書式 (本文は (著者, 年))
+link-citations: true
+cite-aside-max: 2                   # 引用が 3 件以上のスライドでは書誌を脚注欄に出さない (lib/cite-aside.lua)
 format:
   revealjs: 
-    theme: [default, _quarto/scss/oerreveal-lecture.scss]
+    theme:
+      - default
+      - _quarto/scss/oerreveal.scss          # structure
+      - _quarto/scss/indigo-palette.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
+      - _quarto/scss/lecture-deck.scss       # 修飾 (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
+      - _quarto/scss/iframe.scss
+      - _quarto/scss/title-bg.scss
+      - _quarto/scss/text-size.scss
     slide-level: 3
     max-scale: 2.0 
     embed-resources: true
-    include-in-header: _quarto/lib/mathjax-fix.html
+    include-in-header:
+      - _quarto/lib/mathjax-fix.html
+      - _quarto/lib/pixel-snap.html     # スライドの位置を整数ピクセルに (Safari のぼやけ対策)
+      - _quarto/lib/slide-number-arrows.html  # 頁番号を矢印の箱の中へ (Safari でも矢印の真ん中に)
     center: true
     controls: true
     controls-layout: bottom-right
@@ -17,6 +37,7 @@ format:
     controls-tutorial: true
     navigation-mode: vertical
     auto-stretch: false
+    slide-number: c/t                  # 右下に「頁/総頁」(talk と同じ)
   pdf:
     keep-tex: true
     echo: false
@@ -49,8 +70,17 @@ execute:
   message: false
   fig-height: 5
   fig-width: 5
-filters:
+filters:                          # 節扉は見出しをそのまま出す (section-toc は使わない)
   - _quarto/lib/no-hrule.lua
+  - _quarto/lib/iframe.lua
+  - _quarto/lib/cite-aside.lua    # 各スライドで引用した文献の書誌を脚注欄に出す (revealjs のみ)
+  - _quarto/lib/ack.lua           # 謝辞の頁の人の一覧 (::: people) を写真・名前・所属の組に
+  - _quarto/lib/text-size.lua   # .text-NN / .math-NN を PDF でも効かせる
+  - _quarto/lib/slide-notes.lua # 発表者ノートを pdf / html では枠で囲む (slide-notes)
+  - _quarto/lib/title-qr.lua    # 表紙の右下の QR コード (revealjs のみ．org の #+QUARTO_QR)
+  - _quarto/lib/pin.lua           # .pin-top / .pin-bottom: absolute の要素をキャンバスの端に固定 (title-qr の後に)
+  - _quarto/lib/text-center.lua   # #+begin_center (::: {.text-center}) を html / pdf / typst で中央寄せに
+slide-notes-default: box          # 発表者ノート (::: notes) を pdf / html でどう出すか: box / margin / hide / plain (lib/slide-notes.lua．org では #+QUARTO_OPTIONS: slide-notes:margin)
 
 ---
 
@@ -193,10 +223,9 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 
 ## 正規分布 (normal/Gaussian distribution)
 
-:::: {.columns}
-
-::: {.column width="45%" .fig-tall}
-
+::: {.columns}
+::: {.column width="45%"}
+::: {.fig-tall}
 ```{r}
 #| fig-cap: "正規分布 (平均0,分散)"
 ggplot() + 
@@ -205,26 +234,25 @@ ggplot() +
   xlim(-4, 4) + ylim(0, 0.4) +
   labs(x = "x", y = "確率密度") 
 ```
-
+:::
 :::
 
 ::: {.column width="55%"}
-
 -   標本空間 : $(-\infty,\infty)$
 -   母数 : 平均 $\mu$, 分散 $\sigma^{2}$
 -   密度関数 :
     
+    ::: {.math-85}
     \begin{equation}
       p(x)
       =
       \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^{2}}{2\sigma^{2}}}
     \end{equation}
+    :::
 -   備考 : $\mu=0,\sigma=1$ のとき
     **標準正規分布** と呼ぶ．
-
 :::
-
-::::
+:::
 
 
 ## 多次元正規分布
@@ -253,10 +281,9 @@ ggplot() +
 
 ## $\chi^{2}$分布 ($\chi^{2}$-distribution)
 
-:::: {.columns}
-
-::: {.column width="45%" .fig-tall}
-
+::: {.columns}
+::: {.column width="45%"}
+::: {.fig-tall}
 ```{r}
 #| fig-cap: "カイ2乗分布 (自由度3)"
 ggplot() + 
@@ -265,26 +292,25 @@ ggplot() +
   xlim(-1, 10) + 
   labs(x = "x", y = "確率密度") 
 ```
-
+:::
 :::
 
 ::: {.column width="55%"}
-
 -   標本空間 : $[0,\infty)$
 -   母数 : 自由度 $\nu$
 -   密度関数 :
     
+    ::: {.math-85}
     \begin{align}
       p(x)
       &=
         \frac{1}{2^{\nu/2}\Gamma(\frac{\nu}{2})}x^{\nu/2-1}e^{-x/2}\\
       &\quad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
     \end{align}
+    :::
 -   備考 : 標準正規分布に従う独立な確率変数の2乗和の分布
-
 :::
-
-::::
+:::
 
 
 ## $\chi^{2}$分布の特徴付け
@@ -308,10 +334,9 @@ ggplot() +
 
 ## $t$分布 (Student's $t$-distribution)
 
-:::: {.columns}
-
-::: {.column width="45%" .fig-tall}
-
+::: {.columns}
+::: {.column width="45%"}
+::: {.fig-tall}
 ```{r}
 #| fig-cap: "t分布 (自由度3)"
 ggplot() + 
@@ -320,28 +345,27 @@ ggplot() +
   xlim(-4, 4) + ylim(0, 0.4) +
   labs(x = "x", y = "確率密度") 
 ```
-
+:::
 :::
 
 ::: {.column width="55%"}
-
 -   標本空間 : $(-\infty,\infty)$
 -   母数 : 自由度 $\nu$
 -   密度関数 :
     
+    ::: {.math-80}
     \begin{equation}
       p(x)=
       \frac{\Gamma\left(\frac{\nu+1}{2}\right)}
       {\sqrt{\nu\pi}\Gamma\left(\frac{\nu}{2}\right)}
       \left(1+\frac{x^{2}}{\nu}\right)^{-\frac{1}{2}(\nu+1)}
     \end{equation}
+    :::
 -   備考 : 標準正規分布と
     $\chi^{2}$分布に従う独立な
     確率変数の比の分布
-
 :::
-
-::::
+:::
 
 
 ## $t$分布の特徴付け
@@ -366,10 +390,9 @@ ggplot() +
 
 ## $F$分布 ($F$-distribution)
 
-:::: {.columns}
-
-::: {.column width="45%" .fig-tall}
-
+::: {.columns}
+::: {.column width="45%"}
+::: {.fig-tall}
 ```{r}
 #| fig-cap: "F分布 (自由度3,5)"
 ggplot() + 
@@ -378,15 +401,15 @@ ggplot() +
   xlim(-1, 4) + ylim(0, 0.8) +
   labs(x = "x", y = "確率密度") 
 ```
-
+:::
 :::
 
 ::: {.column width="55%"}
-
 -   標本空間 : $[0,\infty)$
 -   母数 : 自由度 $\nu_{1},\nu_{2}$
 -   密度関数 :
     
+    ::: {.math-75}
     \begin{align}
       p(x)
       &=
@@ -394,11 +417,10 @@ ggplot() +
       \frac{x^{\nu_{1}/2-1}}{(1+\nu_{1}x/\nu_{2})^{(\nu_{1}+\nu_{2})/2}}\\
       &\quad B(x,y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1} dt
     \end{align}
+    :::
 -   備考 : $\chi^{2}$分布に従う独立な確率変数の比の分布
-
 :::
-
-::::
+:::
 
 
 ## $F$分布の特徴付け
@@ -511,6 +533,36 @@ $\{X_n\}$ は独立で，
     $X$が
     0付近の値をとる確率と
     1付近の値をとる確率の比を求めよ
+
+
+## 解答例
+
+-   2つの標準正規分布の積を考えて，
+    重積分を極座標に変換すればよい
+    
+    \begin{align}
+      &\int_{-\infty}^{\infty}
+        \int_{-\infty}^{\infty}
+        e^{-x^{2}/2}e^{-y^{2}/2}dxdy\\
+      &=
+        \int_{0}^{2\pi}
+        \int_{0}^{\infty}
+        e^{-r^{2}/2}rdrd\theta
+        =
+        2\pi\int_{0}^{\infty}e^{-z}dz
+        =2\pi
+    \end{align}
+
+---
+
+-   微小な区間 $\Delta$ を考えて，
+    密度を用いた近似計算を利用すればよい
+    
+    \begin{align}
+      &\frac{P(X\text{が0付近})}{P(X\text{が1付近})}\\
+      &\simeq\frac{p(0)|\Delta|}{p(1)|\Delta|}
+        =\frac{\exp(0)}{\exp(-1/2)}=\sqrt{e}\simeq 1.65
+    \end{align}
 
 
 # 統計
@@ -839,6 +891,54 @@ $\Omega=A_1+A_2+\dotsb+A_n$ のとき
     -   A先生が機嫌が悪いときに球団Hが負けた確率は？
 
 
+## 解答例
+
+-   まず事象を定義する
+    
+    \begin{align}
+      A&:\text{先生の機嫌が良い}&
+      && A^{c}&:\text{先生の機嫌が悪い}\\
+      H&:\text{球団が勝つ}&
+      && H^{c}&:\text{球団が負ける}
+    \end{align}
+-   条件を書き下す
+    
+    \begin{align}
+      P(A|H)&=0.9&
+      && P(A^{c}|H)&=0.1\\
+      P(A^{c}|H^{c})&=0.7&
+      && P(A|H^{c})&=0.3\\
+      P(H)&=0.6&
+      && P(H^{c})&=0.4
+    \end{align}
+
+---
+
+-   A先生が機嫌が良いときに球団Hが勝った確率は？
+    
+    \begin{align}
+      P(H|A)
+      &=\frac{P(A,H)}{P(A)}\\
+      &=\frac{P(A,H)}{P(A,H)+P(A,H^{c})}\\
+      &=\frac{P(A|H)P(H)}{P(A|H)P(H)+P(A|H^{c})P(H^{c})}\\
+      &=\frac{0.9\times 0.6}{0.9\times 0.6+0.3\times 0.4}\\
+      &=\frac{9}{11}\simeq 0.818
+    \end{align}
+
+---
+
+-   A先生が機嫌が悪いときに球団Hが負けた確率は？
+    
+    \begin{align}
+      P(H^{c}|A^{c})
+      &=\frac{P(A^{c},H^{c})}{P(A^{c})}\\
+      &=\frac{P(A^{c},H^{c})}{P(A^{c},H)+P(A^{c},H^{c})}\\
+      &=\frac{P(A^{c}|H^{c})P(H^{c})}{P(A^{c}|H)P(H)+P(A^{c}|H^{c})P(H^{c})}\\
+      &=\frac{0.7\times 0.4}{0.1\times 0.6+0.7\times 0.4}\\
+      &=\frac{14}{17}\simeq 0.824
+    \end{align}
+
+
 # 検定の考え方
 
 
@@ -881,12 +981,14 @@ $\Omega=A_1+A_2+\dotsb+A_n$ のとき
 
 -   以下の式で計算される
     
-    \begin{multline}
-      P(\text{表の回数}=k)\\
-      =
-      \left(20\atop k\right)
-      0.5^{k} (1-0.5)^{20-k}
-    \end{multline}
+    \begin{equation}
+      \begin{aligned}
+        &P(\text{表の回数}=k)\\
+        &\quad=
+        \left(20\atop k\right)
+        0.5^{k} (1-0.5)^{20-k}
+      \end{aligned}
+    \end{equation}
 
 :::
 
@@ -921,12 +1023,14 @@ plot(k,p,type="h",
 
 -   以下の式で計算される
     
-    \begin{multline}
-      P(\text{表の回数}=k)\\
-      =
-      \left(20\atop k\right)
-      0.6^{k} (1-0.6)^{20-k}
-    \end{multline}
+    \begin{equation}
+      \begin{aligned}
+        &P(\text{表の回数}=k)\\
+        &\quad=
+          \left(20\atop k\right)
+          0.6^{k} (1-0.6)^{20-k}
+      \end{aligned}
+    \end{equation}
 
 :::
 

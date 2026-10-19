@@ -1,7 +1,5 @@
 ### 第3講 資料
 
-### 第3講 資料
-
 #' 東京の気候データを用いた例
 #' データの読み込み
 tw_subset <- read_csv("data/tokyo_weather.csv") |>
@@ -81,16 +79,16 @@ s3d$plane3d(
 #| fig-width: 6
 #' 観測値とあてはめ値の比較
 tw_subset |>
-  mutate(モデル1 = fitted(tw_lm1),    # モデルごとに予測値をデータフレームに追加
+  mutate(モデル1 = fitted(tw_lm1),    # モデルごとにあてはめ値をデータフレームに追加
          モデル2 = fitted(tw_lm2),
          モデル3 = fitted(tw_lm3),
          モデル4 = fitted(tw_lm4),
          モデル5 = fitted(tw_lm5)) |>
-  pivot_longer(starts_with("モデル"), # モデルをラベルとして予測値をまとめる
+  pivot_longer(starts_with("モデル"), # モデルをラベルとしてあてはめ値をまとめる
                names_to = "model", values_to = "fitted") |>
-  ggplot(aes(x = 気温, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
+  ggplot(aes(x = 気温, y = fitted)) + # 気温の実測値をx軸，あてはめ値をy軸で表示
   geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
-  geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
+  geom_point(aes(colour = model, shape = model)) + # あてはめ値をモデル別に表示
   labs(y = "あてはめ値") 
 
 #' 関数 gtsummary::tbl_regression() を利用して結果をまとめる

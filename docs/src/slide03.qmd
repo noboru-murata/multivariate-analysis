@@ -2,14 +2,35 @@
 title: 回帰分析
 subtitle: 回帰モデルの考え方と推定
 author: 村田 昇
+# lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
+# 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
+#   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / burgundy / dracula)．pdf と html は callout の色だけ配色に合わせる (callout-palette)．
+#   dracula では表紙の title-bg を外し，コードも dracula 配色にする (ox-quarto-ext-palette-rules)．
+# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる．
+callout-palette: indigo             # pdf と html の callout の色 (lib/callout-colors.lua．#+QUARTO_PALETTE に合わせて書き換わる)
 license: "CC BY-NC"
+csl: _quarto/csl/apa-short.csl      # 文献の書式 (本文は (著者, 年)．一覧は 4 名以上を 2 名 + et al. に．解説文は apa.csl)
+link-citations: true
+cite-aside-max: 2                   # 引用が 3 件以上のスライドでは書誌を脚注欄に出さない (lib/cite-aside.lua)
 format:
   revealjs: 
-    theme: [default, _quarto/scss/oerreveal-lecture.scss]
+    theme:
+      - default
+      - _quarto/scss/oerreveal.scss          # structure
+      - _quarto/scss/indigo-palette.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
+      - _quarto/scss/lecture-deck.scss       # 修飾 (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
+      - _quarto/scss/iframe.scss
+      - _quarto/scss/title-bg.scss
+      - _quarto/scss/text-size.scss
     slide-level: 3
     max-scale: 2.0 
     embed-resources: true
-    include-in-header: _quarto/lib/mathjax-fix.html
+    include-in-header:
+      - _quarto/lib/mathjax-fix.html
+      - _quarto/lib/pixel-snap.html     # スライドの位置を整数ピクセルに (Safari のぼやけ対策)
+      - _quarto/lib/slide-number-arrows.html  # 頁番号を矢印の箱の中へ (Safari でも矢印の真ん中に)
     center: true
     controls: true
     controls-layout: bottom-right
@@ -17,13 +38,18 @@ format:
     controls-tutorial: true
     navigation-mode: vertical
     auto-stretch: false
+    slide-number: c/t                  # 右下に「頁/総頁」(talk と同じ)
   pdf:
     keep-tex: true
     echo: false
     pdf-engine: lualatex
+    papersize: a4                   # 用紙 (Quarto の既定は letter．report / handout も a4)．org から: #+QUARTO_PDF_OPTIONS: papersize:letter
     include-in-header: 
       - text: |
           \usepackage{luatexja-preset}
+          % luatexja-fontspec (TeX Live 2026，2026-09 以降) が regexpatch を読み，後で xpatch を読むと \xpatchcmd が二重定義の誤りになる．
+          % regexpatch は xpatch の命令も持つので，xpatch は読んだことにする (amsthm を読む文書で起きた．NOTES.org)
+          \makeatletter\@ifpackageloaded{regexpatch}{\@ifpackageloaded{xpatch}{}{\expandafter\def\csname ver@xpatch.sty\endcsname{2020/03/25 v0.3a (provided by regexpatch)}}}{}\makeatother
           \usepackage{mathtools}
           \mathtoolsset{showonlyrefs,showmanualtags}	    
       - _quarto/tex/fig-scale.tex
@@ -49,8 +75,18 @@ execute:
   message: false
   fig-height: 5
   fig-width: 5
-filters:
+filters:                          # 節扉は見出しをそのまま出す (section-toc は使わない)
   - _quarto/lib/no-hrule.lua
+  - _quarto/lib/iframe.lua
+  - _quarto/lib/cite-aside.lua    # 各スライドで引用した文献の書誌を脚注欄に出す (revealjs のみ)
+  - _quarto/lib/ack.lua           # 謝辞の頁の人の一覧 (::: people) を写真・名前・所属の組に
+  - _quarto/lib/text-size.lua   # .text-NN / .math-NN を PDF でも効かせる
+  - _quarto/lib/slide-notes.lua # 発表者ノートを pdf / html では枠で囲む (slide-notes)
+  - _quarto/lib/title-qr.lua    # 表紙の右下の QR コード (revealjs のみ．org の #+QUARTO_QR)
+  - _quarto/lib/pin.lua           # .pin-top / .pin-bottom: absolute の要素をキャンバスの端に固定 (title-qr の後に)
+  - _quarto/lib/text-center.lua   # #+begin_center (::: {.text-center}) を html / pdf / typst で中央寄せに
+  - _quarto/lib/callout-colors.lua # callout を palette の役割の色に (pdf / html．revealjs は scss)
+slide-notes-default: box          # 発表者ノート (::: notes) を pdf / html でどう出すか: box / margin / hide / plain (lib/slide-notes.lua．org では #+QUARTO_OPTIONS: slide-notes:margin)
 
 ---
 
@@ -107,11 +143,13 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
         ggplot2.discrete.fill = function() scale_fill_material())
 ```
 
+::: {.content-visible when-format="pdf"}
 ```{=latex}
 \figfitboth
 \setlength{\figmaxheight}{0.42\textheight}
 \setlength{\figmaxwidth}{0.84\textwidth}
 ```
+:::
 
 
 # 講義の内容
@@ -154,7 +192,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 線形回帰
 
 -   任意の $f$ では一般的すぎて分析に不向き
--   $f$ として **1次関数** を考える
+-   $f$ として **1次関数** を考える   
     ある定数 $\beta_0,\beta_1,\dots,\beta_p$ を用いた式 :
     
     \begin{equation}
@@ -178,7 +216,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     \end{equation}
     
     -   $\beta_0,\beta_1,\dots,\beta_p$ : **回帰係数** (regression coefficients)
-    -   $\beta_0$ : **定数項 / 切片** (constant term / intersection)
+    -   $\beta_0$ : **定数項 / 切片** (constant term / intercept)
 -   線形回帰分析 (linear regression analysis)
     -   未知の回帰係数をデータから決定する分析方法
     -   決定された回帰係数の統計的な性質を診断
@@ -358,10 +396,10 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 正規方程式の解
 
 -   正規方程式の基本的な性質
+    -   正規方程式の解は最小二乗推定量であるための必要十分条件
     -   正規方程式は必ず解をもつ (一意に決まらない場合もある)
-    -   正規方程式の解は最小二乗推定量であるための必要条件
 -   解の一意性の条件
-    -   Gram 行列 $X^{\mathsf{T}}X$ が **正則**
+    -   Gram 行列 $X^{\mathsf{T}}X$ が **正則** (逆行列をもつ)
     -   $X$ の列ベクトルが独立 (後述)
 
 ::: {.callout-important icon="false"}
@@ -398,7 +436,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 
 ## 推定の幾何学的解釈
 
--   **あてはめ値 / 予測値** (fitted values / predicted values)
+-   **あてはめ値** (fitted values)
     
     \begin{equation}
       \boldsymbol{\hat{y}}
@@ -409,10 +447,16 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
       \dots + \hat{\beta}_{p} X_{p(\text{第p成分})}
     \end{equation}
 
-![$n=3$ , $p+1=2$ の場合の最小二乗法による推定](figs/projection.png){#fig-projection width=75% fig-align="center"}
+![$n=3$ , $p+1=2$ の場合の最小二乗法による推定](figs/projection.png){#fig-projection width=65% fig-align="center"}
 
 ---
 
+::: {.columns}
+::: {.column width="50%"}
+![$n=3$ , $p+1=2$ の場合](figs/projection.png){width=100% fig-align="center"}
+:::
+
+::: {.column width="50%"}
 -   最小二乗推定量 $\boldsymbol{\hat{y}}$ の幾何学的性質
     -   $L[X]$ : $X$ の列ベクトルが張る $\mathbb{R}^n$ の線形部分空間
     -   $X$ の階数が $p{+}1$ ならば $L[X]$ の次元は $p{+}1$ (解の一意性)
@@ -425,6 +469,8 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
         \begin{equation}
           \boldsymbol{\hat{\epsilon}}\cdot\boldsymbol{\hat{y}}=0
         \end{equation}
+:::
+:::
 
 
 ## 線形回帰式と標本平均
@@ -481,7 +527,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 
 ## 最小二乗推定量の残差
 
--   観測値と推定値 $\boldsymbol{\hat{\beta}}$ による予測値の差
+-   観測値と推定値 $\boldsymbol{\hat{\beta}}$ によるあてはめ値の差
     
     \begin{equation}
       \hat{\epsilon}_i=
@@ -491,7 +537,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     
     -   誤差項 $\epsilon_1,\dotsc,\epsilon_n$ の推定値
     -   全てができるだけ小さいほど良い
-    -   予測値とは独立に偏りがないほど良い
+    -   あてはめ値とは独立に偏りがないほど良い
 -   残差ベクトル
     
     \begin{equation}
@@ -504,7 +550,7 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 平方和の分解
 
 -   $\bar{\boldsymbol{y}}=\bar{y}\boldsymbol{1}=(\bar{y},\bar{y},\dotsc,\bar{y})^{\mathsf{T}}$ :
-    標本平均のベクトル
+    標本平均のベクトル (データ数=$n$次元)
 -   いろいろなばらつき
     -   $S_y=(\boldsymbol{y}-\bar{\boldsymbol{y}})^{\mathsf{T}}
               (\boldsymbol{y}-\bar{\boldsymbol{y}})$ :
@@ -666,18 +712,14 @@ tw_tbl |>
 
 ### モデルの検討 {.head-center .fig-tall}
 
-<div class="org-center">
-<ul class="org-ul">
-<li>気温を説明する5種類の線形回帰モデル
-<ul class="org-ul">
-<li>モデル1 : 気温 = F(気圧)</li>
-<li>モデル2 : 気温 = F(日射)</li>
-<li>モデル3 : 気温 = F(気圧, 日射)</li>
-<li>モデル4 : 気温 = F(気圧, 日射, 湿度)</li>
-<li>モデル5 : 気温 = F(気圧, 日射, 雲量)</li>
-</ul></li>
-</ul>
-</div>
+::: {.text-center}
+-   気温を説明する5種類の線形回帰モデル
+    -   モデル1 : 気温 = F(気圧)
+    -   モデル2 : 気温 = F(日射)
+    -   モデル3 : 気温 = F(気圧, 日射)
+    -   モデル4 : 気温 = F(気圧, 日射, 湿度)
+    -   モデル5 : 気温 = F(気圧, 日射, 雲量)
+:::
 
 
 ### 関連するデータの散布図 {.head-center .fig-tall}
@@ -744,16 +786,16 @@ s3d$plane3d(
 #| fig-width: 6
 #' 観測値とあてはめ値の比較
 tw_subset |>
-  mutate(モデル1 = fitted(tw_lm1),    # モデルごとに予測値をデータフレームに追加
+  mutate(モデル1 = fitted(tw_lm1),    # モデルごとにあてはめ値をデータフレームに追加
          モデル2 = fitted(tw_lm2),
          モデル3 = fitted(tw_lm3),
          モデル4 = fitted(tw_lm4),
          モデル5 = fitted(tw_lm5)) |>
-  pivot_longer(starts_with("モデル"), # モデルをラベルとして予測値をまとめる
+  pivot_longer(starts_with("モデル"), # モデルをラベルとしてあてはめ値をまとめる
                names_to = "model", values_to = "fitted") |>
-  ggplot(aes(x = 気温, y = fitted)) + # 気温の実測値をx軸，予測値をy軸で表示
+  ggplot(aes(x = 気温, y = fitted)) + # 気温の実測値をx軸，あてはめ値をy軸で表示
   geom_abline(slope = 1, intercept = 0, colour = "red") + # 基準線
-  geom_point(aes(colour = model, shape = model)) + # 予測値をモデル別に表示
+  geom_point(aes(colour = model, shape = model)) + # あてはめ値をモデル別に表示
   labs(y = "あてはめ値") 
 ```
 

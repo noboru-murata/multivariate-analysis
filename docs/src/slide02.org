@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-09-25 15:11:51 mura>
+# Time-stamp: <2026-10-12 18:12:20 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -130,9 +130,10 @@
 :PROPERTIES:
 :ID:       D09977F8-FF8F-478B-9F64-68F07C2A08FC
 :END:
-:::: {.columns}
-
-::: {.column width="45%" .fig-tall}
+#+begin_columns
+#+attr_quarto: :width "45%"
+#+begin_column
+#+begin_fig-tall
 #+begin_src R
   #| fig-cap: "正規分布 (平均0,分散)"
   ggplot() + 
@@ -141,22 +142,25 @@
     xlim(-4, 4) + ylim(0, 0.4) +
     labs(x = "x", y = "確率密度") 
 #+end_src
-:::
+#+end_fig-tall
+#+end_column
 
-::: {.column width="55%"}
+#+attr_quarto: :width "55%"
+#+begin_column
 - 標本空間 : \((-\infty,\infty)\)
 - 母数 : 平均 \(\mu\), 分散 \(\sigma^{2}\)
 - 密度関数 :
+   #+begin_math-85
    \begin{equation}
      p(x)
      =
      \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^{2}}{2\sigma^{2}}}
    \end{equation}
+   #+end_math-85
 - 備考 : \(\mu=0,\sigma=1\) のとき
    *標準正規分布* と呼ぶ．
-:::
-
-::::
+#+end_column
+#+end_columns
 
 ** 多次元正規分布
 - 標本空間 : \(\mathbb{R}^{p}\)
@@ -244,9 +248,10 @@
 :PROPERTIES:
 :ID:       E98D45AD-5EAE-4CC1-8CC8-97E2764B10DC
 :END:
-:::: {.columns}
-
-::: {.column width="45%" .fig-tall}
+#+begin_columns
+#+attr_quarto: :width "45%"
+#+begin_column
+#+begin_fig-tall
 #+begin_src R
   #| fig-cap: "カイ2乗分布 (自由度3)"
   ggplot() + 
@@ -255,22 +260,25 @@
     xlim(-1, 10) + 
     labs(x = "x", y = "確率密度") 
 #+end_src
-:::
+#+end_fig-tall
+#+end_column
 
-::: {.column width="55%"}
+#+attr_quarto: :width "55%"
+#+begin_column
 - 標本空間 : \([0,\infty)\)
 - 母数 : 自由度 \(\nu\)
 - 密度関数 :
+   #+begin_math-85
    \begin{align}
      p(x)
      &=
        \frac{1}{2^{\nu/2}\Gamma(\frac{\nu}{2})}x^{\nu/2-1}e^{-x/2}\\
      &\quad\Gamma(z)=\int_0^\infty e^{-t}t^{z-1}dt
    \end{align}
+   #+end_math-85
 - 備考 : 標準正規分布に従う独立な確率変数の2乗和の分布
-:::
-
-::::
+#+end_column
+#+end_columns
 
 ** \(\chi^{2}\)分布の特徴付け
 - 性質
@@ -292,9 +300,10 @@
 :PROPERTIES:
 :ID:       69D517E3-E045-4343-8889-ABB6CB2A4530
 :END:
-:::: {.columns}
-
-::: {.column width="45%" .fig-tall}
+#+begin_columns
+#+attr_quarto: :width "45%"
+#+begin_column
+#+begin_fig-tall
 #+begin_src R
   #| fig-cap: "t分布 (自由度3)"
   ggplot() + 
@@ -303,24 +312,27 @@
     xlim(-4, 4) + ylim(0, 0.4) +
     labs(x = "x", y = "確率密度") 
 #+end_src
-:::
+#+end_fig-tall
+#+end_column
 
-::: {.column width="55%"}
+#+attr_quarto: :width "55%"
+#+begin_column
 - 標本空間 : \((-\infty,\infty)\)
 - 母数 : 自由度 \(\nu\)
 - 密度関数 :
-  \begin{equation}
-    p(x)=
-    \frac{\Gamma\left(\frac{\nu+1}{2}\right)}
-    {\sqrt{\nu\pi}\Gamma\left(\frac{\nu}{2}\right)}
-    \left(1+\frac{x^{2}}{\nu}\right)^{-\frac{1}{2}(\nu+1)}
-  \end{equation}
+   #+begin_math-80
+   \begin{equation}
+     p(x)=
+     \frac{\Gamma\left(\frac{\nu+1}{2}\right)}
+     {\sqrt{\nu\pi}\Gamma\left(\frac{\nu}{2}\right)}
+     \left(1+\frac{x^{2}}{\nu}\right)^{-\frac{1}{2}(\nu+1)}
+   \end{equation}
+   #+end_math-80
 - 備考 : 標準正規分布と
   \(\chi^{2}\)分布に従う独立な
   確率変数の比の分布
-:::
-
-::::
+#+end_column
+#+end_columns
 
 ** \(t\)分布の特徴付け
 - 性質
@@ -343,9 +355,10 @@
 :PROPERTIES:
 :ID:       AF6C595B-4B84-4B3B-A1FA-2615E1A0C93F
 :END:
-:::: {.columns}
-
-::: {.column width="45%" .fig-tall}
+#+begin_columns
+#+attr_quarto: :width "45%"
+#+begin_column
+#+begin_fig-tall
 #+begin_src R
   #| fig-cap: "F分布 (自由度3,5)"
   ggplot() + 
@@ -354,12 +367,15 @@
     xlim(-1, 4) + ylim(0, 0.8) +
     labs(x = "x", y = "確率密度") 
 #+end_src
-:::
+#+end_fig-tall
+#+end_column
 
-::: {.column width="55%"}
+#+attr_quarto: :width "55%"
+#+begin_column
 - 標本空間 : \([0,\infty)\)
 - 母数 : 自由度 \(\nu_{1},\nu_{2}\)
 - 密度関数 :
+   #+begin_math-75
    \begin{align}
      p(x)
      &=
@@ -367,10 +383,10 @@
      \frac{x^{\nu_{1}/2-1}}{(1+\nu_{1}x/\nu_{2})^{(\nu_{1}+\nu_{2})/2}}\\
      &\quad B(x,y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1} dt
    \end{align}
+   #+end_math-75
 - 備考 : \(\chi^{2}\)分布に従う独立な確率変数の比の分布
-:::
-
-::::
+#+end_column
+#+end_columns
 
 ** \(F\)分布の特徴付け
 - 性質
@@ -490,7 +506,7 @@
    0付近の値をとる確率と
    1付近の値をとる確率の比を求めよ
 
-** COMMENT 解答例
+** 解答例
 - 2つの標準正規分布の積を考えて，
    重積分を極座標に変換すればよい
    \begin{align}
@@ -776,7 +792,7 @@
    - A先生が機嫌が良いときに球団Hが勝った確率は？
    - A先生が機嫌が悪いときに球団Hが負けた確率は？
 
-** COMMENT 解答例
+** 解答例
 - まず事象を定義する
   \begin{align}
     A&:\text{先生の機嫌が良い}&
@@ -854,12 +870,14 @@
 
 ::: {.column width="50%"}
 - 以下の式で計算される
-   \begin{multline}
-     P(\text{表の回数}=k)\\
-     =
-     \left(20\atop k\right)
-     0.5^{k} (1-0.5)^{20-k}
-   \end{multline}
+   \begin{equation}
+     \begin{aligned}
+       &P(\text{表の回数}=k)\\
+       &\quad=
+       \left(20\atop k\right)
+       0.5^{k} (1-0.5)^{20-k}
+     \end{aligned}
+   \end{equation}
 :::
 
 ::: {.column width="50%" .fig-tall}
@@ -888,12 +906,14 @@
 
 ::: {.column width="50%"}
 - 以下の式で計算される
-   \begin{multline}
-     P(\text{表の回数}=k)\\
-     =
-     \left(20\atop k\right)
-     0.6^{k} (1-0.6)^{20-k}
-   \end{multline}
+   \begin{equation}
+     \begin{aligned}
+       &P(\text{表の回数}=k)\\
+       &\quad=
+         \left(20\atop k\right)
+         0.6^{k} (1-0.6)^{20-k}
+     \end{aligned}
+   \end{equation}
 :::
 
 ::: {.column width="50%" .fig-tall}

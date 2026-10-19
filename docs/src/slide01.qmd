@@ -2,14 +2,34 @@
 title: 講義の概要
 subtitle: 多変量解析の考え方
 author: 村田 昇
+# lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
+# 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
+#   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / burgundy / dracula)．pdf と html は配色によらない．
+#   dracula では表紙の title-bg を外し，コードも dracula 配色にする (ox-quarto-ext-palette-rules)．
+# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる．
 license: "CC BY-NC"
+csl: _quarto/csl/apa.csl            # 文献の書式 (本文は (著者, 年))
+link-citations: true
+cite-aside-max: 2                   # 引用が 3 件以上のスライドでは書誌を脚注欄に出さない (lib/cite-aside.lua)
 format:
   revealjs: 
-    theme: [default, _quarto/scss/oerreveal-lecture.scss]
+    theme:
+      - default
+      - _quarto/scss/oerreveal.scss          # structure
+      - _quarto/scss/indigo-palette.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
+      - _quarto/scss/lecture-deck.scss       # 修飾 (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
+      - _quarto/scss/iframe.scss
+      - _quarto/scss/title-bg.scss
+      - _quarto/scss/text-size.scss
     slide-level: 3
     max-scale: 2.0 
     embed-resources: true
-    include-in-header: _quarto/lib/mathjax-fix.html
+    include-in-header:
+      - _quarto/lib/mathjax-fix.html
+      - _quarto/lib/pixel-snap.html     # スライドの位置を整数ピクセルに (Safari のぼやけ対策)
+      - _quarto/lib/slide-number-arrows.html  # 頁番号を矢印の箱の中へ (Safari でも矢印の真ん中に)
     center: true
     controls: true
     controls-layout: bottom-right
@@ -17,6 +37,7 @@ format:
     controls-tutorial: true
     navigation-mode: vertical
     auto-stretch: false
+    slide-number: c/t                  # 右下に「頁/総頁」(talk と同じ)
   pdf:
     keep-tex: true
     echo: false
@@ -49,8 +70,17 @@ execute:
   message: false
   fig-height: 5
   fig-width: 5
-filters:
+filters:                          # 節扉は見出しをそのまま出す (section-toc は使わない)
   - _quarto/lib/no-hrule.lua
+  - _quarto/lib/iframe.lua
+  - _quarto/lib/cite-aside.lua    # 各スライドで引用した文献の書誌を脚注欄に出す (revealjs のみ)
+  - _quarto/lib/ack.lua           # 謝辞の頁の人の一覧 (::: people) を写真・名前・所属の組に
+  - _quarto/lib/text-size.lua   # .text-NN / .math-NN を PDF でも効かせる
+  - _quarto/lib/slide-notes.lua # 発表者ノートを pdf / html では枠で囲む (slide-notes)
+  - _quarto/lib/title-qr.lua    # 表紙の右下の QR コード (revealjs のみ．org の #+QUARTO_QR)
+  - _quarto/lib/pin.lua           # .pin-top / .pin-bottom: absolute の要素をキャンバスの端に固定 (title-qr の後に)
+  - _quarto/lib/text-center.lua   # #+begin_center (::: {.text-center}) を html / pdf / typst で中央寄せに
+slide-notes-default: box          # 発表者ノート (::: notes) を pdf / html でどう出すか: box / margin / hide / plain (lib/slide-notes.lua．org では #+QUARTO_OPTIONS: slide-notes:margin)
 
 ---
 
@@ -164,570 +194,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 -   クラスタ分析 (2回)
 -   時系列解析入門 (2回)
 -   第2回レポート (1月末締切，自由課題)
-
-
-# 多変量解析
-
-
-## 多変量解析とは
-
--   複数の変量からなるデータを分析する手法の総称
-    -   回帰分析 : 複数の量を用いて注目する変数の値を説明する
-    -   主成分分析 : 全体を説明する少数の特徴量を構成する
-    -   判別分析 : 特徴量の違いでカテゴリ分けを行う
-    -   クラスタ分析 : 特徴量の違いに着目してクラスタを構成する
-    -   時系列解析 : 時間とともに変化する現象を記述する
--   機械学習で使われる手法の基礎
-    -   教師あり問題 : 回帰分析(量的データ)・判別分析(質的データ)
-    -   教師なし問題 : 主成分分析・クラスタ分析
-
-
-## 回帰分析の考え方
-
--   ある変数(目的変数)を別の変数(説明変数)によって説明・予測するための関係式(回帰式)を構成する
-    -   単回帰 : 一つの変数で目的変数を説明する
-    -   重回帰 : 複数の変数で目的変数を説明する
--   分析の事例
-    -   広告宣伝費と商品の売上を予測する式を作り，広告効果があるかどうか判定する
-    -   築年数・駅からの距離・広さ・間取りで家賃を説明する式を作り，新規に家賃を設定する際に利用する
-
-
-## 例 : 体重と脳の重さの関係
-
-```{r}
-#' 単回帰の例
-#' 表の作成
-bb_data <-
-  Animals |>
-  rownames_to_column() |>
-  as_tibble() |>
-  set_names("種","体重[kg]","脳の重さ[g]")
-bb_tbl <-
-  bb_data |>
-  gt() |>
-  tab_header(
-    title = "体重と脳の重さ"
-  )
-```
-
-::: {.content-visible when-format="html"}
-::: {.scroll-tall}
-```{r}
-bb_tbl
-```
-:::
-:::
-
-::: {.content-visible when-format="pdf"}
-```{r}
-bb_tbl |>
-  tab_options(table.font.size = 11,
-              heading.title.font.size = "normal",
-              heading.subtitle.font.size = "small",
-              table.width = pct(50),
-              latex.tbl.pos = "h") |>
-  as_latex()
-```
-:::
-
-
-### 体重と脳の重さの関係 {.head-center .fig-tall}
-
-```{r}
-bb_p <-
-  bb_data |>
-  ggplot(aes(`体重[kg]`, `脳の重さ[g]`)) +
-  geom_point(colour = alpha("royalblue", 0.75)) + 
-  geom_text_repel(aes(label = `種`), # 各点の名前を追加
-                  size = 3)
-print(bb_p) # グラフを表示
-```
-
-
-### 体重と脳の重さの関係 (対数変換) {.head-center .fig-tall}
-
-```{r}
-bb_p <-
-  bb_p +
-  scale_x_log10() + scale_y_log10() # log-log plot を指定
-print(bb_p) # グラフを表示
-```
-
-
-### 回帰式とその信頼区間 {.head-center .fig-tall}
-
-```{r}
-bb_p <-
-  bb_p + # 回帰式を追加
-  geom_smooth(method = "lm", 
-              colour = "dodgerblue",
-              fill = "dodgerblue")
-print(bb_p) # グラフを表示
-```
-
-
-## 例 : ボルドーワインの価格と気候の関係
-
-```{r}
-#' 重回帰の例
-#' 表の作成
-bw_data <-
-  read_csv(file="data/wine.csv") |>
-  set_names("ヴィンテージ","価格(対数比)","冬の雨","平均気温","秋の雨","経過年数")
-bw_tbl <-
-  bw_data |>
-  gt() |>
-  tab_header(
-    title = "ワイン価格と気候特性"
-  )
-```
-
-::: {.content-visible when-format="html"}
-::: {.scroll-tall}
-```{r}
-bw_tbl
-```
-:::
-:::
-
-::: {.content-visible when-format="pdf"}
-```{r}
-bw_tbl |>
-  tab_options(table.font.size = 10,
-              heading.title.font.size = "normal",
-              heading.subtitle.font.size = "small",
-              table.width = pct(60),
-              latex.tbl.pos = "h") |>
-  as_latex()
-```
-:::
-
-
-### 価格と気候の散布図 {.head-center .fig-tall}
-
-```{r}
-bw_data |> 
-  ggpairs(columns = 2:6,
-          upper = list(continuous = wrap("cor", size = 3.5)),
-          lower = list(continuous = wrap("smooth_loess", colour = "blue"))) +
-  theme(axis.text = element_text(size = 6), # 文字の大きさを調整
-        strip.text = element_text(size = 8)) 
-```
-
-
-### 推定結果 {.head-center}
-
-::: {.content-visible when-format="html"}
-```{r}
-bw_fit <- lm(`価格(対数比)` ~ . - `ヴィンテージ`, # VINTを除く全て
-             data = bw_data)
-#' 推定結果を表にまとめるためのパッケージ gtsummary を利用
-bw_fit |>
-  tbl_regression(estimate_fun = label_style_sigfig(digits = 4)) |>
-  add_glance_source_note(include = c(r.squared,adj.r.squared,statistic,p.value))
-```
-:::
-
-::: {.content-visible when-format="pdf"}
-```{r}
-bw_fit |>
-  tbl_regression(estimate_fun = label_style_sigfig(digits = 4)) |>
-  add_glance_source_note(include = c(r.squared,adj.r.squared,statistic,p.value)) |>
-  as_gt() |>
-  tab_options(table.font.size = 10,
-              heading.title.font.size = "normal",
-              heading.subtitle.font.size = "small",
-              table.width = pct(50),
-              latex.tbl.pos = "h") |>
-  as_latex() 
-```
-:::
-
-
-### 重回帰による予測値と実際の価格 {.head-center .fig-tall}
-
-```{r}
-bw_fit |>
-  augment() |>
-  ggplot(aes(x = `価格(対数比)`, y = .fitted, label = `ヴィンテージ`)) +
-  geom_text(na.rm = TRUE) + # text で表示
-  geom_abline(slope = 1, colour = "darkmagenta") +
-  labs(y = "予測値")
-```
-
-
-## 主成分分析の考え方
-
--   多数の変数が与えられたときに，変数のもつ構造を効率的に記述できる少数個の特徴量を構成する
--   分析の事例
-    -   野球選手の打撃成績(打率，本塁打数，打点など)から，打者としての特徴を記述する指標を作成する
-    -   複数銘柄からなる株価の時系列データから，市場全体の変動を記述する総合指標を作成する
-
-
-## 例 : 都道府県別の生活環境
-
-```{r}
-#' 主成分分析の例
-#' 表の作成
-ja_data <- bind_cols(
-  read_csv(file = "data/prefecture.csv",
-           col_select = c(2,4)) |>
-  set_names("県名", "地方名"), # 列の名称を"県名"と"地方名"に変更
-  read_csv(file = "data/jpamenity.csv",
-           col_select = !1:2) |> slice(-1) |>
-  set_names(names(read_csv(file = "data/jpamenityitem.csv")))) # 簡略化した項目名に変更
-```
-
-::: {.content-visible when-format="html"}
-::: {.scroll-tall}
-```{r}
-ja_data |>
-  gt() |>
-  tab_header(
-    title = "生活環境データ"
-  )
-```
-:::
-:::
-
-::: {.content-visible when-format="pdf"}
-```{r}
-ja_data |>
-  select(1:11) |> # 大きな表なので一部を選択する(列:select，行:slice)
-  gt() |>
-  tab_header(
-    title = "生活環境データ"
-  ) |>
-  tab_options(table.font.size = 9,
-              heading.title.font.size = "normal",
-              heading.subtitle.font.size = "small",
-              table.width = pct(100),
-              latex.tbl.pos = "h") |>
-  as_latex()
-```
-:::
-
-
-### 都道府県別の人口動態 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6.5
-ja_data |>
-  ggpairs(columns = 3:10,
-          legend = c(2,1), # 2行1列のグラフから凡例を作成
-          upper = list(continuous = wrap("cor", size = 2.5)),
-          lower = list(continuous = wrap("points", alpha = .5),
-                       mapping = aes(colour = 地方名))) +
-  theme(axis.text = element_text(size = 5), # 文字の大きさを調整
-        strip.text = element_text(size = 6)) 
-```
-
-
-### 都道府県別の教育・労働環境 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6.5
-ja_data |>
-  ggpairs(columns = 11:19,
-          legend = c(2,1), 
-          upper = list(continuous = wrap("cor", size = 2.5)),
-          lower = list(continuous = wrap("points", alpha = .5),
-                       mapping = aes(colour = 地方名))) +
-  theme(axis.text = element_text(size = 5), # 文字の大きさを調整
-        strip.text = element_text(size = 6)) 
-```
-
-
-### 都道府県別の貯蓄・余暇 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6.5
-ja_data |>
-  ggpairs(columns = 20:27,
-          legend = c(2,1), 
-          upper = list(continuous = wrap("cor", size = 2.5)),
-          lower = list(continuous = wrap("points", alpha = .5),
-                       mapping = aes(colour = 地方名))) +
-  theme(axis.text = element_text(size = 5), # 文字の大きさを調整
-        strip.text = element_text(size = 6)) 
-```
-
-
-### 都道府県別の生活環境の主成分分析 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6.5
-ja_fit <- ja_data |> 
-  column_to_rownames(var = "県名") |>
-  select(where(is.double)) |>
-  prcomp(scale. = TRUE) # 主成分分析の実行
-autoplot(ja_fit, # バイプロット
-         asp = 1, # 縦横比を設定
-         data = ja_data, colour = "地方名", # 地方ごとに色付け
-         label = TRUE, # ラベルの表示
-         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
-         label.family = jp_font, label.size = 2,
-         loadings = TRUE, loadings.colour = "orchid", # 負荷の表示
-         loadings.label = TRUE, loadings.label.colour = "darkgray", # 負荷ラベルの表示
-         loadings.label.family = jp_font, loadings.label.size = 2.5) 
-```
-
-
-## 判別分析の考え方
-
--   ある個体が複数のクラスのいずれかに属するとき，その個体の特徴量からどのクラスに属するかを予測するモデルを構築する
--   分析の事例
-    -   食道がんを患っている人とそうでない人を，年齢・飲酒量・喫煙度から判別する
-    -   銀行が融資判断をするために，企業の財務データから，その企業が期間内に債務不履行となるか否かを予測する
-
-
-## 例 : 乳癌患者の生検データ
-
-```{r}
-#' 判別分析の例
-#' 表の作成
-bio_data <- biopsy |>
-  as_tibble() |>
-  na.omit() |>   # NA を除く
-  select(-ID) |> # IDを除く
-  set_names(paste0("検査",1:9),"種別") 
-bio_tbl <-
-  bio_data |>
-  slice(1:15) |>
-  gt() |>
-  tab_header(
-    title = "生体組織採取検査"
-  )
-```
-
-::: {.content-visible when-format="html"}
-::: {.scroll-tall}
-```{r}
-bio_tbl
-```
-:::
-:::
-
-::: {.content-visible when-format="pdf"}
-```{r}
-bio_tbl |>
-  tab_options(table.font.size = 10,
-              heading.title.font.size = "normal",
-              heading.subtitle.font.size = "small",
-              table.width = pct(60),
-              latex.tbl.pos = "h") |>
-  as_latex()
-```
-:::
-
-
-### 乳癌患者(良性・悪性)の生研検査の散布図 {.head-center .fig-tall}
-
-```{r}
-bio_data |>
-  ggpairs(diag = list(mapping = aes(colour = `種別`)),
-          upper = list(continuous = wrap("cor", size = 2)),
-          lower = list(mapping = aes(colour = `種別`))) +
-  theme(axis.text = element_text(size = 6), # 文字の大きさを調整
-        strip.text = element_text(size = 8)) 
-```
-
-
-### 生研検査の主成分分析 {.head-center .fig-tall}
-
-```{r}
-autoplot(bio_data |> select(where(is.numeric)) |> prcomp(), # 主成分分析
-         data = bio_data,
-         colour = "種別") +
-  theme(legend.position=c(.85,.88)) 
-```
-
-
-### 生研検査による乳癌患者の判別分析 {.head-center .fig-tall}
-
-```{r}
-bio_fit <- lda(`種別` ~ ., data = bio_data)
-bio_data |>
-  mutate(x = predict(bio_fit)$x) |>
-  ggplot(aes(x = x)) +
-  geom_histogram(aes(fill = `種別`), show.legend = FALSE) +
-  facet_grid(vars(`種別`))
-```
-
-
-## クラスタ分析の考え方
-
--   特徴量の違いに着目して，妥当な個体のグループ(クラスタ)を構成する
-    -   階層的な方法 : 系統樹を作成する
-    -   非階層的な方法 : グループの代表値を推定する
--   分析の事例
-    -   映画に関するアンケート調査から潜在的なジャンル(グループ)を抽出する
-    -   顧客の購買履歴から，嗜好の異なる顧客グループに分類し，グループごとの販売戦略を立てる
-
-
-## 例 : 好きなおむすびの具の調査
-
-```{r}
-#' クラスタ分析の例
-#' 表の作成
-om_data <- bind_cols( 
-  read_csv(file = "data/omusubi.csv"), 
-  read_csv(file = "data/prefecture.csv")) |> # 県名・地方名の情報を付加
-  select(jp,ume:etc) |>
-  set_names(c("県名","梅","鮭","昆布","鰹","明太子","鱈子","ツナ","その他"))
-om_tbl <-
-  om_data |>
-  gt() |>
-  tab_header(
-    title = "好きなおむすびの具"
-  )
-```
-
-::: {.content-visible when-format="html"}
-::: {.scroll-tall}
-```{r}
-om_tbl
-```
-:::
-:::
-
-::: {.content-visible when-format="pdf"}
-```{r}
-om_tbl |>
-  tab_options(table.font.size = 9,
-              heading.title.font.size = "normal",
-              heading.subtitle.font.size = "small",
-              table.width = pct(60),
-              latex.tbl.pos = "h") |>
-  as_latex()
-```
-:::
-
-
-### 都道府県別の好きなおむすびの具の集計結果 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6
-om_data |>
-  pivot_longer(-県名) |>
-  mutate(県名 = fct_rev(as_factor(県名)),
-         name = as_factor(name)) |> 
-  ggplot(aes(y = 県名, x = value)) +
-  geom_bar(aes(fill = name),
-           stat = "identity",
-           position = position_stack(reverse=TRUE)) +
-  labs(x = "人気比率", fill = "具材") +
-  theme(axis.text.y = element_text(size = 8))
-```
-
-
-### アンケート結果にもとづく県のクラスタ分析 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6
-om_agnes <- 
-  om_data |> 
-  column_to_rownames(var = "県名") |> 
-  sqrt() |> 
-  agnes()
-om_agnes |> as.dendrogram() |>
-  ggdendrogram(rotate = TRUE, theme_dendro = FALSE) +
-  labs(x = "県名", y = "距離") +
-  theme(axis.text.y = element_text(size = 8))
-```
-
-
-## 時系列解析の考え方
-
--   時間とともに変化する現象を記述するために，未来の値を過去の値で近似する式を構成する
-    -   自己回帰 (ARモデル) : 過去の影響の記述
-    -   移動平均 (MAモデル) : 記憶のある不確定性
--   分析の事例
-    -   市町村の過去の年齢別の人口変動から将来の人口比率の推移を予測する
-    -   食品・飲料の季節ごとの販売履歴から，将来の需要量を予測して生産計画を立てる
-
-
-## 例 : 米国航空機旅客量の変遷
-
-```{r}
-#' 時系列解析の例
-#' 表の作成
-ap_tsbl <-
-  AirPassengers |>
-  as_tsibble() # 時系列向きの形式に変換
-ap_gt <-
-  ap_tsbl |> 
-  mutate(Year = year(index),
-         Month = month(index, label = TRUE)) |>
-  as_tibble() |> select(!index) |> # 
-  pivot_wider(names_from = Month)
-ap_tbl <-
-  ap_gt |>
-  gt() |>
-  tab_header(title = "月ごとの米国航空機旅客数(×1000人)",
-             subtitle = "1949-1960")
-```
-
-::: {.content-visible when-format="html"}
-```{r}
-ap_tbl
-```
-:::
-
-::: {.content-visible when-format="pdf"}
-```{r}
-ap_tbl |> 
-  tab_options(table.font.size = 10,
-              heading.title.font.size = "normal",
-              heading.subtitle.font.size = "small",
-              table.width = pct(80),
-              latex.tbl.pos = "h") |>
-  as_latex()
-```
-:::
-
-
-### 旅客量の変遷 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6.5
-ap_tsbl |>
-  autoplot(value) +
-  labs(x = "年", y = "旅客数(×1000人)")
-```
-
-
-### 階差時系列の自己相関分析 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6.5
-ap_train <- ap_tsbl |> filter_index(~ "1958-12") # 訓練データ
-ap_test  <- ap_tsbl |> filter_index("1959-01" ~ .) # 試験データ(2年分)
-ap_train |> 
-  gg_tsdisplay(difference(log(value)),
-               plot_type = "partial") 
-```
-
-
-### SARIMAモデルによる旅客量の予測 {.head-center .fig-tall}
-
-```{r}
-#| fig-width: 6.5
-ap_fit <-
-  ap_train |>
-  model( # 名前に特殊な文字を含む場合は``で括る
-    `arima(0,1,2)(0,1,1)` = ARIMA(log(value) ~ pdq(0,1,2) + PDQ(0,1,1)),
-    `arima d=1 D=1` = ARIMA(log(value) ~ pdq(d = 1) + PDQ(D = 1)),
-    `arima auto` = ARIMA(log(value)),
-    `ets` = ETS(log(value)),
-    )
-ap_fit |> select(`arima auto`) |>
-  forecast(h = nrow(ap_test)) |>
-  autoplot(ap_train) +
-  autolayer(ap_test, value, colour = "purple") +
-  theme(legend.position=c(.9,.15)) +
-  labs(x = "年", y = "旅客数(×1000人)")
-```
 
 
 # 関数の微分
@@ -1014,6 +480,62 @@ ap_fit |> select(`arima auto`) |>
 -   行列 $A$ の行列式を $|A|$ と書くとき
     行列 $A$ による行列式 $|A|$ の微分を求めよ
     -   ヒント : 余因子展開を利用すると容易に求められる
+
+
+## 解答例
+
+-   $\mathrm{tr}AB$ より，行列 $A,B$ の積は正方行列になることから，
+    $A$ が $n\times m$ 行列とすれば，
+    $B$ は $m\times n$ 行列となる．
+    したがって
+    
+    \begin{equation}
+      \mathrm{tr}AB=\sum_{i=1}^{n}\sum_{j=1}^{m}a_{ij}b_{ji}
+    \end{equation}
+    
+    と書くことができる．
+    他の式も同様に書けることを確認すればよい．
+
+---
+
+-   微分における積の法則(Leibniz 則)を用いればよい．
+    
+    \begin{align}
+      \frac{\partial f(\boldsymbol{a})}{\partial\boldsymbol{a}}
+      &=
+        \frac{\partial}{\partial\boldsymbol{a}}
+        \boldsymbol{a}^{\mathsf{T}}A\boldsymbol{b}
+        \mid_{\boldsymbol{b}=\boldsymbol{a}}
+        +
+        \frac{\partial}{\partial\boldsymbol{a}}
+        \boldsymbol{b}^{\mathsf{T}}A\boldsymbol{a}
+        \mid_{\boldsymbol{b}=\boldsymbol{a}}\\
+      &=
+        A\boldsymbol{a}
+        +
+        (\boldsymbol{a}^{\mathsf{T}}A)^{\mathsf{T}}\\
+      &=(A+A^{\mathsf{T}})\boldsymbol{a}
+    \end{align}
+
+---
+
+-   行列 $A$ の $(i,j)$ 成分に関する余因子を $\Delta_{ij}$ とする．
+    行列式 $|A|$ と逆行列 $A^{-1}$ の $(i,j)$ 成分はそれぞれ
+    
+    \begin{equation}
+      |A|=\sum_{j=1}^{d}a_{ij}\Delta_{ij},\; \forall i
+      \qquad
+      (A^{-1})_{ij}=\frac{\Delta_{ji}}{|A|}
+    \end{equation}
+    
+    と書くことができる．したがって
+    
+    \begin{equation}
+      \frac{\partial|A|}{\partial A}
+      =|A|(A^{-1})^{\mathsf{T}}
+    \end{equation}
+    
+    となる．
 
 
 # 次回の予定
