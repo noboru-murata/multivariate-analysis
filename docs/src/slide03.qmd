@@ -5,9 +5,9 @@ author: 村田 昇
 # lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
 # 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
 #   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
-# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / burgundy / dracula)．pdf と html は callout の色だけ配色に合わせる (callout-palette)．
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / mint / amethyst / garnet / dracula)．pdf と html は callout の色だけ配色に合わせる (callout-palette)．
 #   dracula では表紙の title-bg を外し，コードも dracula 配色にする (ox-quarto-ext-palette-rules)．
-# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる．
+# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる，pointer (q) は肉球．
 callout-palette: indigo             # pdf と html の callout の色 (lib/callout-colors.lua．#+QUARTO_PALETTE に合わせて書き換わる)
 license: "CC BY-NC"
 csl: _quarto/csl/apa-short.csl      # 文献の書式 (本文は (著者, 年)．一覧は 4 名以上を 2 名 + et al. に．解説文は apa.csl)
@@ -19,7 +19,8 @@ format:
       - default
       - _quarto/scss/oerreveal.scss          # structure
       - _quarto/scss/indigo-palette.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
-      - _quarto/scss/lecture-deck.scss       # 修飾 (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/lecture-deck.scss       # 修飾
+      - _quarto/scss/paw-deck.scss           # pointer (q) を肉球に．丸い点に戻すなら #+QUARTO_DECK: dot (#+QUARTO_DECK の deck はこの後に足される)
       - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
       - _quarto/scss/iframe.scss
       - _quarto/scss/title-bg.scss
@@ -178,12 +179,10 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 -   **説明変数** : $x_1,\dotsc,x_p$ (p次元)
 -   **目的変数** : $y$ (1次元)
 -   **回帰式** : $y$ を $x_1,\dotsc,x_p$ で説明するための関係式
-    
     \begin{equation}
       y=f(x_1,\dotsc,x_p)
     \end{equation}
 -   観測データ : n個の $(y,x_1,\dotsc,x_p)$ の組
-    
     \begin{equation}
       \{(y_i,x_{i1},\dotsc,x_{ip})\}_{i=1}^n
     \end{equation}
@@ -194,7 +193,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 -   任意の $f$ では一般的すぎて分析に不向き
 -   $f$ として **1次関数** を考える   
     ある定数 $\beta_0,\beta_1,\dots,\beta_p$ を用いた式 :
-    
     \begin{equation}
       f(x_1,\dots,x_p)=\beta_0+\beta_1x_1+\cdots+\beta_px_p
     \end{equation}
@@ -210,7 +208,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 回帰係数
 
 -   線形回帰式
-    
     \begin{equation}
       y=\beta_0+\beta_1x_1+\cdots+\beta_px_p
     \end{equation}
@@ -228,7 +225,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     -   データは一般に観測誤差などランダムな変動を含む
     -   回帰式がそのまま成立することは期待できない
 -   確率モデル : データのばらつきを表す項 $\epsilon_i$ を追加
-    
     \begin{equation}
       y_i=\beta_0+\beta_1 x_{i1}+\cdots+\beta_px_{ip}+\epsilon_i\quad (i=1,\dots,n)
     \end{equation}
@@ -249,7 +245,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     回帰式で説明できない変動
 -   回帰係数 $\boldsymbol{\beta}=(\beta_0,\beta_1,\dotsc,\beta_p)^{\mathsf{T}}$ 
     を持つ回帰式の残差
-    
     \begin{equation}
       e_i(\boldsymbol{\beta})=
       y_i-(\beta_0+\beta_1 x_{i1}+\dotsb+\beta_px_{ip})
@@ -261,7 +256,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 最小二乗法
 
 -   **残差平方和** (residual sum of squares)
-    
     \begin{equation}
       S(\boldsymbol{\beta})
       =
@@ -271,7 +265,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     $S(\boldsymbol{\beta})$
     を最小にする
     $\boldsymbol{\beta}$
-    
     \begin{equation}
       \boldsymbol{\hat{\beta}}
       =
@@ -284,7 +277,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 行列の定義
 
 -   デザイン行列 (design matrix)
-    
     \begin{equation}
       X=
       \begin{pmatrix}
@@ -301,7 +293,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## ベクトルの定義
 
 -   目的変数，誤差，回帰係数のベクトル
-    
     \begin{equation}
       \boldsymbol{y}=
       \begin{pmatrix}
@@ -333,13 +324,11 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 行列・ベクトルによる表現
 
 -   確率モデル
-    
     \begin{equation}
       \boldsymbol{y}
       =X\boldsymbol{\beta}+\boldsymbol{\epsilon}
     \end{equation}
 -   残差平方和
-    
     \begin{equation}
       S(\boldsymbol{\beta})
       =(\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
@@ -437,7 +426,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 推定の幾何学的解釈
 
 -   **あてはめ値** (fitted values)
-    
     \begin{equation}
       \boldsymbol{\hat{y}}
       =
@@ -465,7 +453,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
         $\boldsymbol{\hat{\epsilon}}=\boldsymbol{y}-\boldsymbol{\hat{y}}$
         はあてはめ値
         $\boldsymbol{\hat{y}}$ に直交
-        
         \begin{equation}
           \boldsymbol{\hat{\epsilon}}\cdot\boldsymbol{\hat{y}}=0
         \end{equation}
@@ -478,7 +465,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 -   $\boldsymbol{x}_i=(x_{i1},\dotsc,x_{ip})^{\mathsf{T}}$:
     $i$ 番目の観測データの説明変数
 -   説明変数および目的変数の標本平均
-    
     \begin{align}
       \boldsymbol{\bar{x}}
       &=\frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i,
@@ -488,7 +474,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
       % \overline{\boldsymbol{x}y}&=\frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_iy_i
     \end{align}
 -   $\boldsymbol{\hat{\beta}}$ が最小二乗推定量のとき以下が成立
-    
     \begin{equation}
       \bar{y}
       =
@@ -505,16 +490,13 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     -   残差の標本平均が0となる
         
         目的変数や残差のベクトルについて以下を示せばよい
-        
         \begin{equation}
           \boldsymbol{1}^{\mathsf{T}}(\boldsymbol{y}-\boldsymbol{\hat{y}})
           =\boldsymbol{1}^{\mathsf{T}}\boldsymbol{\hat{\epsilon}}
           =0
         \end{equation}
-        
         ただし $\boldsymbol{1}=(1,\dotsc,1)^{\mathsf{T}}$ とする
     -   回帰式が標本平均を通る
-        
         \begin{equation}
           \bar{y}
           =
@@ -528,7 +510,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 最小二乗推定量の残差
 
 -   観測値と推定値 $\boldsymbol{\hat{\beta}}$ によるあてはめ値の差
-    
     \begin{equation}
       \hat{\epsilon}_i=
       y_i-(\hat{\beta}_0+\hat{\beta}_1 x_{i1}+\dotsb+\hat{\beta}_px_{ip})
@@ -539,7 +520,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     -   全てができるだけ小さいほど良い
     -   あてはめ値とは独立に偏りがないほど良い
 -   残差ベクトル
-    
     \begin{equation}
       \boldsymbol{\hat{\epsilon}}
       =\boldsymbol{y}-\boldsymbol{\hat{y}}
@@ -563,7 +543,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
               (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})$ :
         あてはめ値(回帰)のばらつき
 -   3つのばらつき(平方和)の関係
-    
     \begin{equation}
       (\boldsymbol{y}-\bar{\boldsymbol{y}})^{\mathsf{T}}
       (\boldsymbol{y}-\bar{\boldsymbol{y}})
@@ -573,7 +552,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
       (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})^{\mathsf{T}}
       (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})
     \end{equation}
-    
     \begin{equation}
       S_y=S+S_r
     \end{equation}
@@ -586,7 +564,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 
 -   以下の関係式を示しなさい
     -   あてはめ値と残差のベクトルが直交する
-        
         \begin{equation}
           \boldsymbol{\hat{y}}^{\mathsf{T}}(\boldsymbol{y}-\boldsymbol{\hat{y}})
           = 
@@ -594,7 +571,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
           =0
         \end{equation}
     -   残差平方和の分解が成り立つ
-        
         \begin{equation}
           S_y=S+S_r
         \end{equation}
@@ -606,12 +582,10 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 回帰式の寄与
 
 -   ばらつきの分解
-    
     \begin{equation}
       S_y\;\text{(目的変数)} =S\;\text{(残差)} +S_r\;\text{(あてはめ値)}
     \end{equation}
 -   回帰式で説明できるばらつきの比率
-    
     \begin{equation}
       \text{(回帰式の寄与率)}
       = \frac{S_{r}}{S_{y}}

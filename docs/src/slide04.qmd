@@ -2,14 +2,36 @@
 title: 回帰分析
 subtitle: モデルの評価
 author: 村田 昇
+# lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
+# 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
+#   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / mint / amethyst / garnet / dracula)．pdf と html は callout の色だけ配色に合わせる (callout-palette)．
+#   dracula では表紙の title-bg を外し，コードも dracula 配色にする (ox-quarto-ext-palette-rules)．
+# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる，pointer (q) は肉球．
+callout-palette: indigo             # pdf と html の callout の色 (lib/callout-colors.lua．#+QUARTO_PALETTE に合わせて書き換わる)
 license: "CC BY-NC"
+csl: _quarto/csl/apa-short.csl      # 文献の書式 (本文は (著者, 年)．一覧は 4 名以上を 2 名 + et al. に．解説文は apa.csl)
+link-citations: true
+cite-aside-max: 2                   # 引用が 3 件以上のスライドでは書誌を脚注欄に出さない (lib/cite-aside.lua)
 format:
   revealjs: 
-    theme: [default, _quarto/scss/oerreveal-lecture.scss]
+    theme:
+      - default
+      - _quarto/scss/oerreveal.scss          # structure
+      - _quarto/scss/indigo-palette.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
+      - _quarto/scss/lecture-deck.scss       # 修飾
+      - _quarto/scss/paw-deck.scss           # pointer (q) を肉球に．丸い点に戻すなら #+QUARTO_DECK: dot (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
+      - _quarto/scss/iframe.scss
+      - _quarto/scss/title-bg.scss
+      - _quarto/scss/text-size.scss
     slide-level: 3
     max-scale: 2.0 
     embed-resources: true
-    include-in-header: _quarto/lib/mathjax-fix.html
+    include-in-header:
+      - _quarto/lib/mathjax-fix.html
+      - _quarto/lib/pixel-snap.html     # スライドの位置を整数ピクセルに (Safari のぼやけ対策)
+      - _quarto/lib/slide-number-arrows.html  # 頁番号を矢印の箱の中へ (Safari でも矢印の真ん中に)
     center: true
     controls: true
     controls-layout: bottom-right
@@ -17,13 +39,18 @@ format:
     controls-tutorial: true
     navigation-mode: vertical
     auto-stretch: false
+    slide-number: c/t                  # 右下に「頁/総頁」(talk と同じ)
   pdf:
     keep-tex: true
     echo: false
     pdf-engine: lualatex
+    papersize: a4                   # 用紙 (Quarto の既定は letter．report / handout も a4)．org から: #+QUARTO_PDF_OPTIONS: papersize:letter
     include-in-header: 
       - text: |
           \usepackage{luatexja-preset}
+          % luatexja-fontspec (TeX Live 2026，2026-09 以降) が regexpatch を読み，後で xpatch を読むと \xpatchcmd が二重定義の誤りになる．
+          % regexpatch は xpatch の命令も持つので，xpatch は読んだことにする (amsthm を読む文書で起きた．NOTES.org)
+          \makeatletter\@ifpackageloaded{regexpatch}{\@ifpackageloaded{xpatch}{}{\expandafter\def\csname ver@xpatch.sty\endcsname{2020/03/25 v0.3a (provided by regexpatch)}}}{}\makeatother
           \usepackage{mathtools}
           \mathtoolsset{showonlyrefs,showmanualtags}	    
       - _quarto/tex/fig-scale.tex
@@ -49,8 +76,18 @@ execute:
   message: false
   fig-height: 5
   fig-width: 5
-filters:
+filters:                          # 節扉は見出しをそのまま出す (section-toc は使わない)
   - _quarto/lib/no-hrule.lua
+  - _quarto/lib/iframe.lua
+  - _quarto/lib/cite-aside.lua    # 各スライドで引用した文献の書誌を脚注欄に出す (revealjs のみ)
+  - _quarto/lib/ack.lua           # 謝辞の頁の人の一覧 (::: people) を写真・名前・所属の組に
+  - _quarto/lib/text-size.lua   # .text-NN / .math-NN を PDF でも効かせる
+  - _quarto/lib/slide-notes.lua # 発表者ノートを pdf / html では枠で囲む (slide-notes)
+  - _quarto/lib/title-qr.lua    # 表紙の右下の QR コード (revealjs のみ．org の #+QUARTO_QR)
+  - _quarto/lib/pin.lua           # .pin-top / .pin-bottom: absolute の要素をキャンバスの端に固定 (title-qr の後に)
+  - _quarto/lib/text-center.lua   # #+begin_center (::: {.text-center}) を html / pdf / typst で中央寄せに
+  - _quarto/lib/callout-colors.lua # callout を palette の役割の色に (pdf / html．revealjs は scss)
+slide-notes-default: box          # 発表者ノート (::: notes) を pdf / html でどう出すか: box / margin / hide / plain (lib/slide-notes.lua．org では #+QUARTO_OPTIONS: slide-notes:margin)
 
 ---
 
@@ -107,11 +144,13 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
         ggplot2.discrete.fill = function() scale_fill_material())
 ```
 
+::: {.content-visible when-format="pdf"}
 ```{=latex}
 \figfitboth
 \setlength{\figmaxheight}{0.42\textheight}
 \setlength{\figmaxwidth}{0.84\textwidth}
 ```
+:::
 
 
 # 講義の内容
@@ -130,12 +169,10 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     -   説明変数 : $x_{1},\dotsc,x_{p}$ (p次元)
     -   目的変数 : $y$ (1次元)
 -   **回帰係数** $\beta_{0},\beta_{1},\dotsc,\beta_{p}$ を用いた一次式
-    
     \begin{equation}
       y=\beta_{0}+\beta_{1}x_{1}+\dotsb+\beta_{p}x_{p}
     \end{equation}
 -   **誤差項** を含む確率モデルで観測データを表現
-    
     \begin{equation}
       y_i=\beta_{0}+\beta_{1} x_{i1}+\cdots+\beta_{p}x_{ip}+\epsilon_i
       \quad (i=1,\dotsc,n)
@@ -145,7 +182,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 簡潔な表現のための行列
 
 -   デザイン行列 (説明変数)
-    
     \begin{equation}
       X=
       \begin{pmatrix}
@@ -160,7 +196,6 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 簡潔な表現のためのベクトル
 
 -   ベクトル (目的変数・誤差・回帰係数)
-    
     \begin{equation}
       \boldsymbol{y}=
       \begin{pmatrix}
@@ -189,14 +224,12 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 問題の記述
 
 -   確率モデル
-    
     \begin{equation}
       \boldsymbol{y}
       =X\boldsymbol{\beta}+\boldsymbol{\epsilon},
       \quad\boldsymbol{\epsilon}\sim\text{確率分布}
     \end{equation}
 -   回帰式の推定 : **残差平方和** の最小化
-    
     \begin{equation}
       S(\boldsymbol{\beta})
       =(\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
@@ -207,13 +240,11 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 解の表現
 
 -   解の条件 : **正規方程式**
-    
     \begin{equation}
       X^{\mathsf{T}}X\boldsymbol{\beta}
       =X^{\mathsf{T}}\boldsymbol{y}
     \end{equation}
 -   解の一意性 : **Gram 行列** $X^{\mathsf{T}}X$ が正則
-    
     \begin{equation}
       \boldsymbol{\hat{\beta}}
       =
@@ -230,13 +261,11 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 -   **残差**
     $\boldsymbol{\hat{\epsilon}}=\boldsymbol{y}-\boldsymbol{\hat{y}}$
     はあてはめ値 $\boldsymbol{\hat{y}}$ と直交
-    
     \begin{equation}
       \boldsymbol{\hat{\epsilon}}^{\mathsf{T}}\boldsymbol{\hat{y}}
       =0
     \end{equation}
 -   回帰式は説明変数と目的変数の **標本平均** を通過
-    
     \begin{equation}
       \bar{y}
       =
@@ -253,14 +282,12 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 寄与率
 
 -   **決定係数** (R-squared)
-    
     \begin{equation}
       R^2
       =
       1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
     \end{equation}
 -   **自由度調整済み決定係数** (adjusted R-squared)
-    
     \begin{equation}
       \bar{R}^2
       =
@@ -338,18 +365,14 @@ tw_tbl |>
 
 ### モデルの検討 {.head-center .fig-tall}
 
-<div class="org-center">
-<ul class="org-ul">
-<li>気温を説明する5種類の線形回帰モデル
-<ul class="org-ul">
-<li>モデル1 : 気温 = F(気圧)</li>
-<li>モデル2 : 気温 = F(日射)</li>
-<li>モデル3 : 気温 = F(気圧, 日射)</li>
-<li>モデル4 : 気温 = F(気圧, 日射, 湿度)</li>
-<li>モデル5 : 気温 = F(気圧, 日射, 雲量)</li>
-</ul></li>
-</ul>
-</div>
+::: {.text-center}
+-   気温を説明する5種類の線形回帰モデル
+    -   モデル1 : 気温 = F(気圧)
+    -   モデル2 : 気温 = F(日射)
+    -   モデル3 : 気温 = F(気圧, 日射)
+    -   モデル4 : 気温 = F(気圧, 日射, 湿度)
+    -   モデル5 : 気温 = F(気圧, 日射, 雲量)
+:::
 
 
 ### 関連するデータの散布図 {.head-center .fig-tall}
@@ -492,7 +515,6 @@ tw_gt |>
 ## あてはめ値
 
 -   さまざまな表現
-    
     \begin{align}
       \boldsymbol{\hat{y}}
       &=X\boldsymbol{\hat{\beta}}\\
@@ -514,7 +536,6 @@ tw_gt |>
 ## あてはめ値と誤差
 
 -   残差と誤差の関係
-    
     \begin{align}
       \boldsymbol{\hat{\epsilon}}
       &=\boldsymbol{y}-\boldsymbol{\hat{y}}\\
@@ -542,7 +563,6 @@ tw_gt |>
 :::
 
 -   ハット行列 $H$ による表現
-    
     \begin{align}
       \boldsymbol{\hat{y}}
       &=H\boldsymbol{y}\\
@@ -559,7 +579,6 @@ tw_gt |>
 -   観測データと説明変数の関係を表す
 -   対角成分 (**テコ比**; leverage)
     は観測データが自身の予測に及ぼす影響の度合を表す
-    
     \begin{equation}
       \hat{y}_{j}
       =
@@ -579,13 +598,11 @@ tw_gt |>
 -   ハット行列 $H$ について以下を示しなさい
     -   $H$ は対称行列であること
     -   $H$ は羃等であること
-        
         \begin{equation}
           H^{2}=H,\quad
           (I-H)^{2}=I-H
         \end{equation}
     -   以下の等式が成り立つこと
-        
         \begin{equation}
           HX=X,\quad
           X^{\mathsf{T}}H=X^{\mathsf{T}}
@@ -598,7 +615,6 @@ tw_gt |>
 ## 最小二乗推定量の性質
 
 -   推定量と誤差の関係
-    
     \begin{align}
       \boldsymbol{\hat{\beta}}
       &=(X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\boldsymbol{y}\\
@@ -626,7 +642,6 @@ tw_gt |>
 
 -   **誤差の仮定** : 独立，平均0 分散 $\sigma^{2}$ の **正規分布**
 -   推定量は以下の多変量正規分布に従う
-    
     \begin{align}
       \mathbb{E}[\boldsymbol{\hat{\beta}}]
       &=\boldsymbol{\beta}\\
@@ -680,14 +695,12 @@ tw_gt |>
 -   推定された回帰係数の精度を評価
     -   誤差 $\epsilon$ の分布は平均0 分散 $\sigma^2$ の正規分布
     -   $\boldsymbol{\hat{\beta}}$ の分布 : $p{+}1$ 変量正規分布
-        
         \begin{equation}
           \boldsymbol{\hat{\beta}}
           \sim
           \mathcal{N}(\boldsymbol{\beta},\sigma^{2}(X^{\mathsf{T}}X)^{-1})
         \end{equation}
     -   $\hat{\beta}_j$ の分布 : 1変量正規分布
-        
         \begin{equation}
           \hat{\beta}_{j}
           \sim
@@ -728,7 +741,6 @@ tw_gt |>
         母数 $\sigma^{2}$ の不偏な推定量となることを示せ
         
         以下が成り立つことを示せばよい
-        
         \begin{equation}
           \mathbb{E}\left[\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\right]
           =(n{-}p{-}1)\sigma^{2}
@@ -745,7 +757,6 @@ tw_gt |>
 ::: {.callout-important icon="false"}
 ## 回帰係数の分布に関する定理
 $t$統計量 ($t$-statistic)
-
 \begin{equation}
   % \text{(t統計量)}\quad
   t
@@ -754,7 +765,6 @@ $t$統計量 ($t$-statistic)
   =
   \frac{\hat{\beta}_j-\beta_j}{\hat{\sigma}\zeta_{j}}
 \end{equation}
-
 は自由度 $n{-}p{-}1$ の $t$分布に従う
 :::
 
@@ -780,7 +790,7 @@ $t$統計量 ($t$-statistic)
       2\int_{|t|}^\infty f(x)dx
       \quad\text{(両側検定)}
     \end{equation}
--   **帰無仮説 $H_{0}$ が正しければ $p$値は小さくならない**
+-   **帰無仮説 $H_{0}$ が正しければ $p$ 値は $[0,1]$ 上で一様分布する**
 
 
 # モデルの評価
@@ -800,7 +810,6 @@ $t$統計量 ($t$-statistic)
               (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})$ :
         あてはめ値(回帰)のばらつき
 -   3つのばらつき(平方和)の関係
-    
     \begin{equation}
       (\boldsymbol{y}-\bar{\boldsymbol{y}})^{\mathsf{T}}
       (\boldsymbol{y}-\bar{\boldsymbol{y}})
@@ -810,7 +819,6 @@ $t$統計量 ($t$-statistic)
       (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})^{\mathsf{T}}
       (\boldsymbol{\hat{y}}-\bar{\boldsymbol{y}})
     \end{equation}
-    
     \begin{equation}
       S_y=S+S_r
     \end{equation}
@@ -822,7 +830,6 @@ $t$統計量 ($t$-statistic)
 ## ばらつきの比に関する定理 
 $\beta_{1}=\dotsb=\beta_{p}=0$ ならば
 $F$統計量 ($F$-statistic)
-
 \begin{equation}
   % \text{(F統計量)}\quad
   F=
@@ -831,7 +838,6 @@ $F$統計量 ($F$-statistic)
   % {\frac{1}{n{-}p{-}1}\sum_{i=1}^n(y_i-\hat{y}_i)^2}
   =\frac{n{-}p{-}1}{p}\frac{R^2}{1-R^2}
 \end{equation}
-
 は自由度 $p,n{-}p{-}1$ の $F$分布に従う
 :::
 
@@ -857,7 +863,7 @@ $F$統計量 ($F$-statistic)
       \int_{F}^\infty f(x)dx
       \quad\text{(片側検定)}
     \end{equation}
--   **帰無仮説 $H_{0}$ が正しければ $p$値は小さくならない**
+-   **帰無仮説 $H_{0}$ が正しければ $p$ 値は $[0,1]$ 上で一様分布する**
 
 
 # 解析の事例

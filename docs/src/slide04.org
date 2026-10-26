@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-09-25 16:47:07 mura>
+# Time-stamp: <2026-10-26 21:26:19 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -28,11 +28,13 @@
   ### 第4講 資料
 #+end_src
 #+include: "preamble.R" src R 
+#+begin_content-visible :when-format "pdf"
 #+begin_export latex
 \figfitboth
 \setlength{\figmaxheight}{0.42\textheight}
 \setlength{\figmaxwidth}{0.84\textwidth}
 #+end_export
+#+end_content-visible
 
 
 * 講義の内容
@@ -841,7 +843,7 @@
      2\int_{|t|}^\infty f(x)dx
      \quad\text{(両側検定)}
    \end{equation}
-- *帰無仮説 \(H_{0}\) が正しければ \(p\)値は小さくならない*
+- *帰無仮説 \(H_{0}\) が正しければ \(p\) 値は \([0,1]\) 上で一様分布する*
 
 #  - 帰無仮説 \(\beta_j=0\) が正しければ \(p\)値は小さくならない
 # - 帰無仮説 \(H_{0}\) が正しければ \(p\)値は小さくならない
@@ -920,7 +922,7 @@
      \int_{F}^\infty f(x)dx
      \quad\text{(片側検定)}
    \end{equation}
-- *帰無仮説 \(H_{0}\) が正しければ \(p\)値は小さくならない*
+- *帰無仮説 \(H_{0}\) が正しければ \(p\) 値は \([0,1]\) 上で一様分布する*
    
 #  - 帰無仮説 \(\forall j\;\beta_j=0\) が正しければ \(p\)値は小さくならない
 # - 帰無仮説 \(H_{0}\) が正しければ \(p\)値は小さくならない
