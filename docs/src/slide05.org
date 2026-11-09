@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-09-25 16:47:37 mura>
+# Time-stamp: <2026-11-09 16:14:01 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -28,11 +28,13 @@
   ### 第3講 資料
 #+end_src
 #+include: "preamble.R" src R 
+#+begin_content-visible :when-format "pdf"
 #+begin_export latex
 \figfitboth
 \setlength{\figmaxheight}{0.42\textheight}
 \setlength{\figmaxwidth}{0.84\textwidth}
 #+end_export
+#+end_content-visible
 
 
 * 講義の内容
@@ -359,7 +361,7 @@
 - 回帰係数 \(\beta_j\) が回帰式に寄与するか否かを検定する
   - 帰無仮説 \(H_{0}\) : \(\beta_j=0\)
   - 対立仮説 \(H_{1}\) : \(\beta_j\neq0\) (\(\beta_j\) は役に立つ)
-- *\(t\)統計量* : 各係数ごと，\(\zeta\) は \((X^{\mathsf{T}} X)^{-1}\) の対角成分
+- *\(t\)統計量* : 各係数ごと，\(\zeta^{2}\) は \((X^{\mathsf{T}} X)^{-1}\) の対角成分
   \begin{equation}
     t=\frac{\hat{\beta}_j}{\hat{\sigma}\zeta_{j}}
   \end{equation}
@@ -392,23 +394,6 @@
       ) |>
       modify_header(label = "**変数**",
                     estimate = "**係数(SE)**",
-                    statistic = "**t統計量**",
-                    p.value = "**p値**") |>
-      remove_abbreviation() |>
-      modify_abbreviation("SE = 標準誤差")
-  } 
-  my_gts <- function(x){
-    tbl_regression(x, intercept = TRUE) |>            # 標準の表
-      modify_column_unhide(columns = c(statistic)) |> # 標準誤差とt統計量を表示
-      add_significance_stars(
-        hide_ci = TRUE,
-        hide_se = FALSE,
-        hide_p = FALSE,
-        pattern = "{p.value}{stars}"
-      ) |>
-      modify_header(label = "**変数**",
-                    estimate = "**係数**",
-                    std.error = "**SE**",
                     statistic = "**t統計量**",
                     p.value = "**p値**") |>
       remove_abbreviation() |>
@@ -641,10 +626,10 @@
   \begin{equation}
     \mathcal{I}^{c}_{\alpha}
     =
-    \left(
+    \left[
       \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x}),\;
       \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
-    \right)
+    \right]
   \end{equation}
   #  ただし \(C_{\alpha}\) は以下を満たす定数
   \begin{equation}
@@ -761,10 +746,10 @@
   \begin{equation}
     \mathcal{I}^{p}_{\alpha}
     =
-    \left(
+    \left[
       \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{p}(\boldsymbol{x}),\;
       \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{p}(\boldsymbol{x})
-    \right)
+    \right]
   \end{equation}
   # ただし \(C_{\alpha}\) は以下を満たす定数
   \begin{equation}
@@ -776,6 +761,12 @@
   - \(\gamma_{p}>\gamma_{c}\) なので信頼区間より広くなる
 
 
+
+* COMMENT 実習
+:PROPERTIES:
+:QUARTO_ATTR: {background-color="#fef4f4"}
+:END:
+# 東京大学
 
 * COMMENT 実習
 :PROPERTIES:
@@ -1696,6 +1687,12 @@
 #+end_src
 
     
+
+* COMMENT 実習
+:PROPERTIES:
+:QUARTO_ATTR: {background-color="#fef4f4"}
+:END:
+# 東京大学
 
 * COMMENT 実習
 :PROPERTIES:

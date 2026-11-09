@@ -1,7 +1,5 @@
 ### 第4講 資料
 
-### 第4講 資料
-
 #' 東京の気候データを用いた例
 #' データの読み込み
 tw_subset <- read_csv("data/tokyo_weather.csv") |>
@@ -133,9 +131,6 @@ tw_gt |>
               heading.subtitle.font.size = "small",
               latex.tbl.pos = "h") |>
   as_latex()
-
-#| tbl-cap: "東京の8月の気候データ"
-tw_tbl
 
 #| tbl-cap: "東京の8月の気候データ"
 tw_tbl

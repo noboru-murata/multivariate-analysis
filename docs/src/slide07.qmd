@@ -1,0 +1,1205 @@
+---
+title: 主成分分析
+subtitle: 評価と視覚化
+author: 村田 昇
+oxq-email: "noboru.murata@gmail.com"
+# lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
+# 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
+#   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / mint / amethyst / garnet / dracula)．pdf と html は callout の色だけ配色に合わせる (callout-palette)．
+#   dracula では表紙の title-bg を外し，コードも dracula 配色にする (ox-quarto-ext-palette-rules)．
+# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる，pointer (q) は肉球．
+callout-palette: indigo             # pdf と html の callout の色 (lib/callout-colors.lua．#+QUARTO_PALETTE に合わせて書き換わる)
+license: "CC BY-NC"
+csl: _quarto/csl/apa-short.csl      # 文献の書式 (本文は (著者, 年)．一覧は 4 名以上を 2 名 + et al. に．解説文は apa.csl)
+link-citations: true
+cite-aside-max: 2                   # 引用が 3 件以上のスライドでは書誌を脚注欄に出さない (lib/cite-aside.lua)
+format:
+  revealjs: 
+    theme:
+      - default
+      - _quarto/scss/oerreveal.scss          # structure
+      - _quarto/scss/indigo-palette.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
+      - _quarto/scss/lecture-deck.scss       # 修飾
+      - _quarto/scss/paw-deck.scss           # pointer (q) を肉球に．丸い点に戻すなら #+QUARTO_DECK: dot (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
+      - _quarto/scss/iframe.scss
+      - _quarto/scss/title-bg.scss
+      - _quarto/scss/text-size.scss
+    slide-level: 3
+    max-scale: 2.0 
+    embed-resources: true
+    include-in-header:
+      - _quarto/lib/mathjax-fix.html
+      - _quarto/lib/pixel-snap.html     # スライドの位置を整数ピクセルに (Safari のぼやけ対策)
+      - _quarto/lib/slide-number-arrows.html  # 頁番号を矢印の箱の中へ (Safari でも矢印の真ん中に)
+    center: true
+    controls: true
+    controls-layout: bottom-right
+    controls-back-arrows: visible
+    controls-tutorial: true
+    navigation-mode: vertical
+    auto-stretch: false
+    slide-number: c/t                  # 右下に「頁/総頁」(talk と同じ)
+  pdf:
+    keep-tex: true
+    echo: false
+    pdf-engine: lualatex
+    papersize: a4                   # 用紙 (Quarto の既定は letter．report / handout も a4)．org から: #+QUARTO_PDF_OPTIONS: papersize:letter
+    include-in-header: 
+      - text: |
+          \usepackage{luatexja-preset}
+          % luatexja-fontspec (TeX Live 2026，2026-09 以降) が regexpatch を読み，後で xpatch を読むと \xpatchcmd が二重定義の誤りになる．
+          % regexpatch は xpatch の命令も持つので，xpatch は読んだことにする (amsthm を読む文書で起きた．NOTES.org)
+          \makeatletter\@ifpackageloaded{regexpatch}{\@ifpackageloaded{xpatch}{}{\expandafter\def\csname ver@xpatch.sty\endcsname{2020/03/25 v0.3a (provided by regexpatch)}}}{}\makeatother
+          \usepackage{mathtools}
+          \mathtoolsset{showonlyrefs,showmanualtags}	    
+      - _quarto/tex/fig-scale.tex
+      - _quarto/tex/table-center.tex
+      - _quarto/tex/callout-title-gothic.tex
+      - _quarto/tex/gt-table-tight.tex
+  html: 
+    self-contained: false
+    grid: 
+      margin-width: 350px
+    code-fold: true
+revealjs-plugins:
+  - pointer
+pointer:
+  color: "rgba(255, 0, 0, 0.4)"
+  pointerSize: 120
+  alwaysVisible: false
+knitr:
+  opts_chunk:
+    fig.align: center
+execute:
+  warning: false
+  message: false
+  fig-height: 5
+  fig-width: 5
+filters:                          # 節扉は見出しをそのまま出す (section-toc は使わない)
+  - _quarto/lib/no-hrule.lua
+  - _quarto/lib/iframe.lua
+  - _quarto/lib/cite-aside.lua    # 各スライドで引用した文献の書誌を脚注欄に出す (revealjs のみ)
+  - _quarto/lib/ack.lua           # 謝辞の頁の人の一覧 (::: people) を写真・名前・所属の組に
+  - _quarto/lib/text-size.lua   # .text-NN / .math-NN を PDF でも効かせる
+  - _quarto/lib/slide-notes.lua # 発表者ノートを pdf / html では枠で囲む (slide-notes)
+  - _quarto/lib/title-qr.lua    # 表紙の右下の QR コード (revealjs のみ．org の #+QUARTO_QR)
+  - _quarto/lib/pin.lua           # .pin-top / .pin-bottom: absolute の要素をキャンバスの端に固定 (title-qr の後に)
+  - _quarto/lib/text-center.lua   # #+begin_center (::: {.text-center}) を html / pdf / typst で中央寄せに
+  - _quarto/lib/callout-colors.lua # callout を palette の役割の色に (pdf / html．revealjs は scss)
+slide-notes-default: box          # 発表者ノート (::: notes) を pdf / html でどう出すか: box / margin / hide / plain (lib/slide-notes.lua．org では #+QUARTO_OPTIONS: slide-notes:margin)
+
+---
+
+
+
+```{r}
+### 第7講 資料
+```
+
+```{r}
+library(conflicted)
+conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+    )
+library(tidyverse)
+library(ggfortify)     # 分析結果の視覚化にggplotを利用するためのパッケージ
+library(GGally)
+library(ggrepel)
+library(gt)            # 表を作成するためのパッケージ
+library(gtsummary)
+library(broom)
+library(broom.helpers) # gtsummary のいくつかの関数で利用(インストールされていれば不要)
+library(MASS)          # パッケージ MASS に含まれる判別分析のための関数を利用
+library(cluster)       # クラスタ分析のためのパッケージ
+library(ggdendro)      # ggplot でデンドログラムを描くためのパッケージ
+library(tsibble)       # 時系列を扱うためのパッケージ
+library(feasts)        # ggplotで時系列を扱うための拡張パッケージ
+library(fable)         # 時系列関連
+library(ggtime)        # 時系列関連
+#' 日本語表示の設定
+#' 出力形式に応じた作図デバイス
+if (knitr::is_latex_output()) knitr::opts_chunk$set(dev = "cairo_pdf")
+
+#' 日本語表示の設定
+if (Sys.info()["sysname"] == "Darwin") {
+    jp_font <- if (knitr::is_latex_output()) {
+                   "Hiragino Maru Gothic ProN"   # cairo は fontconfig 経由なのでファミリ名
+               } else {
+                   "HiraMaruProN-W4"             # quartz/AGG は PostScript 名
+               }
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+} else {
+    jp_font <- NULL
+}
+#' 色の設定
+library(see)
+options(ggplot2.discrete.colour = function() scale_colour_material(),
+        ggplot2.discrete.fill = function() scale_fill_material())
+```
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\figfitboth
+\setlength{\figmaxheight}{0.42\textheight}
+\setlength{\figmaxwidth}{0.84\textwidth}
+```
+:::
+
+
+# 講義の内容
+
+-   第1日 : 主成分分析の考え方
+-   **第2日 : 分析の評価と視覚化**
+
+
+# 主成分分析の復習
+
+
+## 主成分分析
+
+-   多数の変量のもつ情報の分析・視覚化
+    -   変量を効率的に縮約して少数の特徴量を構成する
+    -   変量の間の関係を明らかにする
+-   分析の方針
+    -   **データの情報を保持する** = **データを区別することができる**
+    -   データの情報を最大限保持する変量の線形結合を構成
+    -   データの情報を最大限反映する座標(方向)を探索
+
+
+## 分析の考え方
+
+-   1変量の特徴量
+    $\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n$
+    を構成
+    -   観測データ $\boldsymbol{x}_1,\dots,\boldsymbol{x}_n$
+        のもつ情報を最大限保持するベクトル
+        $\boldsymbol{a}$ を **適切に** 選択
+    -   $\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_1,\dotsc,\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n$
+        の変動 (ばらつき) が最も大きい方向を選択
+-   **最適化問題**   
+    制約条件
+    $\|\boldsymbol{a}\|=1$
+    の下で以下の関数を最大化せよ
+    \begin{equation}
+      f(\boldsymbol{a})
+      =
+      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i
+      -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2,
+      \quad
+      \bar{\boldsymbol{x}}
+      =
+      \frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_i
+    \end{equation}
+
+
+## 行列による表現
+
+-   中心化したデータ行列
+    \begin{equation}
+      X
+      =
+      \begin{pmatrix}
+        \boldsymbol{x}_{1}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}} \\
+        \vdots \\
+        \boldsymbol{x}_{n}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}}
+      \end{pmatrix}
+      =
+      \begin{pmatrix}
+        x_{11}-\bar{x}_1 & \cdots & x_{1p}-\bar{x}_p\\
+        \vdots & & \vdots \\
+        x_{n1}-\bar{x}_1 & \cdots & x_{np}-\bar{x}_p
+      \end{pmatrix}
+    \end{equation}
+-   評価関数 $f(\boldsymbol{a})$ は行列 $X^{\mathsf{T}}X$ 
+    の二次形式
+    \begin{equation}
+      f(\boldsymbol{a})
+      =
+      \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+    \end{equation}
+
+
+## 固有値問題
+
+-   最適化問題
+    \begin{equation}
+      \text{maximize}\quad
+      f(\boldsymbol{a})
+      =
+      \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+      \quad\text{s.t.}\quad
+      \boldsymbol{a}^{\mathsf{T}}\boldsymbol{a}=1
+    \end{equation}
+-   解の条件   
+    $f(\boldsymbol{a})$ の極大値を与える $\boldsymbol{a}$ は
+    $X^{\mathsf{T}}X$ の固有ベクトルである
+    \begin{equation}
+      X^{\mathsf{T}}X\boldsymbol{a}
+      =
+      \lambda\boldsymbol{a}
+    \end{equation}
+    
+    -   未定係数法を用いている
+
+
+## 主成分負荷量と主成分得点
+
+-   $\boldsymbol{a}$ :
+    **主成分負荷量** (principal component loading)
+-   $\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_i$ :
+    **主成分得点** (principal component score)
+-   第1主成分負荷量   
+    $X^{\mathsf{T}}X$ の第1(最大)固有値 $\lambda_1$
+    に対応する固有ベクトル $\boldsymbol{a}_1$
+-   第$k$主成分負荷量   
+    $X^{\mathsf{T}}X$ の第 $k$ 固有値 $\lambda_k$
+    に対応する固有ベクトル $\boldsymbol{a}_k$
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   ベクトル$\boldsymbol{a}$
+        を
+        $X^{\mathsf{T}}X$
+        の単位固有ベクトルとするとき
+        \begin{equation}
+          f(\boldsymbol{a})=\boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+        \end{equation}
+        の値を求めよ
+    -   行列$X$を中心化したデータ行列，
+        ベクトル$\boldsymbol{a}_{k}$を第$k$主成分負荷量とするとき，
+        第$k$主成分得点の平均まわりの平方和
+        \begin{equation}
+          \sum_{i=1}^n(\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{x}_i
+          -\boldsymbol{a}_{k}^{\mathsf{T}}\bar{\boldsymbol{x}})^2
+        \end{equation}
+        を
+        $X$と$\boldsymbol{a}_{k}$で表せ
+
+
+# 寄与率
+
+
+## 寄与率の考え方
+
+-   回帰分析で考察した寄与率の一般形
+    \begin{equation}
+      \text{(寄与率)}=
+      \frac{\text{(その方法で説明できる変動)}}{\text{(データ全体の変動)}}
+    \end{equation}
+-   主成分分析での定義 (proportion of variance)
+    \begin{equation}
+      \text{(寄与率)}=
+      \frac{\text{(主成分の変動)}}{\text{(全体の変動)}}
+    \end{equation}
+
+
+## Gram 行列のスペクトル分解
+
+-   行列 $X^{\mathsf{T}}X$ (半正定値行列) のスペクトル分解
+    \begin{equation}
+      X^{\mathsf{T}}X
+      =\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
+    \end{equation}
+    
+    -   固有値と固有ベクトルによる行列の表現
+-   主成分の変動の評価
+    \begin{equation}
+      f(\boldsymbol{a}_{k})
+      =
+      \boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
+      =\lambda_{k}
+    \end{equation}
+    
+    -   固有ベクトル(単位ベクトル)の直交性を利用
+
+
+## 寄与率の計算
+
+-   主成分と全体の変動
+    \begin{align}
+      \text{(主成分の変動)}
+      &=
+        \sum_{i=1}^{n}(\boldsymbol{a}_k^{\mathsf{T}}\boldsymbol{x}_i
+        -\boldsymbol{a}_k^{\mathsf{T}}\bar{\boldsymbol{x}})^2
+        =\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}
+        =\lambda_k\\
+      \text{(全体の変動)}
+      &=
+        \sum_{i=1}^{n}\|\boldsymbol{x}_i-\bar{\boldsymbol{x}}\|^2
+        =\sum_{l=1}^p\boldsymbol{a}_{l}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{l}
+        =\sum_{l=1}^p\lambda_l
+    \end{align}
+-   固有値による寄与率の表現
+    \begin{equation}
+      \text{(寄与率)}
+      =
+      \frac{\lambda_k}{\sum_{l=1}^p\lambda_l}  
+    \end{equation}
+
+
+## 累積寄与率
+
+-   **累積寄与率** (cumulative proportion) :   
+    第 $k$ 主成分までの変動の累計
+    \begin{equation}
+      \text{(累積寄与率)}
+      =
+      \frac{\sum_{l=1}^k\lambda_l}{\sum_{l=1}^p\lambda_l}
+    \end{equation}
+    
+    -   累積寄与率はいくつの主成分を用いるべきかの基準
+    -   一般に累積寄与率が80%程度までの主成分を用いる
+
+
+# 解析の事例
+
+
+## データセットについて
+
+-   総務省統計局より取得した都道府県別の社会生活統計指標(自然環境・経済基盤)の一部
+    -   総務省 <https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0>
+    -   整理したものを `japan_social.csv` として配布
+        -   都道府県名
+        -   地方区分
+        -   森林面積割合 (%) 2014年
+        -   就業者１人当たり農業産出額(販売農家）(万円) 2014年
+        -   全国総人口に占める人口割合 (%) 2015年
+        -   土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+        -   商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+
+
+## 社会生活統計指標の分析 {.head-center .fig-tall}
+
+```{r}
+#| include: false
+#' データの読み込み
+js_data <- read_csv(file = "data/japan_social.csv",
+                    col_type = list(地方区分 = col_factor()))
+## js_data <-
+##   bind_cols(
+##     read_csv(file = "data/prefecture.csv",
+##              col_select = c(2,4)) |>
+##     set_names("県名","地方区分"), # 列の名称を"県名"と"地方区分"に変更
+##     read_csv(file = "data/japan_social.csv",
+##              col_select = 2:6) |> 
+##     set_names("森林面積割合","農業産出額","人口割合","土地生産性","商品販売額")
+##   )|> # 簡略化した項目名に変更
+##   mutate(地方区分 = as_factor(地方区分)) # 地方区分を出現順に因子化
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_data |>
+  slice(1:15) |>
+  gt() |>
+  tab_caption("都道府県別の自然環境・経済基盤データ") |>
+  tab_options(table.font.size = 20)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_data |>
+  gt() |> 
+  tab_caption("都道府県別の自然環境・経済基盤データ") |>
+  tab_options(table.font.size = 12, table.width = pct(85)) |>
+  as_latex()
+```
+:::
+
+
+### 変数間の関係を見る {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+#' データの視覚化
+js_data |> # 散布図．いくつかの変数は相関強いことがわかる
+  ggpairs(columns = 3:7, # 都道府県名・地方区分は除く
+          legend = c(2,1), # 2行1列のグラフから凡例を作成
+          upper = list(continuous = wrap("cor", size = 4)),
+          lower = list(continuous = wrap("points", alpha = .5),
+                       mapping = aes(colour = 地方区分))) +
+  theme(strip.text.x = element_text(size = 9),
+        strip.text.y = element_text(size = 9),
+        axis.text.x = element_text(size = 8),
+        axis.text.y = element_text(size = 8))
+
+```
+
+
+### 変数のばらつきに大きな違いがある {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+js_data |> 
+  pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+  mutate(name = as_factor(name)) |>
+  ggplot(aes(x = value)) + 
+  geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
+  labs(x = NULL, y = NULL, fill = NULL) +
+  theme(legend.position = "inside",
+        legend.position.inside = c(.95, .95),
+        legend.justification = c("right", "top"))
+```
+
+
+### 標準化しない場合の主成分負荷量 {.head-center .fig-tall}
+
+```{r}
+#| include: false
+js_pca <- js_data |>
+  select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
+  prcomp(scale. = FALSE) # 標準化しない
+```
+
+-   第1 : 分散が大きい農業産出額が支配的
+-   第2 : 次に分散が大きな商品販売額が支配的
+
+```{r}
+#| fig-width: 6
+js_pca |>
+  tidy("loadings") |>
+  mutate(column = as_factor(column)) |>
+  ggplot(aes(x = PC, y = value, fill = column)) +
+  geom_bar(stat = "identity", width = 0.7, alpha = 0.5,
+           position = position_dodge(width = 0.7, reverse = TRUE)) +
+  scale_x_reverse() + coord_flip() +
+  labs(x = "主成分", y = "負荷量", fill = NULL)
+```
+
+
+### 寄与率を確認する {.head-center .fig-tall}
+
+```{r}
+#| include: false
+#' 寄与率に関する表を作成
+js_pcs_tab <- 
+  js_pca |>                              
+  tidy("eigenvalues") |> # "d" または "eigenvalues" または "pcs"
+  rename(主成分 = PC,
+         標準偏差 = std.dev,
+         寄与率 = percent,
+         累積寄与率 = cumulative)
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_pcs_tab |>                              
+  gt() |>      
+  fmt_number(columns = !1, decimals = 3) |>
+  tab_options(table.font.size = 24)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_pcs_tab |>                              
+  gt() |>      
+  fmt_number(columns = !1, decimals = 3) |>
+  tab_options(table.font.size = 12, table.width = pct(60)) |>
+  as_latex()
+```
+:::
+
+
+### 寄与率を視覚化する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+#' まとめて並べて表示
+js_pca |>                              
+  tidy("eigenvalues") |>
+  pivot_longer(!PC) |>
+  mutate(name = as_factor(name)) |>
+  ggplot(aes(x = PC, y = value, fill = name)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~ name,
+             scales = "free_y",
+             labeller = labeller(name = c(
+                                   std.dev = "標準偏差",
+                                   percent = "寄与率",
+                                   cumulative = "累積寄与率"))) +
+  labs(x = "主成分") +
+  theme(legend.position = "none") 
+```
+
+
+### 第1,2主成分得点の表示 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+autoplot(js_pca, # バイプロット
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = FALSE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = FALSE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4)
+```
+
+
+### 第3,2主成分得点の表示 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+autoplot(js_pca, # バイプロット
+         x = 3, y = 2,
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = FALSE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = FALSE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4)
+```
+
+
+### データのばらつきを揃える {.head-center .fig-tall}
+
+```{r}
+#| include: false
+#' データの標準化
+js_data_std <-
+  js_data |>
+  mutate(across(where(is.double), \(x)signif(c(scale(x)), digits = 3)))
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_data_std |>
+  slice(1:15) |>
+  gt() |>
+  tab_caption("標準化したデータ") |>
+  tab_options(table.font.size = 20)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_data_std |>
+  gt() |> 
+  tab_caption("標準化したデータ") |>
+  tab_options(table.font.size = 12, table.width = pct(85)) |>
+  as_latex()
+```
+:::
+
+
+### 変数のばらつきを確認する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+js_data |> 
+  mutate(across(where(is.double), \(x)c(scale(x)))) |>
+  pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+  mutate(name = as_factor(name)) |>
+  ggplot(aes(x = value)) + 
+  geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
+  labs(x = NULL, y = NULL, fill = NULL) +
+  theme(legend.position = "inside",
+        legend.position.inside = c(.95, .95),
+        legend.justification = c("right", "top"))
+```
+
+
+### 標準化した場合の主成分負荷量 {.head-center .fig-tall}
+
+```{r}
+#| include: false
+js_pca <- js_data |>
+  select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
+  prcomp(scale. = TRUE) # 標準化する
+```
+
+-   第1: 人の多さに関する成分(正の向きほど人が多い)
+-   第2: 農業生産力に関する成分(正の向きほど高い)
+
+```{r}
+#| fig-width: 6
+js_pca |>
+  tidy("loadings") |>
+  mutate(column = as_factor(column)) |>
+  ggplot(aes(x = PC, y = value, fill = column)) +
+  geom_bar(stat = "identity", width = 0.7, alpha = 0.5,
+           position = position_dodge(width = 0.7, reverse = TRUE)) +
+  scale_x_reverse() + coord_flip() +
+  labs(x = "主成分", y = "負荷量", fill = NULL)
+```
+
+
+### 寄与率を確認する {.head-center .fig-tall}
+
+```{r}
+#| include: false
+#' 寄与率に関する表を作成
+js_pcs_tab <- 
+  js_pca |>                              
+  tidy("eigenvalues") |> # "d" または "eigenvalues" または "pcs"
+  rename(主成分 = PC,
+         標準偏差 = std.dev,
+         寄与率 = percent,
+         累積寄与率 = cumulative)
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_pcs_tab |>                              
+  gt() |>      
+  fmt_number(columns = !1, decimals = 3) |>
+  tab_caption("寄与率") |>
+  tab_options(table.font.size = 24)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_pcs_tab |>                              
+  gt() |>      
+  fmt_number(columns = !1, decimals = 3) |>
+  tab_caption("寄与率") |>
+  tab_options(table.font.size = 12, table.width = pct(60)) |>
+  as_latex()
+```
+:::
+
+
+### 寄与率を視覚化する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+#' まとめて並べて表示
+js_pca |>                              
+  tidy("eigenvalues") |>
+  pivot_longer(!PC) |>
+  mutate(name = as_factor(name)) |>
+  ggplot(aes(x = PC, y = value, fill = name)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~ name,
+             scales = "free_y",
+             labeller = labeller(name = c(
+                                   std.dev = "標準偏差",
+                                   percent = "寄与率",
+                                   cumulative = "累積寄与率"))) +
+  labs(x = "主成分") +
+  theme(legend.position = "none") 
+```
+
+
+### 第1,2主成分得点の表示 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+autoplot(js_pca, # バイプロット
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = FALSE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = FALSE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4) 
+```
+
+
+### 第3,2主成分得点の表示 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+autoplot(js_pca, # バイプロット
+         x = 3, y = 2,
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = FALSE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = FALSE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4) 
+```
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   標準化条件を満たす線形変換
+        $x'_{ij}=a_{j}(x_{ij}-b_{j})$
+        を求めよ
+        \begin{equation}
+          \frac{1}{n}\sum_{i=1}^{n}x'_{ij}=0,\quad
+          \frac{1}{n-1}\sum_{i=1}^{n}(x'_{ij})^{2}=1
+        \end{equation}
+    -   標準化されたデータ行列を
+        \begin{equation}
+          X'
+          =
+          \begin{pmatrix}
+            {\boldsymbol{x}'_{1}}^{\mathsf{T}}\\
+            \vdots \\
+            {\boldsymbol{x}'_{n}}^{\mathsf{T}}
+          \end{pmatrix}
+          =
+          \begin{pmatrix}
+            x'_{11} & \cdots & x'_{1p}\\
+            \vdots & & \vdots \\
+            x'_{n1} & \cdots & x'_{np}
+          \end{pmatrix}
+        \end{equation}
+        と書くとき，
+        $X'^{\mathsf{T}}X'$の対角成分を求めよ
+
+
+# 主成分負荷量
+
+
+## 主成分負荷量と主成分得点
+
+-   負荷量(得点係数)の大きさ: 変数の貢献度
+-   **問題点**
+    -   変数のスケールによって係数の大きさは変化する
+    -   変数の標準化(平均0，分散1)がいつも妥当とは限らない
+-   スケールによらない変数と主成分の関係
+    -   **相関係数** を考えればよい
+
+
+## 相関係数
+
+-   $\boldsymbol{e}_{j}$: 第 $j$ 成分は1，それ以外は0のベクトル
+-   $X\boldsymbol{e}_{j}$: 第 $j$ 変数ベクトル
+-   $X\boldsymbol{a}_{k}$: 第 $k$ 主成分得点ベクトル
+-   主成分と変数の相関係数:
+    \begin{align}
+      \mathrm{Cor}(X\boldsymbol{a}_{k},X\boldsymbol{e}_{j})
+      % &=\frac{(X\boldsymbol{a}_{k})^{\mathsf{T}}X\boldsymbol{e}_{l}}
+      % {\sqrt{(X\boldsymbol{a}_{k})^{\mathsf{T}}X\boldsymbol{a}_{k}}
+      % \sqrt{(X\boldsymbol{e}_{l})^{\mathsf{T}}X\boldsymbol{e}_{l}}}\\
+         &=\frac{\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{e}_{j}}
+           {\sqrt{\boldsymbol{a}_{k}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}_{k}}
+           \sqrt{\boldsymbol{e}_{j}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{e}_{j}}}\\
+        &=\frac{\lambda_{k}\boldsymbol{a}_{k}^{\mathsf{T}}\boldsymbol{e}_{j}}
+          {\sqrt{\lambda_{k}}\sqrt{(X^{\mathsf{T}}X)_{jj}}}
+          =\frac{\sqrt{\lambda_{k}}(\boldsymbol{a}_{k})_{j}}
+          {\sqrt{(X^{\mathsf{T}}X)_{jj}}}
+    \end{align}
+
+
+## 相関係数による評価
+
+-   標準化されたデータの場合
+    -   $X^{\mathsf{T}}X$ の対角成分は全て$n-1$
+        ($(X^{\mathsf{T}}X)_{jj}=n-1$)
+    -   第 $k$ 主成分に対する相関係数ベクトル
+        \begin{equation}
+          \boldsymbol{r}_{k}
+          =\sqrt{\lambda_{k}/(n-1)}\cdot\boldsymbol{a}_{k},
+          \quad
+          (\boldsymbol{r}_{k})_{j}
+          =\sqrt{\lambda_{k}/(n-1)}\cdot(\boldsymbol{a}_{k})_{j}
+        \end{equation}
+    -   **主成分負荷量の比較**
+        -   同じ主成分($k$を固定)への各変数の影響は固有ベクトルの成分比
+        -   同じ変数($j$を固定)の各主成分への影響は固有値の平方根で重みづけ
+-   標準化されていない場合
+    -   変数の分散の影響を考慮する必要がある
+
+
+# データ行列の分解表現
+
+
+## 特異値分解
+
+-   階数 $r$ の $n\times p$ 型行列 $X$ の分解
+    \begin{equation}
+      X=U\Sigma V^{\mathsf{T}}
+    \end{equation}
+    
+    -   $U$ は $n\times n$ 型直交行列, $V$ は $p\times p$ 型直交行列
+    -   $\Sigma$ は $n\times p$ 型行列
+        \begin{equation}
+          \Sigma
+          =
+          \begin{pmatrix}
+            D & O_{r,p-r}\\
+            O_{n-r,r} & O_{n-r,p-r}
+          \end{pmatrix}
+        \end{equation}
+        
+        -   $O_{s,t}$ は $s\times t$ 型零行列
+        -   $D$ は $\sigma_{1}\ge\sigma_{2}\ge\dotsb\ge\sigma_{r}>0$ 
+            を対角成分とする $r\times r$ 型対角行列
+
+
+## 特異値
+
+-   行列 $\Sigma$ の成分表示
+    \begin{equation}
+      \Sigma
+      =
+      \begin{pmatrix}
+        \sigma_{1}&&&\\
+        &\ddots&&O_{r,p-r}\\
+        &&\sigma_{r}&\\
+        &&&\\
+        &O_{n-r,r} && O_{n-r,p-r}
+      \end{pmatrix}
+    \end{equation}
+-   $D$ の対角成分: $X$ の **特異値** (singular value)
+
+
+## 特異値分解によるGram行列の表現
+
+-   Gram行列の展開
+    \begin{align*}
+      X^{\mathsf{T}}X
+      &=(U\Sigma V^{\mathsf{T}})^{\mathsf{T}}(U\Sigma V^{\mathsf{T}})\\
+      &=V\Sigma^{\mathsf{T}}U^{\mathsf{T}}U\Sigma V^{\mathsf{T}}\\
+      &=V\Sigma^{\mathsf{T}}\Sigma V^{\mathsf{T}}
+    \end{align*}
+
+---
+
+-   行列 $\Sigma^{\mathsf{T}}\Sigma$ は対角行列
+    \begin{equation}
+      \Sigma^{\mathsf{T}}\Sigma
+      =
+      \begin{pmatrix}
+        \sigma_{1}^{2}&&&&&\\
+        &\ddots&&&&\\
+        &&\sigma_{r}^{2}&&&\\
+        &&&0&&\\
+        &&&&\ddots&\\
+        &&&&&0
+      \end{pmatrix}
+    \end{equation}
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   行列$X$の特異値分解を$U\Sigma V^{\mathsf{T}}$とし，
+    行列$U$の第$k$列ベクトルを$\boldsymbol{u}_{k}$，
+    行列$V$の第$k$列ベクトルを$\boldsymbol{v}_{k}$
+    とするとき，
+    以下の問に答えなさい
+    -   行列$U,V$の列ベクトルを用いて$X$を展開しなさい
+    -   Gram行列$X^{\mathsf{T}}X$の固有値を特異値で表しなさい
+    -   行列$X$の主成分負荷量を求めなさい
+    -   それぞれの負荷量に対応する主成分得点を求めなさい
+
+
+# バイプロット
+
+
+## データ行列の分解
+
+-   行列 $U$ の第 $k$ 列ベクトル $\boldsymbol{u}_{k}$
+-   行列 $V$ の第 $k$ 列ベクトル $\boldsymbol{v}_{k}$
+-   データ行列の特異値分解: ($\Sigma$ の非零値に注意)
+    \begin{equation}
+      X
+      =
+      U\Sigma V^{\mathsf{T}}
+      =
+      \sum_{k=1}^{r}\sigma_{k}\boldsymbol{u}_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
+    \end{equation}
+
+
+## データ行列の近似表現
+
+-   第 $k$ 主成分と第 $l$ 主成分を用いた行列 $X$ の近似 $X'$
+    \begin{equation}
+      X\simeq X'
+      =\sigma_{k}\boldsymbol{u}_{k}\boldsymbol{v}_{k}^{\mathsf{T}}
+      +\sigma_{l}\boldsymbol{u}_{l}\boldsymbol{v}_{l}^{\mathsf{T}}
+    \end{equation}
+-   行列の積による表現
+    \begin{align}
+      X'=&GH^{\mathsf{T}}, (0\leq s\leq1)\\
+         &G=
+           \begin{pmatrix}
+             \sigma_{k}^{1-s}\boldsymbol{u}_{k}&
+             \sigma_{l}^{1-s}\boldsymbol{u}_{l}
+           \end{pmatrix},\quad
+          H=
+           \begin{pmatrix}
+             \sigma_{k}^{s}\boldsymbol{v}_{k}&
+             \sigma_{l}^{s}\boldsymbol{v}_{l}
+           \end{pmatrix}
+    \end{align}
+
+
+## バイプロット
+
+-   関連がある2枚の散布図を1つの画面に表示する図を一般に
+    **バイプロット** (biplot) と呼ぶ
+-   行列$G,H$の各行を2次元座標と見なす
+    \begin{equation}
+      X'=GH^{\mathsf{T}}
+    \end{equation}
+    
+    -   行列 $G$ の各行は各データの2次元座標
+    -   行列 $H$ の各行は各変量の2次元座標
+-   パラメタ $s$ は $0$, $1$ または $1/2$ が主に用いられる
+-   $X$ の変動を最大限保持する近似は $k=1,l=2$
+
+
+# 解析の事例
+
+
+## バイプロット
+
+-   2つの情報を1つの散布図で描画
+    -   各データの2次元座標は点
+    -   各変量の2次元座標は矢印
+
+
+### 主成分負荷量 (標準化あり) {.head-center .fig-tall}
+
+```{r}
+#| include: false
+js_pca <- js_data |>
+  select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
+  prcomp(scale. = TRUE) # 標準化する
+```
+
+::: {.columns}
+::: {.column width="55%"}
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_pca |>
+  tidy("loadings") |>
+  pivot_wider(names_from = "PC", names_prefix = "PC") |>
+  gt() |>
+  fmt_number(decimals = 4) |>
+  tab_caption("主成分負荷量") |>
+  tab_options(table.font.size = 16)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_pca |>
+  tidy("loadings") |>
+  pivot_wider(names_from = "PC", names_prefix = "PC") |>
+  gt() |> 
+  fmt_number(decimals = 4) |>
+  tab_caption("主成分負荷量") |>
+  tab_options(table.font.size = 12, table.width = pct(70)) |>
+  as_latex()
+```
+:::
+:::
+
+::: {.column width="45%"}
+::: {.fig-tall}
+```{r}
+js_pca |>
+  tidy("loadings") |>
+  mutate(column = as_factor(column)) |>
+  ggplot(aes(x = PC, y = value, fill = column)) +
+  geom_bar(stat = "identity", width = 0.7, alpha = 0.5,
+           position = position_dodge(width = 0.7, reverse = TRUE)) +
+  scale_x_reverse() + coord_flip() +
+  labs(x = "主成分", y = "負荷量", fill = NULL)
+```
+:::
+:::
+:::
+
+
+### 寄与率
+
+::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| include: false
+#' 寄与率に関する表を作成
+js_pcs_tab <- 
+  js_pca |>                              
+  tidy("eigenvalues") |> # "d" または "eigenvalues" または "pcs"
+  rename(主成分 = PC,
+         標準偏差 = std.dev,
+         寄与率 = percent,
+         累積寄与率 = cumulative)
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_pcs_tab |>                              
+  gt() |>      
+  fmt_number(columns = !1, decimals = 3) |>
+  tab_caption("寄与率") |>
+  tab_options(table.font.size = 16)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_pcs_tab |>                              
+  gt() |>      
+  fmt_number(columns = !1, decimals = 3) |>
+  tab_caption("寄与率(再掲)") |>
+  tab_options(table.font.size = 12, table.width = pct(60)) |>
+  as_latex()
+```
+:::
+:::
+
+::: {.column width="60%"}
+::: {.fig-tall}
+```{r}
+#' まとめて並べて表示
+js_pca |>                              
+  tidy("eigenvalues") |>
+  pivot_longer(!PC) |>
+  mutate(name = as_factor(name)) |>
+  ggplot(aes(x = PC, y = value, fill = name)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~ name,
+             scales = "free_y",
+             labeller = labeller(name = c(
+                                   std.dev = "標準偏差",
+                                   percent = "寄与率",
+                                   cumulative = "累積寄与率"))) +
+  labs(x = "主成分") +
+  theme(legend.position = "none") 
+```
+:::
+:::
+:::
+
+
+### 第1,2主成分によるバイプロット {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+autoplot(js_pca, # バイプロット
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = TRUE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = TRUE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4)
+```
+
+
+### 第3,2主成分によるバイプロット {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+autoplot(js_pca, # バイプロット
+         x = 3, y = 2,
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = TRUE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = TRUE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4)
+```
+
+
+### 中心部の拡大 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+autoplot(js_pca, # バイプロット
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = TRUE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = TRUE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4) +
+  theme(legend.position = "none") +
+  xlim(-0.23,0.28) + ylim(-0.13,0.38)
+```
+
+
+# 次回の予定
+
+-   **第1日 : 判別分析の考え方**
+-   第2日 : 分析の評価

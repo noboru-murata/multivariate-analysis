@@ -1,0 +1,952 @@
+---
+title: 主成分分析
+subtitle: 基本的な考え方
+author: 村田 昇
+oxq-email: "noboru.murata@gmail.com"
+# lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
+# 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
+#   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / mint / amethyst / garnet / dracula)．pdf と html は callout の色だけ配色に合わせる (callout-palette)．
+#   dracula では表紙の title-bg を外し，コードも dracula 配色にする (ox-quarto-ext-palette-rules)．
+# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる，pointer (q) は肉球．
+callout-palette: indigo             # pdf と html の callout の色 (lib/callout-colors.lua．#+QUARTO_PALETTE に合わせて書き換わる)
+license: "CC BY-NC"
+csl: _quarto/csl/apa-short.csl      # 文献の書式 (本文は (著者, 年)．一覧は 4 名以上を 2 名 + et al. に．解説文は apa.csl)
+link-citations: true
+cite-aside-max: 2                   # 引用が 3 件以上のスライドでは書誌を脚注欄に出さない (lib/cite-aside.lua)
+format:
+  revealjs: 
+    theme:
+      - default
+      - _quarto/scss/oerreveal.scss          # structure
+      - _quarto/scss/indigo-palette.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
+      - _quarto/scss/lecture-deck.scss       # 修飾
+      - _quarto/scss/paw-deck.scss           # pointer (q) を肉球に．丸い点に戻すなら #+QUARTO_DECK: dot (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
+      - _quarto/scss/iframe.scss
+      - _quarto/scss/title-bg.scss
+      - _quarto/scss/text-size.scss
+    slide-level: 3
+    max-scale: 2.0 
+    embed-resources: true
+    include-in-header:
+      - _quarto/lib/mathjax-fix.html
+      - _quarto/lib/pixel-snap.html     # スライドの位置を整数ピクセルに (Safari のぼやけ対策)
+      - _quarto/lib/slide-number-arrows.html  # 頁番号を矢印の箱の中へ (Safari でも矢印の真ん中に)
+    center: true
+    controls: true
+    controls-layout: bottom-right
+    controls-back-arrows: visible
+    controls-tutorial: true
+    navigation-mode: vertical
+    auto-stretch: false
+    slide-number: c/t                  # 右下に「頁/総頁」(talk と同じ)
+  pdf:
+    keep-tex: true
+    echo: false
+    pdf-engine: lualatex
+    papersize: a4                   # 用紙 (Quarto の既定は letter．report / handout も a4)．org から: #+QUARTO_PDF_OPTIONS: papersize:letter
+    include-in-header: 
+      - text: |
+          \usepackage{luatexja-preset}
+          % luatexja-fontspec (TeX Live 2026，2026-09 以降) が regexpatch を読み，後で xpatch を読むと \xpatchcmd が二重定義の誤りになる．
+          % regexpatch は xpatch の命令も持つので，xpatch は読んだことにする (amsthm を読む文書で起きた．NOTES.org)
+          \makeatletter\@ifpackageloaded{regexpatch}{\@ifpackageloaded{xpatch}{}{\expandafter\def\csname ver@xpatch.sty\endcsname{2020/03/25 v0.3a (provided by regexpatch)}}}{}\makeatother
+          \usepackage{mathtools}
+          \mathtoolsset{showonlyrefs,showmanualtags}	    
+      - _quarto/tex/fig-scale.tex
+      - _quarto/tex/table-center.tex
+      - _quarto/tex/callout-title-gothic.tex
+      - _quarto/tex/gt-table-tight.tex
+  html: 
+    self-contained: false
+    grid: 
+      margin-width: 350px
+    code-fold: true
+revealjs-plugins:
+  - pointer
+pointer:
+  color: "rgba(255, 0, 0, 0.4)"
+  pointerSize: 120
+  alwaysVisible: false
+knitr:
+  opts_chunk:
+    fig.align: center
+execute:
+  warning: false
+  message: false
+  fig-height: 5
+  fig-width: 5
+filters:                          # 節扉は見出しをそのまま出す (section-toc は使わない)
+  - _quarto/lib/no-hrule.lua
+  - _quarto/lib/iframe.lua
+  - _quarto/lib/cite-aside.lua    # 各スライドで引用した文献の書誌を脚注欄に出す (revealjs のみ)
+  - _quarto/lib/ack.lua           # 謝辞の頁の人の一覧 (::: people) を写真・名前・所属の組に
+  - _quarto/lib/text-size.lua   # .text-NN / .math-NN を PDF でも効かせる
+  - _quarto/lib/slide-notes.lua # 発表者ノートを pdf / html では枠で囲む (slide-notes)
+  - _quarto/lib/title-qr.lua    # 表紙の右下の QR コード (revealjs のみ．org の #+QUARTO_QR)
+  - _quarto/lib/pin.lua           # .pin-top / .pin-bottom: absolute の要素をキャンバスの端に固定 (title-qr の後に)
+  - _quarto/lib/text-center.lua   # #+begin_center (::: {.text-center}) を html / pdf / typst で中央寄せに
+  - _quarto/lib/callout-colors.lua # callout を palette の役割の色に (pdf / html．revealjs は scss)
+slide-notes-default: box          # 発表者ノート (::: notes) を pdf / html でどう出すか: box / margin / hide / plain (lib/slide-notes.lua．org では #+QUARTO_OPTIONS: slide-notes:margin)
+
+---
+
+
+
+```{r}
+### 第6講 資料
+```
+
+```{r}
+library(conflicted)
+conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+    )
+library(tidyverse)
+library(ggfortify)     # 分析結果の視覚化にggplotを利用するためのパッケージ
+library(GGally)
+library(ggrepel)
+library(gt)            # 表を作成するためのパッケージ
+library(gtsummary)
+library(broom)
+library(broom.helpers) # gtsummary のいくつかの関数で利用(インストールされていれば不要)
+library(MASS)          # パッケージ MASS に含まれる判別分析のための関数を利用
+library(cluster)       # クラスタ分析のためのパッケージ
+library(ggdendro)      # ggplot でデンドログラムを描くためのパッケージ
+library(tsibble)       # 時系列を扱うためのパッケージ
+library(feasts)        # ggplotで時系列を扱うための拡張パッケージ
+library(fable)         # 時系列関連
+library(ggtime)        # 時系列関連
+#' 日本語表示の設定
+#' 出力形式に応じた作図デバイス
+if (knitr::is_latex_output()) knitr::opts_chunk$set(dev = "cairo_pdf")
+
+#' 日本語表示の設定
+if (Sys.info()["sysname"] == "Darwin") {
+    jp_font <- if (knitr::is_latex_output()) {
+                   "Hiragino Maru Gothic ProN"   # cairo は fontconfig 経由なのでファミリ名
+               } else {
+                   "HiraMaruProN-W4"             # quartz/AGG は PostScript 名
+               }
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+} else {
+    jp_font <- NULL
+}
+#' 色の設定
+library(see)
+options(ggplot2.discrete.colour = function() scale_colour_material(),
+        ggplot2.discrete.fill = function() scale_fill_material())
+```
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\figfitboth
+\setlength{\figmaxheight}{0.42\textheight}
+\setlength{\figmaxwidth}{0.84\textwidth}
+```
+:::
+
+
+# 講義の内容
+
+-   **第1日 : 主成分分析の考え方**
+-   第2日 : 分析の評価と視覚化
+
+
+# 主成分分析の考え方
+
+
+## 主成分分析
+
+-   多数の変量のもつ情報の分析・視覚化
+    -   変量を効率的に縮約して少数の特徴量を構成する
+    -   特徴量に関与する変量間の関係を明らかにする
+-   **PCA** (Principal Component Analysis)
+    -   構成する特徴量 : **主成分** (principal component)
+
+
+## 主成分分析の例 {.head-center .fig-tall}
+
+```{r}
+#' 主成分分析の例
+#' 人口関連データの整理
+ja_data <-
+  bind_cols(
+    ## 都道府県名と地方名の取得
+    read_csv(file = "data/prefecture.csv",
+             col_select = c(2,4)) |>
+    set_names("都道府県名", "地方区分"),     # 列の名称を"都道府県名"と"地方区分"に変更
+    ## データの取得
+    read_csv(file = "data/jpamenity.csv",
+             col_select = !1:2) |> # 不要な列を読み込まない
+    slice(-1) |>                   # 不要な行を削除
+    set_names(names(read_csv(file = "data/jpamenityitem.csv"))) # 簡略化した項目名に変更
+  ) |> 
+  select(1:10) |> # 人口関連のみ利用
+  mutate(地方区分 = as_factor(地方区分)) # 地方区分を出現順に因子化
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+ja_data |>
+  gt() |>
+  tab_caption("都道府県別の人口関連データ") |>
+  tab_options(table.font.size = 19)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+ja_data |>
+  gt() |>
+  tab_caption("都道府県別の人口関連データ") |>
+  tab_options(table.font.size = 9, table.width = pct(90)) |>
+  as_latex()
+```
+:::
+
+
+### 人口関連データの散布図 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6.2
+ja_data |>
+  ggpairs(columns = 3:10,  # 都道府県名・地方区分を除く
+          legend = c(2,1), # 2行1列のグラフから凡例を作成
+          upper = list(continuous = wrap("cor", size = 2.5)),
+          lower = list(continuous = wrap("points", alpha = .5),
+                       mapping = aes(colour = 地方区分))) +
+  theme(strip.text = element_text(size = 6),
+        axis.text = element_text(size = 5))
+```
+
+
+### 主成分得点のバイプロット {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+ja_pca <- ja_data |> 
+  select(!1:2) |> # 人口関連データのみ
+  prcomp(scale. = TRUE) # 主成分分析の実行
+autoplot(ja_pca, # バイプロット
+         asp = 1, # 縦横比を設定
+         data = ja_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE, # ラベルの表示
+         label.label = "都道府県名",
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.show.legend = FALSE,
+         label.family = jp_font, label.size = 3,
+         loadings = TRUE, loadings.colour = "orchid", # 負荷の表示
+         loadings.label = TRUE, loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.family = jp_font, loadings.label.size = 4)
+```
+
+
+## 分析の枠組み
+
+-   $x_{1},\dotsc,x_{p}$ : **変数**
+-   $z_{1},\dotsc,z_{d}$ : **特徴量** ( $d\leq p$ )
+-   変数と特徴量の関係 (線形結合)
+    \begin{equation}
+      z_k=a_{1k}x_{1}+\cdots+a_{pk}x_{p}\quad(k=1,\dotsc,d)
+    \end{equation}
+    
+    -   特徴量は定数倍の任意性があるので以下を仮定
+        \begin{equation}
+          \|\boldsymbol{a}_k\|^2=\sum_{j=1}^pa_{jk}^2=1
+        \end{equation}
+
+
+## 主成分分析の用語
+
+-   特徴量 $z_k$
+    -   第 $k$ **主成分得点** (principal component score)
+    -   第 $k$ **主成分**
+-   係数ベクトル $\boldsymbol{a}_k$
+    -   第 $k$ **主成分負荷量** (principal component loading)
+    -   第 $k$ **主成分方向** (principal component direction)
+
+
+## 分析の目的
+
+-   目的   
+    主成分得点
+    $z_{1},\dots,z_{d}$
+    が変数
+    $x_{1},\dotsc,x_{p}$
+    の情報を効率よく反映するように主成分負荷量
+    $\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{d}$
+    を観測データから決定する
+-   分析の方針 (以下は同値)
+    -   データの情報を最も保持する変量の **線形結合を構成**
+    -   データの情報を最も反映する **座標軸を探索**
+-   **教師なし学習** の代表的手法の1つ
+    -   特徴抽出 : 情報処理に重要な特性を少数の変数に凝集
+    -   次元縮約 : 入力をできるだけ少ない変数で表現
+
+
+# 第1主成分の計算
+
+
+## 記号の準備
+
+-   変数 : $x_{1},\dotsc,x_{p}$ ($p$次元)
+-   観測データ : $n$ 個の $(x_{1},\dotsc,x_{p})$ の組
+    \begin{equation}
+      \{(x_{i1},\dots,x_{ip})\}_{i=1}^n
+    \end{equation}
+-   ベクトル表現
+    -   $\boldsymbol{x}_{i}=(x_{i1},\dots,x_{ip})^{\mathsf{T}}$ :
+        $i$ 番目の観測データ ($p$ 次元空間内の1点)
+    -   $\boldsymbol{a}=(a_{1},\dots,a_{p})^{\mathsf{T}}$ : 
+        長さ1の $p$ 次元ベクトル
+
+
+## 係数ベクトルによる射影
+
+-   データ $\boldsymbol{x}_{i}$ の $\boldsymbol{a}$ 方向成分の長さ
+    \begin{equation}
+      \boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
+      \quad\text{(スカラー)}
+    \end{equation}
+-   方向ベクトル $\boldsymbol{a}$
+    をもつ直線上への点 $\boldsymbol{x}_{i}$
+    の直交射影
+    \begin{equation}
+      (\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i})\,\boldsymbol{a}
+      \quad\text{(スカラー \(\times\) ベクトル)}
+    \end{equation}
+
+
+## 幾何学的描像
+
+![観測データの直交射影 ($p=2,n=2$ の場合)](figs/pca-figure.png){width=65% fig-align="center"}
+
+
+## ベクトル $\boldsymbol{a}$ の選択の指針
+
+-   射影による特徴量の構成   
+    ベクトル $\boldsymbol{a}$ を **うまく** 選んで
+    観測データ $\boldsymbol{x}_{1},\cdots,\boldsymbol{x}_{n}$
+    の情報を最も保持する1変量データ $z_{1},\cdots,z_{n}$を構成
+    \begin{equation}
+      z_{1}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{1},
+      z_{2}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_2,
+      \dotsc,
+      z_{n}=\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_n
+    \end{equation}
+-   特徴量のばらつきの最大化   
+    観測データの **ばらつき**
+    を最も反映するベクトル $\boldsymbol{a}$ を選択
+    \begin{equation}
+      \arg\max_{\boldsymbol{a}}
+      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
+      -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2,
+      \quad
+      \bar{\boldsymbol{x}}
+      =
+      \frac{1}{n}\sum_{i=1}^n\boldsymbol{x}_{i},
+    \end{equation}
+
+
+## ベクトル $\boldsymbol{a}$ の最適化
+
+-   最適化問題   
+    制約条件 $\|\boldsymbol{a}\|=1$ の下で
+    以下の関数を最大化せよ
+    \begin{equation}
+      f(\boldsymbol{a})
+      =
+      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i}
+      -\boldsymbol{a}^{\mathsf{T}}\bar{\boldsymbol{x}})^2
+    \end{equation}
+-   この最大化問題は必ず解をもつ
+    -   $f(\boldsymbol{a})$ は連続関数
+    -   集合 $\{\boldsymbol{a}\in\mathbb{R}^p:\|\boldsymbol{a}\|=1\}$ はコンパクト(有界閉集合)
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   評価関数 $f(\boldsymbol{a})$
+        を以下の中心化したデータ行列で表しなさい
+        \begin{equation}
+          X
+          =
+          \begin{pmatrix}
+            \boldsymbol{x}_{1}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}} \\
+            \vdots \\
+            \boldsymbol{x}_{n}^{\mathsf{T}}-\bar{\boldsymbol{x}}^{\mathsf{T}}
+          \end{pmatrix}
+          =
+          \begin{pmatrix}
+            x_{11}-\bar{x}_{1} & \cdots & x_{1p}-\bar{x}_{p}\\
+            \vdots & & \vdots \\
+            x_{n1}-\bar{x}_{1} & \cdots & x_{np}-\bar{x}_{p}
+          \end{pmatrix}
+        \end{equation}
+    -   上の結果を用いて次の最適化問題の解の条件を求めなさい
+        \begin{equation}
+          \text{maximize}\quad
+          f(\boldsymbol{a})
+          \quad\text{s.t.}\quad
+          \boldsymbol{a}^{\mathsf{T}}\boldsymbol{a}=1
+        \end{equation}
+
+
+# 第1主成分の解
+
+
+## ベクトル $\boldsymbol{a}$ の解
+
+-   最適化問題
+    \begin{equation}
+      \text{maximize}\quad
+      f(\boldsymbol{a})
+      =
+      \boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+      \quad\text{s.t.}\quad
+      \boldsymbol{a}^{\mathsf{T}}\boldsymbol{a}=1
+    \end{equation}
+-   固有値問題   
+    $f(\boldsymbol{a})$ の極大値を与える $\boldsymbol{a}$ は
+    $X^{\mathsf{T}}X$ の固有ベクトルとなる
+    \begin{equation}
+      X^{\mathsf{T}}X\boldsymbol{a}
+      =
+      \lambda\boldsymbol{a}
+    \end{equation}
+
+
+## 第1主成分
+
+-   固有ベクトル$\boldsymbol{a}$に対する$f(\boldsymbol{a})$
+    は行列 $X^{\mathsf{T}}X$ の固有値
+    \begin{equation}
+      f(\boldsymbol{a})
+      =\boldsymbol{a}^{\mathsf{T}}X^{\mathsf{T}}X\boldsymbol{a}
+      =\boldsymbol{a}^{\mathsf{T}}\lambda\boldsymbol{a}
+      =\lambda
+    \end{equation}
+-   求める $\boldsymbol{a}$
+    は行列 $X^{\mathsf{T}}X$ の最大固有ベクトル (長さ1)
+-   **第1主成分負荷量** : 最大(第一)固有ベクトル $\boldsymbol{a}$
+-   **第1主成分得点**
+    \begin{equation}
+      z_{i1}
+      =a_{1}x_{i1}+\cdots+a_{p}x_{ip}
+      =\boldsymbol{a}^{\mathsf{T}}\boldsymbol{x}_{i},
+      \quad(i=1,\dots,n)
+    \end{equation}
+
+
+# Gram 行列の性質
+
+
+## Gram 行列の固有値
+
+-   $X^{\mathsf{T}}X$ は半正定値行列
+-   $X^{\mathsf{T}}X$ の固有値は0以上の実数
+    -   固有値を重複を許して降順に並べる
+        \begin{equation}
+          \lambda_{1}\geq\dotsb\geq\lambda_{p}\quad(\geq0)
+        \end{equation}
+    -   固有値 $\lambda_{k}$ に対する固有ベクトルを $\boldsymbol{a}_{k}$(長さ1)とする
+        \begin{equation}
+          \|\boldsymbol{a}_{k}\|=1,
+          \quad (k=1,\dotsc,p)
+        \end{equation}
+
+
+## Gram 行列のスペクトル分解
+
+-   $\boldsymbol{a}_{1},\dotsc,\boldsymbol{a}_{p}$ は **互いに直交** するようとることができる
+    \begin{equation}
+      j\neq k
+      \quad\Rightarrow\quad
+      \boldsymbol{a}_{j}^{\mathsf{T}}\boldsymbol{a}_k=0
+    \end{equation}
+-   行列 $X^{\mathsf{T}}X$ (半正定値行列) のスペクトル分解
+    \begin{align}
+      X^{\mathsf{T}}X
+      &=\lambda_{1}\boldsymbol{a}_{1}\boldsymbol{a}_{1}^{\mathsf{T}}+
+        \lambda_{2}\boldsymbol{a}_{2}\boldsymbol{a}_{2}^{\mathsf{T}}+
+        \dotsb+\lambda_{p}\boldsymbol{a}_{p}\boldsymbol{a}_{p}^{\mathsf{T}}\\
+      &=\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
+    \end{align}
+    
+    -   固有値と固有ベクトルによる行列の表現
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   Gram 行列のスペクトル分解において
+        $\lambda_{j}$ と $\boldsymbol{a}_{j}$
+        が固有値・固有ベクトルとなることを確かめなさい
+        \begin{equation}
+          X^{\mathsf{T}}X
+          =\sum_{k=1}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
+        \end{equation}
+    -   以下の行列を用いて Gram 行列のスペクトル分解を書き直しなさい
+        \begin{equation}
+          A
+          =
+          \begin{pmatrix}
+            \boldsymbol{a}_{1}^{\mathsf{T}}\\
+            \vdots \\
+            \boldsymbol{a}_{p}^{\mathsf{T}}
+          \end{pmatrix},
+          \quad
+          \Lambda
+          =
+          \begin{pmatrix}
+            \lambda_{1} & 0 & \dotsm & 0\\
+            0 & \lambda_{2} & \dotsm & 0\\
+            0 & 0 & \ddots & 0\\
+            0 & 0 & \dotsm & \lambda_{p}\\
+          \end{pmatrix}
+        \end{equation}
+
+
+# 第2主成分以降の計算
+
+
+## 第2主成分の考え方
+
+-   第1主成分
+    -   主成分負荷量 : ベクトル $\boldsymbol{a}_{1}$
+    -   主成分得点 : $\boldsymbol{a}_{1}^{\mathsf{T}}\boldsymbol{x}_{i}$ ($i=1,\dotsc,n$)
+-   第1主成分負荷量に関してデータが有する情報
+    \begin{equation}
+      (\boldsymbol{a}_{1}^{\mathsf{T}}\boldsymbol{x}_{i})\,\boldsymbol{a}_{1}
+      \quad(i=1,\dotsc,n)
+    \end{equation}
+-   第1主成分を取り除いた観測データ (分析対象)
+    \begin{equation}
+      \tilde{\boldsymbol{x}}_{i}
+      =
+      \boldsymbol{x}_{i}
+      -(\boldsymbol{a}_{1}^{\mathsf{T}}\boldsymbol{x}_{i})\,\boldsymbol{a}_{1}
+      \quad(i=1,\dotsc,n)
+    \end{equation}
+
+
+## 第2主成分の最適化
+
+-   最適化問題   
+    制約条件 $\|\boldsymbol{a}\|=1$ の下で
+    以下の関数を最大化せよ
+    \begin{equation}
+      \tilde{f}(\boldsymbol{a})
+      =
+      \sum_{i=1}^n(\boldsymbol{a}^{\mathsf{T}}\tilde{\boldsymbol{x}}_{i}
+      -\boldsymbol{a}^{\mathsf{T}}\bar{\tilde{\boldsymbol{x}}})^2
+      \quad\text{ただし}\quad
+      \bar{\tilde{\boldsymbol{x}}}
+      =
+      \frac{1}{n}\sum_{i=1}^n\tilde{\boldsymbol{x}}_{i}
+    \end{equation}
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   以下の中心化したデータ行列を
+        $X$ と $\boldsymbol{a}_{1}$
+        で表しなさい
+        \begin{equation}
+          \tilde{X}
+          =
+          \begin{pmatrix}
+            \tilde{\boldsymbol{x}}_{1}^{\mathsf{T}}-\bar{\tilde{\boldsymbol{x}}}^{\mathsf{T}} \\
+            \vdots \\
+            \tilde{\boldsymbol{x}}_{n}^{\mathsf{T}}-\bar{\tilde{\boldsymbol{x}}}^{\mathsf{T}}
+          \end{pmatrix}
+        \end{equation}
+    -   上の結果を用いて
+        次の最適化問題の解を求めなさい
+        \begin{equation}
+          \text{maximize}\quad
+          \tilde{f}(\boldsymbol{a})
+          \quad\text{s.t.}\quad
+          \boldsymbol{a}^{\mathsf{T}}\boldsymbol{a}=1
+        \end{equation}
+
+
+# 第2主成分以降の解
+
+
+## 第2主成分
+
+-   Gram 行列 $\tilde{X}^{\mathsf{T}}\tilde{X}$
+    の固有ベクトル $\boldsymbol{a}_{1}$ の固有値は 0
+    \begin{equation}
+      \tilde{X}^{\mathsf{T}}\tilde{X}\boldsymbol{a}_{1}
+      = 0
+    \end{equation}
+-   Gram 行列 $\tilde{X}^{\mathsf{T}}\tilde{X}$
+    の最大固有値は
+    $\lambda_2$
+-   解は第2固有値 $\lambda_2$ に対応する固有ベクトル $\boldsymbol{a}_2$
+
+---
+
+-   以下同様に
+    第 $k$ 主成分負荷量は 
+    $X^{\mathsf{T}}X$ の第 $k$ 固有値 $\lambda_k$
+    に対応する固有ベクトル $\boldsymbol{a}_k$
+
+
+# 解析の事例
+
+
+## データセットについて
+
+-   総務省統計局より取得した都道府県別の社会生活統計指標(自然環境・経済基盤)の一部
+    -   総務省 <https://www.e-stat.go.jp/SG1/estat/List.do?bid=000001083999&cycode=0>
+    -   整理したものを `japan_social.csv` として配布
+        -   都道府県名
+        -   地方区分
+        -   森林面積割合 (%) 2014年
+        -   就業者１人当たり農業産出額(販売農家）(万円) 2014年
+        -   全国総人口に占める人口割合 (%) 2015年
+        -   土地生産性（耕地面積１ヘクタール当たり）(万円) 2014年
+        -   商業年間商品販売額［卸売業＋小売業］（事業所当たり）(百万円) 2013年
+
+
+## 社会生活統計指標の分析 {.head-center .fig-tall}
+
+```{r}
+#' データの読み込み
+js_data <- read_csv(file = "data/japan_social.csv",
+                    col_type = list(地方区分 = col_factor()))
+## js_data <-
+##   bind_cols(
+##     read_csv(file = "data/prefecture.csv",
+##              col_select = c(2,4)) |>
+##     set_names("県名","地方区分"), # 列の名称を"県名"と"地方区分"に変更
+##     read_csv(file = "data/japan_social.csv",
+##              col_select = 2:6) |> 
+##     set_names("森林面積割合","農業産出額","人口割合","土地生産性","商品販売額")
+##   )|> # 簡略化した項目名に変更
+##   mutate(地方区分 = as_factor(地方区分)) # 地方区分を出現順に因子化
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_data |>
+  slice(1:15) |>
+  gt() |>
+  tab_caption("都道府県別の自然環境・経済基盤データ") |>
+  tab_options(table.font.size = 20)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_data |>
+  gt() |> 
+  tab_caption("都道府県別の自然環境・経済基盤データ") |>
+  tab_options(table.font.size = 12, table.width = pct(85)) |>
+  as_latex()
+```
+:::
+
+
+### 変数間の関係を見る {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+#' データの視覚化
+js_data |> # 散布図．いくつかの変数は相関強いことがわかる
+  ggpairs(columns = 3:7, # 都道府県名・地方区分は除く
+          legend = c(2,1), # 2行1列のグラフから凡例を作成
+          upper = list(continuous = wrap("cor", size = 4)),
+          lower = list(continuous = wrap("points", alpha = .5),
+                       mapping = aes(colour = 地方区分))) +
+  theme(strip.text = element_text(size = 9),
+        axis.text = element_text(size = 7))
+```
+
+
+### 変数のばらつきに大きな違いがある {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+js_data |> # 箱ひげ図．
+  pivot_longer(where(is.double)) |>  # 都道府県名・地方区分以外をまとめる
+  mutate(name = as_factor(name)) |>  # 出現順にx軸を並べるために因子化する
+  ggplot(aes(x = name, y = value)) + # 既定値の name と value を利用
+  geom_boxplot(aes(fill = name), alpha = 0.5,
+               show.legend = FALSE) +# 変数ごとに色を変える
+  labs(x = NULL, y = NULL)
+```
+
+
+### より詳細な分布を確認する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+js_data |> 
+  pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+  mutate(name = as_factor(name)) |>
+  ggplot(aes(x = value)) + 
+  geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
+  labs(x = NULL, y = NULL, fill = NULL) +
+  theme(legend.position = "inside",
+        legend.position.inside = c(.95, .95),
+        legend.justification = c("right", "top"))
+```
+
+
+### データのばらつきを揃える {.head-center .fig-tall}
+
+```{r}
+#' データの標準化
+js_data_std <-
+  js_data |>
+  mutate(across(where(is.double), \(x)signif(c(scale(x)), digits = 3)))
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_data_std |>
+  slice(1:15) |>
+  gt() |>
+  tab_caption("標準化したデータ") |>
+  tab_options(table.font.size = 20)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_data_std |>
+  gt() |> 
+  tab_caption("標準化したデータ") |>
+  tab_options(table.font.size = 12, table.width = pct(85)) |>
+  as_latex()
+```
+:::
+
+
+### 変数のばらつきを確認する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+js_data |> # 箱ひげ図．変数のばらつきをそろえる
+  mutate(across(where(is.double), \(x)c(scale(x)))) |>
+  pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+  mutate(name = as_factor(name)) |>
+  ggplot(aes(x = name, y = value)) + # 既定値の name と value を利用
+  geom_boxplot(aes(fill = name), alpha = 0.5,
+               show.legend = FALSE) + # 変数ごとに色を変える
+  labs(x = NULL, y = NULL)
+```
+
+
+### より詳細な分布を確認する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+js_data |> 
+  mutate(across(where(is.double), \(x)c(scale(x)))) |>
+  pivot_longer(where(is.double)) |> # 都道府県名・地方区分以外をまとめる
+  mutate(name = as_factor(name)) |>
+  ggplot(aes(x = value)) + 
+  geom_density(aes(fill = name), alpha = 0.4) + # 変数ごとに色を変える
+  labs(x = NULL, y = NULL, fill = NULL) +
+  theme(legend.position = "inside",
+        legend.position.inside = c(.95, .95),
+        legend.justification = c("right", "top"))
+```
+
+
+### 主成分負荷量を計算する (標準化後) {.head-center .fig-tall}
+
+```{r}
+js_pca <-
+  js_data |>
+  select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
+  prcomp(scale. = TRUE) # 変数のばらつきを規格化
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_pca |>
+  tidy("loadings") |>
+  pivot_wider(names_from = "PC", names_prefix = "PC") |>
+  gt() |>
+  fmt_number(decimals = 4) |>
+  tab_caption("標準化した場合の主成分負荷量") |>
+  tab_options(table.font.size = 24)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_pca |>
+  tidy("loadings") |>
+  pivot_wider(names_from = "PC", names_prefix = "PC") |>
+  gt() |> 
+  fmt_number(decimals = 4) |>
+  tab_caption("標準化した場合の主成分負荷量") |>
+  tab_options(table.font.size = 12, table.width = pct(70)) |>
+  as_latex()
+```
+:::
+
+-   主成分方向から読み取れること
+    -   第1 : 人の多さに関する成分(正の向きほど人が多い)
+    -   第2 : 農業生産力に関する成分(正の向きほど高い)
+
+
+### 各主成分における負荷量の違いを確認する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+js_pca |>
+  tidy("loadings") |>
+  mutate(column = as_factor(column)) |>
+  ggplot(aes(x = PC, y = value, fill = column)) +
+  geom_bar(stat = "identity", width = 0.7, alpha = 0.5,
+           position = position_dodge(width = 0.7, reverse = TRUE)) +
+  scale_x_reverse() + coord_flip() +
+  labs(x = "主成分", y = "負荷量", fill = NULL)
+```
+
+
+### 主成分得点を表示する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 7
+autoplot(js_pca, # バイプロット
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = FALSE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = FALSE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4) 
+```
+
+
+### データの標準化を行わない場合 {.head-center .fig-tall}
+
+```{r}
+js_pca <- js_data |>
+  select(where(is.double)) |> # 都道府県名・地方区分を除いて主成分分析を実行
+  prcomp(scale. = FALSE) # 標準化しない
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+js_pca |>
+  tidy("loadings") |>
+  pivot_wider(names_from = "PC", names_prefix = "PC") |>
+  gt() |>
+  fmt_number(decimals = 4) |>
+  tab_caption("標準化しない場合の主成分負荷量") |>
+  tab_options(table.font.size = 24)
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+js_pca |>
+  tidy("loadings") |>
+  pivot_wider(names_from = "PC", names_prefix = "PC") |>
+  gt() |> 
+  fmt_number(decimals = 4) |>
+  tab_caption("標準化しない場合の主成分負荷量") |>
+  tab_options(table.font.size = 12, table.width = pct(70)) |>
+  as_latex()
+```
+:::
+
+-   ばらつきの大きな変数に主成分方向が偏り，情報の集約が行われていない
+
+
+### 主成分負荷量を比較する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+js_pca |>
+  tidy("loadings") |>
+  mutate(column = as_factor(column)) |>
+  ggplot(aes(x = PC, y = value, fill = column)) +
+  geom_bar(stat = "identity", width = 0.7, alpha = 0.5,
+           position = position_dodge(width = 0.7, reverse = TRUE)) +
+  scale_x_reverse() + coord_flip() +
+  labs(x = "主成分", y = "負荷量", fill = NULL)
+```
+
+
+### 主成分得点を比較する {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+autoplot(js_pca, # バイプロット
+         asp = 1, # 縦横比を設定
+         data = js_data,
+         colour = "地方区分", # 地方ごとに色付け
+         label = TRUE,
+         label.label = "都道府県名",   # ラベルの表示
+         label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+         label.size = 3,
+         label.show.legend = FALSE,
+         loadings = FALSE,
+         loadings.colour = "orchid", # 負荷の表示
+         loadings.label = FALSE,
+         loadings.label.colour = "darkgray", # 負荷ラベルの表示
+         loadings.label.size = 4)
+```
+
+
+# 次回の予定
+
+-   第1日 : 主成分分析の考え方
+-   **第2日 : 分析の評価と視覚化**

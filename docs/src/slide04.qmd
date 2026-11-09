@@ -2,6 +2,7 @@
 title: 回帰分析
 subtitle: モデルの評価
 author: 村田 昇
+oxq-email: "noboru.murata@gmail.com"
 # lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
 # 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
 #   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)

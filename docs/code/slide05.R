@@ -1,7 +1,5 @@
 ### 第3講 資料
 
-### 第3講 資料
-
 #' 東京の気候データを用いた例
 #' データの読み込み
 tw_data <-
@@ -165,23 +163,6 @@ my_gts <- function(x){
     ) |>
     modify_header(label = "**変数**",
                   estimate = "**係数(SE)**",
-                  statistic = "**t統計量**",
-                  p.value = "**p値**") |>
-    remove_abbreviation() |>
-    modify_abbreviation("SE = 標準誤差")
-} 
-my_gts <- function(x){
-  tbl_regression(x, intercept = TRUE) |>            # 標準の表
-    modify_column_unhide(columns = c(statistic)) |> # 標準誤差とt統計量を表示
-    add_significance_stars(
-      hide_ci = TRUE,
-      hide_se = FALSE,
-      hide_p = FALSE,
-      pattern = "{p.value}{stars}"
-    ) |>
-    modify_header(label = "**変数**",
-                  estimate = "**係数**",
-                  std.error = "**SE**",
                   statistic = "**t統計量**",
                   p.value = "**p値**") |>
     remove_abbreviation() |>

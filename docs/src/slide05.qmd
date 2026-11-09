@@ -2,14 +2,37 @@
 title: 回帰分析
 subtitle: 予測と発展的なモデル
 author: 村田 昇
+oxq-email: "noboru.murata@gmail.com"
+# lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: indigo-palette)
+# 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
+#   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / mint / amethyst / garnet / dracula)．pdf と html は callout の色だけ配色に合わせる (callout-palette)．
+#   dracula では表紙の title-bg を外し，コードも dracula 配色にする (ox-quarto-ext-palette-rules)．
+# talk.yaml との違い: 表紙に title-bg，節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる，pointer (q) は肉球．
+callout-palette: indigo             # pdf と html の callout の色 (lib/callout-colors.lua．#+QUARTO_PALETTE に合わせて書き換わる)
 license: "CC BY-NC"
+csl: _quarto/csl/apa-short.csl      # 文献の書式 (本文は (著者, 年)．一覧は 4 名以上を 2 名 + et al. に．解説文は apa.csl)
+link-citations: true
+cite-aside-max: 2                   # 引用が 3 件以上のスライドでは書誌を脚注欄に出さない (lib/cite-aside.lua)
 format:
   revealjs: 
-    theme: [default, _quarto/scss/oerreveal-lecture.scss]
+    theme:
+      - default
+      - _quarto/scss/oerreveal.scss          # structure
+      - _quarto/scss/indigo-palette.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
+      - _quarto/scss/lecture-deck.scss       # 修飾
+      - _quarto/scss/paw-deck.scss           # pointer (q) を肉球に．丸い点に戻すなら #+QUARTO_DECK: dot (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
+      - _quarto/scss/iframe.scss
+      - _quarto/scss/title-bg.scss
+      - _quarto/scss/text-size.scss
     slide-level: 3
     max-scale: 2.0 
     embed-resources: true
-    include-in-header: _quarto/lib/mathjax-fix.html
+    include-in-header:
+      - _quarto/lib/mathjax-fix.html
+      - _quarto/lib/pixel-snap.html     # スライドの位置を整数ピクセルに (Safari のぼやけ対策)
+      - _quarto/lib/slide-number-arrows.html  # 頁番号を矢印の箱の中へ (Safari でも矢印の真ん中に)
     center: true
     controls: true
     controls-layout: bottom-right
@@ -17,13 +40,18 @@ format:
     controls-tutorial: true
     navigation-mode: vertical
     auto-stretch: false
+    slide-number: c/t                  # 右下に「頁/総頁」(talk と同じ)
   pdf:
     keep-tex: true
     echo: false
     pdf-engine: lualatex
+    papersize: a4                   # 用紙 (Quarto の既定は letter．report / handout も a4)．org から: #+QUARTO_PDF_OPTIONS: papersize:letter
     include-in-header: 
       - text: |
           \usepackage{luatexja-preset}
+          % luatexja-fontspec (TeX Live 2026，2026-09 以降) が regexpatch を読み，後で xpatch を読むと \xpatchcmd が二重定義の誤りになる．
+          % regexpatch は xpatch の命令も持つので，xpatch は読んだことにする (amsthm を読む文書で起きた．NOTES.org)
+          \makeatletter\@ifpackageloaded{regexpatch}{\@ifpackageloaded{xpatch}{}{\expandafter\def\csname ver@xpatch.sty\endcsname{2020/03/25 v0.3a (provided by regexpatch)}}}{}\makeatother
           \usepackage{mathtools}
           \mathtoolsset{showonlyrefs,showmanualtags}	    
       - _quarto/tex/fig-scale.tex
@@ -49,8 +77,18 @@ execute:
   message: false
   fig-height: 5
   fig-width: 5
-filters:
+filters:                          # 節扉は見出しをそのまま出す (section-toc は使わない)
   - _quarto/lib/no-hrule.lua
+  - _quarto/lib/iframe.lua
+  - _quarto/lib/cite-aside.lua    # 各スライドで引用した文献の書誌を脚注欄に出す (revealjs のみ)
+  - _quarto/lib/ack.lua           # 謝辞の頁の人の一覧 (::: people) を写真・名前・所属の組に
+  - _quarto/lib/text-size.lua   # .text-NN / .math-NN を PDF でも効かせる
+  - _quarto/lib/slide-notes.lua # 発表者ノートを pdf / html では枠で囲む (slide-notes)
+  - _quarto/lib/title-qr.lua    # 表紙の右下の QR コード (revealjs のみ．org の #+QUARTO_QR)
+  - _quarto/lib/pin.lua           # .pin-top / .pin-bottom: absolute の要素をキャンバスの端に固定 (title-qr の後に)
+  - _quarto/lib/text-center.lua   # #+begin_center (::: {.text-center}) を html / pdf / typst で中央寄せに
+  - _quarto/lib/callout-colors.lua # callout を palette の役割の色に (pdf / html．revealjs は scss)
+slide-notes-default: box          # 発表者ノート (::: notes) を pdf / html でどう出すか: box / margin / hide / plain (lib/slide-notes.lua．org では #+QUARTO_OPTIONS: slide-notes:margin)
 
 ---
 
@@ -107,11 +145,13 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
         ggplot2.discrete.fill = function() scale_fill_material())
 ```
 
+::: {.content-visible when-format="pdf"}
 ```{=latex}
 \figfitboth
 \setlength{\figmaxheight}{0.42\textheight}
 \setlength{\figmaxwidth}{0.84\textwidth}
 ```
+:::
 
 
 # 講義の内容
@@ -130,12 +170,10 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
     -   説明変数: $x_1,\dotsc,x_p$ (p次元)
     -   目的変数: $y$ (1次元)
 -   **回帰係数** $\beta_0,\beta_1,\dotsc,\beta_p$ を用いた一次式
-    
     \begin{equation}
       y=\beta_0+\beta_1x_1+\dotsb+\beta_px_p
     \end{equation}
 -   **誤差項** を含む確率モデルで観測データを表現
-    
     \begin{equation}
       y_i=\beta_0+\beta_1 x_{i1}+\cdots+\beta_px_{ip}+\epsilon_i
       \quad (i=1,\dotsc,n)
@@ -145,14 +183,12 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 問題設定
 
 -   確率モデル
-    
     \begin{equation}
       \boldsymbol{y}
       =X\boldsymbol{\beta}+\boldsymbol{\epsilon},
       \quad\boldsymbol{\epsilon}\sim\text{確率分布}
     \end{equation}
 -   式の評価 : **残差平方和** の最小化による推定
-    
     \begin{equation}
       S(\boldsymbol{\beta})
       =(\boldsymbol{y}-X\boldsymbol{\beta})^{\mathsf{T}}
@@ -163,13 +199,11 @@ options(ggplot2.discrete.colour = function() scale_colour_material(),
 ## 解とその一意性
 
 -   解の条件 : **正規方程式**
-    
     \begin{equation}
       X^{\mathsf{T}}X\boldsymbol{\beta}
       =X^{\mathsf{T}}\boldsymbol{y}
     \end{equation}
 -   解の一意性 : **Gram 行列** $X^{\mathsf{T}}X$ が正則
-    
     \begin{equation}
       \hat{\boldsymbol{\beta}}
       =
@@ -293,14 +327,12 @@ tw_subset |>
 ### 寄与率
 
 -   **決定係数** (R-squared)
-    
     \begin{equation}
       R^2
       =
       1-\frac{\sum_{i=1}^n\hat{\epsilon}_i^2}{\sum_{i=1}^n(y_i-\bar{y})^2}
     \end{equation}
 -   **自由度調整済み決定係数** (adjusted R-squared)
-    
     \begin{equation}
       \bar{R}^2
       =
@@ -374,7 +406,6 @@ tw_gt |>
     -   帰無仮説 $H_{0}$ : $\beta_1=\dotsb=\beta_p=0$
     -   対立仮説 $H_{1}$ : $\exists j\;\beta_j\neq0$ (少なくとも1つは役に立つ)
 -   **$F$統計量** : 決定係数(または残差)を用いて計算
-    
     \begin{equation}
       F
       =\frac{n{-}p{-}1}{p}\frac{R^2}{1-R^2}
@@ -444,8 +475,7 @@ tw_gt |>
 -   回帰係数 $\beta_j$ が回帰式に寄与するか否かを検定する
     -   帰無仮説 $H_{0}$ : $\beta_j=0$
     -   対立仮説 $H_{1}$ : $\beta_j\neq0$ ($\beta_j$ は役に立つ)
--   **$t$統計量** : 各係数ごと，$\zeta$ は $(X^{\mathsf{T}} X)^{-1}$ の対角成分
-    
+-   **$t$統計量** : 各係数ごと，$\zeta^{2}$ は $(X^{\mathsf{T}} X)^{-1}$ の対角成分
     \begin{equation}
       t=\frac{\hat{\beta}_j}{\hat{\sigma}\zeta_{j}}
     \end{equation}
@@ -470,23 +500,6 @@ my_gts <- function(x){
     ) |>
     modify_header(label = "**変数**",
                   estimate = "**係数(SE)**",
-                  statistic = "**t統計量**",
-                  p.value = "**p値**") |>
-    remove_abbreviation() |>
-    modify_abbreviation("SE = 標準誤差")
-} 
-my_gts <- function(x){
-  tbl_regression(x, intercept = TRUE) |>            # 標準の表
-    modify_column_unhide(columns = c(statistic)) |> # 標準誤差とt統計量を表示
-    add_significance_stars(
-      hide_ci = TRUE,
-      hide_se = FALSE,
-      hide_p = FALSE,
-      pattern = "{p.value}{stars}"
-    ) |>
-    modify_header(label = "**変数**",
-                  estimate = "**係数**",
-                  std.error = "**SE**",
                   statistic = "**t統計量**",
                   p.value = "**p値**") |>
     remove_abbreviation() |>
@@ -578,7 +591,6 @@ autoplot(tw_lm5)
 ## 予測
 
 -   新しいデータ (説明変数) $\boldsymbol{x}$ に対する **予測値**
-    
     \begin{equation}
       \hat{y}
       =
@@ -590,7 +602,6 @@ autoplot(tw_lm5)
       X^{\mathsf{T}}\boldsymbol{y}
     \end{equation}
 -   予測値は元データの目的変数の重み付け線形和
-    
     \begin{equation}
       \hat{y}
       =
@@ -609,7 +620,6 @@ autoplot(tw_lm5)
 ## 予測値の性質
 
 -   推定量は以下の性質をもつ多変量正規分布
-    
     \begin{align}
       \mathbb{E}[\hat{\boldsymbol{\beta}}]
       &=\boldsymbol{\beta}\\
@@ -617,7 +627,6 @@ autoplot(tw_lm5)
       &=\sigma^{2}(X^{\mathsf{T}}X)^{-1}
     \end{align}
 -   この性質を利用して以下の3つの値の違いを評価
-    
     \begin{align}
       y&=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}+\epsilon
       &&\text{(観測値)}\\
@@ -647,7 +656,6 @@ autoplot(tw_lm5)
 ## 最適な予測値との差
 
 -   差の分布は以下の平均・分散をもつ正規分布に従う
-    
     \begin{align}
       \mathbb{E}[\tilde{y}-\hat{y}]
       &=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}
@@ -659,7 +667,6 @@ autoplot(tw_lm5)
         =\sigma^{2}\gamma_{c}(\boldsymbol{x})^{2}
     \end{align}
 -   標準化による表現
-    
     \begin{equation}
       \frac{\tilde{y}-\hat{y}}{\sigma\gamma_{c}(\boldsymbol{x})}
       \sim \mathcal{N}(0,1)
@@ -669,7 +676,6 @@ autoplot(tw_lm5)
 ## 信頼区間
 
 -   未知の分散を不偏分散で推定
-    
     \begin{equation}
       Z=
       \frac{\tilde{y}-\hat{y}}{\hat{\sigma}\gamma_{c}(\boldsymbol{x})}
@@ -677,14 +683,13 @@ autoplot(tw_lm5)
       \quad (\text{\(t\)分布})
     \end{equation}
 -   確率 $\alpha$ の信頼区間
-    
     \begin{equation}
       \mathcal{I}^{c}_{\alpha}
       =
-      \left(
+      \left[
         \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x}),\;
         \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{c}(\boldsymbol{x})
-      \right)
+      \right]
     \end{equation}
     
     \begin{equation}
@@ -702,7 +707,6 @@ autoplot(tw_lm5)
 
 -   以下の問に答えなさい
     -   信頼区間について以下の式が成り立つことを示せ
-        
         \begin{equation}
           P(\tilde{y}\in\mathcal{I}^{c}_{\alpha})
           =\alpha
@@ -716,7 +720,6 @@ autoplot(tw_lm5)
 ## 観測値との差
 
 -   差の分布は以下の平均・分散をもつ正規分布に従う
-    
     \begin{align}
       \mathbb{E}[y-\hat{y}]
       &=(1,\boldsymbol{x}^{\mathsf{T}})\boldsymbol{\beta}
@@ -733,7 +736,6 @@ autoplot(tw_lm5)
         =\sigma^{2}\gamma_{p}(\boldsymbol{x})^{2}
     \end{align}
 -   標準化による表現
-    
     \begin{equation}
       \frac{y-\hat{y}}{\sigma\gamma_{p}(\boldsymbol{x})}
       \sim \mathcal{N}(0,1)
@@ -743,7 +745,6 @@ autoplot(tw_lm5)
 ## 予測区間
 
 -   未知の分散を不偏分散で推定
-    
     \begin{equation}
       Z=
       \frac{y-\hat{y}}{\hat{\sigma}\gamma_{p}(\boldsymbol{x})}
@@ -751,14 +752,13 @@ autoplot(tw_lm5)
       \quad (\text{\(t\)分布})
     \end{equation}
 -   確率 $\alpha$ の予測区間 
-    
     \begin{equation}
       \mathcal{I}^{p}_{\alpha}
       =
-      \left(
+      \left[
         \hat{y}-C_{\alpha}\hat{\sigma}\gamma_{p}(\boldsymbol{x}),\;
         \hat{y}+C_{\alpha}\hat{\sigma}\gamma_{p}(\boldsymbol{x})
-      \right)
+      \right]
     \end{equation}
     
     \begin{equation}
@@ -777,7 +777,6 @@ autoplot(tw_lm5)
 
 -   東京の気候データを用いて以下を試みる
     -   8月のデータで回帰式を推定する
-        
         \begin{equation}
           \text{気温}
           = \text{係数}\cdot\text{気圧}
