@@ -4,7 +4,7 @@
 #+EMAIL: noboru.murata@gmail.com
 #+DATE: 
 #+STARTUP: hidestars content indent
-# Time-stamp: <2026-11-09 16:08:37 mura>
+# Time-stamp: <2026-11-10 17:56:14 mura>
 :QUARTO:
 #+SETUPFILE: _quarto/org/lecture.org
 # C-c C-x C-v でinlineを切り替え
@@ -131,7 +131,6 @@
            label.label = "rowname",
            label.size = 4,
            label.repel = TRUE,
-           label.show.legend = FALSE,
            loadings = TRUE,
            loadings.colour = "blue",
            loadings.label = TRUE,
@@ -268,7 +267,6 @@
            data = ja_data, colour = "地方名", # 地方ごとに色付け
            label = TRUE, # ラベルの表示
            label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
-           label.show.legend = FALSE,
            label.family = jp_font, label.size = 3,
            loadings = TRUE, loadings.colour = "orchid", # 負荷の表示
            loadings.label = TRUE, loadings.label.colour = "darkgray", # 負荷ラベルの表示
@@ -282,7 +280,7 @@
   - 変量を効率的に縮約して少数の特徴量を構成する
   - 特徴量に関与する変量間の関係を明らかにする
 - *PCA* (Principal Component Analysis)
-  - 構成する特徴量 : *主成分* (principal component)
+  - 構成する特徴量 : *主成分* (princial component)
 
 ** 主成分分析の例
 :PROPERTIES:
@@ -339,7 +337,7 @@
 :END:
 
 #+begin_src R
-  #| fig-width: 6.2
+  #| fig-width: 6.4
   ja_data |>
     ggpairs(columns = 3:10,  # 都道府県名・地方区分を除く
             legend = c(2,1), # 2行1列のグラフから凡例を作成
@@ -357,7 +355,7 @@
 :END:
 
 #+begin_src R
-  #| fig-width: 7
+  #| fig-width: 6.5
   ja_pca <- ja_data |> 
     select(!1:2) |> # 人口関連データのみ
     prcomp(scale. = TRUE) # 主成分分析の実行
@@ -368,11 +366,12 @@
            label = TRUE, # ラベルの表示
            label.label = "都道府県名",
            label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
+           label.family = jp_font,
+           label.size = 3,
            label.show.legend = FALSE,
-           label.family = jp_font, label.size = 3,
            loadings = TRUE, loadings.colour = "orchid", # 負荷の表示
            loadings.label = TRUE, loadings.label.colour = "darkgray", # 負荷ラベルの表示
-           loadings.label.family = jp_font, loadings.label.size = 4)
+           loadings.label.family = jp_font, loadings.label.size = 4) 
 #+end_src
 
 ** 分析の枠組み
@@ -408,7 +407,7 @@
   - データの情報を最も保持する変量の *線形結合を構成*
   - データの情報を最も反映する *座標軸を探索*
 - *教師なし学習* の代表的手法の1つ
-  - 特徴抽出 : 情報処理に重要な特性を少数の変数に凝集
+  - 特徴抽出 : 情報処理に重要な特性を変数に凝集
   - 次元縮約 : 入力をできるだけ少ない変数で表現
 
 
@@ -614,7 +613,7 @@
 
 ** COMMENT ベクトル \(\boldsymbol{a}\) の解
 # 東京大学
-- 制約付き最適化問題
+- 最適化問題
   \begin{equation}
     \text{maximize}\quad
     f(\boldsymbol{a})
@@ -626,7 +625,7 @@
 
 -----
 
-- 制約付きの最適化なので未定係数法を用いればよい
+- 制約付き最適化なので未定係数法を用いればよい
   \begin{equation}
     L(\boldsymbol{a},\lambda)
     =f(\boldsymbol{a})+\lambda(1-\boldsymbol{a}^{\mathsf{T}}\boldsymbol{a})
@@ -915,6 +914,7 @@
     &=
       \sum_{k=2}^{p}\lambda_{k}\boldsymbol{a}_{k}\boldsymbol{a}_{k}^{\mathsf{T}}
   \end{align}
+
 ** 第2主成分
 - Gram 行列 \(\tilde{X}^{\mathsf{T}}\tilde{X}\)
   の固有ベクトル \(\boldsymbol{a}_{1}\) の固有値は 0
@@ -972,7 +972,7 @@
   ##     set_names("県名","地方区分"), # 列の名称を"県名"と"地方区分"に変更
   ##     read_csv(file = "data/japan_social.csv",
   ##              col_select = 2:6) |> 
-  ##     set_names("森林面積割合","農業産出額","人口割合","土地生産性","商品販売額")
+  ##     set_names("森林面積割合","農業算出額","人口割合","土地生産性","商品販売額")
   ##   )|> # 簡略化した項目名に変更
   ##   mutate(地方区分 = as_factor(地方区分)) # 地方区分を出現順に因子化
 #+end_src
@@ -985,7 +985,6 @@
 #+begin_src R :tangle no
   #' データの表示(reveal用)
   js_data |>
-    slice(1:15) |>
     gt() |>
     tab_caption("都道府県別の自然環境・経済基盤データ") |>
     tab_options(table.font.size = 20)
@@ -1015,11 +1014,13 @@
   js_data |> # 散布図．いくつかの変数は相関強いことがわかる
     ggpairs(columns = 3:7, # 都道府県名・地方区分は除く
             legend = c(2,1), # 2行1列のグラフから凡例を作成
-            upper = list(continuous = wrap("cor", size = 4)),
+            upper = list(continuous = wrap("cor", size = 4.5)),
             lower = list(continuous = wrap("points", alpha = .5),
                          mapping = aes(colour = 地方区分))) +
-    theme(strip.text = element_text(size = 9),
-          axis.text = element_text(size = 7))
+    theme(strip.text.x = element_text(size = 11),
+          strip.text.y = element_text(size = 11),
+          axis.text.x = element_text(size = 9),
+          axis.text.y = element_text(size = 9))
 #+end_src
 
 *** 変数のばらつきに大きな違いがある
@@ -1078,7 +1079,6 @@
 #+begin_src R :tangle no
   #' データの表示(reveal用)
   js_data_std |>
-    slice(1:15) |>
     gt() |>
     tab_caption("標準化したデータ") |>
     tab_options(table.font.size = 20)
@@ -1209,7 +1209,7 @@
 :END:
 
 #+begin_src R
-  #| fig-width: 7
+  #| fig-width: 6
   autoplot(js_pca, # バイプロット
            asp = 1, # 縦横比を設定
            data = js_data,
@@ -1218,12 +1218,14 @@
            label.label = "都道府県名",   # ラベルの表示
            label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
            label.size = 3,
-           label.show.legend = FALSE,
            loadings = FALSE,
            loadings.colour = "orchid", # 負荷の表示
            loadings.label = FALSE,
            loadings.label.colour = "darkgray", # 負荷ラベルの表示
-           loadings.label.size = 4) 
+           loadings.label.size = 4) +
+    theme(legend.position = "inside",
+          legend.position.inside = c(.99, .99),
+          legend.justification = c("right", "top"))
 #+end_src
 
 *** データの標準化を行わない場合
@@ -1271,8 +1273,8 @@
 #+end_src
 #+end_content-visible
 
-- ばらつきの大きな変数に主成分方向が偏り，情報の集約が行われていない
-   
+- ばらつきの大きな変数に主成分方向が偏る
+
 *** 主成分負荷量を比較する
 :PROPERTIES:
 :QUARTO_ATTR: {.head-center .fig-tall}
@@ -1298,7 +1300,7 @@
 :END:
 
 #+begin_src R
-  #| fig-width: 7
+  #| fig-width: 6
   autoplot(js_pca, # バイプロット
            asp = 1, # 縦横比を設定
            data = js_data,
@@ -1307,12 +1309,14 @@
            label.label = "都道府県名",   # ラベルの表示
            label.repel = TRUE, # ラベルの表示を自動調整 (パッケージ ggrepel)
            label.size = 3,
-           label.show.legend = FALSE,
            loadings = FALSE,
            loadings.colour = "orchid", # 負荷の表示
            loadings.label = FALSE,
            loadings.label.colour = "darkgray", # 負荷ラベルの表示
-           loadings.label.size = 4)
+           loadings.label.size = 4) +
+    theme(legend.position = "inside",
+          legend.position.inside = c(.99, .01),
+          legend.justification = c("right", "bottom"))
 #+end_src
 
 

@@ -1,0 +1,799 @@
+---
+title: 判別分析
+subtitle: 基本的な考え方
+author: 村田 昇
+oxq-email: "noboru.murata@gmail.com"
+# lecture — 講義用 revealjs＋pdf (lualatex)＋html (既定の配色: palette-indigo)
+# 使い方: org の先頭で  #+SETUPFILE: _quarto/org/lecture.org
+#   (プロジェクトに _quarto と _extensions をシンボリックリンクで置く．ox-quarto/README.org)
+# 配色は大元の org で  #+QUARTO_PALETTE: jade  (indigo (既定) / jade / lavender / mint / amethyst / garnet / dracula)．pdf と html は callout の色だけ配色に合わせる (callout-palette)．
+#   dracula ではコードも dracula 配色にする (ox-quarto-ext-palette-rules)．
+# talk.yaml との違い: 節扉は見出しをそのまま出す (section-toc なし)，PDF と html も出せる，pointer (q) は肉球．
+callout-palette: indigo             # pdf と html の callout の色 (lib/callout-colors.lua．#+QUARTO_PALETTE に合わせて書き換わる)
+license: "CC BY-NC"
+csl: _quarto/csl/apa-short.csl      # 文献の書式 (本文は (著者, 年)．一覧は 4 名以上を 2 名 + et al. に．解説文は apa.csl)
+link-citations: true
+cite-aside-max: 2                   # 引用が 3 件以上のスライドでは書誌を脚注欄に出さない (lib/cite-aside.lua)
+format:
+  revealjs: 
+    theme:
+      - default
+      - _quarto/scss/oer-revealjs.scss       # structure
+      - _quarto/scss/palette-indigo.scss     # 配色 (#+QUARTO_PALETTE で差し替わる)
+      - _quarto/scss/deck-lecture.scss       # 修飾
+      - _quarto/scss/deck-paw.scss           # pointer (q) を肉球に．丸い点に戻すなら #+QUARTO_DECK: dot (#+QUARTO_DECK の deck はこの後に足される)
+      - _quarto/scss/parts.scss              # 部品: .muted .kpi .flow-arrow .formulation など
+      - _quarto/scss/iframe.scss
+      - _quarto/scss/text-size.scss
+    slide-level: 3
+    max-scale: 2.0 
+    embed-resources: true
+    include-in-header:
+      - _quarto/lib/mathjax-fix.html
+      - _quarto/lib/pixel-snap.html     # スライドの位置を整数ピクセルに (Safari のぼやけ対策)
+      - _quarto/lib/slide-number-arrows.html  # 頁番号を矢印の箱の中へ (Safari でも矢印の真ん中に)
+    center: true
+    controls: true
+    controls-layout: bottom-right
+    controls-back-arrows: visible
+    controls-tutorial: true
+    navigation-mode: vertical
+    auto-stretch: false
+    slide-number: c/t                  # 右下に「頁/総頁」(talk と同じ)
+  pdf:
+    keep-tex: true
+    echo: false
+    pdf-engine: lualatex
+    papersize: a4                   # 用紙 (Quarto の既定は letter．report / handout も a4)．org から: #+QUARTO_PDF_OPTIONS: papersize:letter
+    include-in-header:
+      - _quarto/tex/ja-latex.tex          # 和文 (luatexja)・xpatch の回避・mathtools (式の番号)
+      - _quarto/tex/fig-scale.tex
+      - _quarto/tex/table-center.tex
+      - _quarto/tex/callout-title-gothic.tex
+      - _quarto/tex/gt-table-tight.tex
+  html: 
+    self-contained: false
+    grid: 
+      margin-width: 350px
+    code-fold: true
+revealjs-plugins:
+  - pointer
+pointer:
+  color: "rgba(255, 0, 0, 0.4)"
+  pointerSize: 120
+  alwaysVisible: false
+knitr:
+  opts_chunk:
+    fig.align: center
+execute:
+  warning: false
+  message: false
+  fig-height: 5
+  fig-width: 5
+filters:                          # 節扉は見出しをそのまま出す (section-toc は使わない)
+  - _quarto/lib/no-hrule.lua
+  - _quarto/lib/iframe.lua
+  - _quarto/lib/cite-aside.lua    # 各スライドで引用した文献の書誌を脚注欄に出す (revealjs のみ)
+  - _quarto/lib/ack.lua           # 謝辞の頁の人の一覧 (::: people) を写真・名前・所属の組に
+  - _quarto/lib/text-size.lua   # .text-NN / .math-NN を PDF でも効かせる
+  - _quarto/lib/slide-notes.lua # 発表者ノートを pdf / html では枠で囲む (slide-notes)
+  - _quarto/lib/title-qr.lua    # 表紙の右下の QR コード (revealjs のみ．org の #+QUARTO_QR)
+  - _quarto/lib/pin.lua           # .pin-top / .pin-bottom: absolute の要素をキャンバスの端に固定 (title-qr の後に)
+  - _quarto/lib/text-center.lua   # #+begin_center (::: {.text-center}) を html / pdf / typst で中央寄せに
+  - _quarto/lib/callout-colors.lua # callout を palette の役割の色に (pdf / html．revealjs は scss)
+slide-notes-default: box          # 発表者ノート (::: notes) を pdf / html でどう出すか: box / margin / hide / plain (lib/slide-notes.lua．org では #+QUARTO_OPTIONS: slide-notes:margin)
+
+---
+
+
+
+```{r}
+### 第8講 資料
+```
+
+```{r}
+library(conflicted)
+conflicts_prefer(
+    dplyr::filter(),
+    dplyr::select(),
+    dplyr::lag(),
+    )
+library(tidyverse)
+library(ggfortify)     # 分析結果の視覚化にggplotを利用するためのパッケージ
+library(GGally)
+library(ggrepel)
+library(gt)            # 表を作成するためのパッケージ
+library(gtsummary)
+library(broom)
+library(broom.helpers) # gtsummary のいくつかの関数で利用(インストールされていれば不要)
+library(MASS)          # パッケージ MASS に含まれる判別分析のための関数を利用
+library(cluster)       # クラスタ分析のためのパッケージ
+library(ggdendro)      # ggplot でデンドログラムを描くためのパッケージ
+library(tsibble)       # 時系列を扱うためのパッケージ
+library(feasts)        # ggplotで時系列を扱うための拡張パッケージ
+library(fable)         # 時系列関連
+library(ggtime)        # 時系列関連
+#' 日本語表示の設定
+#' 出力形式に応じた作図デバイス
+if (knitr::is_latex_output()) knitr::opts_chunk$set(dev = "cairo_pdf")
+
+#' 日本語表示の設定
+if (Sys.info()["sysname"] == "Darwin") {
+    jp_font <- if (knitr::is_latex_output()) {
+                   "Hiragino Maru Gothic ProN"   # cairo は fontconfig 経由なのでファミリ名
+               } else {
+                   "HiraMaruProN-W4"             # quartz/AGG は PostScript 名
+               }
+    theme_update(text = element_text(family = jp_font))
+    update_geom_defaults("text", list(family = theme_get()$text$family))
+    update_geom_defaults("label", list(family = theme_get()$text$family))
+    update_geom_defaults("text_repel", list(family = theme_get()$text$family))
+    update_geom_defaults("label_repel", list(family = theme_get()$text$family))
+} else {
+    jp_font <- NULL
+}
+#' 色の設定
+library(see)
+options(ggplot2.discrete.colour = function() scale_colour_material(),
+        ggplot2.discrete.fill = function() scale_fill_material())
+```
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\figfitboth
+\setlength{\figmaxheight}{0.42\textheight}
+\setlength{\figmaxwidth}{0.84\textwidth}
+```
+:::
+
+
+# 講義の内容
+
+-   **第1回 : 判別分析の考え方**
+-   第2回 : 分析の評価
+
+
+# 判別分析の考え方
+
+
+## 判別分析
+
+-   判別分析 (**discriminant analysis**) の目的   
+    個体の特徴量からその個体の属する
+    **クラス**
+    を予測する関係式を構成する方法
+-   関係式 : **判別関数** (discriminant function)
+    -   説明変数 : $X=(X_{1},\dots,X_{q})$
+    -   目的変数 : $Y$ ($K(\geq2)$ 個のクラスラベル)
+-   判別関数による分類
+    -   1次式の場合 : **線形判別分析** (linear discriminant analysis)
+    -   2次式の場合 : **2次判別分析** (quadratic discriminant analysis)
+
+
+## 判別分析の例
+
+-   データセット
+    -   **Biopsy Data on Breast Cancer Patients**   
+        This breast cancer database was obtained from the University of Wisconsin Hospitals, Madison from Dr. William H. Wolberg. He assessed biopsies of breast tumours for 699 patients up to 15 July 1992; each of nine attributes has been scored on a scale of 1 to 10, and the outcome is also known. There are 699 rows and 11 columns.
+
+
+## 判別分析の例 {.head-center .fig-tall}
+
+```{r}
+#| include: false
+#' 判別分析の例
+#' 表の作成
+bio_data <- MASS::biopsy |>
+  as_tibble() |>
+  na.omit() # NA を除く
+```
+
+::: {.content-visible when-format="html"}
+::: {.scroll-tall}
+```{r}
+#' データの表示(reveal用)
+bio_data |>
+  slice(1:15) |>
+  gt()
+```
+:::
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#' データの表示(latex用)
+bio_data |>
+  slice(1:15) |>
+  gt() |>
+  tab_options(table.font.size = 9, latex.tbl.pos = "H") |>
+  as_latex()
+```
+:::
+
+
+### 9種類の生検の散布図 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 5.6
+  bio_data |>
+    select(!ID) |> # IDを除く
+    ggpairs(upper = list(continuous = wrap("cor", size = 2.5)),
+            diag = list(continuous = wrap("densityDiag", alpha = 0.7),
+                        mapping = aes(colour = class)),
+            lower = list(continuous = wrap("points", alpha = .7),
+                         mapping = aes(colour = class))) +
+theme(strip.text = element_text(size = 8),
+      axis.text = element_text(size = 5))
+```
+
+
+### 主成分分析を用いて2次元に縮約した生検と良性・悪性の関係 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6.4
+bio_data |>
+  select(where(is.numeric)) |>
+  prcomp() |> # 主成分分析
+  autoplot(data = bio_data,
+           asp = 1,
+           colour = "class")
+```
+
+
+### 線形判別関数による判別関数値の分布 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 5.6
+bio_lda <- lda(class ~ . -ID, data = bio_data)
+bio_data |>
+  mutate(x = predict(bio_lda)[["x"]]) |>
+  ggplot(aes(x = x)) +
+  geom_histogram(aes(fill = class), alpha = 0.7,
+                 show.legend = FALSE) +
+  facet_grid(class ~ .)
+```
+
+
+## その他の例
+
+-   検査結果から患者が病気に罹患しているか判定する
+    -   $X=$ 検査結果
+    -   $Y=$ 病気・健康
+-   今日の経済指標から明日の株価を予測する
+    -   $X=$ 今日の経済指標
+    -   $Y=$ 明日の株価の上昇・下降
+-   今日の大気の状態から, 明日の天気を予測する
+    -   $X=$ 今日の大気の状態
+    -   $Y=$ 晴・くもり・雨・雪
+
+
+## 判別分析の考え方
+
+-   確率による定式化
+    1.  $X=\boldsymbol{x}$ の下で $Y=k$ となる **条件付確率** を計算
+        \begin{equation}
+          p_{k}(\boldsymbol{x})=P(Y=k|X=\boldsymbol{x})
+        \end{equation}
+    2.  所属する確率が最も高いクラスに個体を分類
+-   観測データ : $n$ 個の $(Y,X_{1},\dots,X_{q})$ の組
+    \begin{equation}
+      \{(y_{i},x_{i1},\dots,x_{iq})\}_{i=1}^n
+    \end{equation}
+-   観測データから$Y$の条件付確率 $p_{k}(\boldsymbol{x})$ を構成
+
+
+## 条件付確率
+
+-   以下では $X$ は離散型の $q$ 次元確率変数として説明
+-   事象 $X=\boldsymbol{x}$ が起きたという条件の下で
+    事象 $Y=k$ が起きる条件付確率
+    \begin{equation}
+      p_{k}(\boldsymbol{x})
+      =
+      P(Y=k|X=\boldsymbol{x})
+      =
+      \frac{P(Y=k,X=\boldsymbol{x})}{P(X=\boldsymbol{x})}
+    \end{equation}
+-   連続な確率変数の場合は確率密度関数を用いる
+
+
+## 条件付確率の表現
+
+-   $Y$の条件付確率 $p_{k}(\boldsymbol{x})$ のモデル化の方針
+    -   $p_{k}(\boldsymbol{x})$ を直接モデル化する (例 : ロジスティック回帰)
+    -   $Y=k$ の下での $X$ の条件付き確率質量関数
+        \begin{equation}
+          f_{k}(\boldsymbol{x})
+          =
+          P(X=\boldsymbol{x}|Y=k)=\frac{P(X=\boldsymbol{x},Y=k)}{P(Y=k)}
+        \end{equation}
+        のモデル化を通じて $p_{k}(\boldsymbol{x})$ をモデル化する
+-   本講義では **後者** について説明
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   $X,Y$を離散確率変数とするとき，
+        $P(X=x|Y=k)$から
+        $P(Y=k|X=x)$を計算する式を導け
+
+
+# 事後確率による判別
+
+
+## Bayes の公式
+
+-   $f_{k}(\boldsymbol{x})$ から $p_{k}(\boldsymbol{x})$ を得る数学的原理
+    
+    -   **原因 $X=\boldsymbol{x}$ から結果 $Y=k$ が生じる確率** を
+    -   **結果 $Y=k$ が生じる原因が $X=\boldsymbol{x}$ である確率** から
+    
+    計算する方法
+-   Bayes の公式 (Bayes' formula)
+    \begin{equation}
+      p_{k}(\boldsymbol{x})
+      =
+      P(Y=k|X=\boldsymbol{x})
+      =
+      \frac{f_{k}(\boldsymbol{x})P(Y=k)}{\sum_{l=1}^{K}f_l(\boldsymbol{x})P(Y=l)}
+    \end{equation}
+    
+    -   $p_{k}(\boldsymbol{x})$: 原因 $X=\boldsymbol{x}$ から結果 $Y=k$ が生じる確率
+    -   $f_{k}(\boldsymbol{x})$: 結果 $Y=k$ が生じる原因が $X=\boldsymbol{x}$ である確率
+
+
+## Bayes の公式の略証
+
+-   定義より
+    \begin{equation}
+      f_{k}(\boldsymbol{x})
+      =
+      P(X=\boldsymbol{x}|Y=k)
+      =
+      \frac{P(X=\boldsymbol{x},Y=k)}{P(Y=k)}
+    \end{equation}
+-   求める条件付確率
+    \begin{equation}
+      p_{k}(\boldsymbol{x})
+      =
+      P(Y=k|X=\boldsymbol{x})
+      =
+      \frac{f_{k}(\boldsymbol{x})P(Y=k)}{P(X=\boldsymbol{x})}
+    \end{equation}
+-   分母の展開
+    \begin{equation}
+      P(X=\boldsymbol{x})
+      =
+        \sum_{l=1}^{K}P(X=\boldsymbol{x},Y=l)
+      =
+        \sum_{l=1}^{K}f_l(\boldsymbol{x})P(Y=l)
+    \end{equation}
+
+
+## 事前確率と事後確率
+
+-   **事前確率** : $\pi_{k}=P(Y=k)$ (prior probability)
+    -   $X=\boldsymbol{x}$ が与えられる前に予測されるクラス確率
+-   **事後確率** : $p_{k}(\boldsymbol{x})$ (posterior probability)
+    -   $X=\boldsymbol{x}$ が与えられた後に予測されるクラス確率
+-   Bayes の公式による書き換え
+    \begin{equation}
+      p_{k}(\boldsymbol{x})
+      =
+      \frac{f_{k}(\boldsymbol{x})\pi_{k}}{\sum_{l=1}^{K}f_l(\boldsymbol{x})\pi_l}
+      =
+      \frac{f_{k}(\boldsymbol{x})}{\sum_{l=1}^{K}f_l(\boldsymbol{x})\pi_l}
+      \cdot\pi_{k}
+    \end{equation}
+    
+    -   事前確率が説明変数の条件付確率の重みで変更される
+
+
+## 事前確率の決め方
+
+-   事前に特別な情報がない場合   
+    データから自然に決まる確率
+    \begin{equation}
+      \pi_{k}
+      =
+      \frac{\text{\(Y=k\)のサンプル数}}{\text{全サンプル数}}
+    \end{equation}
+-   事前に情報がある場合   
+    食事・運動・飲酒・ストレスなどの生活の特徴から生活習慣病か否かを判別
+    -   健常者の食事・運動・飲酒・ストレスなどの特徴量を収集
+    -   罹患者の食事・運動・飲酒・ストレスなどの特徴量を収集
+    -   事前確率は **別の調査の日本人の罹患率** を利用
+
+
+# 線形判別分析
+
+
+## 判別関数
+
+-   判別の手続き
+    1.  説明変数 $X=\boldsymbol{x}$ の取得
+    2.  事後確率 $p_{k}(\boldsymbol{x})$ の計算
+    3.  事後確率最大のクラスにデータを分類
+-   **判別関数** : $\delta_{k}(\boldsymbol{x})$ ($k=1,\dots,K$)
+    \begin{equation}
+      p_{k}(\boldsymbol{x}) 
+      < 
+      p_l(\boldsymbol{x})
+      \Leftrightarrow
+      \delta_{k}(\boldsymbol{x})
+      <
+      \delta_l(\boldsymbol{x})
+    \end{equation}
+    
+    -   事後確率の順序を保存する計算しやすい関数
+-   判別関数 $\delta_{k}(\boldsymbol{x})$ を最大化するクラス $k$ に分類
+
+
+## 線形判別
+
+-   $f_{k}(\boldsymbol{x})$ の仮定
+    -   $q$ 変量正規分布の密度関数
+    -   平均ベクトル $\boldsymbol{\mu}_{k}$ : クラスごとに異なる
+    -   共分散行列 $\Sigma$ : すべてのクラスで共通
+        \begin{equation}
+          f_{k}(\boldsymbol{x})
+          =
+          \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma}}
+          \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+            \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})\right)
+        \end{equation}
+-   線形判別関数 : $\boldsymbol{x}$ の1次式
+    
+    \begin{equation}
+      \delta_{k}(\boldsymbol{x})
+      =
+      \boldsymbol{x}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_{k}
+      -\frac{1}{2}\boldsymbol{\mu}_{k}^{\mathsf{T}}\Sigma^{-1}\boldsymbol{\mu}_{k}
+      +\log\pi_{k}
+    \end{equation}
+
+
+## 平均・分散の推定
+
+-   平均の推定 (クラスごとに行う)
+    \begin{equation}
+      \hat{\boldsymbol{\mu}}_{k}
+      =
+      \frac{1}{n_{k}}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
+    \end{equation}
+    
+    -   ただし $n_{k}$ は $y_{i}=k$ であるようなデータの総数
+-   分散の推定 (まとめて行う)
+    \begin{equation}
+      \hat{\Sigma}
+      =
+      \frac{1}{n{-}K}\sum_{k=1}^{K}\sum_{i:y_{i}=k}
+      (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})
+      (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})^{\mathsf{T}}  
+    \end{equation}
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   $X$の条件付確率 $f_{k}(\boldsymbol{x})$ に関する仮定
+        
+        -   $q$ 変量正規分布の密度関数
+        -   平均ベクトル $\boldsymbol{\mu}_{k}$ : クラスごとに異なる
+        -   共分散行列 $\Sigma$ : すべてのクラスで共通
+        
+        のもとで
+        事後確率と線形判別関数の同値性
+        \begin{equation}
+          p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})
+          \Leftrightarrow
+          \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+        \end{equation}
+        を示しなさい
+
+
+# 2次判別分析
+
+
+## 2次判別
+
+-   $f_{k}(\boldsymbol{x})$ の仮定
+    -   $q$ 変量正規分布の密度関数
+    -   平均ベクトル $\boldsymbol{\mu}_{k}$ : クラスごとに異なる
+    -   共分散行列 $\Sigma_{k}$ : **クラスごとに異なる**
+        \begin{equation}
+          f_{k}(\boldsymbol{x})
+          =
+          \frac{1}{(2\pi)^{q/2}\sqrt{\det\Sigma_{k}}}
+          \exp\left(-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+            \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})\right)
+        \end{equation}
+-   2次判別関数 : $\boldsymbol{x}$ の2次式
+    \begin{equation}
+      \delta_{k}(\boldsymbol{x})
+      =
+      -\frac{1}{2}\log\det\Sigma_{k}
+      -\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_{k})^{\mathsf{T}}
+      \Sigma_{k}^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_{k})
+      +\log\pi_{k}
+    \end{equation}
+
+
+## 平均・分散の推定
+
+-   平均の推定 (クラスごとに行う)
+    \begin{equation}
+      \hat{\boldsymbol{\mu}}_{k}
+      =
+      \frac{1}{n_{k}}\sum_{i:y_{i}=k}\boldsymbol{x}_{i}
+    \end{equation}
+    
+    -   ただし $n_{k}$ は $y_{i}=k$ であるようなデータの総数
+-   分散の推定 (クラスごとに行う)
+    \begin{equation}
+      \hat{\Sigma}_{k}
+      =
+      \frac{1}{n_{k}-1}\sum_{i:y_{i}=k}
+      (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})
+      (\boldsymbol{x}_{i}-\hat{\boldsymbol{\mu}}_{k})^{\mathsf{T}}
+    \end{equation}
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   $X$の条件付確率 $f_{k}(\boldsymbol{x})$ に関する仮定
+        
+        -   $q$ 変量正規分布の密度関数
+        -   平均ベクトル $\boldsymbol{\mu}_{k}$ : クラスごとに異なる
+        -   共分散行列 $\Sigma_{k}$ : クラスごとに異なる
+        
+        のもとで
+        事後確率と2次判別関数の同値性
+        \begin{equation}
+          p_{k}(\boldsymbol{x}) < p_l(\boldsymbol{x})
+          \Leftrightarrow
+          \delta_{k}(\boldsymbol{x}) < \delta_l(\boldsymbol{x})
+        \end{equation}
+        を示しなさい
+
+
+# さまざまな多値判別
+
+
+## 多値判別の構成方法
+
+-   判別関数の比較
+    -   判別関数 $\delta_{k}$ を比較
+    -   正規分布を仮定する場合は一般には2次判別
+-   2値判別の統合
+    -   2クラスでの比較 : 最大の組合せ数 ${}_{K}C_{2}$
+    -   グループでの比較 : 最大の組合せ数 $2^{K-1}-1$
+-   $K{-}1$ 個の特徴量への変換
+    -   説明変数の線形結合による特徴量の構成
+    -   異なる$K$種の点の集合を$K{-}1$次元空間に配置
+    -   **Fisher の線形判別**
+
+
+## 変動の分解
+
+-   3種類の変動
+    -   $A=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu})(\boldsymbol{x}_{i}-\boldsymbol{\mu})^{\mathsf{T}}$ :
+        **全変動**
+    -   $W=\sum_{i=1}^{n}(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})(\boldsymbol{x}_{i}-\boldsymbol{\mu}_{y_{i}})^{\mathsf{T}}$ :
+        **群内変動**
+    -   $B=\sum_{k=1}^{K}n_{k}(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})(\boldsymbol{\mu}_{k}-\boldsymbol{\mu})^{\mathsf{T}}$ :
+        **群間変動**   
+        ($n_{k}$ はクラス $k$ のデータ数)
+-   変動の関係
+    \begin{equation}
+      \text{(全変動)}
+      =
+      \text{(群内変動)}
+      +
+      \text{(群間変動)}
+    \end{equation}
+    \begin{equation}
+      A = W + B
+    \end{equation}
+
+
+# 演習 {background-color="#fef4f4"}
+
+
+## 問題
+
+-   以下の問に答えなさい
+    -   全変動が群内・群間変動に分解されることを示しなさい
+    -   説明変数の線形結合で新たな特徴量を構成する
+        \begin{equation}
+          Z=\boldsymbol{\alpha}^{\mathsf{T}} X
+        \end{equation}
+        このとき$Z$の群内変動と群間変動を求めなさい
+
+
+# Fisher の判別分析
+
+
+## Fisherの線形判別
+
+-   判別のための特徴量 $Z=\boldsymbol{\alpha}^{\mathsf{T}} X$
+    -   特徴量$Z$のばらつきの計算は主成分分析と同様
+    -   変動 $A,W,B$ を Gram 行列とみなせばよい
+-   良い $Z$ の基準
+    -   クラス内では集まっているほど良い ($\boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}$は小)
+    -   クラス間では離れているほど良い ($\boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}$は大)
+-   Fisherの基準
+    \begin{equation}
+      \text{maximize}\quad \boldsymbol{\alpha}^{\mathsf{T}} B\boldsymbol{\alpha}
+      \quad\text{s.t.}\quad \boldsymbol{\alpha}^{\mathsf{T}} W\boldsymbol{\alpha}=\text{const.}
+    \end{equation}
+    
+    -   クラス内変動を一定にしてクラス間変動を最大化する
+
+
+## Fisherの線形判別の解
+
+-   $\boldsymbol{\alpha}$ は $W^{-1}B$ の固有ベクトル (主成分分析と同様)
+    -   $K=2$ の場合 : 最大固有値を用いる (線形判別と一致)
+        \begin{equation}
+          \boldsymbol{\alpha}\propto
+          W^{-1}(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_2)
+          \propto\Sigma^{-1}(\boldsymbol{\mu}_{1}-\boldsymbol{\mu}_2)
+        \end{equation}
+    -   一般の $K$ の場合 : 第1から第 $\min(q,K{-}1)$ 固有値を用いる
+-   判別の手続き
+    -   特徴量とクラスの中心までの距離を用いる
+        1.  $d_{k}=\sum_{l=1}^{K{-}1}(\boldsymbol{\alpha}_l^{\mathsf{T}}\boldsymbol{x}-\boldsymbol{\alpha}_l^{\mathsf{T}}\boldsymbol{\mu}_{k})^2$ 
+            を計算
+        2.  最小の $d_{k}$ となるクラス $k$ に判別
+    -   特徴量 $Z$ の空間をクラスごとの平均を用いて Voronoi 分割している
+
+
+# 解析の事例
+
+
+## データについて
+
+-   気象庁より取得した東京の気候データ
+    -   気象庁 <https://www.data.jma.go.jp/gmd/risk/obsdl/index.php>
+    -   データ <https://noboru-murata.github.io/lectures/multivariate-analysis/data/tokyo_weather.csv>
+
+
+### 9,10月のデータの散布図 {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+#' 東京の気象データによる判別分析
+library(MASS) # パッケージの読み込み
+#' データの整理
+tw_data <- read_csv("data/tokyo_weather.csv")
+tw_subset  <- tw_data |> 
+  filter(month %in% c(9,10)) |> # 9,10月のデータ
+  select(temp, humid, month) |> # 気温・湿度・月を選択
+  mutate(month = as_factor(month)) # 月を因子化
+#' 視覚化
+tw_subset |> # 気温と湿度の散布図を作成
+  ggplot(aes(x = temp, y = humid)) + 
+  geom_point(aes(colour = month)) + # 月ごとに点の色を変える
+  labs(x = "気温", y = "湿度", 
+       colour = "月",
+       title = "東京の気候 (9月・10月)")
+```
+
+
+### 線形判別 (2値) {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+#' 線形判別関数の推定
+tw_model <- month ~ temp + humid
+tw_lda <- lda(formula = tw_model, data = tw_subset)
+tw_lda_fitted <- predict(tw_lda) # 判別関数によるクラス分類結果の取得
+as_tibble(tw_lda_fitted[["x"]]) |> # リストから判別関数値(配列)を取得
+  mutate(month = tw_subset[["month"]]) |> # 月(真値)を追加
+  ggplot(aes(x = LD1, fill = month)) + 
+  geom_histogram(aes(y = after_stat(density)), bins = 30) +
+  labs(fill = "月") +
+  facet_grid(month ~ .) # 月ごとに表示(y方向に並べる)
+```
+
+
+### 線形判別 (2値) {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+#' 判別関数により予測されるラベルの図示
+range_x <- range(tw_subset[["temp"]])  # 気温の値域
+range_y <- range(tw_subset[["humid"]]) # 湿度の値域
+grid_x <- pretty(range_x, 100) # 気温の値域の格子点を作成
+grid_y <- pretty(range_y, 100) # 湿度の値域の格子点を作成
+grid_xy <- expand.grid(temp = grid_x,
+                       humid = grid_y) # 2次元の格子点を作成
+tw_lda_grid <- predict(tw_lda, # 格子点上の判別関数値を計算
+                       newdata = grid_xy)
+as_tibble(grid_xy) |> 
+  mutate(predict = tw_lda_grid[["class"]]) |>
+  ggplot(aes(x = temp, y = humid)) +
+  geom_tile(aes(fill = predict), alpha = 0.3) +
+  geom_point(data = tw_subset,
+             aes(x = temp, y = humid, colour = month)) +
+  labs(x = "気温", y = "湿度",
+       fill = "予測", colour = "真値",
+       title = "線形判別")
+
+```
+
+
+### 2次判別 (2値) {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+  #' 2次判別関数を推定
+tw_qda <- qda(formula = tw_model, data = tw_subset)
+tw_qda_fitted <- predict(tw_qda) # 判別関数によるクラス分類結果の取得
+#' 判別関数により予測されるラベルの図示
+tw_qda_grid <- predict(tw_qda, # 格子点上の判別関数値を計算
+                       newdata = grid_xy)
+as_tibble(grid_xy) |> 
+  mutate(predict = tw_qda_grid[["class"]]) |>
+  ggplot(aes(x = temp, y = humid)) +
+  geom_tile(aes(fill = predict), alpha = 0.3) +
+  geom_point(data = tw_subset,
+             aes(x = temp, y = humid, colour = month)) +
+  labs(x = "温度", y = "湿度",
+       fill = "予測", colour = "真値",
+       title = "2次判別")
+```
+
+
+### Fisherの線形判別 (多値) {.head-center .fig-tall}
+
+```{r}
+#| fig-width: 6
+#' 多値判別
+tw_subset3  <- tw_data |>
+  filter(month %in% c(9,10,11)) |>
+  select(temp, humid, month) |>
+  mutate(month = as_factor(month))
+
+#' 線形判別関数(3値)を作成
+tw_lda3 <- lda(formula = tw_model, data = tw_subset3)
+tw_lda3_fitted <- predict(tw_lda3) # 判別関数によるクラス分類結果の取得
+
+#' 推定された線形判別関数(3値)により予測されるラベルの図示
+#' 格子点は再計算する必要がある
+range_x <- range(tw_subset3[["temp"]])  # 気温の値域
+range_y <- range(tw_subset3[["humid"]]) # 湿度の値域
+grid_x <- pretty(range_x, 100) # 気温の値域の格子点を作成
+grid_y <- pretty(range_y, 100) # 湿度の値域の格子点を作成
+grid_xy <- expand.grid(temp = grid_x,
+                       humid = grid_y) # 2次元の格子点を作成
+tw_lda3_grid <- predict(tw_lda3, # 格子点上の判別関数値を計算
+                        newdata = grid_xy)
+as_tibble(grid_xy) |> 
+  mutate(predict = tw_lda3_grid[["class"]]) |>
+  ggplot(aes(x = temp, y = humid)) +
+  geom_tile(aes(fill = predict), alpha = 0.3) +
+  geom_point(data = tw_subset3,
+             aes(x = temp, y = humid, colour = month)) +
+  labs(x = "温度", y = "湿度",
+       fill = "予測", colour = "真値",
+       title = "多値判別")
+```
+
+
+# 次回の予定
+
+-   第1回 : 判別分析の考え方
+-   **第2回 : 分析の評価**
